@@ -1,7 +1,7 @@
-package uk.ac.cam.echo.filters;
+package uk.ac.cam.echo.server.filters;
 
 
-import uk.ac.cam.echo.HibernateUtil;
+import uk.ac.cam.echo.server.HibernateUtil;
 
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;

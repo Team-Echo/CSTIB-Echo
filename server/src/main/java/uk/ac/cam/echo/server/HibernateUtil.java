@@ -1,4 +1,4 @@
-package uk.ac.cam.echo;
+package uk.ac.cam.echo.server;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;

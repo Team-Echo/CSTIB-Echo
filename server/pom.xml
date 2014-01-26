@@ -99,7 +99,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>uk.ac.cam.echo.Main</mainClass>
+                    <mainClass>uk.ac.cam.echo.server.Main</mainClass>
                 </configuration>
             </plugin>
         </plugins>

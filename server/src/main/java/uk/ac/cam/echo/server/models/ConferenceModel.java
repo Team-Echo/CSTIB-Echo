@@ -1,4 +1,4 @@
-package uk.ac.cam.echo.models;
+package uk.ac.cam.echo.server.models;
 
 import uk.ac.cam.echo.data.Conference;
 import uk.ac.cam.echo.data.Conversation;

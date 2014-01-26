@@ -1,4 +1,4 @@
-package uk.ac.cam.echo;
+package uk.ac.cam.echo.server;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

@@ -1,10 +1,10 @@
-package uk.ac.cam.echo;
+package uk.ac.cam.echo.server;
 
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
-import uk.ac.cam.echo.filters.HibernateRequestFilter;
-import uk.ac.cam.echo.filters.HibernateResponseFilter;
+import uk.ac.cam.echo.server.filters.HibernateRequestFilter;
+import uk.ac.cam.echo.server.filters.HibernateResponseFilter;
 
 import java.io.IOException;
 import java.net.URI;

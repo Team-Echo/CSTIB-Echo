@@ -1,8 +1,8 @@
-package uk.ac.cam.echo.filters;
+package uk.ac.cam.echo.server.filters;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import uk.ac.cam.echo.HibernateUtil;
+import uk.ac.cam.echo.server.HibernateUtil;
 
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;

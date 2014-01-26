@@ -47,11 +47,11 @@
         <!-- Drop and re-create the database schema on startup -->
         <property name="hbm2ddl.auto">update</property>
 
-        <mapping class="uk.ac.cam.echo.models.UserModel"/>
-        <mapping class="uk.ac.cam.echo.models.ConferenceModel"/>
-        <mapping class="uk.ac.cam.echo.models.ConversationModel"/>
-        <mapping class="uk.ac.cam.echo.models.MessageModel"/>
-        <mapping class="uk.ac.cam.echo.models.TagModel"/>
+        <mapping class="uk.ac.cam.echo.server.models.UserModel"/>
+        <mapping class="uk.ac.cam.echo.server.models.ConferenceModel"/>
+        <mapping class="uk.ac.cam.echo.server.models.ConversationModel"/>
+        <mapping class="uk.ac.cam.echo.server.models.MessageModel"/>
+        <mapping class="uk.ac.cam.echo.server.models.TagModel"/>
 
 
     </session-factory>
