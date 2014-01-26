@@ -5,6 +5,6 @@ import java.io.Serializable;
 public interface User extends Serializable
 {
 public String getUsername();
-public Conversation getConversation();
-public void setConversation();
+public Conversation getCurrentConversation();
+public void setCurrentConversation(Conversation conv);
 }
