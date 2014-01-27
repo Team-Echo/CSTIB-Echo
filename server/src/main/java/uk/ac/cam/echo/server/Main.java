@@ -2,6 +2,7 @@ package uk.ac.cam.echo.server;
 
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
+import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import uk.ac.cam.echo.server.filters.HibernateRequestFilter;
 import uk.ac.cam.echo.server.filters.HibernateResponseFilter;
@@ -24,8 +25,10 @@ public class Main {
     public static HttpServer startServer() {
         // create a resource config that scans for JAX-RS resources and providers
         // in uk.ac.cam.echo package
-        final ResourceConfig rc = new ResourceConfig().packages("uk.ac.cam.echo");
+        HibernateUtil.getSessionFactory();
+        final ResourceConfig rc = new ResourceConfig().packages("uk.ac.cam.echo.server");
         rc.register(HibernateRequestFilter.class);
+        rc.register(JacksonFeature.class);
         rc.register(HibernateResponseFilter.class);
 
         // create and start a new instance of grizzly http server
