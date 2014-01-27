@@ -2,12 +2,12 @@ package uk.ac.cam.echo.server.models;
 
 import uk.ac.cam.echo.data.Tag;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 
+@Entity
+@Table(name="Tags")
 public class TagModel implements Tag {
+
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="ConversationIdSeq")
     @SequenceGenerator(name="ConversationIdSeq", sequenceName="Conversation_SEQ", allocationSize=1)

@@ -5,7 +5,7 @@ import uk.ac.cam.echo.data.User;
 
 import javax.persistence.*;
 
-
+@Entity
 @Table(name="User")
 public class UserModel implements User {
 

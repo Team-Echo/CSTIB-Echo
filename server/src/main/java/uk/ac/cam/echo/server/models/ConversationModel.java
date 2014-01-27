@@ -1,16 +1,15 @@
 package uk.ac.cam.echo.server.models;
 
-import uk.ac.cam.echo.data.Conversation;
-import uk.ac.cam.echo.data.Message;
-import uk.ac.cam.echo.data.Tag;
-import uk.ac.cam.echo.data.User;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import uk.ac.cam.echo.data.*;
+import uk.ac.cam.echo.server.serializers.ConversationSerializer;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
-
+@JsonSerialize(using = ConversationSerializer.class)
+@Entity
 @Table(name="Conversation")
 public class ConversationModel implements Conversation {
 
@@ -21,8 +20,13 @@ public class ConversationModel implements Conversation {
 
     private String name;
 
+    @ManyToOne(targetEntity = ConferenceModel.class)
+    private Conference conference;
+
     @ManyToMany(targetEntity = TagModel.class)
     private Set<Tag> tags;
+
+    @OneToMany(targetEntity = MessageModel.class)
     private Set<Message> messages;
 
     @OneToMany(targetEntity = UserModel.class, mappedBy = "currentConversation")
@@ -80,6 +84,14 @@ public class ConversationModel implements Conversation {
 
     public Set<User> getUsers() {
         return users;
+    }
+
+    public Conference getConference() {
+        return conference;
+    }
+
+    public void setConference(Conference conference) {
+        this.conference = conference;
     }
 
     public void setUsers(Set<User> users) {

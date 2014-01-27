@@ -1,11 +1,15 @@
 package uk.ac.cam.echo.server.models;
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.Message;
 import uk.ac.cam.echo.data.User;
+import uk.ac.cam.echo.server.serializers.MessageSerializer;
 
 import javax.persistence.*;
 
+@JsonSerialize(using= MessageSerializer.class)
+@Entity
 @Table(name="Message")
 public class MessageModel implements Message {
     @Id
