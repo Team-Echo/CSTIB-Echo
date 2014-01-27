@@ -1,8 +1,6 @@
 package uk.ac.cam.echo.data;
 
-import java.io.Serializable;
-
-public interface Message extends Serializable
+public interface Message
 {
     public long getId();
     public long getTimeStamp();

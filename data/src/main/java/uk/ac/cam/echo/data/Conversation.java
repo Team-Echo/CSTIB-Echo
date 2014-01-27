@@ -1,10 +1,9 @@
 package uk.ac.cam.echo.data;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
-public interface Conversation extends Serializable
+public interface Conversation
 {
     public long getId();
     public String getName();

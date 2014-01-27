@@ -1,10 +1,9 @@
 package uk.ac.cam.echo.data;
 
-import java.io.Serializable;
-
-public interface User extends Serializable
+public interface User
 {
-public String getUsername();
-public Conversation getCurrentConversation();
-public void setCurrentConversation(Conversation conv);
+    public long getId();
+    public String getUsername();
+    public Conversation getCurrentConversation();
+    public void setCurrentConversation(Conversation conv);
 }
