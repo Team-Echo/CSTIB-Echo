@@ -6,6 +6,10 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import uk.ac.cam.echo.server.filters.HibernateRequestFilter;
 import uk.ac.cam.echo.server.filters.HibernateResponseFilter;
+import uk.ac.cam.echo.server.resources.ConferenceResourceImpl;
+import uk.ac.cam.echo.server.resources.ConversationResourceImpl;
+import uk.ac.cam.echo.server.resources.MessageResourceImpl;
+import uk.ac.cam.echo.server.resources.UserResourceImpl;
 
 import java.io.IOException;
 import java.net.URI;
@@ -27,10 +31,16 @@ public class Main {
         // in uk.ac.cam.echo package
         HibernateUtil.getSessionFactory();
         final ResourceConfig rc = new ResourceConfig().packages("uk.ac.cam.echo.server");
+
+        rc.register(UserResourceImpl.class);
+        rc.register(MessageResourceImpl.class);
+        rc.register(ConversationResourceImpl.class);
+        rc.register(ConferenceResourceImpl.class);
+
         rc.register(HibernateRequestFilter.class);
-        rc.register(JacksonFeature.class);
         rc.register(HibernateResponseFilter.class);
 
+        rc.register(JacksonFeature.class);
         // create and start a new instance of grizzly http server
         // exposing the Jersey application at BASE_URI
         return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);

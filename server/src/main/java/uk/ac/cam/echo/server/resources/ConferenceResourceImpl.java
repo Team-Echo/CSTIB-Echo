@@ -2,17 +2,14 @@ package uk.ac.cam.echo.server.resources;
 
 import org.hibernate.Session;
 import uk.ac.cam.echo.data.Conference;
+import uk.ac.cam.echo.data.resources.ConferenceResource;
 import uk.ac.cam.echo.server.HibernateUtil;
 import uk.ac.cam.echo.server.models.ConferenceModel;
 
-import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-@Path("/conferences")
-@Produces("application/json")
-public class ConferenceResource {
-    @GET
+public class ConferenceResourceImpl implements ConferenceResource {
     public List<Conference> getAll() {
         List<Conference> res = HibernateUtil.getTransaction().createCriteria(ConferenceModel.class).list();
         Session s = HibernateUtil.getSession();
@@ -21,14 +18,11 @@ public class ConferenceResource {
         return res;
     }
 
-    @GET
-    @Path("/{conferenceId}")
-    public Conference get(@PathParam("conferenceId") long id) {
+    public Conference get(long id) {
         return (Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, id);
     }
 
-    @POST
-    public Conference create(@FormParam("name") String name) {
+    public Conference create(String name) {
         ConferenceModel conference = new ConferenceModel();
         conference.setName(name);
 
@@ -36,9 +30,7 @@ public class ConferenceResource {
         return conference;
     }
 
-    @DELETE
-    @Path("/{conferenceId}")
-    public Response deleteConference(@PathParam("conferenceId") long id) {
+    public Response deleteConference(long id) {
         Conference u = get(id);
         HibernateUtil.getTransaction().delete(u);
         return Response.ok().build();
