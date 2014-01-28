@@ -68,8 +68,9 @@ public class ClientApi {
 
     public static void main(String[] args) {
         ClientApi api = new ClientApi("http://localhost:8080");
+        MessageResource msgRes = api.conversationResource.getMessageResource(1);
 
-        List<Message> msgs = api.conversationResource.getMessageResource(1).getAll();
+        List<Message> msgs = msgRes.getAll();
 
         for (Message m: msgs) {
             System.out.println(m.getContents());
@@ -81,13 +82,15 @@ public class ClientApi {
             }
         };
 
-        MessageResource msg = api.conversationResource.getMessageResource(1);
         Subscription happy = api.conversationResource.listenToMessages(1).subscribe(test);
-
-        try {
-            new DataInputStream(new BufferedInputStream(System.in)).readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
+        while(true) {
+            try {
+                String input = new DataInputStream(new BufferedInputStream(System.in)).readLine();
+                if (input != null)
+                    msgRes.create(input, 2);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
