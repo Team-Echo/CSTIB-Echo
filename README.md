@@ -11,7 +11,7 @@ Rather than flying all over the world to attend meetings and conferences, it see
 Authors
 ----------------
 
-* Mona Niknafs
+* [Mona Niknafs](https://github.com/monaniknafs)
 * [Yojan Patel](https://github.com/yojanpatel)
 * [Alexandru Tache](https://github.com/hadesgames)
 * [Philip Thomson](https://github.com/cat12184)
