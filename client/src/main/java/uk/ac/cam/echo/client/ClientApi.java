@@ -5,6 +5,7 @@ import org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.module.SimpleModule;
 import org.glassfish.jersey.client.proxy.WebResourceFactory;
+import org.glassfish.jersey.media.sse.SseFeature;
 import uk.ac.cam.echo.client.data.ConferenceData;
 import uk.ac.cam.echo.client.data.ConversationData;
 import uk.ac.cam.echo.client.data.MessageData;
@@ -13,6 +14,8 @@ import uk.ac.cam.echo.data.Conference;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.Message;
 import uk.ac.cam.echo.data.User;
+import uk.ac.cam.echo.data.async.Handler;
+import uk.ac.cam.echo.data.async.Subscription;
 import uk.ac.cam.echo.data.resources.ConferenceResource;
 import uk.ac.cam.echo.data.resources.ConversationResource;
 import uk.ac.cam.echo.data.resources.MessageResource;
@@ -21,7 +24,9 @@ import uk.ac.cam.echo.data.resources.UserResource;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
-import java.util.Date;
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.IOException;
 import java.util.List;
 
 
@@ -45,17 +50,20 @@ public class ClientApi {
     public ConferenceResource conferenceResource;
     public ConversationResource conversationResource;
 
+
+    private Client client;
     ClientApi(String address) {
-        //Target t = ClientFactory.newClient().target(address);
+        client = ClientBuilder.newClient();
+        client.register(getJacksonProvider());
+        client.register(SseFeature.class);
+        //client.register(LoggingFilter.class);
 
-        Client c = ClientBuilder.newClient();
-        c.register(getJacksonProvider());
-
-        WebTarget server = c.target(address);
+        WebTarget server = client.target(address);
 
         userResource = WebResourceFactory.newResource(UserResource.class, server);
         conferenceResource = WebResourceFactory.newResource(ConferenceResource.class, server);
-        conversationResource = WebResourceFactory.newResource(ConversationResource.class, server);
+        conversationResource = (ConversationResource) ResourceFactory.newResource(ConversationResource.class, server);
+
     }
 
     public static void main(String[] args) {
@@ -67,14 +75,19 @@ public class ClientApi {
             System.out.println(m.getContents());
         }
 
+        Handler<Message> test = new Handler<Message>(){
+            public void handle(Message arg) {
+               System.out.println(arg.getContents());
+            }
+        };
+
         MessageResource msg = api.conversationResource.getMessageResource(1);
-        Message f = msg.create("working message " + new Date().getTime(), 2);
+        Subscription happy = api.conversationResource.listenToMessages(1).subscribe(test);
 
-        msgs = api.conversationResource.getMessageResource(1).getAll();
-        msg.create("Woohoo works", 2);
-
-        for (Message m: msgs) {
-            System.out.println(m.getContents());
+        try {
+            new DataInputStream(new BufferedInputStream(System.in)).readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

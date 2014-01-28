@@ -1,6 +1,8 @@
 package uk.ac.cam.echo.data.resources;
 
 import uk.ac.cam.echo.data.Conversation;
+import uk.ac.cam.echo.data.Message;
+import uk.ac.cam.echo.data.async.SubscriptionResource;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
@@ -15,6 +17,9 @@ public interface ConversationResource {
     @GET
     @Path("/{conversationId}")
     public Conversation get(@PathParam("conversationId") long id);
+
+    @Path("/{conversationId}/messageSubscription")
+    SubscriptionResource<Message> listenToMessages(@PathParam("conversationId") long id);
 
     @Path("/{conversationId}/messages")
     public MessageResource getMessageResource(@PathParam("conversationId") long id);

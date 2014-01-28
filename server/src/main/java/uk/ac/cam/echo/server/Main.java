@@ -1,8 +1,10 @@
 package uk.ac.cam.echo.server;
 
 import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.jackson.JacksonFeature;
+import org.glassfish.jersey.media.sse.SseFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import uk.ac.cam.echo.server.filters.HibernateRequestFilter;
 import uk.ac.cam.echo.server.filters.HibernateResponseFilter;
@@ -41,6 +43,8 @@ public class Main {
         rc.register(HibernateResponseFilter.class);
 
         rc.register(JacksonFeature.class);
+        rc.register(LoggingFilter.class);
+        rc.register(SseFeature.class);
         // create and start a new instance of grizzly http server
         // exposing the Jersey application at BASE_URI
         return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);

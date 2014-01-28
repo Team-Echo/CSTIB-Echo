@@ -7,7 +7,7 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Produces("application/json")
-public interface MessageResource {
+public interface MessageResource extends Resource {
 
     @GET
     public List<Message> getAll();
