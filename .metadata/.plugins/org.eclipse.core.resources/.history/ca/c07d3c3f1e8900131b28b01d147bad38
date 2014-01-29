@@ -1,0 +1,59 @@
+package uk.ac.cam.echo.dummy;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Conversation {
+	
+	long id;
+	
+	public Conversation(long id) {
+		id = (long) (Math.random()*100);
+	}
+	
+	public String getName() {
+		StringBuffer name = new StringBuffer("Conversation ");
+		name.append(Long.toString(id));
+		return name.toString();
+	}
+	
+	public List<Message> getMessages() {
+		
+		ArrayList<Message> conv = new ArrayList<Message>();
+		
+		for(int i = 0; i < 40; i++)
+			conv.add(new Message(i*i + 2*i + 4));
+		
+		return conv;
+	}
+	
+	public Set<User> getUsers() {
+		
+	}
+	
+	public class Message {
+		long id;
+		
+		public Message(long i) {
+			id = i;
+		}
+		
+		public String getText() {
+			return "Message " + id + " and more " + id*2; 
+		}
+	}
+	
+	public class User {
+		String name;
+		
+		public User(String n) {
+			name = n;
+		}
+		
+		public String getName() {
+			return name + " " + id;
+		}
+	}
+}
+
+

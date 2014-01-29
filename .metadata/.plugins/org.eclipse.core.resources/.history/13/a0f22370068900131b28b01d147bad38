@@ -1,0 +1,5 @@
+package uk.ac.cam.echo;
+
+public class Toaster {
+
+}

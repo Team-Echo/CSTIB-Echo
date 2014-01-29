@@ -1,0 +1,26 @@
+package uk.ac.cam.echo.activities;
+
+import android.app.Activity;
+import android.app.FragmentManager;
+
+public class ConversationListActivity extends Activity {
+	
+	FragmentManager manager;
+	boolean dualPane; //to manage orientations/different screensizes
+	
+	@Override
+    protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.pin_list_detail_layout);
+            
+            manager = getFragmentManager();
+            View detailsFrame = findViewById(R.id.detailFrame);
+            dualPane = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
+            
+            PinListFragment plf = (PinListFragment) manager.findFragmentById(R.id.pinListFragment);
+            plf.setCommunicator(this);
+    }
+	
+	
+	
+}

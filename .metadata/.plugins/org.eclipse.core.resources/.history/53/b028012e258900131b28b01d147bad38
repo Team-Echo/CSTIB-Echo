@@ -1,0 +1,15 @@
+package uk.ac.cam.echo.activities;
+
+import android.app.Activity;
+import android.app.FragmentManager;
+
+public class ConversationListActivity extends Activity {
+	
+	FragmentManager manager;
+	boolean dualPane; //to manage orientations/different screensizes
+	
+	
+	
+	
+	
+}
