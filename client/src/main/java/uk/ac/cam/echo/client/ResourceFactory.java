@@ -33,7 +33,7 @@ public class ResourceFactory implements InvocationHandler{
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        System.out.println(method.getReturnType());
+//        System.out.println(method.getReturnType());
 
         if (method.getReturnType() == EventOutput.class)
             throw new RuntimeException("You can't call this from the client");

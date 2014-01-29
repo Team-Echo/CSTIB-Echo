@@ -4,7 +4,6 @@ import org.codehaus.jackson.Version;
 import org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.module.SimpleModule;
-import org.glassfish.jersey.client.proxy.WebResourceFactory;
 import org.glassfish.jersey.media.sse.SseFeature;
 import uk.ac.cam.echo.client.data.ConferenceData;
 import uk.ac.cam.echo.client.data.ConversationData;
@@ -60,8 +59,8 @@ public class ClientApi {
 
         WebTarget server = client.target(address);
 
-        userResource = WebResourceFactory.newResource(UserResource.class, server);
-        conferenceResource = WebResourceFactory.newResource(ConferenceResource.class, server);
+        userResource = (UserResource) ResourceFactory.newResource(UserResource.class, server);
+        conferenceResource = (ConferenceResource) ResourceFactory.newResource(ConferenceResource.class, server);
         conversationResource = (ConversationResource) ResourceFactory.newResource(ConversationResource.class, server);
 
     }
@@ -88,9 +87,14 @@ public class ClientApi {
                 String input = new DataInputStream(new BufferedInputStream(System.in)).readLine();
                 if (input != null)
                     msgRes.create(input, 2);
+                if (input.equals("quit")) {
+                    happy.unsubscribe();
+                    break;
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+        System.exit(0);
     }
 }
