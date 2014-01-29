@@ -1,5 +1,6 @@
 package uk.ac.cam.echo.server.resources;
 
+import org.hibernate.criterion.Restrictions;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.Message;
 import uk.ac.cam.echo.data.User;
@@ -18,7 +19,8 @@ public class MessageResourceImpl implements MessageResource {
     }
 
     public List<Message> getAll() {
-        return HibernateUtil.getTransaction().createCriteria(MessageModel.class).list();
+        return HibernateUtil.getTransaction().createCriteria(MessageModel.class)
+                .add(Restrictions.eq("conversation", conversation)).list();
     }
 
     public Message get(long id) {
