@@ -51,12 +51,15 @@ public class MainActivity extends Activity
     	/* basic validation, display loading bar
     	 * perform API call for login authentication */
     	if(!user.equals("") && !pass.equals("")) {
-    		login.setVisibility(View.GONE);
-    		progress.setVisibility(View.VISIBLE);
+    		toggleButton();
     		
-    		if(user == "user" && pass == "pass") { //userAuntheticated(user, pass) == ClientAPI.AUTH_SUCCESS
-    			Intent i = new Intent();
-    			
+    		if(user.equals("user") && pass.equals("pass")) { //userAuntheticated(user, pass) == ClientAPI.AUTH_SUCCESS
+    			Intent i = new Intent(this, ConversationListActivity.class);
+    			startActivity(i);
+  
+    		} else {
+    			Toaster.displayShort(this, "authentication failed");
+    			toggleButton();
     		}
     		
     		
@@ -75,5 +78,14 @@ public class MainActivity extends Activity
 		return false;
 	}
     
+	private void toggleButton() {
+		if(login.getVisibility() == View.GONE) {
+			login.setVisibility(View.VISIBLE);
+			progress.setVisibility(View.GONE);
+		} else {
+			login.setVisibility(View.GONE);
+			progress.setVisibility(View.VISIBLE);
+		}
+	}
     
 }

@@ -4,11 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
-    <ListView 
-        android:id="@+id/convListView"
+    
+    <fragment
+        android:id="@+id/convListFragment"
+        android:name="uk.ac.cam.echo.fragments.ConversationListFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:cacheColorHint="#FFDAFF7F"
-        />
+        android:layout_height="match_parent" />
 
 </LinearLayout>
