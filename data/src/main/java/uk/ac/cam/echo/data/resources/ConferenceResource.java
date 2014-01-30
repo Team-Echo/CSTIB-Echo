@@ -15,13 +15,13 @@ public interface ConferenceResource {
 
     /*
      @GET
-     public List<Conversation> search(@QueryParam("keyword") String keyword);
+     public List<Conversation> search(@QueryParam("keyword") String keyword, @QueryParam("num") int n);
 
      @GET
-     public List<Conversation> mostUsers();
+     public List<Conversation> mostUsers(@QueryParam("num) int n);
 
      @GET
-     public List<Conversation> mostActiveRecently();
+     public List<Conversation> mostActiveRecently(@QueryParam("minutes") int minutes, @QueryParam("num") int n);
     */
     @GET
     @Path("/{conferenceId}")
