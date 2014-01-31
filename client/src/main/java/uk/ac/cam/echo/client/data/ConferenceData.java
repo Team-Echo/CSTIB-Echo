@@ -5,7 +5,7 @@ import uk.ac.cam.echo.data.Conversation;
 
 import java.util.Set;
 
-public class ConferenceData  implements Conference{
+public class ConferenceData extends BaseData implements Conference{
     private long id;
     private String name;
 

@@ -3,7 +3,7 @@ package uk.ac.cam.echo.client.data;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.User;
 
-public class UserData implements User{
+public class UserData extends BaseData implements User{
     private long id;
     private String username;
 

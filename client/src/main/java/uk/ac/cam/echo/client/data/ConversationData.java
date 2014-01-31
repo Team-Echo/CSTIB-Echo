@@ -8,7 +8,7 @@ import uk.ac.cam.echo.data.User;
 import java.util.List;
 import java.util.Set;
 
-public class ConversationData implements Conversation {
+public class ConversationData extends BaseData implements Conversation {
     private long id;
     private String name;
 

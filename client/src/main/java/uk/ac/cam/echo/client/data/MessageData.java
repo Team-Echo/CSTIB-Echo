@@ -4,7 +4,7 @@ import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.Message;
 import uk.ac.cam.echo.data.User;
 
-public class MessageData implements Message {
+public class MessageData extends BaseData implements Message {
     private long id;
     private String contents;
     private long timeStamp;
@@ -35,6 +35,7 @@ public class MessageData implements Message {
 
     @Override
     public User getSender() {
+
         throw new UnsupportedOperationException("Not implemented yet.");
     }
 
