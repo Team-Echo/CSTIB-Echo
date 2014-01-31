@@ -5,7 +5,6 @@ import uk.ac.cam.echo.data.Conversation;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
-import java.lang.annotation.Target;
 import java.util.List;
 
 @Path("/conferences")
@@ -14,16 +13,19 @@ public interface ConferenceResource {
     @GET
     public List<Conference> getAll();
 
-
+    @Path("/search")
     @GET
     public List<Conversation> search(@QueryParam("keyword") String keyword, @QueryParam("num") int n);
 
+    @Path("/tag-search")
     @GET
     public List<Conversation> onlyTagSearch(@QueryParam("keyword") String keyword, @QueryParam("num") int n);
 
+    @Path("/most-users")
     @GET
     public List<Conversation> mostUsers(@QueryParam("num") int n);
 
+    @Path("/most-active")
     @GET
     public List<Conversation> mostActiveRecently(@QueryParam("minutes") int minutes, @QueryParam("num") int n);
 
