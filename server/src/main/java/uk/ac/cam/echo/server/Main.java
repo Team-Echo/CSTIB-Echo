@@ -13,6 +13,7 @@ import uk.ac.cam.echo.server.resources.ConversationResourceImpl;
 import uk.ac.cam.echo.server.resources.MessageResourceImpl;
 import uk.ac.cam.echo.server.resources.UserResourceImpl;
 
+import javax.ws.rs.core.UriBuilder;
 import java.io.IOException;
 import java.net.URI;
 
@@ -22,12 +23,21 @@ import java.net.URI;
  */
 public class Main {
     // Base URI the Grizzly HTTP server will listen on
-    public static final String BASE_URI = "http://localhost:8080/";
+    public static String BASE_URI = "http://localhost:8080/";
 
     /**
      * Starts Grizzly HTTP server exposing JAX-RS resources defined in this application.
      * @return Grizzly HTTP server.
      */
+    public static URI getUri() {
+        int port;
+        try {
+            port = Integer.valueOf(System.getenv("PORT"));
+        } catch (Exception e) {
+            port = 8080;
+        }
+        return UriBuilder.fromUri("http://0.0.0.0/").port(port).build();
+    }
     public static HttpServer startServer() {
         // create a resource config that scans for JAX-RS resources and providers
         // in uk.ac.cam.echo package
@@ -47,7 +57,7 @@ public class Main {
         rc.register(SseFeature.class);
         // create and start a new instance of grizzly http server
         // exposing the Jersey application at BASE_URI
-        return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
+        return GrizzlyHttpServerFactory.createHttpServer(getUri(), rc);
     }
 
     /**
@@ -59,8 +69,9 @@ public class Main {
         final HttpServer server = startServer();
         System.out.println(String.format("Jersey app started with WADL available at "
                 + "%sapplication.wadl\nHit enter to stop it...", BASE_URI));
-        System.in.read();
-        server.shutdownNow();
+        while(true) {
+            System.in.read();
+        }
     }
 }
 
