@@ -1,6 +1,7 @@
 package uk.ac.cam.echo.data.resources;
 
 import uk.ac.cam.echo.data.Conference;
+import uk.ac.cam.echo.data.Conversation;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
@@ -13,16 +14,19 @@ public interface ConferenceResource {
     @GET
     public List<Conference> getAll();
 
-    /*
-     @GET
-     public List<Conversation> search(@QueryParam("keyword") String keyword, @QueryParam("num") int n);
 
-     @GET
-     public List<Conversation> mostUsers(@QueryParam("num") int n);
+    @GET
+    public List<Conversation> search(@QueryParam("keyword") String keyword, @QueryParam("num") int n);
 
-     @GET
-     public List<Conversation> mostActiveRecently(@QueryParam("minutes") int minutes, @QueryParam("num") int n);
-    */
+    @GET
+    public List<Conversation> onlyTagSearch(@QueryParam("keyword") String keyword, @QueryParam("num") int n);
+
+    @GET
+    public List<Conversation> mostUsers(@QueryParam("num") int n);
+
+    @GET
+    public List<Conversation> mostActiveRecently(@QueryParam("minutes") int minutes, @QueryParam("num") int n);
+
     @GET
     @Path("/{conferenceId}")
     public Conference get(@PathParam("conferenceId") long id);

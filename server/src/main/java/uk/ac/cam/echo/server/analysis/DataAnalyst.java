@@ -2,13 +2,11 @@ package uk.ac.cam.echo.server.analysis;
 
 import uk.ac.cam.echo.data.Conference;
 import uk.ac.cam.echo.data.Conversation;
+import uk.ac.cam.echo.data.Tag;
 import uk.ac.cam.echo.data.User;
 import uk.ac.cam.echo.server.analysis.cmp.ConversationComparatorByUserCount;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Set;
+import java.util.*;
 
 /**
  TODO.
@@ -31,6 +29,51 @@ public class DataAnalyst implements ServerDataAnalyst
     public List<Conversation> search(String keyword, int n)
     {
         return null;
+    }
+
+    @Override
+    public List<Conversation> onlyTagSearch(String keyword, int n)
+    {
+        List<Conversation> ret = new LinkedList<Conversation>();
+
+        List<Conversation> matchesByName = new LinkedList<Conversation>();
+        List<Conversation> matchesByTag = new LinkedList<Conversation>();
+
+        Set<Conversation> conversations = parentConference.getConversationSet();
+
+        for (Conversation C : conversations)
+        {
+            if (C.getName().contains(keyword)) matchesByName.add(C);
+            else
+            {
+                Set<Tag> tags = C.getTags();
+                for (Tag t : tags)
+                {
+                    if (t.getName().contains(keyword))
+                    {
+                        matchesByTag.add(C);
+                        break;
+                    }
+                }
+            }
+        }
+
+        ListIterator<Conversation> it1 = matchesByName.listIterator();
+        ListIterator<Conversation> it2 = matchesByTag.listIterator();
+
+        while (n > 0 && it1.hasNext())
+        {
+            ret.add(it1.next());
+            n--;
+        }
+
+        while (n > 0 && it2.hasNext())
+        {
+            ret.add(it2.next());
+            n--;
+        }
+
+        return ret;
     }
 
     @Override
