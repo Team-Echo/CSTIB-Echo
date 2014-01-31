@@ -18,13 +18,23 @@ public interface ServerDataAnalyst
 {
     /**
      Searches the conversations within the conference, with respect to the given keyword string.
-     It searches both by tags and by extracted keywords, giving priority to tags.
+     It searches by names, tags and by extracted keywords, giving priority to names, then tags.
 
      @param keyword     The string to search by.
      @param n           The maximal amount of solutions to return.
      @return            The list of (up to n) solutions to the search query, sorted descending by relevance.
     */
     public List<Conversation> search(String keyword, int n);
+
+    /**
+     Searches the conversations within the conference, with respect to the given keyword string.
+     It searches only by the conversation names and tags, giving priority to names.
+
+     @param keyword     The string to search by.
+     @param n           The maximal amount of solutions to return.
+     @return            The list of (up to n) solutions to the search query, sorted descending by relevance.
+    */
+    public List<Conversation> onlyTagSearch(String keyword, int n);
 
     /**
      Displays the most active conversations in terms of user count.
