@@ -31,11 +31,11 @@ public class ConferenceData  implements Conference{
 
     @Override
     public Set<Conversation> getConversationSet() {
-        return null;
+        throw new UnsupportedOperationException("Not implemented yet use api.conversationResource.getAll()");
     }
 
     @Override
     public void addConversation(Conversation conv) {
-
+        throw new UnsupportedOperationException("Not implemented yet use api.conversationResource.create(...)");
     }
 }

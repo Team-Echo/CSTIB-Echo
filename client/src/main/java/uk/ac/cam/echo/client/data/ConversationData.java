@@ -30,36 +30,37 @@ public class ConversationData implements Conversation {
 
     @Override
     public Set<Tag> getTags() {
-        return null;
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
     public Set<Message> getMessages() {
-        return null;
+        throw new UnsupportedOperationException("Not implemented yet. Use api.conversationResource.getMessageResource(conv_id).getAll()");
     }
 
     @Override
     public List<Message> getSortedMessages() {
-        return null;
+        throw new UnsupportedOperationException("Not implemented yet. Use api.conversationResource.getMessageResource(conv_id).getAll()");
     }
 
     @Override
     public Set<User> getUsers() {
-        return null;
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
     public void addUser(User u) {
-
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
     public void removeUser(User u) {
+        throw new UnsupportedOperationException("Not implemented yet");
 
     }
 
     @Override
     public void addMessage(Message m) {
-
+        throw new UnsupportedOperationException("Not implemented yet. Use api.conversationResource.getMessageResource(conv_id).create(...)");
     }
 }

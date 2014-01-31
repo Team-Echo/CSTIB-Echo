@@ -25,11 +25,11 @@ public class UserData implements User{
 
     @Override
     public Conversation getCurrentConversation() {
-        return null;
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
     public void setCurrentConversation(Conversation conv) {
-
+        throw new UnsupportedOperationException("Not Implemented yet");
     }
 }

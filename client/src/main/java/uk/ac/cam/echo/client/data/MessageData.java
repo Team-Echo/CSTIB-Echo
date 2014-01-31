@@ -35,11 +35,11 @@ public class MessageData implements Message {
 
     @Override
     public User getSender() {
-        return null;
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
     public Conversation getConversation() {
-        return null;
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 }
