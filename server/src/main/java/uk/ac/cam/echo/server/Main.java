@@ -30,7 +30,12 @@ public class Main {
      * @return Grizzly HTTP server.
      */
     public static URI getUri() {
-        int port = Integer.valueOf(System.getenv("PORT"));
+        int port;
+        try {
+            port = Integer.valueOf(System.getenv("PORT"));
+        } catch (Exception e) {
+            port = 8080;
+        }
         return UriBuilder.fromUri("http://0.0.0.0/").port(port).build();
     }
     public static HttpServer startServer() {
