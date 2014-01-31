@@ -3,6 +3,7 @@ package uk.ac.cam.echo.client;
 import org.glassfish.jersey.client.proxy.WebResourceFactory;
 import org.glassfish.jersey.internal.util.ReflectionHelper;
 import org.glassfish.jersey.media.sse.EventOutput;
+import uk.ac.cam.echo.client.data.BaseData;
 import uk.ac.cam.echo.data.Message;
 import uk.ac.cam.echo.data.async.Handler;
 import uk.ac.cam.echo.data.async.Subscription;
@@ -15,19 +16,22 @@ import java.security.AccessController;
 public class ResourceFactory implements InvocationHandler{
 
     private final Object subResource;
-    private ResourceFactory(Object c) {
+    private final ClientApi api;
+    private ResourceFactory(Object c, ClientApi api) {
         subResource = c;
+        this.api = api;
     }
 
-    public static Object newResource(Class<?> resourceInterface, Object resource) {
+    public static Object newResource(Class<?> resourceInterface, Object resource, ClientApi api) {
+
         return  Proxy.newProxyInstance(AccessController.doPrivileged(ReflectionHelper.getClassLoaderPA(resourceInterface)),
                 new Class[]{resourceInterface},
-                new ResourceFactory(resource));
+                new ResourceFactory(resource, api));
     }
 
-    public static Object newResource(Class<?> resourceInterface, WebTarget target) {
+    public static Object newResource(Class<?> resourceInterface, ClientApi api) {
         return newResource(resourceInterface,
-                WebResourceFactory.newResource(resourceInterface, target));
+                WebResourceFactory.newResource(resourceInterface, api.getServer()), api);
     }
 
 
@@ -53,7 +57,10 @@ public class ResourceFactory implements InvocationHandler{
         Object res = method.invoke(subResource, args);
 
         if (res instanceof Resource)
-            res = newResource(res.getClass().getInterfaces()[0], res);
+            res = newResource(res.getClass().getInterfaces()[0], res, api);
+
+        if (res instanceof BaseData)
+            ((BaseData) res).setApi(api);
 
         return res;
     }

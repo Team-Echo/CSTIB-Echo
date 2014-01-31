@@ -30,7 +30,7 @@ import java.util.List;
 
 
 public class ClientApi {
-    private JacksonJaxbJsonProvider getJacksonProvider() {
+    private static JacksonJaxbJsonProvider getJacksonProvider() {
         ObjectMapper mapper = new ObjectMapper();
         SimpleModule testModule = new SimpleModule("testModule", new Version(1,0,0,null))
                 .addAbstractTypeMapping(Conference.class, ConferenceData.class)
@@ -51,18 +51,26 @@ public class ClientApi {
 
 
     private Client client;
+    private WebTarget server;
     ClientApi(String address) {
         client = ClientBuilder.newClient();
         client.register(getJacksonProvider());
         client.register(SseFeature.class);
         //client.register(LoggingFilter.class);
 
-        WebTarget server = client.target(address);
+        server = client.target(address);
 
-        userResource = (UserResource) ResourceFactory.newResource(UserResource.class, server);
-        conferenceResource = (ConferenceResource) ResourceFactory.newResource(ConferenceResource.class, server);
-        conversationResource = (ConversationResource) ResourceFactory.newResource(ConversationResource.class, server);
+        userResource = (UserResource) ResourceFactory.newResource(UserResource.class, this);
+        conferenceResource = (ConferenceResource) ResourceFactory.newResource(ConferenceResource.class, this);
+        conversationResource = (ConversationResource) ResourceFactory.newResource(ConversationResource.class, this);
+    }
 
+    public Client getClient() {
+        return client;
+    }
+
+    public WebTarget getServer() {
+        return server;
     }
 
     public static void main(String[] args) {
