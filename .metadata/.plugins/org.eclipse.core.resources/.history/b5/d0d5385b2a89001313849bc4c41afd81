@@ -1,0 +1,114 @@
+package uk.ac.cam.echo.dummy;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+public class Conversation {
+	
+	long id;
+	
+	public Conversation(long id) {
+		this.id = id;
+	}
+	
+	public long getId() {
+		return id;
+	}
+	
+	public String getName() {
+		StringBuffer name = new StringBuffer("Conversation ");
+		name.append(Long.toString(id));
+		return name.toString();
+	}
+	
+	public List<Message> getMessages() {
+		
+		ArrayList<Message> conv = new ArrayList<Message>();
+		
+		for(int i = 0; i < 40; i++)
+			conv.add(new Message(i*i + 2*i + 4));
+		
+		return conv;
+	}
+	
+	public Set<User> getUsers() {
+		HashSet<User> users = new HashSet<User>();
+		
+		if(Math.random() > 0.5)
+			users.add(new User("Petar"));
+		if(Math.random() > 0.5)
+			users.add(new User("Mona"));
+		if(Math.random() > 0.5)
+			users.add(new User("Philip"));
+		if(Math.random() > 0.5)
+			users.add(new User("Yojan"));
+		if(Math.random() > 0.5)
+			users.add(new User("Alex"));
+		if(Math.random() > 0.5)
+			users.add(new User("John"));
+		if(Math.random() > 0.8)
+			users.add(new User("George"));
+		if(Math.random() > 0.8)
+			users.add(new User("Holly"));
+		
+		return users;
+	}
+	
+	public Set<Tag> getTags() {
+		HashSet<Tag> tags = new HashSet<Tag>();
+		
+		String[] TAG_LIST = {"Cloud", "Quantum", "Robots", "Android", "Windows",
+				"Social", "Gaming", "California"};
+		}
+		tags.add(new Tag("Cloud"));
+		tags.add(new Tag("Quantum"));
+		tags.add(new Tag("Robots"));
+		tags.add(new Tag("Windows"));
+		
+		for(String s : TAG_LIST) {
+			
+		}
+		
+		return tags;
+	}
+	
+	public class Message {
+		long id;
+		
+		public Message(long i) {
+			id = i;
+		}
+		
+		public String getContents() {
+			return "Message " + id + " and more " + id*2; 
+		}
+	}
+	
+	public class User {
+		String name;
+		
+		public User(String n) {
+			name = n;
+		}
+		
+		public String getName() {
+			return name + " " + id;
+		}
+	}
+	
+	public class Tag {
+		String name;
+		
+		public Tag(String n) {
+			name = n;
+		}
+		
+		public String getName() {
+			return name;
+		}
+	}
+}
+
+

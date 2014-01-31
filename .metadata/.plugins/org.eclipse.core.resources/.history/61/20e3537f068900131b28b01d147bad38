@@ -1,0 +1,11 @@
+package uk.ac.cam.echo;
+
+import android.content.Context;
+import android.widget.Toast;
+
+public class Toaster {
+	
+	public static void displayShort(Context c, String s) {
+		Toast.makeText(c, s, Toast.LENGTH_SHORT).show();
+	}
+}

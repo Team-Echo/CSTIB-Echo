@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent" >
+    
+    <ImageView
+        android:id="@+id/rowImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="5dp"
+        android:contentDescription="@string/app_name"
+        android:src="@android:drawable/ic_menu_compass" />
+
+    <TextView
+        android:id="@+id/convNameRow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/rowImage"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_toLeftOf="@+id/textView1"
+        android:layout_toRightOf="@+id/rowImage"
+        android:ems="10"
+        android:text="@string/hello_world"
+        android:textSize="15sp" >
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/convUsersRow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/convNameRow"
+        android:layout_alignRight="@+id/convNameRow"
+        android:layout_below="@+id/convNameRow"
+        android:layout_marginBottom="0dp"
+        android:ems="10"
+        android:text="@string/app_name"
+        android:textSize="12sp"
+        android:textColor="#777777" />
+    
+    <TextView
+        android:id="@+id/convTagsRow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/convUsersRow"
+        android:layout_alignRight="@+id/convUsersRow"
+        android:layout_below="@+id/convUsersRow"
+        android:layout_marginBottom="5dp"
+        android:ems="10"
+        android:text="@string/app_name"
+        android:textSize="12sp"
+        android:textColor="#777777" />
+
+    <TextView
+        android:id="@+id/convOnlineRow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="2dp"
+        android:layout_alignTop="@+id/convNameRow"
+        android:text="3 users online" />
+
+</RelativeLayout>

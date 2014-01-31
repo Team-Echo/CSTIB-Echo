@@ -1,0 +1,48 @@
+package uk.ac.cam.echo;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+
+public class MainActivity extends Activity {
+
+	EditText username;
+	EditText password;
+	Button login;
+	
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        
+        username = (EditText)findViewById(R.id.usernameLogin);
+        password = (EditText)findViewById(R.id.passwordLogin);
+        login = (Button)findViewById(R.id.buttonLogin);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+    
+    public void loginUser(View v) {
+    	String user = username.getText().toString();
+    	String pass = username.getText().toString();
+    	
+    	/* basic validation, display loading bar
+    	 * perform API call for login authentication */
+    	if(user != "" && pass != "") {
+    		login.setVisibility(View.GONE);
+    		
+    	} 	
+    	
+    }
+    
+    
+}

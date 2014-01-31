@@ -1,0 +1,104 @@
+package uk.ac.cam.echo;
+
+import java.util.List;
+import java.util.Set;
+
+import uk.ac.cam.echo.dummy.Conversation;
+import uk.ac.cam.echo.dummy.Conversation.Tag;
+import uk.ac.cam.echo.dummy.Conversation.User;
+import android.app.Activity;
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+public class ConversationAdapter extends ArrayAdapter<Conversation> {
+	
+	Context context;
+	int layoutResourceId;
+	List<Conversation> data = null;
+	
+	public ConversationAdapter(Context context, int layoutResourceId,
+									List<Conversation> data) {
+		
+		super(context, layoutResourceId, data);
+		this.context = context;
+		this.layoutResourceId = layoutResourceId;
+		this.data = data;
+	}
+	
+	
+	@Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+		
+		View row = convertView;
+		ConversationHolder holder = null;
+		
+		if(row == null) {
+			LayoutInflater inflater = ((Activity)context).getLayoutInflater();
+			row = inflater.inflate(layoutResourceId, parent, false);
+			
+			holder = new ConversationHolder();
+			
+			holder.imgIcon = (ImageView)row.findViewById(R.id.rowImage);
+			holder.title = (TextView)row.findViewById(R.id.convNameRow);
+			holder.users = (TextView)row.findViewById(R.id.convUsersRow);
+			holder.tags = (TextView)row.findViewById(R.id.convTagsRow);
+			holder.totalOnline = (TextView)row.findViewById(R.id.convOnlineRow);
+			
+			row.setTag(holder);
+
+		} else {
+			holder = (ConversationHolder)row.getTag();
+		}
+		
+		Conversation conversation = data.get(position);
+		
+		//TODO: 
+		holder.title.setText(conversation.getName());
+		holder.users.setText(getUserText(conversation));
+		holder.tags.setText(getTagText(conversation));
+		holder.totalOnline.setText(getOnlineText(conversation));
+
+		return row;
+	}
+	
+	public String getUserText(Conversation c) {
+		Set<User> users = c.getUsers();
+		StringBuffer userString = new StringBuffer();
+		
+		for(User u : users) {
+			userString.append(u.getName());
+		}
+		
+		return userString.toString();
+	}
+	
+	public String getTagText(Conversation c) {
+		Set<Tag> tags = c.getTags();
+		StringBuffer tagString = new StringBuffer();
+		
+		for(Tag t : tags) {
+			tagString.append(t.getName());
+		}
+		
+		return tagString.toString();
+	}
+	
+	public String getOnlineText(Conversation c) {
+		int onlineUsers = c.getUsers().size();
+		return onlineUsers + " online users";
+	}
+	
+	static class ConversationHolder {
+		ImageView imgIcon;
+		TextView title;
+		TextView users;
+		TextView tags;
+		TextView totalOnline;
+	}
+	
+}

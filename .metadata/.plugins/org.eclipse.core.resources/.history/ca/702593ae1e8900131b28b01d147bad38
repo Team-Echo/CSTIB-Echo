@@ -1,0 +1,83 @@
+package uk.ac.cam.echo.dummy;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+public class Conversation {
+	
+	long id;
+	
+	public Conversation(long id) {
+		id = (long) (Math.random()*100);
+	}
+	
+	public String getName() {
+		StringBuffer name = new StringBuffer("Conversation ");
+		name.append(Long.toString(id));
+		return name.toString();
+	}
+	
+	public List<Message> getMessages() {
+		
+		ArrayList<Message> conv = new ArrayList<Message>();
+		
+		for(int i = 0; i < 40; i++)
+			conv.add(new Message(i*i + 2*i + 4));
+		
+		return conv;
+	}
+	
+	public Set<User> getUsers() {
+		HashSet<User> users = new HashSet<User>();
+		
+		users.add(new User("Alice"));
+		users.add(new User("Bob"));
+		users.add(new User("Charles"));
+		users.add(new User("Elliot"));
+		
+		return users;
+	}
+	
+	public Set<Tag> getTags() {
+		
+	}
+	public class Message {
+		long id;
+		
+		public Message(long i) {
+			id = i;
+		}
+		
+		public String getContents() {
+			return "Message " + id + " and more " + id*2; 
+		}
+	}
+	
+	public class User {
+		String name;
+		
+		public User(String n) {
+			name = n;
+		}
+		
+		public String getName() {
+			return name + " " + id;
+		}
+	}
+	
+	public class Tag {
+		String name;
+		
+		public Tag(String n) {
+			name = n;
+		}
+		
+		public String getName() {
+			return name;
+		}
+	}
+}
+
+
