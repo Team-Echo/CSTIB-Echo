@@ -72,8 +72,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		String time = "4:20";
 		String contents = message.getContents();
 		Log.d("ADAPTER", user);
-		// holder.textView.setMaxWidth(width*0.66);
-
+		
+		holder.contents.setMaxWidth((int) (width*0.66));
+		holder.contents.setMinWidth(width/2);
 		holder.user.setText(user);
 		holder.contents.setText(contents);
 		
