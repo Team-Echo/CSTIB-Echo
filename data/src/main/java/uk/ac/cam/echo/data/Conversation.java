@@ -1,17 +1,18 @@
 package uk.ac.cam.echo.data;
 
-import java.util.List;
-import java.util.Set;
+import java.util.Collection;
 
 public interface Conversation
 {
     public long getId();
     public String getName();
     public void setName(String name);
-    public Set<Tag> getTags();
-    public Set<Message> getMessages();
-    public List<Message> getSortedMessages();
-    public Set<User> getUsers();
+    public Conference getConference();
+    public void setConference(Conference conf);
+    public Collection<Tag> getTags();
+    public Collection<Message> getMessages();
+    //public Collection<Message> getSortedMessages();
+    public Collection<User> getUsers();
     public void addUser(User u);
     public void removeUser(User u);
     public void addMessage(Message m);

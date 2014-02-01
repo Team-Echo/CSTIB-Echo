@@ -39,14 +39,14 @@ public class DataAnalyst implements ServerDataAnalyst
         List<Conversation> matchesByName = new LinkedList<Conversation>();
         List<Conversation> matchesByTag = new LinkedList<Conversation>();
 
-        Set<Conversation> conversations = parentConference.getConversationSet();
+        Collection<Conversation> conversations = parentConference.getConversationSet();
 
         for (Conversation C : conversations)
         {
             if (C.getName().contains(keyword)) matchesByName.add(C);
             else
             {
-                Set<Tag> tags = C.getTags();
+                Collection<Tag> tags = C.getTags();
                 for (Tag t : tags)
                 {
                     if (t.getName().contains(keyword))
@@ -80,7 +80,7 @@ public class DataAnalyst implements ServerDataAnalyst
     public List<Conversation> mostUsers(int n)
     {
         List<Conversation> ret = new LinkedList<Conversation>();
-        Set<Conversation> conversations = parentConference.getConversationSet();
+        Collection<Conversation> conversations = parentConference.getConversationSet();
         PriorityQueue<Conversation> pq = new PriorityQueue<Conversation>(11, new ConversationComparatorByUserCount());
 
         for (Conversation C : conversations) pq.offer(C);

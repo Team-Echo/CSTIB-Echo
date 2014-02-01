@@ -7,11 +7,18 @@ import uk.ac.cam.echo.server.HibernateUtil;
 import uk.ac.cam.echo.server.models.ConferenceModel;
 
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ConferenceResourceImpl implements ConferenceResource {
     public List<Conference> getAll() {
         return HibernateUtil.getTransaction().createCriteria(ConferenceModel.class).list();
+    }
+
+    @Override
+    public List<Conversation> getConversations(long id) {
+        ConferenceModel conf = (ConferenceModel) get(id);
+        return new ArrayList<Conversation>(conf.getConversationSet());
     }
 
     @Override

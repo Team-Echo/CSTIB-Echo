@@ -17,6 +17,8 @@ public class ConversationSerializer extends JsonSerializer<Conversation> {
         jsonGenerator.writeStartObject();
         jsonGenerator.writeNumberField("id", conversation.getId());
         jsonGenerator.writeStringField("name", conversation.getName());
+        if (conversation.getConference() != null)
+            jsonGenerator.writeNumberField("conference", conversation.getConference().getId());
         jsonGenerator.writeEndObject();
     }
 }
