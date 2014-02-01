@@ -34,7 +34,7 @@ public interface ConferenceResource extends RestResource<Conference> {
     public Conference get(@PathParam("conferenceId") long id);
 
     @GET
-    @Path("/{conferenceId}/conference")
+    @Path("/{conferenceId}/conversations")
     public List<Conversation> getConversations(@PathParam("conferenceId") long id);
 
     @POST
