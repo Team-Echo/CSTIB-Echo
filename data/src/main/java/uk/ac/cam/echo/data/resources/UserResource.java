@@ -8,7 +8,7 @@ import java.util.List;
 
 @Path("/users")
 @Produces("application/json")
-public interface UserResource {
+public interface UserResource extends RestResource<User>{
     @GET
     public List<User> getAll();
 

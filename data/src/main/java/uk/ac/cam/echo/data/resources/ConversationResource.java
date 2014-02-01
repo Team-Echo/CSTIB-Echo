@@ -10,7 +10,7 @@ import java.util.List;
 
 @Path("/conversations")
 @Produces("application/json")
-public interface ConversationResource {
+public interface ConversationResource extends RestResource<Conversation> {
     @GET
     public List<Conversation> getAll();
 

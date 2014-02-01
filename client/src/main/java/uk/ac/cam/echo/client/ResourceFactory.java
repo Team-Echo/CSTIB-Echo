@@ -12,6 +12,7 @@ import uk.ac.cam.echo.data.resources.Resource;
 import javax.ws.rs.client.WebTarget;
 import java.lang.reflect.*;
 import java.security.AccessController;
+import java.util.Collection;
 
 public class ResourceFactory implements InvocationHandler{
 
@@ -61,6 +62,11 @@ public class ResourceFactory implements InvocationHandler{
 
         if (res instanceof BaseData)
             ((BaseData) res).setApi(api);
+        if (res instanceof Collection)
+            for (Object s: (Collection) res) {
+                if (s instanceof BaseData)
+                    ((BaseData) s).setApi(api);
+            }
 
         return res;
     }

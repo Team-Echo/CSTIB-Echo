@@ -19,6 +19,9 @@ public class MessageSerializer extends JsonSerializer<Message> {
         jsonGenerator.writeNumberField("id", message.getId());
         jsonGenerator.writeStringField("contents", message.getContents());
         jsonGenerator.writeNumberField("timeStamp", message.getTimeStamp());
+        if (message.getSender() != null)
+//            jsonGenerator.writeObjectField("sender", message.getSender());
+              jsonGenerator.writeNumberField("senderId", message.getSender().getId());
         jsonGenerator.writeEndObject();
     }
 }

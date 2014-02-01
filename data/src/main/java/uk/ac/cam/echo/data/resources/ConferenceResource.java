@@ -9,7 +9,7 @@ import java.util.List;
 
 @Path("/conferences")
 @Produces("application/json")
-public interface ConferenceResource {
+public interface ConferenceResource extends RestResource<Conference> {
     @GET
     public List<Conference> getAll();
 
