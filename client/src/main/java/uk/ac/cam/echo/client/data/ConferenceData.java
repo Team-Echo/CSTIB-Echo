@@ -3,7 +3,7 @@ package uk.ac.cam.echo.client.data;
 import uk.ac.cam.echo.data.Conference;
 import uk.ac.cam.echo.data.Conversation;
 
-import java.util.Set;
+import java.util.List;
 
 public class ConferenceData extends BaseData implements Conference{
     private long id;
@@ -30,8 +30,8 @@ public class ConferenceData extends BaseData implements Conference{
     }
 
     @Override
-    public Set<Conversation> getConversationSet() {
-        throw new UnsupportedOperationException("Not implemented yet use api.conversationResource.getAll()");
+    public List<Conversation> getConversationSet() {
+        return getApi().conferenceResource.getConversations(getId());
     }
 
     @Override
