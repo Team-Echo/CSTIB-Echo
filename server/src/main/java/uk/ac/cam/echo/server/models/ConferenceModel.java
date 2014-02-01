@@ -19,7 +19,8 @@ public class ConferenceModel implements Conference{
 
     private String name;
 
-    @OneToMany(targetEntity = ConversationModel.class)
+    @OneToMany(targetEntity = ConversationModel.class,
+               mappedBy = "conference")
     private Set<Conversation> conversationSet;
 
     /** Serialization This is basically **/

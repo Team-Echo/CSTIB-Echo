@@ -26,7 +26,8 @@ public class ConversationModel implements Conversation {
     @ManyToMany(targetEntity = TagModel.class)
     private Set<Tag> tags;
 
-    @OneToMany(targetEntity = MessageModel.class)
+    @OneToMany(targetEntity = MessageModel.class,
+               mappedBy = "conversation")
     private Set<Message> messages;
 
     @OneToMany(targetEntity = UserModel.class, mappedBy = "currentConversation")
@@ -97,5 +98,6 @@ public class ConversationModel implements Conversation {
     public void setUsers(Set<User> users) {
         this.users = users;
     }
+
 
 }
