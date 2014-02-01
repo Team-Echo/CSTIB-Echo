@@ -60,6 +60,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		Set<Tag> tags = conversation.getTags();
 		
 		//TODO: set imgIcon from the icon resource of conversation
+		//holder.imgIcon.setImageBitmap(bm);
 		holder.title.setText(conversation.getName());
 		holder.users.setText(getUserText(users));
 		holder.tags.setText(getTagText(tags));
@@ -68,7 +69,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		return row;
 	}
 	
-	public String getUserText(Set<User> users) {
+	public static String getUserText(Set<User> users) {
 
 		if(users.size() > 0) {
 			StringBuffer userString = new StringBuffer();
@@ -81,7 +82,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		
 	}
 	
-	public String getTagText(Set<Tag> tags) {
+	public static String getTagText(Set<Tag> tags) {
 		if(tags.size() > 0) {
 			StringBuffer tagString = new StringBuffer();
 			for(Tag t : tags) 
@@ -93,7 +94,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		}
 	}
 	
-	public String getOnlineText(Set<User> users) {
+	public static String getOnlineText(Set<User> users) {
 		return users.size() + " online users";
 	}
 	

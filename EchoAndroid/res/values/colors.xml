@@ -7,5 +7,9 @@
     <color name="black">#000000</color>
     <color name="lightBlue">#e2f4fb</color>
     <color name="midBlue">#2cb1e1</color>
+    <color name="green">#99cc00</color>
+    <color name="darkGreen">#669900</color>
+    <color name="red">#ff4444</color>
+    <color name="darkRed">#cc0000</color>
     
 </resources>

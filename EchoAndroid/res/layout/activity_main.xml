@@ -16,40 +16,46 @@
 	
 	    <ImageView
 	        android:id="@+id/logoLogin"
+	        android:visibility="invisible"
 	        android:contentDescription="@string/echoLogo"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentTop="true"
 	        android:layout_centerHorizontal="true"
-	        android:layout_marginTop="45dp"
+	        android:layout_marginTop="20dp"
 	        android:src="@drawable/logo" />
 	
 	    <EditText
 	        android:id="@+id/usernameLogin"
-	        android:hint="@string/username"
-	        android:textColor="@color/textInputColor"
-	        android:ems="10"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_alignParentRight="true"
 	        android:layout_below="@+id/logoLogin"
-	        android:layout_centerHorizontal="true"
-	        android:layout_marginTop="40dp"
-			android:singleLine="true"
-	        android:imeOptions="actionNext">
+	        android:layout_marginTop="20dp"
+	        android:layout_marginLeft="10dp"
+	        android:layout_marginRight="10dp"
+	        android:ems="10"
+	        android:hint="@string/username"
+	        android:imeOptions="actionNext"
+	        android:singleLine="true"
+	        android:textColor="@color/textInputColor" >
+
 	    </EditText>
 	
 	    <EditText
 	        android:id="@+id/passwordLogin"
-	        android:hint="@string/password"
-	     	android:textColor="@color/textInputColor"
-	     	android:inputType="textPassword"
-	     	android:ems="10"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
+	        android:layout_alignLeft="@+id/usernameLogin"
+	        android:layout_alignRight="@+id/usernameLogin"
 	        android:layout_below="@+id/usernameLogin"
-	        android:layout_centerHorizontal="true"
+	        android:ems="10"
+	        android:hint="@string/password"
+	        android:imeOptions="actionDone"
+	        android:inputType="textPassword"
 	        android:singleLine="true"
-	        android:imeOptions="actionDone" />
+	        android:textColor="@color/textInputColor" />
 	
 	    <Button
 	        android:id="@+id/buttonLogin"
@@ -73,6 +79,17 @@
 	        android:layout_alignRight="@+id/passwordLogin"
 	        android:layout_below="@+id/passwordLogin"
 	        android:visibility="gone" />
+
+	    <TextView
+	        android:id="@+id/titleLogin"
+	        android:textStyle="bold"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_above="@+id/usernameLogin"
+	        android:layout_centerHorizontal="true"
+	        android:text="@string/echo"
+	        android:textColor="@color/midBlue"
+	        android:textSize="100sp" />
 	
 </RelativeLayout>
 </ScrollView>

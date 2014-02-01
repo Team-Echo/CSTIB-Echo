@@ -5,6 +5,7 @@ import java.util.List;
 
 import uk.ac.cam.echo.ConversationAdapter;
 import uk.ac.cam.echo.R;
+import uk.ac.cam.echo.Toaster;
 import uk.ac.cam.echo.dummy.Conversation;
 import android.app.Fragment;
 import android.content.Context;
@@ -22,7 +23,6 @@ public class ConversationListFragment extends Fragment implements
 	Context context;
 	ListView listView;
 	Communicator comm;
-	
 	 @Override
      public View onCreateView(LayoutInflater inflater, ViewGroup container,
                      Bundle savedInstanceState) {
@@ -59,6 +59,7 @@ public class ConversationListFragment extends Fragment implements
 	@Override
 	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 		comm.respond(id);
+		Toaster.displayShort(getActivity(), position + " clicked..");
 
 	}
 	
