@@ -14,5 +14,6 @@
     <string name="action_scan">Scan</string>
     <string name="title_activity_conversation_detail">ConversationDetailActivity</string>
     <string name="join">Join</string>
+    <string name="inputMessage">Write a message</string>
 
 </resources>

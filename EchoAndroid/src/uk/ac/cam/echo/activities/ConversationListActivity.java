@@ -2,7 +2,6 @@ package uk.ac.cam.echo.activities;
 
 import uk.ac.cam.echo.R;
 import uk.ac.cam.echo.fragments.ConversationDialog;
-import uk.ac.cam.echo.fragments.ConversationFragment;
 import uk.ac.cam.echo.fragments.ConversationListFragment;
 import uk.ac.cam.echo.fragments.ConversationListFragment.Communicator;
 import android.app.Activity;

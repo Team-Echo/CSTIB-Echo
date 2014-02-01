@@ -1,13 +1,15 @@
 package uk.ac.cam.echo.fragments;
 
+import uk.ac.cam.echo.MessageAdapter;
 import uk.ac.cam.echo.R;
+import uk.ac.cam.echo.dummy.Conversation;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ListView;
 
 public class ConversationFragment extends Fragment {
 
@@ -15,24 +17,30 @@ public class ConversationFragment extends Fragment {
 	long id;
 	
 	Context context;
-	TextView t;
+	ListView listView;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 								Bundle savedInstanceState) {
-	
-		View view = inflater.inflate(R.layout.conversation_layout, container, false);
+		context = getActivity();
+		View view = inflater.inflate(R.layout.message_listview_layout, container, false);
 		id = getArguments().getLong(ID);
+		
 		return view;
 	}
 	
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		context = getActivity();
 		
-		t = (TextView)getView().findViewById(R.id.conversationTitle);
 		
+		listView = (ListView)view.findViewById(R.id.messageListView);
+		
+		MessageAdapter adapter =
+       		 new MessageAdapter(context, R.layout.message_row_remote,
+       				 							new Conversation(id).getMessages());
+        
+        listView.setAdapter(adapter);
 		updateViews();
 	}
 	
@@ -54,7 +62,7 @@ public class ConversationFragment extends Fragment {
 	private void updateViews() {
 		//TODO:
 		// get previous messages from network
-		t.setText(id + "");
+		
 		
 	}
 }

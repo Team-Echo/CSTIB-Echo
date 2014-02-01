@@ -69,6 +69,17 @@ public class Conversation {
 		public String getContents() {
 			return "Message " + id + " and more " + id*2; 
 		}
+		
+		public User getSender() {
+			return new User("TestUser");
+		}
+		
+		public boolean isRemote() {
+			if(Math.random() < 0.5) {
+				return true;
+			}
+			return false;
+		}
 	}
 	
 	public class User {

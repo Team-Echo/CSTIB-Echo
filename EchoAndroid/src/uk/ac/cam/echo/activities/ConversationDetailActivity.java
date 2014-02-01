@@ -7,20 +7,22 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.Menu;
-import android.widget.TextView;
 
 public class ConversationDetailActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_conversation_detail);
+		
 		long id = getIntent().getLongExtra("_id", 0);
+		
 		ConversationFragment cf = ConversationFragment.newInstance(id);
 		FragmentManager manager = getFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
-		transaction.add(R.id.convdetail_activity_layout, cf, "sx");
-		((TextView)findViewById(R.id.conversationTitle)).setText(id+"");
+		transaction.replace(R.id.messageFrame, cf);
+		transaction.commit();
 	}
 
 	@Override

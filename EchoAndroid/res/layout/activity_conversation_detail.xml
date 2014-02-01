@@ -3,12 +3,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ConversationDetailActivity"
-    android:id="@+id/convdetail_activity_layout" >
+    android:id="@+id/convdetail_activity_layout"
+     >
 
-    <TextView
-        android:id="@+id/conversationTitle"
+    <FrameLayout
+        android:id="@+id/messageFrame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_above="@+id/inputMessage"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" >
+
+    </FrameLayout>
+
+    <EditText
+        android:id="@+id/inputMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/sendButton"
+        android:ems="10"
+        android:hint="@string/inputMessage" >
+
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/sendButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/inputMessage"
+        android:text="Send" />
 
 </RelativeLayout>
