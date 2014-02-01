@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <TextView
+        android:id="@+id/convTitleDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="5dp"
+        android:text="Medium Text"
+        android:textAllCaps="true"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/convOnlineDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="TextView"
+        android:textAllCaps="true"
+        android:textSize="10sp"
+        android:textColor="@color/midBlue" />
+
+    <TextView
+        android:id="@+id/convUsersDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/convTitleDialog"
+        android:layout_below="@+id/convTitleDialog"
+        android:text="TextView"
+        android:textAllCaps="true" />
+
+    <TextView
+        android:id="@+id/convTagsDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/convUsersDialog"
+        android:layout_below="@+id/convUsersDialog"
+        android:text="TextView"
+        android:textAllCaps="true" />
+
+    <Button
+        android:id="@+id/convJoinDialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/scrollView1"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="5dp"
+        android:background="@color/darkGreen"
+        android:text="@string/join"
+        android:textColor="@color/white" />
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:background="@color/lightBlue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/convTagsDialog" >
+
+            <ProgressBar
+                android:id="@+id/convProgressDialog"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal"
+                 />
+
+    </ScrollView>
+
+</RelativeLayout>

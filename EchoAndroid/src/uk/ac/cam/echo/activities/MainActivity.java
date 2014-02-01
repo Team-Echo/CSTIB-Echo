@@ -4,6 +4,7 @@ import uk.ac.cam.echo.R;
 import uk.ac.cam.echo.Toaster;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -17,7 +18,7 @@ import android.widget.TextView.OnEditorActionListener;
 
 public class MainActivity extends Activity
 				implements OnEditorActionListener {
-
+	TextView title;
 	EditText username;
 	EditText password;
 	Button login;
@@ -28,12 +29,16 @@ public class MainActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
+        title = (TextView)findViewById(R.id.titleLogin);
         username = (EditText)findViewById(R.id.usernameLogin);
         password = (EditText)findViewById(R.id.passwordLogin);
         login = (Button)findViewById(R.id.buttonLogin);
         progress = (ProgressBar)findViewById(R.id.progressLogin);
         
         password.setOnEditorActionListener(this);
+        
+        Typeface flex = Typeface.createFromAsset(getAssets(), "fonts/roboto_light_italic.ttf");
+        title.setTypeface(flex);
     }
 
 
