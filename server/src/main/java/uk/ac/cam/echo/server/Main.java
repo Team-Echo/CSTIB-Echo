@@ -1,13 +1,13 @@
 package uk.ac.cam.echo.server;
 
 import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.jersey.CommonProperties;
 import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
-import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.media.sse.SseFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import uk.ac.cam.echo.server.filters.HibernateRequestFilter;
-import uk.ac.cam.echo.server.filters.HibernateResponseFilter;
+import uk.ac.cam.echo.server.filters.JacksonWithHibernateJsonProvider;
 import uk.ac.cam.echo.server.resources.ConferenceResourceImpl;
 import uk.ac.cam.echo.server.resources.ConversationResourceImpl;
 import uk.ac.cam.echo.server.resources.MessageResourceImpl;
@@ -50,9 +50,12 @@ public class Main {
         rc.register(ConferenceResourceImpl.class);
 
         rc.register(HibernateRequestFilter.class);
-        rc.register(HibernateResponseFilter.class);
+        final String disableMoxy = CommonProperties.MOXY_JSON_FEATURE_DISABLE + '.'
+                + rc.getRuntimeType().name().toLowerCase();
+        rc.property(disableMoxy, true);
+        rc.register(JacksonWithHibernateJsonProvider.class);
 
-        rc.register(JacksonFeature.class);
+
         rc.register(LoggingFilter.class);
         rc.register(SseFeature.class);
         // create and start a new instance of grizzly http server
