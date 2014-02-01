@@ -1,8 +1,11 @@
 package uk.ac.cam.echo.server.resources;
 
+import org.hibernate.Session;
+import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.User;
 import uk.ac.cam.echo.data.resources.UserResource;
 import uk.ac.cam.echo.server.HibernateUtil;
+import uk.ac.cam.echo.server.models.ConversationModel;
 import uk.ac.cam.echo.server.models.UserModel;
 
 import javax.ws.rs.core.Response;
@@ -17,11 +20,12 @@ public class UserResourceImpl implements UserResource {
         return (User) HibernateUtil.getTransaction().get(UserModel.class, id);
     }
 
-    public User create(String username) {
+    public User create(String username, Long conversationId) {
+        Session session = HibernateUtil.getTransaction();
         UserModel user = new UserModel();
         user.setUsername(username);
-
-        HibernateUtil.getTransaction().save(user);
+        user.setCurrentConversation((Conversation) session.load(ConversationModel.class, conversationId));
+        session.save(user);
         return user;
     }
 

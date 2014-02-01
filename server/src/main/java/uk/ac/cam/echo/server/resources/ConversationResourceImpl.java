@@ -3,6 +3,7 @@ package uk.ac.cam.echo.server.resources;
 import uk.ac.cam.echo.data.Conference;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.Message;
+import uk.ac.cam.echo.data.User;
 import uk.ac.cam.echo.data.async.SubscriptionResource;
 import uk.ac.cam.echo.data.resources.ConversationResource;
 import uk.ac.cam.echo.data.resources.MessageResource;
@@ -10,6 +11,7 @@ import uk.ac.cam.echo.server.HibernateUtil;
 import uk.ac.cam.echo.server.models.ConversationModel;
 
 import javax.ws.rs.core.Response;
+import java.util.Collection;
 import java.util.List;
 
 public class ConversationResourceImpl implements ConversationResource {
@@ -50,5 +52,10 @@ public class ConversationResourceImpl implements ConversationResource {
 
     public SubscriptionResource listenToMessages(long id) {
         return messagesSub.get(id);
+    }
+
+    @Override
+    public Collection<User> getUsers(long id) {
+        return get(id).getUsers();
     }
 }

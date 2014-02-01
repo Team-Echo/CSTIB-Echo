@@ -17,7 +17,7 @@ public interface UserResource extends RestResource<User>{
     public User get(@PathParam("userId") long id);
 
     @POST
-    public User create(@FormParam("username") String username);
+    public User create(@FormParam("username") String username, @FormParam("currentConversationId") Long id);
 
     @DELETE
     @Path("/{userId}")

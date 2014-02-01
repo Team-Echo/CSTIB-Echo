@@ -47,17 +47,13 @@ public class ConversationData extends BaseData implements Conversation {
     }
 
     @Override
-    public Set<Message> getMessages() {
-        throw new UnsupportedOperationException("Not implemented yet. Use api.conversationResource.getMessageResource(conv_id).getAll()");
-    }
-
-    public List<Message> getSortedMessages() {
-        throw new UnsupportedOperationException("Not implemented yet. Use api.conversationResource.getMessageResource(conv_id).getAll()");
+    public List<Message> getMessages() {
+        return getApi().conversationResource.getMessageResource(getId()).getAll();
     }
 
     @Override
-    public Set<User> getUsers() {
-        throw new UnsupportedOperationException("Not implemented yet");
+    public List<User> getUsers() {
+        return (List<User>) getApi().conversationResource.getUsers(getId());
     }
 
     @Override
@@ -68,7 +64,6 @@ public class ConversationData extends BaseData implements Conversation {
     @Override
     public void removeUser(User u) {
         throw new UnsupportedOperationException("Not implemented yet");
-
     }
 
     @Override
