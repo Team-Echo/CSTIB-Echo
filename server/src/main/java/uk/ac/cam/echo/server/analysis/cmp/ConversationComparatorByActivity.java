@@ -13,13 +13,6 @@ import java.util.Comparator;
 */
 public class ConversationComparatorByActivity implements Comparator<IntegerConversationPair>
 {
-    private int minutes;
-
-    public ConversationComparatorByActivity(int minutes)
-    {
-        this.minutes = minutes;
-    }
-
     @Override
     public int compare(IntegerConversationPair cnvA, IntegerConversationPair cnvB)
     {

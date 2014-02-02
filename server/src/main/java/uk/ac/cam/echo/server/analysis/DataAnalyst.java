@@ -1,6 +1,7 @@
 package uk.ac.cam.echo.server.analysis;
 
 import uk.ac.cam.echo.data.*;
+import uk.ac.cam.echo.server.analysis.cmp.ConversationComparatorByActivity;
 import uk.ac.cam.echo.server.analysis.cmp.ConversationComparatorByUserCount;
 import uk.ac.cam.echo.server.analysis.internal.IntegerConversationPair;
 
@@ -96,7 +97,7 @@ public class DataAnalyst implements ServerDataAnalyst
     {
         List<Conversation> ret = new LinkedList<Conversation>();
         Collection<Conversation> conversations = parentConference.getConversationSet();
-        PriorityQueue<IntegerConversationPair> pq = new PriorityQueue<IntegerConversationPair>(11, null);
+        PriorityQueue<IntegerConversationPair> pq = new PriorityQueue<IntegerConversationPair>(11, new ConversationComparatorByActivity());
 
         long now = new Date().getTime();
 
