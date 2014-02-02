@@ -47,11 +47,11 @@ public interface ServerDataAnalyst
     /**
      Displays the most active conversations in terms of message count, in the interval [now-minutes, now].
 
-     @param minutes     The size of the interval to consider.
+     @param minutes     The size of the interval to consider, in minutes.
      @param n           The maximal amount of solutions to return.
      @return            The list of (up to n) conversations that have been most active recently, sorted descending by activity.
     */
-    public List<Conversation> mostActiveRecently(int minutes, int n);
+    public List<Conversation> mostActiveRecently(long minutes, int n);
 
     /**
      Displays a list of suggested conversation for a user, based on:
