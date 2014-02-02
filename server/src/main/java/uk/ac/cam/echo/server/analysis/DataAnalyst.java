@@ -114,8 +114,9 @@ public class DataAnalyst implements ServerDataAnalyst
                 else cnt++;
             }
             pq.offer(new IntegerConversationPair(cnt, C));
+        }
 
-        }while (n > 0 && !pq.isEmpty())
+        while (n > 0 && !pq.isEmpty())
         {
             ret.add(pq.poll().getConvo());
             n--;
