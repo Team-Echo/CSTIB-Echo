@@ -1,6 +1,7 @@
 package uk.ac.cam.echo.activities;
 
 import uk.ac.cam.echo.R;
+import uk.ac.cam.echo.Toaster;
 import uk.ac.cam.echo.fragments.ConversationDialog;
 import uk.ac.cam.echo.fragments.ConversationListFragment;
 import uk.ac.cam.echo.fragments.ConversationListFragment.Communicator;
@@ -9,9 +10,13 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 public class ConversationListActivity extends Activity implements Communicator {
 	
@@ -19,6 +24,8 @@ public class ConversationListActivity extends Activity implements Communicator {
 	
 	FragmentManager manager;
 	boolean dualPane; //to manage orientations/different screensizes
+	
+	ConversationListFragment clf;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +37,7 @@ public class ConversationListActivity extends Activity implements Communicator {
             View detailsFrame = findViewById(R.id.convFrame);
             dualPane = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
                        
-            ConversationListFragment clf = (ConversationListFragment) manager.findFragmentById(R.id.convListFragment);
+            clf = (ConversationListFragment) manager.findFragmentById(R.id.convListFragment);
             clf.setCommunicator(this);
             
     }
@@ -83,15 +90,34 @@ public class ConversationListActivity extends Activity implements Communicator {
 	}
 	
 	private void openScan() {
-		Intent intent = new Intent(this, ScanActivity.class);
-		startActivity(intent);
+		IntentIntegrator scanIntegrator = new IntentIntegrator(this);
+		scanIntegrator.initiateScan();
 	}
 	
 	private void openSearch() {
 		// TODO: search client api call
 	}
 	
-	
+	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		//retrieve scan result
+		IntentResult scanningResult =
+				IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+		if(scanningResult != null) {
+			String scanContent = scanningResult.getContents();
+			String scanFormat = scanningResult.getFormatName();
+			
+			int position = -1;
+			try {
+				position = Integer.parseInt(scanContent);
+			}catch(Exception e) {
+				Log.e("CLF", e.getMessage());
+			}
+			if (position != -1) 
+				clf.openConversation(position);
+		}else {
+			Toaster.displayLong(this, "No scan data received!");
+		}
+	}
 	
 	
 }

@@ -63,6 +63,13 @@ public class ConversationListFragment extends Fragment implements
 
 	}
 	
+	public void openConversation(int id) {
+		listView.performItemClick(
+		        listView.getAdapter().getView(id, null, null),
+		        id,
+		        listView.getAdapter().getItemId(id));
+	}
+	
 	
 	public interface Communicator {
 		public void respond(long id);
