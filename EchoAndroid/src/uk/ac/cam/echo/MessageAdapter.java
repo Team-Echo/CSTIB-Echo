@@ -74,7 +74,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		Log.d("ADAPTER", user);
 		
 		holder.contents.setMaxWidth((int) (width*0.66));
-		holder.contents.setMinWidth(width/2);
+		holder.contents.setMinWidth(width/3);
 		holder.user.setText(user);
 		holder.contents.setText(contents);
 		

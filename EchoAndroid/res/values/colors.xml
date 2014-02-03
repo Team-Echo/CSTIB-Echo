@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="background">#3f3f3f</color>
+    <color name="background">#eaeaea</color>
     <color name="textInputColor">#bfbfbf</color>
     <color name="buttonBackground">#0099cc</color>
     <color name="white">#ffffff</color>
@@ -11,5 +11,6 @@
     <color name="darkGreen">#669900</color>
     <color name="red">#ff4444</color>
     <color name="darkRed">#cc0000</color>
+    <color name="lightGrey">#eaeaea</color>
     
 </resources>

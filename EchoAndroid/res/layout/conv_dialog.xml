@@ -10,6 +10,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="5dp"
+        android:layout_toLeftOf="@+id/convOnlineDialog"
         android:text="Medium Text"
         android:textAllCaps="true"
         android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -30,6 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/convTitleDialog"
+        android:layout_alignRight="@+id/convTitleDialog"
         android:layout_below="@+id/convTitleDialog"
         android:text="TextView"
         android:textAllCaps="true" />
@@ -70,6 +72,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_marginTop="60dp"
+                android:layout_marginBottom="60dp"
                  />
 
     </ScrollView>

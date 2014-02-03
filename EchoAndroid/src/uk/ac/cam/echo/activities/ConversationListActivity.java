@@ -104,7 +104,7 @@ public class ConversationListActivity extends Activity implements Communicator {
 				IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 		if(scanningResult != null) {
 			String scanContent = scanningResult.getContents();
-			String scanFormat = scanningResult.getFormatName();
+			//String scanFormat = scanningResult.getFormatName();
 			
 			int position = -1;
 			try {
