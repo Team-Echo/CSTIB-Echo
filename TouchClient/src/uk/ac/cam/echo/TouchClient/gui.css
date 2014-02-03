@@ -1,0 +1,113 @@
+/*
+ * 778899-light slate gray
+ * 000000-black
+ * 696969-Dim gray
+ */
+
+.mainFxmlClass {
+    -fx-background-color:#000000;
+}
+
+.messageListClass {
+    -fx-color:#000000;
+    -fx-background-color:#000000;
+    column-rule-color:#000000;
+    border-color:#000000;
+}
+
+.messageListClass .list-cell{
+    -fx-background-color: #696969;
+    -fx-text-fill: #ffffff;
+    -fx-border-color: #778899;
+    -fx-border-width: 0.08;
+}
+
+.messageListClass .list-cell:focused {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #000000;
+}
+
+.avitarListClass{
+    -fx-color:#000000;
+    -fx-background-color:#000000;
+    column-rule-color:#000000;
+    border-color:#000000;
+}
+.avitarListClass .list-cell{
+    -fx-background-color: #696969;
+    -fx-text-fill: #ffffff;
+    -fx-border-color: #778899;
+    -fx-border-width: 0.08;
+}
+
+.avitarListClass .list-cell:focused{
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #000000;
+}
+
+.splitPaneClass {
+    -fx-background-color: #696969;
+    -fx-border-color: #000000;
+}
+
+.splitPaneClass .split-pane-divider{
+    -fx-background-color: #000000;
+    -fx-border-color: #000000;
+}
+
+.nameLabelClass {
+    -fx-text-fill: #ffffff;
+}
+
+.tabClass{
+    -fx-border-radius: 200;
+}
+
+.tabClass .tab{
+    -fx-background-color: #696969;
+}
+
+.tabClass .tab:selected{
+    -fx-background-color: #778899;
+}
+
+.tabClass .tab-content-area{
+    -fx-text-fill: #ffffff;
+}
+
+.tabClass .tab-lable{
+   -fx-text-fill: #ffffff; 
+}
+
+.tabClass .tab-header-background{
+    -fx-background-color: #000000;
+    -fx-opacity: 0;
+}
+
+.elipsClass {
+    -fx-background-color: #696969;
+    -fx-fill: #696969;
+}
+
+.statsText {
+    -fx-fill: #ffffff;
+}
+
+.statsMessageListClass {
+    -fx-color:#000000;
+    -fx-background-color:#696969;
+    column-rule-color:#000000;
+    border-color:#696969;
+}
+
+.statsMessageListClass .list-cell{
+    -fx-background-color: #696969;
+    -fx-text-fill: #ffffff;
+    -fx-border-color: #778899;
+    -fx-border-width: 0.08;
+}
+
+.statsMessageListClass .list-cell:focused {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #000000;
+}

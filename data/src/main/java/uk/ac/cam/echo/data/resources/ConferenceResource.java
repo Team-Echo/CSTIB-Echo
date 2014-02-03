@@ -27,7 +27,7 @@ public interface ConferenceResource extends RestResource<Conference> {
 
     @Path("/most-active")
     @GET
-    public List<Conversation> mostActiveRecently(@QueryParam("minutes") int minutes, @QueryParam("num") int n);
+    public List<Conversation> mostActiveRecently(@QueryParam("minutes") long minutes, @QueryParam("num") int n);
 
     @GET
     @Path("/{conferenceId}")

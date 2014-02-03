@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="354.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="uk.ac.cam.echo.TouchClient.ConfrenceLoadScreenController">
+  <children>
+    <TextField fx:id="Port_textfield" disable="true" layoutX="209.0" layoutY="196.0" prefWidth="35.0" promptText="80" />
+    <TextField fx:id="Confrence_ID_textfield" layoutX="22.0" layoutY="253.0" prefWidth="222.0" promptText="1000" />
+    <Label layoutX="22.0" layoutY="180.0" text="IP Address" />
+    <Label layoutX="209.0" layoutY="176.0" text="Port" />
+    <Label layoutX="22.0" layoutY="237.0" text="Confrence ID" />
+    <Button fx:id="Open_button" layoutX="14.0" layoutY="308.0" mnemonicParsing="false" text="Open File" />
+    <Button fx:id="Launch_button" layoutX="217.0" layoutY="302.0" mnemonicParsing="false" text="Launch Confrence" />
+    <TextField fx:id="Confrence_Name_textfield" layoutX="22.0" layoutY="78.0" prefWidth="222.0" promptText="Confrence Name" />
+    <Label layoutX="22.0" layoutY="60.0" text="Confrence Name" />
+    <Label layoutX="200.0" layoutY="197.0" text=":" />
+    <Text layoutX="77.0" layoutY="29.0" scaleX="1.0008669837925375" scaleY="1.1518415152965444" strikethrough="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Type in confrence details or load from file" textAlignment="CENTER" wrappingWidth="200.0" />
+    <TextField fx:id="IP_Adress_textfield1" disable="true" layoutX="22.0" layoutY="197.0" prefWidth="35.0" promptText="127" />
+    <TextField fx:id="IP_Adress_textfield2" disable="true" layoutX="64.0" layoutY="196.0" prefWidth="35.0" promptText="0" />
+    <TextField fx:id="IP_Adress_textfield3" disable="true" layoutX="108.0" layoutY="196.0" prefWidth="35.0" promptText="0" />
+    <TextField fx:id="IP_Adress_textfield4" disable="true" layoutX="153.0" layoutY="196.0" prefWidth="35.0" promptText="1" />
+    <Label layoutX="149.0" layoutY="199.0" text="." />
+    <Label layoutX="103.0" layoutY="199.0" text="." />
+    <Label layoutX="60.0" layoutY="200.0" text="." />
+    <RadioButton fx:id="radio_button_ip" layoutX="258.0" layoutY="199.0" mnemonicParsing="false" text="IP Address" />
+    <RadioButton fx:id="radio_button_url" layoutX="258.0" layoutY="137.0" mnemonicParsing="false" selected="true" text="URL" />
+    <TextField fx:id="textfield_url" layoutX="22.0" layoutY="134.0" prefWidth="222.0" promptText="http://example.com" />
+    <Label layoutX="22.0" layoutY="118.0" text="URL" />
+    <Label fx:id="error_message" layoutX="14.0" layoutY="354.0" prefWidth="319.0" text="" textFill="RED" />
+  </children>
+  <stylesheets>
+    <URL value="@confrenceloadscreen.css" />
+  </stylesheets>
+</AnchorPane>

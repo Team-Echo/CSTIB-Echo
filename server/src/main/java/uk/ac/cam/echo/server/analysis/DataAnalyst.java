@@ -1,10 +1,9 @@
 package uk.ac.cam.echo.server.analysis;
 
-import uk.ac.cam.echo.data.Conference;
-import uk.ac.cam.echo.data.Conversation;
-import uk.ac.cam.echo.data.Tag;
-import uk.ac.cam.echo.data.User;
+import uk.ac.cam.echo.data.*;
+import uk.ac.cam.echo.server.analysis.cmp.ConversationComparatorByActivity;
 import uk.ac.cam.echo.server.analysis.cmp.ConversationComparatorByUserCount;
+import uk.ac.cam.echo.server.analysis.internal.IntegerConversationPair;
 
 import java.util.*;
 
@@ -94,9 +93,36 @@ public class DataAnalyst implements ServerDataAnalyst
     }
 
     @Override
-    public List<Conversation> mostActiveRecently(int minutes, int n)
+    public List<Conversation> mostActiveRecently(long minutes, int n)
     {
-        return null;
+        List<Conversation> ret = new LinkedList<Conversation>();
+        Collection<Conversation> conversations = parentConference.getConversationSet();
+        PriorityQueue<IntegerConversationPair> pq = new PriorityQueue<IntegerConversationPair>(11, new ConversationComparatorByActivity());
+
+        long now = new Date().getTime();
+
+        for (Conversation C : conversations)
+        {
+            int cnt = 0;
+            Collection<Message> msgs = C.getMessages();
+
+            // PRECONDITION: msgs is sorted descending by timestamp.
+
+            for (Message M : msgs)
+            {
+                if ((now - M.getTimeStamp()) / 60000 > minutes) break;
+                else cnt++;
+            }
+            pq.offer(new IntegerConversationPair(cnt, C));
+        }
+
+        while (n > 0 && !pq.isEmpty())
+        {
+            ret.add(pq.poll().getConvo());
+            n--;
+        }
+
+        return ret;
     }
 
     @Override

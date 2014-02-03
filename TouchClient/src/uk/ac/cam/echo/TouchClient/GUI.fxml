@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="900.0" prefWidth="1600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="uk.ac.cam.echo.TouchClient.GUIController">
+  <children>
+    <TabPane fx:id="conversation1" cache="true" cacheHint="ROTATE" layoutX="14.0" layoutY="14.0" mouseTransparent="false" prefHeight="400.0" prefWidth="350.0" rotate="0.0" rotateGraphic="false" styleClass="tabClass" tabClosingPolicy="UNAVAILABLE" translateZ="0.0" visible="true">
+      <tabs>
+        <Tab text="conversation">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <SplitPane dividerPositions="0.2514450867052023" focusTraversable="true" prefHeight="369.0" prefWidth="350.0" styleClass="splitPaneClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <items>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                      <children>
+                        <ListView fx:id="conversation1_avitars" prefHeight="367.0" prefWidth="84.0" styleClass="avitarListClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                      </children>
+                    </AnchorPane>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                      <children>
+                        <ListView fx:id="conversation1_messages" prefHeight="317.0" prefWidth="258.0" styleClass="messageListClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
+                        <Label fx:id="conversation1_name" layoutX="14.0" layoutY="14.0" styleClass="nameLabelClass" text="conversation name" />
+                        <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="208.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
+                      </children>
+                    </AnchorPane>
+                  </items>
+                </SplitPane>
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+        <Tab text="stats">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+          </content>
+        </Tab>
+      </tabs>
+    </TabPane>
+    <TabPane fx:id="conversation2" layoutX="14.0" layoutY="486.0" prefHeight="400.0" prefWidth="350.0" styleClass="tabClass" tabClosingPolicy="UNAVAILABLE">
+      <tabs>
+        <Tab text="conversation">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <SplitPane dividerPositions="0.2514450867052023" focusTraversable="true" prefHeight="369.0" prefWidth="350.0" styleClass="splitPaneClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <items>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                      <children>
+                        <ListView fx:id="conversation2_avitars" prefHeight="367.0" prefWidth="84.0" styleClass="avitarListClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                      </children>
+                    </AnchorPane>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                      <children>
+                        <ListView fx:id="conversation2_messages" prefHeight="317.0" prefWidth="258.0" styleClass="messageListClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
+                        <Label fx:id="conversation2_name" layoutX="14.0" layoutY="14.0" styleClass="nameLabelClass" text="conversation name" />
+                        <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="208.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
+                      </children>
+                    </AnchorPane>
+                  </items>
+                </SplitPane>
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+        <Tab text="stats">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+          </content>
+        </Tab>
+      </tabs>
+    </TabPane>
+    <TabPane fx:id="conversation3" layoutX="625.0" layoutY="486.0" prefHeight="400.0" prefWidth="350.0" styleClass="tabClass" tabClosingPolicy="UNAVAILABLE">
+      <tabs>
+        <Tab text="conversation">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <SplitPane dividerPositions="0.2514450867052023" focusTraversable="true" prefHeight="369.0" prefWidth="350.0" styleClass="splitPaneClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <items>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                      <children>
+                        <ListView fx:id="conversation3_avitars" prefHeight="367.0" prefWidth="84.0" styleClass="avitarListClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                      </children>
+                    </AnchorPane>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                      <children>
+                        <ListView fx:id="conversation3_messages" prefHeight="317.0" prefWidth="258.0" styleClass="messageListClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
+                        <Label fx:id="conversation3_name" layoutX="14.0" layoutY="14.0" styleClass="nameLabelClass" text="conversation name" />
+                        <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="208.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
+                      </children>
+                    </AnchorPane>
+                  </items>
+                </SplitPane>
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+        <Tab text="stats">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+          </content>
+        </Tab>
+      </tabs>
+    </TabPane>
+    <TabPane fx:id="conversation4" layoutX="1236.0" layoutY="486.0" prefHeight="400.0" prefWidth="350.0" styleClass="tabClass" tabClosingPolicy="UNAVAILABLE">
+      <tabs>
+        <Tab text="conversation">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <SplitPane dividerPositions="0.2514450867052023" focusTraversable="true" prefHeight="369.0" prefWidth="350.0" styleClass="splitPaneClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <items>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                      <children>
+                        <ListView fx:id="conversation4_avitar" prefHeight="367.0" prefWidth="84.0" styleClass="avitarListClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                      </children>
+                    </AnchorPane>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                      <children>
+                        <ListView fx:id="conversation4_messages" prefHeight="317.0" prefWidth="258.0" styleClass="messageListClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
+                        <Label fx:id="conversation4_name" layoutX="14.0" layoutY="14.0" styleClass="nameLabelClass" text="conversation name" />
+                        <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="208.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
+                      </children>
+                    </AnchorPane>
+                  </items>
+                </SplitPane>
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+        <Tab text="stats">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+          </content>
+        </Tab>
+      </tabs>
+    </TabPane>
+    <TabPane fx:id="conversation5" layoutX="1236.0" layoutY="14.0" prefHeight="400.0" prefWidth="350.0" styleClass="tabClass" tabClosingPolicy="UNAVAILABLE">
+      <tabs>
+        <Tab text="conversation">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <SplitPane dividerPositions="0.2514450867052023" focusTraversable="true" prefHeight="369.0" prefWidth="350.0" styleClass="splitPaneClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <items>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                      <children>
+                        <ListView fx:id="conversatin5_avitar" prefHeight="367.0" prefWidth="84.0" styleClass="avitarListClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                      </children>
+                    </AnchorPane>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                      <children>
+                        <ListView fx:id="conversation5_messages" prefHeight="317.0" prefWidth="258.0" styleClass="messageListClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
+                        <Label fx:id="conversation5_name" layoutX="14.0" layoutY="14.0" styleClass="nameLabelClass" text="conversation name" />
+                        <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="208.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
+                      </children>
+                    </AnchorPane>
+                  </items>
+                </SplitPane>
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+        <Tab text="stats">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+          </content>
+        </Tab>
+      </tabs>
+    </TabPane>
+    <Pane fx:id="stats_pane" layoutX="400.0" layoutY="50.0" prefHeight="400.0" prefWidth="800.0">
+      <children>
+        <Ellipse fill="DODGERBLUE" styleClass="elipsClass" layoutX="400.0" layoutY="201.0" radiusX="400.0" radiusY="199.99995000000126" stroke="BLACK" strokeType="INSIDE" />
+        <Text fx:id="stats_text" styleClass="statsText" layoutX="154.0" layoutY="204.0" scaleX="8.628198341274043" scaleY="13.84312285854136" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+        <ListView id="message_list" styleClass="statsMessageListClass" fx:id="stats_messagelist" layoutX="495.0" layoutY="68.0" prefHeight="264.0" prefWidth="200.0" />
+      </children>
+    </Pane>
+  </children>
+  <stylesheets>
+    <URL value="@gui.css" />
+  </stylesheets>
+</AnchorPane>
