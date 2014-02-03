@@ -42,5 +42,5 @@ public interface ConferenceResource extends RestResource<Conference> {
 
     @DELETE
     @Path("/{conferenceId}")
-    public Response deleteConference(@PathParam("conferenceId") long id);
+    public Response delete(@PathParam("conferenceId") long id);
 }

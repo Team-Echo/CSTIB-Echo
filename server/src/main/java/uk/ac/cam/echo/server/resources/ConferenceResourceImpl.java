@@ -36,8 +36,9 @@ public class ConferenceResourceImpl implements ConferenceResource {
         throw  new UnsupportedOperationException("Not Implemented yet");
     }
 
+
     @Override
-    public List<Conversation> mostActiveRecently(int minutes, int n) {
+    public List<Conversation> mostActiveRecently(long minutes, int n) {
         throw  new UnsupportedOperationException("Not Implemented yet");
     }
 
@@ -53,7 +54,7 @@ public class ConferenceResourceImpl implements ConferenceResource {
         return conference;
     }
 
-    public Response deleteConference(long id) {
+    public Response delete(long id) {
         Conference u = get(id);
         HibernateUtil.getTransaction().delete(u);
         return Response.ok().build();

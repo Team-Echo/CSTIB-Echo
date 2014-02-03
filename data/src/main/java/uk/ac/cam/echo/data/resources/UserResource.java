@@ -21,5 +21,5 @@ public interface UserResource extends RestResource<User>{
 
     @DELETE
     @Path("/{userId}")
-    public Response deleteUser(@PathParam("userId") long id);
+    public Response delete(@PathParam("userId") long id);
 }

@@ -40,7 +40,7 @@ public class ConversationResourceImpl implements ConversationResource {
         return conversation;
     }
 
-    public Response deleteConversation(long id) {
+    public Response delete(long id) {
         Conversation u = get(id);
         HibernateUtil.getTransaction().delete(u);
         return Response.ok().build();

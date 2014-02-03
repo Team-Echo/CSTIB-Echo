@@ -29,7 +29,7 @@ public class UserResourceImpl implements UserResource {
         return user;
     }
 
-    public Response deleteUser(long id) {
+    public Response delete(long id) {
         User u = get(id);
         HibernateUtil.getTransaction().delete(u);
         return Response.ok().build();

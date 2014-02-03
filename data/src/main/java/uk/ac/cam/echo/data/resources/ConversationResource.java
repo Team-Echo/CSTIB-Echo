@@ -34,5 +34,5 @@ public interface ConversationResource extends RestResource<Conversation> {
 
     @DELETE
     @Path("/{conversationId}")
-    public Response deleteConversation(@PathParam("conversationId") long id);
+    public Response delete(@PathParam("conversationId") long id);
 }
