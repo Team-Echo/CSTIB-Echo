@@ -42,6 +42,12 @@ public class MessageResourceImpl implements MessageResource {
         return message;
     }
 
+
+    public Response update(Message m) {
+        HibernateUtil.getTransaction().update(m);
+        return Response.ok().build();
+    }
+
     public Response delete(long id) {
         Message u = get(id);
         HibernateUtil.getTransaction().delete(u);

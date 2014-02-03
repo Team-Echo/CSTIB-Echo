@@ -22,4 +22,8 @@ public interface MessageResource extends RestResource<Message>{
     @DELETE
     @Path("/{messageId}")
     public Response delete(@PathParam("messageId") long id);
+
+    @PUT
+    @Consumes("application/json")
+    public Response update(Message m);
 }
