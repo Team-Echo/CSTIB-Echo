@@ -22,6 +22,10 @@ public class ProxyResource<T, R extends RestResource<T>> {
         return resource.get(id);
     }
 
+    public long getId() {
+        return id;
+    }
+
     public void setId(long id) {
         this.id = id;
     }
