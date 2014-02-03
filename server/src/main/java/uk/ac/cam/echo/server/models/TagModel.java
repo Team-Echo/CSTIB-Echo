@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="Tags")
-public class TagModel implements Tag {
+public class TagModel extends BaseModel implements Tag {
 
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="ConversationIdSeq")

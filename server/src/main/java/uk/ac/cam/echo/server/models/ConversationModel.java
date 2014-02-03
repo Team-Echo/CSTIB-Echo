@@ -11,7 +11,7 @@ import java.util.Set;
 @JsonSerialize(using = ConversationSerializer.class)
 @Entity
 @Table(name="Conversation")
-public class ConversationModel implements Conversation {
+public class ConversationModel extends BaseModel implements Conversation {
 
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="ConversationIdSeq")

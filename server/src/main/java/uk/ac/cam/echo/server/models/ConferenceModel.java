@@ -11,7 +11,7 @@ import java.util.Set;
 @Entity
 @Table(name="Conference")
 @JsonSerialize(using=ConferenceSerializer.class)
-public class ConferenceModel implements Conference{
+public class ConferenceModel extends BaseModel implements Conference{
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="ConferenceIdSeq")
     @SequenceGenerator(name="ConferenceIdSeq", sequenceName="Conference_SEQ", allocationSize=1)

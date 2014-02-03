@@ -11,7 +11,7 @@ import javax.persistence.*;
 @JsonSerialize(using= MessageSerializer.class)
 @Entity
 @Table(name="Message")
-public class MessageModel implements Message {
+public class MessageModel extends BaseModel implements Message {
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="MessageIdSeq")
     @SequenceGenerator(name="MessageIdSeq", sequenceName="Message_SEQ", allocationSize=1)
