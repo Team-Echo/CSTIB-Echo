@@ -1,6 +1,6 @@
 package uk.ac.cam.echo.data;
 
-public interface Message
+public interface Message extends Base
 {
     public long getId();
     public long getTimeStamp();

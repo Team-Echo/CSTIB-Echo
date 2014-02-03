@@ -1,7 +1,6 @@
 package uk.ac.cam.echo.data;
 
-public interface User
-{
+public interface User extends Base {
     public long getId();
     public String getUsername();
     public Conversation getCurrentConversation();
