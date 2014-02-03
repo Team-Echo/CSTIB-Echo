@@ -19,6 +19,14 @@ public class JacksonWithHibernateJsonProvider extends JacksonJaxbJsonProvider {
         closeHibernateSession();
     }
 
+    @Override
+    public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
+        boolean result =  super.isWriteable(type, genericType, annotations, mediaType);
+        if (!result)
+            closeHibernateSession();
+        return result;
+    }
+
     private void closeHibernateSession() {
         System.out.println("Closing session");
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
