@@ -7,7 +7,6 @@ import uk.ac.cam.echo.data.User;
 import uk.ac.cam.echo.data.resources.ConversationResource;
 
 public class UserData extends BaseData implements User{
-    private long id;
     private String username;
     private ProxyResource<Conversation, ConversationResource> conversationProxy =
             new ProxyResource<Conversation, ConversationResource>();
@@ -17,14 +16,6 @@ public class UserData extends BaseData implements User{
     public void setApi(ClientApi api) {
         super.setApi(api);
         conversationProxy.setResource(api.conversationResource);
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getUsername() {
@@ -47,5 +38,10 @@ public class UserData extends BaseData implements User{
 
     public void setCurrentConversationId(long id) {
         conversationProxy.setId(id);
+    }
+
+    @Override
+    protected void configureResource() {
+        setResource(getApi().userResource);
     }
 }

@@ -9,7 +9,6 @@ import uk.ac.cam.echo.data.resources.ConversationResource;
 import uk.ac.cam.echo.data.resources.UserResource;
 
 public class MessageData extends BaseData implements Message {
-    private long id;
     private String contents;
     private long timeStamp;
 
@@ -23,14 +22,6 @@ public class MessageData extends BaseData implements Message {
         super.setApi(api);
         senderProxy.setResource(api.userResource);
         conversationProxy.setResource(api.conversationResource);
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getContents() {
@@ -73,5 +64,10 @@ public class MessageData extends BaseData implements Message {
 
     public void setConversation(Conversation conv) {
         conversationProxy.setData(conv);
+    }
+
+    @Override
+    protected void configureResource() {
+        setResource(getApi().conversationResource.getMessageResource(conversationProxy.getId()));
     }
 }

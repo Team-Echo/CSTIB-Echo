@@ -8,18 +8,10 @@ import java.util.List;
 import java.util.Set;
 
 public class ConversationData extends BaseData implements Conversation {
-    private long id;
     private String name;
     private ProxyResource<Conference, ConferenceResource> conferenceProxy =
             new ProxyResource<Conference, ConferenceResource>();
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -69,5 +61,10 @@ public class ConversationData extends BaseData implements Conversation {
     @Override
     public void addMessage(Message m) {
         throw new UnsupportedOperationException("Not implemented yet. Use api.conversationResource.getMessageResource(conv_id).create(...)");
+    }
+
+    @Override
+    protected void configureResource() {
+        setResource(getApi().conversationResource);
     }
 }
