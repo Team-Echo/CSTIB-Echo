@@ -15,6 +15,7 @@ import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.Message;
 import uk.ac.cam.echo.data.User;
 import uk.ac.cam.echo.server.filters.HibernateRequestFilter;
+import uk.ac.cam.echo.server.filters.HibernateResponseFilter;
 import uk.ac.cam.echo.server.filters.JacksonWithHibernateJsonProvider;
 import uk.ac.cam.echo.server.models.ConferenceModel;
 import uk.ac.cam.echo.server.models.ConversationModel;
@@ -78,6 +79,7 @@ public class Main {
         rc.register(ConferenceResourceImpl.class);
 
         rc.register(HibernateRequestFilter.class);
+        rc.register(HibernateResponseFilter.class);
         final String disableMoxy = CommonProperties.MOXY_JSON_FEATURE_DISABLE + '.'
                 + rc.getRuntimeType().name().toLowerCase();
         rc.property(disableMoxy, true);
