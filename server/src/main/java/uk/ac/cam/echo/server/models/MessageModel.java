@@ -19,7 +19,7 @@ public class MessageModel extends BaseModel implements Message {
 
     }
 
-    private static String[] allowed = {"contents", "senderId"};
+    private static String[] allowed = {"contents", "senderId", "senderId"};
     @JsonCreator
     public MessageModel(Map<String, Object> props) {
         super(props, allowed);
