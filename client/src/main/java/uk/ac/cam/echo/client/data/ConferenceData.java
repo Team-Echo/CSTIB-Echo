@@ -1,5 +1,6 @@
 package uk.ac.cam.echo.client.data;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import uk.ac.cam.echo.data.Conference;
 import uk.ac.cam.echo.data.Conversation;
 
@@ -21,7 +22,7 @@ public class ConferenceData extends BaseData implements Conference{
         return "Conference: " + getName();
     }
 
-    @Override
+    @JsonIgnore
     public List<Conversation> getConversationSet() {
         return getApi().conferenceResource.getConversations(getId());
     }

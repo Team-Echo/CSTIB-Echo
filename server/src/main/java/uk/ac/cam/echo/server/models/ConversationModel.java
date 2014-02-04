@@ -112,8 +112,9 @@ public class ConversationModel extends BaseModel implements Conversation {
         this.users = users;
     }
 
-    public void setConferenceId(long id) {
-        setConference((Conference) HibernateUtil.getSession().load(ConferenceModel.class, id));
+    public void setConferenceId(Long id) {
+        if (id != null && id != 0)
+            setConference((Conference) HibernateUtil.getSession().load(ConferenceModel.class, id));
     }
 
 

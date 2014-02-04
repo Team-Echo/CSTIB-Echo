@@ -1,5 +1,7 @@
 package uk.ac.cam.echo.client.data;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 import uk.ac.cam.echo.client.ClientApi;
 import uk.ac.cam.echo.client.ProxyResource;
 import uk.ac.cam.echo.data.Conversation;
@@ -41,27 +43,41 @@ public class MessageData extends BaseData implements Message {
     }
 
     @Override
+    @JsonIgnore
     public User getSender() {
         return senderProxy.getData();
     }
 
+    public Long getSenderId() {
+        return senderProxy.getId();
+    }
+
+    @JsonProperty
     public void setSenderId(long id) {
         senderProxy.setId(id);
     }
 
+    @JsonProperty
     public void setSender(User u) {
         senderProxy.setData(u);
     }
 
     @Override
+    @JsonIgnore
     public Conversation getConversation() {
         return conversationProxy.getData();
     }
 
+    public Long getConversationId() {
+        return conversationProxy.getId();
+    }
+
+    @JsonProperty
     public void setConversationId(long id) {
         conversationProxy.setId(id);
     }
 
+    @JsonProperty
     public void setConversation(Conversation conv) {
         conversationProxy.setData(conv);
     }

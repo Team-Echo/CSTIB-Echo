@@ -2,6 +2,7 @@ package uk.ac.cam.echo.client.data;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 import uk.ac.cam.echo.client.ClientApi;
 import uk.ac.cam.echo.data.resources.RestResource;
 
@@ -65,6 +66,8 @@ public abstract class BaseData {
     public boolean hasId() {
         return id != null;
     }
+
+    @JsonProperty
     public void setId(long id) {
         this.id = id;
     }

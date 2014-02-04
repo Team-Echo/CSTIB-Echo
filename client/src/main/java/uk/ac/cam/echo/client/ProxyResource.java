@@ -1,5 +1,6 @@
 package uk.ac.cam.echo.client;
 
+import uk.ac.cam.echo.client.data.BaseData;
 import uk.ac.cam.echo.data.resources.RestResource;
 
 public class ProxyResource<T, R extends RestResource<T>> {
@@ -22,7 +23,11 @@ public class ProxyResource<T, R extends RestResource<T>> {
         return resource.get(id);
     }
 
-    public long getId() {
+    public Long getId() {
+        //TODO make this more typesafe
+        if (data != null)
+            return ((BaseData) data).getId();
+
         return id;
     }
 

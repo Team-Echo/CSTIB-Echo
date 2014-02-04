@@ -1,6 +1,6 @@
 package uk.ac.cam.echo.server.models;
 
-import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.PropertyUtils;
 import org.codehaus.jackson.annotate.JsonCreator;
 import uk.ac.cam.echo.server.HibernateUtil;
 
@@ -29,13 +29,16 @@ public class BaseModel {
         }
 
         for (String f: allowed) {
+            sanitizieLong(props, f);
             if (!props.containsKey(f))
                 continue;
             try {
-                BeanUtils.setProperty(this, f, props.get(f));
+                PropertyUtils.setProperty(this, f, props.get(f));
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
                 e.printStackTrace();
             }
         }

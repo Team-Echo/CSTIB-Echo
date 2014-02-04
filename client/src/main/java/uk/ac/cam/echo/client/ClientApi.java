@@ -13,20 +13,13 @@ import uk.ac.cam.echo.data.Conference;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.Message;
 import uk.ac.cam.echo.data.User;
-import uk.ac.cam.echo.data.async.Handler;
-import uk.ac.cam.echo.data.async.Subscription;
 import uk.ac.cam.echo.data.resources.ConferenceResource;
 import uk.ac.cam.echo.data.resources.ConversationResource;
-import uk.ac.cam.echo.data.resources.MessageResource;
 import uk.ac.cam.echo.data.resources.UserResource;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.util.List;
 
 
 public class ClientApi {
@@ -52,11 +45,11 @@ public class ClientApi {
 
     private Client client;
     private WebTarget server;
-    ClientApi(String address) {
+    public ClientApi(String address) {
         client = ClientBuilder.newClient();
         client.register(getJacksonProvider());
         client.register(SseFeature.class);
-        //client.register(LoggingFilter.class);
+//        client.register(LoggingFilter.class);
 
         server = client.target(address);
 
@@ -74,6 +67,7 @@ public class ClientApi {
     }
 
     public static void main(String[] args) {
+        /*
         ClientApi api = new ClientApi("http://localhost:8080");
         MessageResource msgRes = api.conversationResource.getMessageResource(1);
 
@@ -103,6 +97,6 @@ public class ClientApi {
                 e.printStackTrace();
             }
         }
-        System.exit(0);
+        System.exit(0);*/
     }
 }

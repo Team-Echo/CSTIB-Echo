@@ -11,6 +11,7 @@
     <module>data</module>
     <module>server</module>
       <module>client</module>
+      <module>text-client</module>
   </modules>
 
   <packaging>pom</packaging>

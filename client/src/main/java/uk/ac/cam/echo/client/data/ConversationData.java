@@ -1,5 +1,7 @@
 package uk.ac.cam.echo.client.data;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 import uk.ac.cam.echo.client.ProxyResource;
 import uk.ac.cam.echo.data.*;
 import uk.ac.cam.echo.data.resources.ConferenceResource;
@@ -21,29 +23,40 @@ public class ConversationData extends BaseData implements Conversation {
         this.name = name;
     }
 
+    @JsonIgnore
     public Conference getConference() {
         return conferenceProxy.getData();
     }
 
+    public Long getConferenceId() {
+        return conferenceProxy.getId();
+    }
+
+    @JsonProperty
     public void setConference(Conference data) {
         conferenceProxy.setData(data);
     }
 
+    @JsonProperty
     public void setConferenceId(long id) {
         conferenceProxy.setId(id);
     }
 
+
     @Override
+    @JsonIgnore
     public Set<Tag> getTags() {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
+    @JsonIgnore
     public List<Message> getMessages() {
         return getApi().conversationResource.getMessageResource(getId()).getAll();
     }
 
     @Override
+    @JsonIgnore
     public List<User> getUsers() {
         return (List<User>) getApi().conversationResource.getUsers(getId());
     }

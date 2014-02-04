@@ -19,7 +19,7 @@ public class MessageModel extends BaseModel implements Message {
 
     }
 
-    private static String[] allowed = {"contents", "senderId", "senderId"};
+    private static String[] allowed = {"contents", "senderId", "conversationId"};
     @JsonCreator
     public MessageModel(Map<String, Object> props) {
         super(props, allowed);
@@ -73,6 +73,11 @@ public class MessageModel extends BaseModel implements Message {
     public void setConversation(Conversation conversation) {
         this.conversation = conversation;
     }
+    public void setConversationId(Long  id) {
+        if (id != null) {
+            this.conversation = (Conversation) HibernateUtil.getSession().load(ConversationModel.class, id);
+        }
+    }
 
     public User getSender() {
         return sender;
@@ -82,7 +87,8 @@ public class MessageModel extends BaseModel implements Message {
         this.sender = sender;
     }
 
-    public void setSenderId(long id) {
-        this.sender = (User) HibernateUtil.getSession().load(UserModel.class, id);
+    public void setSenderId(Long id) {
+        if (id != null)
+            this.sender = (User) HibernateUtil.getSession().load(UserModel.class, id);
     }
 }

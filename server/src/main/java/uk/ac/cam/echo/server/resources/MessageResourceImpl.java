@@ -54,6 +54,7 @@ public class MessageResourceImpl implements MessageResource {
         msg.setTimeStamp(new Date().getTime());
 
         HibernateUtil.getTransaction().save(msg);
+        ConversationResourceImpl.broadcastMessage(msg);
         return msg;
     }
 
