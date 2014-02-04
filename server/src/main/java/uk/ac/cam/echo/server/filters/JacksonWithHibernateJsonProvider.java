@@ -15,17 +15,11 @@ import java.lang.reflect.Type;
 public class JacksonWithHibernateJsonProvider extends JacksonJaxbJsonProvider {
     @Override
     public void writeTo(Object value, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream) throws IOException {
+        HibernateUtil.getTransaction();
         super.writeTo(value, type, genericType, annotations, mediaType, httpHeaders, entityStream);
         closeHibernateSession();
     }
 
-    @Override
-    public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
-        boolean result =  super.isWriteable(type, genericType, annotations, mediaType);
-        if (!result)
-            closeHibernateSession();
-        return result;
-    }
 
     private void closeHibernateSession() {
         System.out.println("Closing session");

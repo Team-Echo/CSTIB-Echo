@@ -6,7 +6,6 @@ import uk.ac.cam.echo.data.User;
 import uk.ac.cam.echo.data.async.SubscriptionResource;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.Response;
 import java.util.Collection;
 
 @Path("/conversations")
@@ -16,8 +15,8 @@ public interface ConversationResource extends RestResource<Conversation> {
     public Collection<Conversation> getAll();
 
     @GET
-    @Path("/{conversationId}")
-    public Conversation get(@PathParam("conversationId") long id);
+    @Path("/{id}")
+    public Conversation get(@PathParam("id") long id);
 
     @GET
     @Path("/{conversationId}/users")

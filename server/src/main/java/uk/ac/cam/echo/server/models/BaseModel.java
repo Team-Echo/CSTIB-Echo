@@ -12,6 +12,10 @@ public class BaseModel {
         HibernateUtil.getTransaction().delete(this);
     }
 
+    public void save() {
+        HibernateUtil.getTransaction().save(this);
+    }
+
     public BaseModel() {
 
     }
