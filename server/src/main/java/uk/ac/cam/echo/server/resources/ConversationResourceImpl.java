@@ -46,6 +46,11 @@ public class ConversationResourceImpl implements ConversationResource {
         return Response.ok().build();
     }
 
+    public Response update(Conversation conversation) {
+        HibernateUtil.getTransaction().update(conversation);
+        return Response.ok().build();
+    }
+
     public static void broadcastMessage(Message m) {
         messagesSub.get(m.getConversation().getId()).broadcast(m);
     }

@@ -4,7 +4,6 @@ import uk.ac.cam.echo.data.Conference;
 import uk.ac.cam.echo.data.Conversation;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/conferences")
@@ -40,7 +39,4 @@ public interface ConferenceResource extends RestResource<Conference> {
     @POST
     public Conference create(@FormParam("name") String name);
 
-    @DELETE
-    @Path("/{conferenceId}")
-    public Response delete(@PathParam("conferenceId") long id);
 }
