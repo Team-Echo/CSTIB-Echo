@@ -22,10 +22,10 @@ public class BaseModel {
     @JsonCreator
     public BaseModel(Map<String, Object> props, String[] allowed) {
         // Update Method
-        if (props.containsKey("iD")) {
-            sanitizieLong(props, "iD");
+        if (props.containsKey("id") && props.get("id") != null) {
+            sanitizieLong(props, "id");
 
-            HibernateUtil.getTransaction().load(this, (Long) props.get("iD"));
+            HibernateUtil.getTransaction().load(this, (Long) props.get("id"));
         }
 
         for (String f: allowed) {

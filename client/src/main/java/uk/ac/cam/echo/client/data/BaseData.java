@@ -54,6 +54,7 @@ public abstract class BaseData {
 
     protected abstract void configureResource();
 
+    @JsonProperty("id")
     public Long getID() {
         return id;
     }
