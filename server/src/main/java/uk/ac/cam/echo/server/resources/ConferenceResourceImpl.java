@@ -54,6 +54,11 @@ public class ConferenceResourceImpl implements ConferenceResource {
         return conference;
     }
 
+    public Response update(Conference conference) {
+        HibernateUtil.getTransaction().update(conference);
+        return Response.ok().build();
+    }
+
     public Response delete(long id) {
         Conference u = get(id);
         HibernateUtil.getTransaction().delete(u);

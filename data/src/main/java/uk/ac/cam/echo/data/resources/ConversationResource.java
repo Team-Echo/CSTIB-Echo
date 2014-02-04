@@ -32,7 +32,4 @@ public interface ConversationResource extends RestResource<Conversation> {
     @POST
     public Conversation create(@FormParam("name") String name, @FormParam("conference") long conference_id);
 
-    @DELETE
-    @Path("/{conversationId}")
-    public Response delete(@PathParam("conversationId") long id);
 }

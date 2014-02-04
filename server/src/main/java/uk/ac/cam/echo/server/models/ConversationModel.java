@@ -1,17 +1,30 @@
 package uk.ac.cam.echo.server.models;
 
+import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import uk.ac.cam.echo.data.*;
+import uk.ac.cam.echo.server.HibernateUtil;
 import uk.ac.cam.echo.server.serializers.ConversationSerializer;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 @JsonSerialize(using = ConversationSerializer.class)
 @Entity
 @Table(name="Conversation")
 public class ConversationModel extends BaseModel implements Conversation {
+
+    public ConversationModel() {
+
+    }
+
+    private static String[] allowed = {"name", "conferenceId"};
+    @JsonCreator
+    public ConversationModel(Map<String, Object> props) {
+        super(props, allowed);
+    }
 
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="ConversationIdSeq")
@@ -97,6 +110,10 @@ public class ConversationModel extends BaseModel implements Conversation {
 
     public void setUsers(Set<User> users) {
         this.users = users;
+    }
+
+    public void setConferenceId(long id) {
+        setConference((Conference) HibernateUtil.getSession().load(ConferenceModel.class, id));
     }
 
 
