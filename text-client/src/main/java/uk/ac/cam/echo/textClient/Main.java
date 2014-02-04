@@ -2,8 +2,6 @@ package uk.ac.cam.echo.textClient;
 
 
 import uk.ac.cam.echo.client.ClientApi;
-import uk.ac.cam.echo.client.data.ConversationData;
-import uk.ac.cam.echo.client.data.MessageData;
 import uk.ac.cam.echo.data.Conference;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.Message;
@@ -13,6 +11,7 @@ import uk.ac.cam.echo.data.async.Subscription;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.util.List;
 
 public class Main {
     private static ClientApi api = new ClientApi("http://localhost:8080");
@@ -32,10 +31,8 @@ public class Main {
     private static void listenToInputs(Conversation conversation) {
         while (true) {
             String input = readline();
-            Message msg = new MessageData();
-            ((MessageData) msg).setConversation(conversation);
-            ((MessageData)msg).setApi(api);
-            ((MessageData) msg).setContents(input);
+            Message msg = api.newMessage(conversation);
+            msg.setContents(input);
             msg.save();
         }
     }
@@ -98,8 +95,7 @@ public class Main {
 
 
         if (conversation == null) {
-            conversation = new ConversationData();
-            ((ConversationData) conversation).setApi(api);
+            conversation = api.newConversation();
 
             conversation.setConference(conference);
             conversation.setName(input);
@@ -112,6 +108,17 @@ public class Main {
 
 
     private static Conference configureConference() {
-        return api.conferenceResource.getAll().get(0);
+        List<Conference> conferences = api.conferenceResource.getAll();
+        if (conferences.size() > 0)
+            return conferences.get(0);
+
+        System.out.print("Input conference name: ");
+        String name = readline();
+
+        Conference conference = api.newConference();
+        conference.setName(name);
+        conference.save();
+
+        return conference;
     }
 }

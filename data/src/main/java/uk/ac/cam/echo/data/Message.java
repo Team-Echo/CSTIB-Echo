@@ -7,4 +7,5 @@ public interface Message extends Base
     public User getSender();
     public Conversation getConversation();
     public String getContents();
+    public void setContents(String contents);
 }
