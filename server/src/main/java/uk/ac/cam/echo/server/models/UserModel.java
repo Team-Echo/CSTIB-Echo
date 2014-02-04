@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.util.Map;
 
 @Entity
-@Table(name="User")
+@Table(name="`User`")
 public class UserModel extends BaseModel implements User {
 
     public UserModel() {
