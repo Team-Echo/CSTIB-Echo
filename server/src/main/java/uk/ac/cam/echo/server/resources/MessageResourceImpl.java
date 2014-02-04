@@ -48,6 +48,15 @@ public class MessageResourceImpl implements MessageResource {
         return Response.ok().build();
     }
 
+    @Override
+    public Message create(Message data) {
+        MessageModel msg = (MessageModel) data;
+        msg.setTimeStamp(new Date().getTime());
+
+        HibernateUtil.getTransaction().save(msg);
+        return msg;
+    }
+
     public Response delete(long id) {
         Message u = get(id);
         HibernateUtil.getTransaction().delete(u);

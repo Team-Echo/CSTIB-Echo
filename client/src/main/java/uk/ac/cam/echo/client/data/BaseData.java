@@ -1,8 +1,11 @@
 package uk.ac.cam.echo.client.data;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import uk.ac.cam.echo.client.ClientApi;
 import uk.ac.cam.echo.data.resources.RestResource;
+
+import java.util.Map;
 
 public abstract class BaseData {
     private Long id = null;
@@ -13,7 +16,15 @@ public abstract class BaseData {
         if (hasId()) {
             getResource().update(this);
         } else {
-            // TODO
+            Map<String, Object> result = (Map) getResource().create(this);
+            for (String key: result.keySet()) {
+                try {
+                    BeanUtils.setProperty(this, key, result.get(key));
+                } catch (Exception e) {
+                   // Just Ignore
+                }
+
+            }
         }
     }
 
@@ -42,10 +53,15 @@ public abstract class BaseData {
 
     protected abstract void configureResource();
 
+    public Long getID() {
+        return id;
+    }
 
+    @JsonIgnore
     public long getId() {
         return id;
     }
+
     public boolean hasId() {
         return id != null;
     }

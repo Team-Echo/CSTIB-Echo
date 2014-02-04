@@ -12,9 +12,6 @@ public interface UserResource extends RestResource<User>{
     @GET
     public List<User> getAll();
 
-    @POST
-    public User create(@FormParam("username") String username, @FormParam("currentConversationId") Long id);
-
     @GET
     @Path("/{id}")
     public User get(@PathParam("id") long id);
@@ -22,4 +19,8 @@ public interface UserResource extends RestResource<User>{
     @PUT
     @Consumes("application/json")
     public Response update(User item);
+
+    @POST
+    @Consumes("application/json")
+    public User create (User data);
 }

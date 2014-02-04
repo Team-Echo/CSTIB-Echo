@@ -15,5 +15,10 @@ public interface RestResource<T> extends Resource {
     @PUT
     @Consumes("application/json")
     public Response update(T item);
+
+
+    @POST
+    @Consumes("application/json")
+    public Object create (T data);
 //    public T create(T item);
 }

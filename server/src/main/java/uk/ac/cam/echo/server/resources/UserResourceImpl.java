@@ -29,6 +29,10 @@ public class UserResourceImpl implements UserResource {
         return user;
     }
 
+    public User create(User user) {
+        HibernateUtil.getTransaction().save(user);
+        return user;
+    }
     public Response update(User item) {
         HibernateUtil.getTransaction().update(item);
         return Response.ok().build();

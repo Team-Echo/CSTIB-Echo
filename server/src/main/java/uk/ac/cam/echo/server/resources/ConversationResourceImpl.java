@@ -40,6 +40,8 @@ public class ConversationResourceImpl implements ConversationResource {
         return conversation;
     }
 
+
+
     public Response delete(long id) {
         Conversation u = get(id);
         HibernateUtil.getTransaction().delete(u);
@@ -49,6 +51,12 @@ public class ConversationResourceImpl implements ConversationResource {
     public Response update(Conversation conversation) {
         HibernateUtil.getTransaction().update(conversation);
         return Response.ok().build();
+    }
+
+    @Override
+    public Conversation create(Conversation data) {
+        HibernateUtil.getTransaction().save(data);
+        return data;
     }
 
     public static void broadcastMessage(Message m) {

@@ -11,6 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConferenceResourceImpl implements ConferenceResource {
+    @Override
+    public Conference create(Conference data) {
+        HibernateUtil.getTransaction().save(data);
+
+        return data;
+    }
+
     public List<Conference> getAll() {
         return HibernateUtil.getTransaction().createCriteria(ConferenceModel.class).list();
     }
@@ -44,14 +51,6 @@ public class ConferenceResourceImpl implements ConferenceResource {
 
     public Conference get(long id) {
         return (Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, id);
-    }
-
-    public Conference create(String name) {
-        ConferenceModel conference = new ConferenceModel();
-        conference.setName(name);
-
-        HibernateUtil.getTransaction().save(conference);
-        return conference;
     }
 
     public Response update(Conference conference) {

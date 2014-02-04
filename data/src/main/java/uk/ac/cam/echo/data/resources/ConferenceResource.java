@@ -4,6 +4,7 @@ import uk.ac.cam.echo.data.Conference;
 import uk.ac.cam.echo.data.Conversation;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/conferences")
@@ -36,7 +37,14 @@ public interface ConferenceResource extends RestResource<Conference> {
     @Path("/{conferenceId}/conversations")
     public List<Conversation> getConversations(@PathParam("conferenceId") long id);
 
+
+    @PUT
+    @Consumes("application/json")
+    public Response update(Conference item);
+
+
     @POST
-    public Conference create(@FormParam("name") String name);
+    @Consumes("application/json")
+    public Object create (Conference data);
 
 }
