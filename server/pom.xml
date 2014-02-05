@@ -39,6 +39,13 @@
             <version>1.9.1</version>
         </dependency>
 
+        <!-- Hunspell BridJ !-->
+        <dependency>
+            <groupId>com.atlascopco</groupId>
+            <artifactId>hunspell-bridj</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
