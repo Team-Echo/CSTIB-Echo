@@ -1,5 +1,6 @@
 CSTIB-Echo
 ==========
+[![Build Status](https://magnum.travis-ci.com/PetarV-/CSTIB-Echo.png?token=f8DsUwQyGsdjFwJspyzQ&branch=master)](https://magnum.travis-ci.com/PetarV-/CSTIB-Echo)
 
 *Client: Catherine White, [BT](http://www.bt.com) \([catherine.white@bt.com](catherine.white@bt.com)\)*
 
