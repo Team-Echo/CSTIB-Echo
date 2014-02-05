@@ -27,7 +27,7 @@ public class SpellCheckerTest
     @After
     public void tearDown() throws Exception
     {
-        // NOP
+        checker.kill();
     }
 
     @Test

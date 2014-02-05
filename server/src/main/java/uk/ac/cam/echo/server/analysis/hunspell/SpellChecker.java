@@ -49,4 +49,9 @@ public class SpellChecker
         }
     }
 
+    public void kill()
+    {
+        speller.close();
+    }
+
 }
