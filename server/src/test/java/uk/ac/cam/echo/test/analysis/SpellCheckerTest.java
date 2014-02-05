@@ -6,6 +6,7 @@ import org.junit.Test;
 import uk.ac.cam.echo.server.analysis.hunspell.SpellChecker;
 
 import java.io.File;
+import java.net.URL;
 
 /**
  * Created by PetarV on 2/5/14.
@@ -19,8 +20,8 @@ public class SpellCheckerTest
     @Before
     public void setUp() throws Exception
     {
-        String dictionary = "/Users/PetarV/Desktop/CSTIB-Echo/server/target/test-classes/dictionaries/en_GB/en_GB.dic";
-        String affix =  "/Users/PetarV/Desktop/CSTIB-Echo/server/target/test-classes/dictionaries/en_GB/en_GB.aff";
+        String dictionary = this.getClass().getResource("/dictionaries/en_GB/en_GB.dic").getPath();
+        String affix = this.getClass().getResource("/dictionaries/en_GB/en_GB.aff").getPath();
         checker = new SpellChecker(dictionary, affix);
     }
 
