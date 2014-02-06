@@ -5,8 +5,6 @@ import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.User;
 import uk.ac.cam.echo.data.resources.ConferenceResource;
 import uk.ac.cam.echo.server.HibernateUtil;
-import uk.ac.cam.echo.server.analysis.DataAnalyst;
-import uk.ac.cam.echo.server.analysis.ServerDataAnalyst;
 import uk.ac.cam.echo.server.models.ConferenceModel;
 
 import javax.ws.rs.core.Response;
@@ -14,12 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConferenceResourceImpl implements ConferenceResource {
-    private ServerDataAnalyst analyst = null;
 
     @Override
     public Conference create(Conference data) {
         HibernateUtil.getTransaction().save(data);
-        analyst = new DataAnalyst(data);
+
         return data;
     }
 
@@ -34,27 +31,27 @@ public class ConferenceResourceImpl implements ConferenceResource {
     }
 
     @Override
-    public List<Conversation> search(String keyword, int n) {
+    public List<Conversation> search(long id, String keyword, int n) {
         throw  new UnsupportedOperationException("Not Implemented yet");
     }
 
     @Override
-    public List<Conversation> onlyTagSearch(String keyword, int n) {
-        return analyst.onlyTagSearch(keyword, n);
+    public List<Conversation> onlyTagSearch(long id, String keyword, int n) {
+        return AnalystFactory.get(id).onlyTagSearch(keyword, n);
     }
 
     @Override
-    public List<Conversation> mostUsers(int n) {
-        return analyst.mostUsers(n);
+    public List<Conversation> mostUsers(long id, int n) {
+        return AnalystFactory.get(id).mostUsers(n);
     }
 
     @Override
-    public List<Conversation> mostActiveRecently(long minutes, int n) {
-        return analyst.mostActiveRecently(minutes, n);
+    public List<Conversation> mostActiveRecently(long id, long minutes, int n) {
+        return AnalystFactory.get(id).mostActiveRecently(minutes, n);
     }
 
     @Override
-    public List<Conversation> recommend(User user, int n) {
+    public List<Conversation> recommend(long id, long userID, int n) {
         throw  new UnsupportedOperationException("Not Implemented yet");
     }
 
