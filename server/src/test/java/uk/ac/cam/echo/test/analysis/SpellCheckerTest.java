@@ -16,6 +16,8 @@ public class SpellCheckerTest
     private SpellChecker checker;
     private String[] words = new String[]
                     {"teh", "quic", "brown", "foxx", "jmps", "overe", "the", "lzy", "dog"};
+    private String[] correctWords = new String[]
+                    {"the", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog"};
 
     @Before
     public void setUp() throws Exception
@@ -37,6 +39,7 @@ public class SpellCheckerTest
         for (int i=0;i<words.length;i++)
         {
             System.out.println(checker.correct(words[i]));
+            assert(checker.correct(words[i]).equals(correctWords[i]));
         }
     }
 
