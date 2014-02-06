@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package uk.ac.cam.echo.TouchClient;
 
 import java.io.IOException;
@@ -15,7 +9,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- *
+ *the main class tha provides connections between classes and stores information about the Conference for both back and front ends to use 
+ * 
  * @author Philip
  */
 public class TouchClient extends Application {
@@ -25,9 +20,15 @@ public class TouchClient extends Application {
     private Integer port = null;
     private Integer confrenceID = null;
     private String url = null;
+    private GUIController mGUI = null; 
     
     public TouchClient(){}
     
+    /**
+     * function loads the first gui to input the conference details
+     * @param primaryStage the stage that the application runs in
+     * @throws IOException if the FXML file cant be found
+     */
     @Override
     public void start(Stage primaryStage) throws IOException {
         ECHOResource echoresource = new ECHOResource(this); 
@@ -47,6 +48,12 @@ public class TouchClient extends Application {
             return confrenceName;
         }
     }
+    /**
+     * to connect need ether this or the ip of the server
+     * 
+     * @return the url of the Conference if there is one
+     * @throws NotInstantiatedYetException if it has not been set yet this exception is thrown
+     */
     public String getConfrenceURL() throws NotInstantiatedYetException{
         if (url==null){
             throw new NotInstantiatedYetException();
@@ -54,6 +61,12 @@ public class TouchClient extends Application {
             return url;
         }
     }
+    /**
+     * to connect need this or the url of the server
+     * 
+     * @return the ip of the Conference if there is one
+     * @throws NotInstantiatedYetException if i has not been set yet this exception is thrown
+     */
     public int getConfrenceIP() throws NotInstantiatedYetException{
         if (ip==null){
             throw new NotInstantiatedYetException();
@@ -75,9 +88,27 @@ public class TouchClient extends Application {
             return confrenceID.intValue();
         }
     }
+    public GUIController getGUI() throws NotInstantiatedYetException{
+        if (mGUI==null){
+            throw new NotInstantiatedYetException();
+        }else{
+            return mGUI;
+        }
+    }
     
+    /**
+     * 
+     * @param name the name of the Conference
+     */
     public void setConfrenceName(String name){
         confrenceName = name;
+    }
+    /**
+     * 
+     * @param gui the guicontroller class must be given so the server connection can give it messages
+     */
+    public void setGUI(GUIController gui){
+        mGUI=gui;
     }
     public void setConfrenceIP(int serverip){
         ip = Integer.valueOf(serverip);
@@ -101,7 +132,7 @@ public class TouchClient extends Application {
         launch(args);
     }
 
-    void setConfrenceURL(String text) {
+    public void setConfrenceURL(String text) {
         url = text;
     }
     

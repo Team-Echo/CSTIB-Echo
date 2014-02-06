@@ -11,6 +11,8 @@ package uk.ac.cam.echo.TouchClient;
  * @author Philip
  */
 class Delta {
+    public boolean pressed = false;
+    public int id;
     public double x;
     public double y;
 }

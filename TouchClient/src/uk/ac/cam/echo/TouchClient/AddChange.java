@@ -12,7 +12,8 @@ import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
 
 /**
- *
+ *a class that represents an change to a observable list where something has been added
+ * 
  * @author Philip
  */
 public class AddChange<T> extends Change{

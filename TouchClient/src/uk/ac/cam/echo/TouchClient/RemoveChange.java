@@ -12,8 +12,10 @@ import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
 
 /**
- *
+ *a class that represents an change to a observable list where something has been removed
+ * 
  * @author Philip
+ * @param <T> The type of the list contents
  */
 public class RemoveChange<T> extends Change<String>{
 

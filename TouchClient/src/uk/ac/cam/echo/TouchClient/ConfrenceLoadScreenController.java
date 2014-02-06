@@ -6,7 +6,10 @@
 
 package uk.ac.cam.echo.TouchClient;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -120,7 +123,7 @@ public class ConfrenceLoadScreenController implements Initializable {
                 
                 Parent root = null;
                 try {
-                    root = FXMLLoader.load(getClass().getResource("GUI.fxml"));
+                    root = FXMLLoader.load(getClass().getResource("GUI.fxml"),er);
                 } catch (IOException ex) {
                     Logger.getLogger(ConfrenceLoadScreenController.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -139,16 +142,31 @@ public class ConfrenceLoadScreenController implements Initializable {
                     error_message.setText("The inputted values are incorrect or incomplete");  return;
                 }
                 
-                //TODO: this is where the connect to server statement goes
-        
-                stage.setTitle("ECHO");
+                ServerConnection sc = new ServerConnection(er.getTouchClient());
+                (new Thread(sc)).start();
+                try {
+                    stage.setTitle(er.getTouchClient().getConfrenceName());
+                } catch (NotInstantiatedYetException ex) {
+                    stage.setTitle("ECHO");
+                }
                 stage.setFullScreen(true);
                 stage.setScene(scene);
                 stage.show();
             }});
       }
       private void load(File f){
-          //TODO: needs to set all the text fields from the loded file
+        try {
+            BufferedReader in = new BufferedReader(new FileReader(f));
+            Confrence_Name_textfield.setText(in.readLine());
+            radio_button_url.fire();
+            textfield_url.setText(in.readLine());
+            Confrence_ID_textfield.setText(in.readLine());
+            Launch_button.fire();
+        } catch (FileNotFoundException ex) {
+            error_message.setText("The file could not be found");
+        } catch (IOException ex) {
+            error_message.setText("The file could not be Read from");
+        }
       }
       private int ip() throws InvalidServerCredentialsIPException{
           int ip,ip1,ip2,ip3,ip4;

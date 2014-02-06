@@ -19,7 +19,8 @@ import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
 
 /**
- *
+ *a class that implements the ObservableList interface so that messages can be stored and passed tot the list view
+ * 
  * @author Philip
  * @param <T> the type of the list members
  */

@@ -10,7 +10,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ *a test class that inputs some dummy data for the touch client
+ * 
  * @author Philip
  */
 public class MessageTest implements Runnable{
