@@ -11,6 +11,8 @@
     <module>data</module>
     <module>server</module>
       <module>client</module>
+      <module>text-client</module>
+      <module>HunspellBridJ-master</module>
   </modules>
 
   <packaging>pom</packaging>

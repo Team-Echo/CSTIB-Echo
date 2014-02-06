@@ -15,9 +15,15 @@ import java.lang.reflect.Type;
 public class JacksonWithHibernateJsonProvider extends JacksonJaxbJsonProvider {
     @Override
     public void writeTo(Object value, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream) throws IOException {
-        super.writeTo(value, type, genericType, annotations, mediaType, httpHeaders, entityStream);
-        closeHibernateSession();
+        try {
+            HibernateUtil.getTransaction();
+            super.writeTo(value, type, genericType, annotations, mediaType, httpHeaders, entityStream);
+            closeHibernateSession();
+        } catch(Throwable plm) {
+            plm.printStackTrace();
+        }
     }
+
 
     private void closeHibernateSession() {
         System.out.println("Closing session");

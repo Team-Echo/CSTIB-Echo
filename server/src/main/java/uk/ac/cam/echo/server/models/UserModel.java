@@ -1,13 +1,26 @@
 package uk.ac.cam.echo.server.models;
 
+import org.codehaus.jackson.annotate.JsonCreator;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.User;
+import uk.ac.cam.echo.server.HibernateUtil;
 
 import javax.persistence.*;
+import java.util.Map;
 
 @Entity
-@Table(name="User")
-public class UserModel implements User {
+@Table(name="`User`")
+public class UserModel extends BaseModel implements User {
+
+    public UserModel() {
+
+    }
+
+    private static String[] allowed = {"username", "currentConversationId"};
+    @JsonCreator
+    public UserModel(Map<String, Object> props) {
+        super(props, allowed);
+    }
 
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="UserIdSeq")
@@ -42,5 +55,9 @@ public class UserModel implements User {
 
     public void setCurrentConversation(Conversation currentConversation) {
         this.currentConversation = currentConversation;
+    }
+
+    public void setCurrentConversationId(long id) {
+        setCurrentConversation((Conversation) HibernateUtil.getSession().load(ConversationModel.class, id));
     }
 }

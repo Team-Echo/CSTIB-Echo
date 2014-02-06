@@ -2,7 +2,7 @@ package uk.ac.cam.echo.data;
 
 import java.util.Collection;
 
-public interface Conversation
+public interface Conversation extends Base
 {
     public long getId();
     public String getName();

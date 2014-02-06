@@ -13,13 +13,14 @@ public interface MessageResource extends RestResource<Message>{
     public List<Message> getAll();
 
     @GET
-    @Path("/{messageId}")
-    public Message get(@PathParam("messageId") long id);
+    @Path("/{id}")
+    public Message get(@PathParam("id") long id);
+
+    @PUT
+    @Consumes("application/json")
+    public Response update(Message item);
 
     @POST
-    public Message create(@FormParam("name") String name, @FormParam("sender") long user_id);
-
-    @DELETE
-    @Path("/{messageId}")
-    public Response deleteMessage(@PathParam("messageId") long id);
+    @Consumes("application/json")
+    public Object create (Message data);
 }

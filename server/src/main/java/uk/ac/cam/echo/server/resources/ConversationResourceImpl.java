@@ -40,10 +40,23 @@ public class ConversationResourceImpl implements ConversationResource {
         return conversation;
     }
 
-    public Response deleteConversation(long id) {
+
+
+    public Response delete(long id) {
         Conversation u = get(id);
         HibernateUtil.getTransaction().delete(u);
         return Response.ok().build();
+    }
+
+    public Response update(Conversation conversation) {
+        HibernateUtil.getTransaction().update(conversation);
+        return Response.ok().build();
+    }
+
+    @Override
+    public Conversation create(Conversation data) {
+        HibernateUtil.getTransaction().save(data);
+        return data;
     }
 
     public static void broadcastMessage(Message m) {

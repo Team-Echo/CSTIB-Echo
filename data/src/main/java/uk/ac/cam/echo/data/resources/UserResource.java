@@ -13,13 +13,14 @@ public interface UserResource extends RestResource<User>{
     public List<User> getAll();
 
     @GET
-    @Path("/{userId}")
-    public User get(@PathParam("userId") long id);
+    @Path("/{id}")
+    public User get(@PathParam("id") long id);
+
+    @PUT
+    @Consumes("application/json")
+    public Response update(User item);
 
     @POST
-    public User create(@FormParam("username") String username, @FormParam("currentConversationId") Long id);
-
-    @DELETE
-    @Path("/{userId}")
-    public Response deleteUser(@PathParam("userId") long id);
+    @Consumes("application/json")
+    public User create (User data);
 }

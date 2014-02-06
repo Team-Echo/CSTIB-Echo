@@ -2,6 +2,7 @@ package uk.ac.cam.echo.server.resources;
 
 import uk.ac.cam.echo.data.Conference;
 import uk.ac.cam.echo.data.Conversation;
+import uk.ac.cam.echo.data.User;
 import uk.ac.cam.echo.data.resources.ConferenceResource;
 import uk.ac.cam.echo.server.HibernateUtil;
 import uk.ac.cam.echo.server.models.ConferenceModel;
@@ -11,6 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConferenceResourceImpl implements ConferenceResource {
+
+    @Override
+    public Conference create(Conference data) {
+        HibernateUtil.getTransaction().save(data);
+
+        return data;
+    }
+
     public List<Conference> getAll() {
         return HibernateUtil.getTransaction().createCriteria(ConferenceModel.class).list();
     }
@@ -22,22 +31,27 @@ public class ConferenceResourceImpl implements ConferenceResource {
     }
 
     @Override
-    public List<Conversation> search(String keyword, int n) {
+    public List<Conversation> search(long id, String keyword, int n) {
         throw  new UnsupportedOperationException("Not Implemented yet");
     }
 
     @Override
-    public List<Conversation> onlyTagSearch(String keyword, int n) {
-        throw  new UnsupportedOperationException("Not Implemented yet");
+    public List<Conversation> onlyTagSearch(long id, String keyword, int n) {
+        return AnalystFactory.get(id).onlyTagSearch(keyword, n);
     }
 
     @Override
-    public List<Conversation> mostUsers(int n) {
-        throw  new UnsupportedOperationException("Not Implemented yet");
+    public List<Conversation> mostUsers(long id, int n) {
+        return AnalystFactory.get(id).mostUsers(n);
     }
 
     @Override
-    public List<Conversation> mostActiveRecently(int minutes, int n) {
+    public List<Conversation> mostActiveRecently(long id, long minutes, int n) {
+        return AnalystFactory.get(id).mostActiveRecently(minutes, n);
+    }
+
+    @Override
+    public List<Conversation> recommend(long id, long userID, int n) {
         throw  new UnsupportedOperationException("Not Implemented yet");
     }
 
@@ -45,15 +59,12 @@ public class ConferenceResourceImpl implements ConferenceResource {
         return (Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, id);
     }
 
-    public Conference create(String name) {
-        ConferenceModel conference = new ConferenceModel();
-        conference.setName(name);
-
-        HibernateUtil.getTransaction().save(conference);
-        return conference;
+    public Response update(Conference conference) {
+        HibernateUtil.getTransaction().update(conference);
+        return Response.ok().build();
     }
 
-    public Response deleteConference(long id) {
+    public Response delete(long id) {
         Conference u = get(id);
         HibernateUtil.getTransaction().delete(u);
         return Response.ok().build();

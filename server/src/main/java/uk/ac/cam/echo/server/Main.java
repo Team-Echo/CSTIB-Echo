@@ -1,13 +1,26 @@
 package uk.ac.cam.echo.server;
 
+import org.codehaus.jackson.Version;
+import org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.module.SimpleModule;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.CommonProperties;
 import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.media.sse.SseFeature;
 import org.glassfish.jersey.server.ResourceConfig;
+import uk.ac.cam.echo.data.Conference;
+import uk.ac.cam.echo.data.Conversation;
+import uk.ac.cam.echo.data.Message;
+import uk.ac.cam.echo.data.User;
 import uk.ac.cam.echo.server.filters.HibernateRequestFilter;
+import uk.ac.cam.echo.server.filters.HibernateResponseFilter;
 import uk.ac.cam.echo.server.filters.JacksonWithHibernateJsonProvider;
+import uk.ac.cam.echo.server.models.ConferenceModel;
+import uk.ac.cam.echo.server.models.ConversationModel;
+import uk.ac.cam.echo.server.models.MessageModel;
+import uk.ac.cam.echo.server.models.UserModel;
 import uk.ac.cam.echo.server.resources.ConferenceResourceImpl;
 import uk.ac.cam.echo.server.resources.ConversationResourceImpl;
 import uk.ac.cam.echo.server.resources.MessageResourceImpl;
@@ -38,6 +51,22 @@ public class Main {
         }
         return UriBuilder.fromUri("http://0.0.0.0/").port(port).build();
     }
+
+    private static JacksonJaxbJsonProvider getJsonProvider() {
+        ObjectMapper mapper = new ObjectMapper();
+        SimpleModule testModule = new SimpleModule("testModule", new Version(1,0,0,null))
+                .addAbstractTypeMapping(Conference.class, ConferenceModel.class)
+                .addAbstractTypeMapping(Conversation.class, ConversationModel.class)
+                .addAbstractTypeMapping(Message.class, MessageModel.class)
+                .addAbstractTypeMapping(User.class, UserModel.class);
+
+        mapper.registerModule(testModule);
+
+        JacksonJaxbJsonProvider provider = new JacksonWithHibernateJsonProvider();
+        provider.setMapper(mapper);
+        return provider;
+    }
+
     public static HttpServer startServer() {
         // create a resource config that scans for JAX-RS resources and providers
         // in uk.ac.cam.echo package
@@ -50,10 +79,11 @@ public class Main {
         rc.register(ConferenceResourceImpl.class);
 
         rc.register(HibernateRequestFilter.class);
+        rc.register(HibernateResponseFilter.class);
         final String disableMoxy = CommonProperties.MOXY_JSON_FEATURE_DISABLE + '.'
                 + rc.getRuntimeType().name().toLowerCase();
         rc.property(disableMoxy, true);
-        rc.register(JacksonWithHibernateJsonProvider.class);
+        rc.register(getJsonProvider());
 
 
         rc.register(LoggingFilter.class);

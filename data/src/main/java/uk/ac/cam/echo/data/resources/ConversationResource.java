@@ -16,8 +16,8 @@ public interface ConversationResource extends RestResource<Conversation> {
     public Collection<Conversation> getAll();
 
     @GET
-    @Path("/{conversationId}")
-    public Conversation get(@PathParam("conversationId") long id);
+    @Path("/{id}")
+    public Conversation get(@PathParam("id") long id);
 
     @GET
     @Path("/{conversationId}/users")
@@ -29,10 +29,13 @@ public interface ConversationResource extends RestResource<Conversation> {
     @Path("/{conversationId}/messages")
     public MessageResource getMessageResource(@PathParam("conversationId") long id);
 
-    @POST
-    public Conversation create(@FormParam("name") String name, @FormParam("conference") long conference_id);
+    @PUT
+    @Consumes("application/json")
+    public Response update(Conversation item);
 
-    @DELETE
-    @Path("/{conversationId}")
-    public Response deleteConversation(@PathParam("conversationId") long id);
+
+    @POST
+    @Consumes("application/json")
+    public Object create (Conversation data);
+
 }
