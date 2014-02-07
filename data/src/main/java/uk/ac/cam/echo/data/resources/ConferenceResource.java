@@ -26,6 +26,10 @@ public interface ConferenceResource extends RestResource<Conference> {
     @GET
     public List<Conversation> onlyTagSearch(@PathParam("conferenceId") long id, @QueryParam("keyword") String keyword, @QueryParam("num") int n);
 
+    @Path("/{conferenceId}/name-search")
+    @GET
+    public List<Conversation> onlyNameSearch(@PathParam("conferenceId") long id, @QueryParam("keyword") String keyword, @QueryParam("num") int n);
+
     @Path("/{conferenceId}/most-users")
     @GET
     public List<Conversation> mostUsers(@PathParam("conferenceId") long id, @QueryParam("num") int n);

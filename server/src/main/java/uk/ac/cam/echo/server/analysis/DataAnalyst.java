@@ -76,6 +76,25 @@ public class DataAnalyst implements ServerDataAnalyst
     }
 
     @Override
+    public List<Conversation> onlyNameSearch(String keyword, int n)
+    {
+        List<Conversation> ret = new LinkedList<Conversation>();
+        Collection<Conversation> conversations = parentConference.getConversationSet();
+
+        for (Conversation C : conversations)
+        {
+            if (C.getName().contains(keyword))
+            {
+                ret.add(C);
+                if (ret.size() == n) break;
+            }
+        }
+
+        return ret;
+    }
+
+
+    @Override
     public List<Conversation> mostUsers(int n)
     {
         List<Conversation> ret = new LinkedList<Conversation>();
