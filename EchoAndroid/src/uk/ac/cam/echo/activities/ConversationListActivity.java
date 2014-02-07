@@ -2,6 +2,7 @@ package uk.ac.cam.echo.activities;
 
 import uk.ac.cam.echo.R;
 import uk.ac.cam.echo.Toaster;
+import uk.ac.cam.echo.fragments.AddConversationDialog;
 import uk.ac.cam.echo.fragments.ConversationDialog;
 import uk.ac.cam.echo.fragments.ConversationListFragment;
 import uk.ac.cam.echo.fragments.ConversationListFragment.Communicator;
@@ -82,6 +83,9 @@ public class ConversationListActivity extends Activity implements Communicator {
 	        case R.id.action_scan:
 	            openScan();
 	            return true;
+	        case R.id.action_add_conv:
+	        	addConversation();
+	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
@@ -94,6 +98,11 @@ public class ConversationListActivity extends Activity implements Communicator {
 	
 	private void openSearch() {
 		// TODO: search client api call
+	}
+	
+	private void addConversation() {
+		AddConversationDialog addDialog = AddConversationDialog.newInstance();
+		addDialog.show(manager, "add_conv");
 	}
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {

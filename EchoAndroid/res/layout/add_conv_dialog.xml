@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <EditText
+        android:id="@+id/convTitle"
+        android:hint="@string/convTitleInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:ems="10"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        android:imeOptions="actionNext"
+	    android:singleLine="true"
+         >
+
+        <requestFocus />
+    </EditText>
+
+	<EditText
+	    android:id="@+id/convTags"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentRight="true"
+	    android:layout_below="@+id/convTitle"
+	    android:ems="10"
+	    android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        android:singleLine="true"
+	    android:imeOptions="actionDone"
+	    android:hint="@string/convTagsInput" />
+
+	<Button
+	    android:id="@+id/addButton"
+	    android:background="@color/buttonBackground"
+	    android:textColor="@color/white"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignLeft="@+id/convTags"
+	    android:layout_alignRight="@+id/convTags"
+	    android:layout_below="@+id/convTags"
+	    android:layout_margin="5dp"
+	    android:text="@string/addConversation" />
+    
+</RelativeLayout>

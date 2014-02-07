@@ -15,5 +15,8 @@
     <string name="title_activity_conversation_detail">ConversationDetailActivity</string>
     <string name="join">Join</string>
     <string name="inputMessage">Write a message</string>
+    <string name="convTitleInput">Title</string>
+    <string name="convTagsInput">Tags</string>
+    <string name="addConversation">Add conversation</string>
 
 </resources>
