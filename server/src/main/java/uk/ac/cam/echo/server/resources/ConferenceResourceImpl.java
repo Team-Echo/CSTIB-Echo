@@ -2,7 +2,6 @@ package uk.ac.cam.echo.server.resources;
 
 import uk.ac.cam.echo.data.Conference;
 import uk.ac.cam.echo.data.Conversation;
-import uk.ac.cam.echo.data.User;
 import uk.ac.cam.echo.data.resources.ConferenceResource;
 import uk.ac.cam.echo.server.HibernateUtil;
 import uk.ac.cam.echo.server.models.ConferenceModel;
@@ -38,6 +37,11 @@ public class ConferenceResourceImpl implements ConferenceResource {
     @Override
     public List<Conversation> onlyTagSearch(long id, String keyword, int n) {
         return AnalystFactory.get(id).onlyTagSearch(keyword, n);
+    }
+
+    @Override
+    public List<Conversation> onlyNameSearch(long id, String keyword, int n) {
+        return AnalystFactory.get(id).onlyNameSearch(keyword, n);
     }
 
     @Override

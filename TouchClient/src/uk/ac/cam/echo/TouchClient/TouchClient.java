@@ -9,14 +9,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- *the main class tha provides connections between classes and stores information about the Conference for both back and front ends to use 
+ *the main class that provides connections between classes and stores information about the Conference for both back and front ends to use 
  * 
  * @author Philip
  */
 public class TouchClient extends Application {
     
     private String confrenceName = null;
-    private Integer ip = null;
+    private String ip = null;
     private Integer port = null;
     private Integer confrenceID = null;
     private String url = null;
@@ -67,20 +67,14 @@ public class TouchClient extends Application {
      * @return the ip of the Conference if there is one
      * @throws NotInstantiatedYetException if i has not been set yet this exception is thrown
      */
-    public int getConfrenceIP() throws NotInstantiatedYetException{
+    public String getConfrenceIP() throws NotInstantiatedYetException{
         if (ip==null){
             throw new NotInstantiatedYetException();
         }else{
-            return ip.intValue();
+            return ("http://").concat(ip.concat(Integer.toString(port)));
         }
     }
-    public int getConfrencePort() throws NotInstantiatedYetException{
-        if (port==null){
-            throw new NotInstantiatedYetException();
-        }else{
-            return port.intValue();
-        }
-    }
+    
     public int getConfrenceID() throws NotInstantiatedYetException{
         if (confrenceID==null){
             throw new NotInstantiatedYetException();
@@ -110,8 +104,8 @@ public class TouchClient extends Application {
     public void setGUI(GUIController gui){
         mGUI=gui;
     }
-    public void setConfrenceIP(int serverip){
-        ip = Integer.valueOf(serverip);
+    public void setConfrenceIP(String serverip){
+        ip = serverip;
     }
     public void setConfrencePort(int serverport){
         port = Integer.valueOf(serverport);

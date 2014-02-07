@@ -33,6 +33,7 @@ public class DataAnalyst implements ServerDataAnalyst
     @Override
     public List<Conversation> onlyTagSearch(String keyword, int n)
     {
+        keyword = keyword.toLowerCase(Locale.ENGLISH);
         List<Conversation> ret = new LinkedList<Conversation>();
 
         List<Conversation> matchesByName = new LinkedList<Conversation>();
@@ -42,13 +43,13 @@ public class DataAnalyst implements ServerDataAnalyst
 
         for (Conversation C : conversations)
         {
-            if (C.getName().contains(keyword)) matchesByName.add(C);
+            if (C.getName().toLowerCase(Locale.ENGLISH).contains(keyword)) matchesByName.add(C);
             else
             {
                 Collection<Tag> tags = C.getTags();
                 for (Tag t : tags)
                 {
-                    if (t.getName().contains(keyword))
+                    if (t.getName().toLowerCase(Locale.ENGLISH).contains(keyword))
                     {
                         matchesByTag.add(C);
                         break;
@@ -74,6 +75,26 @@ public class DataAnalyst implements ServerDataAnalyst
 
         return ret;
     }
+
+    @Override
+    public List<Conversation> onlyNameSearch(String keyword, int n)
+    {
+        keyword = keyword.toLowerCase(Locale.ENGLISH);
+        List<Conversation> ret = new LinkedList<Conversation>();
+        Collection<Conversation> conversations = parentConference.getConversationSet();
+
+        for (Conversation C : conversations)
+        {
+            if (C.getName().toLowerCase(Locale.ENGLISH).contains(keyword))
+            {
+                ret.add(C);
+                if (ret.size() == n) break;
+            }
+        }
+
+        return ret;
+    }
+
 
     @Override
     public List<Conversation> mostUsers(int n)
