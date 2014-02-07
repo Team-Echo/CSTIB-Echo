@@ -46,6 +46,7 @@ public class ConversationListActivity extends Activity implements Communicator {
             clf.setCommunicator(this);
             
             handleIntent(getIntent());
+            Log.d("SEARCH","List Activity onCreate");
             
     }
 	
@@ -110,6 +111,7 @@ public class ConversationListActivity extends Activity implements Communicator {
 	
 	@Override
 	protected void onNewIntent(Intent intent) {
+		Log.d("SEARCH", "onNewIntent");
 	    setIntent(intent);
 	    handleIntent(intent);
 	}
@@ -117,19 +119,9 @@ public class ConversationListActivity extends Activity implements Communicator {
 	private void handleIntent(Intent intent) {
 		if(Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			String query = intent.getStringExtra(SearchManager.QUERY);
-			/* conversations = api.conferenceResource.onlyNameSearch(
-			*				service.getConferenceId(),
-			*				query,
-			*				10};
-			*/
-			//clf.getAdapter().updateList(conversations);
 			clf.performSearch(query);
-		} else {
-			// conversations = api.conferenceResource.getConversations(conf_id);
-			//clf.displayAll();
-		}
-		
-		
+			Log.d("SEARCH", "handleIntent");
+		}	
 	}
 
 	

@@ -1,17 +1,18 @@
 package uk.ac.cam.echo.fragments;
 
-import java.nio.channels.AsynchronousCloseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import uk.ac.cam.echo.ConversationAdapter;
 import uk.ac.cam.echo.R;
 import uk.ac.cam.echo.Toaster;
+import uk.ac.cam.echo.client.ClientApi;
 import uk.ac.cam.echo.dummy.Conversation;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,7 @@ public class ConversationListFragment extends Fragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-
+		Log.d("SEARCH", "onCreateView");
 		context = getActivity();
 		return inflater.inflate(R.layout.conv_listview_layout, container, false);
 	}
@@ -44,12 +45,13 @@ public class ConversationListFragment extends Fragment implements
 		super.onViewCreated(view, savedInstanceState);
 		listView = (ListView)getView().findViewById(R.id.convListView);
 		listProgress = (ProgressBar)getView().findViewById(R.id.listProgress);
-		
+		Log.d("SEARCH", "Frag onViewCreated");
 		new PerformSearch().execute();
 	}
 	
 	public void performSearch(String query) {
-		Toaster.displayLong(getActivity(), query);
+		Toaster.displayLong(getActivity(), "searching for "+query);
+		Log.d("SEARCH", "performSearch");
 		new PerformSearch().execute(query);
 	}
 
@@ -64,7 +66,7 @@ public class ConversationListFragment extends Fragment implements
 			Conversation c = new Conversation(i);
 			cs.add(c);
 		}
-
+		Log.d("SEARCH", "making dummy conversation ");
 		return cs;
 	}
 
@@ -89,24 +91,22 @@ public class ConversationListFragment extends Fragment implements
 	}
 	
 	private class PerformSearch extends AsyncTask<String, Void, List<Conversation>> {
-
+		
+		//ClientApi api = new ClientApi("http://echoconf.herokuapp.com/");
+		
 		@Override
 		protected List<Conversation> doInBackground(String... params) {
+		//	List<uk.ac.cam.echo.data.Conversation> result = null;
 			
 			if(params.length == 0) {
-				// display all conversations
+				//result = api.conferenceResource.getConversations(1);
 			} else {
 				String query = params[0];
 				// TODO: perform search for name using api.conferenceResource
+				
 			}
-			
-			try {
-				//simulating network call for now
-				Thread.sleep(10000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			
+			//for(uk.ac.cam.echo.data.Conversation c : result)
+			//	Toaster.displayLong(context, c.getName());
 			
 			return getDummyConversations();
 		}
@@ -119,10 +119,12 @@ public class ConversationListFragment extends Fragment implements
 			if(adapter == null) {
 				adapter = new ConversationAdapter(context, R.layout.conv_list_row, result);
 				listView.setAdapter(adapter);
-				listView.setVisibility(View.VISIBLE);
 				listView.setOnItemClickListener(ConversationListFragment.this);
+				listView.setVisibility(View.VISIBLE);
 				listProgress.setVisibility(View.GONE);
+				Log.d("SEARCH", "createdListView PerformSearch");
 			} else {
+				Log.d("SEARCH", "updatedListView PerformSearch");
 				adapter.updateList(result);
 			}
 		}
