@@ -18,25 +18,25 @@ public interface ConferenceResource extends RestResource<Conference> {
     @Path("/{id}")
     public Conference get(@PathParam("id") long id);
 
-    @Path("/search")
+    @Path("/{conferenceId}/search")
     @GET
-    public List<Conversation> search(@QueryParam("id") long id, @QueryParam("keyword") String keyword, @QueryParam("num") int n);
+    public List<Conversation> search(@PathParam("conferenceId") long id, @QueryParam("keyword") String keyword, @QueryParam("num") int n);
 
-    @Path("/tag-search")
+    @Path("/{conferenceId}/tag-search")
     @GET
-    public List<Conversation> onlyTagSearch(@QueryParam("id") long id, @QueryParam("keyword") String keyword, @QueryParam("num") int n);
+    public List<Conversation> onlyTagSearch(@PathParam("conferenceId") long id, @QueryParam("keyword") String keyword, @QueryParam("num") int n);
 
-    @Path("/most-users")
+    @Path("/{conferenceId}/most-users")
     @GET
-    public List<Conversation> mostUsers(@QueryParam("id") long id, @QueryParam("num") int n);
+    public List<Conversation> mostUsers(@PathParam("conferenceId") long id, @QueryParam("num") int n);
 
-    @Path("/most-active")
+    @Path("/{conferenceId}/most-active")
     @GET
-    public List<Conversation> mostActiveRecently(@QueryParam("id") long id, @QueryParam("minutes") long minutes, @QueryParam("num") int n);
+    public List<Conversation> mostActiveRecently(@PathParam("conferenceId") long id, @QueryParam("minutes") long minutes, @QueryParam("num") int n);
 
-    @Path("/recommend")
+    @Path("/{conferenceId}/recommend")
     @GET
-    public List<Conversation> recommend(@QueryParam("id") long id, @QueryParam("uid") long userID, @QueryParam("num") int n);
+    public List<Conversation> recommend(@PathParam("conferenceId") long id, @QueryParam("uid") long userID, @QueryParam("num") int n);
 
     @GET
     @Path("/{conferenceId}/conversations")
