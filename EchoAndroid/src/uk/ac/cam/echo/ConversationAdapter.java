@@ -32,6 +32,13 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 	
 	
 	@Override
+	public long getItemId(int position) {
+		//return data.get(position).getId();
+		return 0;
+	}
+
+
+	@Override
     public View getView(int position, View convertView, ViewGroup parent) {
 		
 		View row = convertView;
