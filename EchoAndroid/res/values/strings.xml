@@ -18,5 +18,6 @@
     <string name="convTitleInput">Title</string>
     <string name="convTagsInput">Tags</string>
     <string name="addConversation">Add conversation</string>
+    <string name="search_hint">Search conversations ...</string>
 
 </resources>

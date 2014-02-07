@@ -36,7 +36,11 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		//return data.get(position).getId();
 		return 0;
 	}
-
+	
+	public void updateList(List<Conversation> newData) {
+		data = newData;
+		notifyDataSetChanged();
+	}
 
 	@Override
     public View getView(int position, View convertView, ViewGroup parent) {
