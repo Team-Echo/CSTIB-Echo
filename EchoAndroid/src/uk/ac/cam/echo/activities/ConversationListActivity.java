@@ -20,8 +20,6 @@ import com.google.zxing.integration.android.IntentResult;
 
 public class ConversationListActivity extends Activity implements Communicator {
 	
-	private static final String ID = "_id";
-	
 	FragmentManager manager;
 	boolean dualPane; //to manage orientations/different screensizes
 	
