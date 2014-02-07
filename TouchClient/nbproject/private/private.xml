@@ -5,8 +5,8 @@
         <group>
             <file>file:/C:/Users/Philip/Documents/NetBeansProjects/CSTIB-Echo/TouchClient/src/uk/ac/cam/echo/TouchClient/TouchClient.java</file>
             <file>file:/C:/Users/Philip/Documents/NetBeansProjects/CSTIB-Echo/TouchClient/src/uk/ac/cam/echo/TouchClient/GUIController.java</file>
-            <file>file:/C:/Users/Philip/Documents/NetBeansProjects/CSTIB-Echo/TouchClient/src/uk/ac/cam/echo/TouchClient/MessageTest.java</file>
-            <file>file:/C:/Users/Philip/Documents/NetBeansProjects/CSTIB-Echo/TouchClient/src/uk/ac/cam/echo/TouchClient/Delta.java</file>
+            <file>file:/C:/Users/Philip/Documents/NetBeansProjects/CSTIB-Echo/TouchClient/src/uk/ac/cam/echo/TouchClient/ConfrenceLoadScreenController.java</file>
+            <file>file:/C:/Users/Philip/Documents/NetBeansProjects/CSTIB-Echo/TouchClient/src/uk/ac/cam/echo/TouchClient/ServerConnection.java</file>
         </group>
     </open-files>
 </project-private>

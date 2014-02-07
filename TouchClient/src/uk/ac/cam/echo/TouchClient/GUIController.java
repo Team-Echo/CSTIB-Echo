@@ -66,7 +66,7 @@ public class GUIController implements Initializable {
     private Pane stats_pane;
     
     //a hash map from the conversation id tot eh pane that it is displaed in
-    private HashMap<Integer,Integer> idtopane;
+    private HashMap<Long,Integer> idtopane;
     
     private void addMessage1(String mess){
         messages1.add(mess);
@@ -583,28 +583,29 @@ public class GUIController implements Initializable {
 
     }
     
-    private void addConversation1(String name,int conversationID){
-        idtopane.put(new Integer(conversationID), new Integer(1));
+    private void addConversation1(String name,long conversationID){
+        idtopane.put(new Long(conversationID), new Integer(1));
+        boolean retry =true;
         conversation1_name.setText(name);
         messages1.clear();
     }
-    private void addConversation2(String name,int conversationID){
-        idtopane.put(new Integer(conversationID), new Integer(2));
+    private void addConversation2(String name,long conversationID){
+        idtopane.put(new Long(conversationID), new Integer(2));
         conversation2_name.setText(name);
         messages1.clear();
     }
-    private void addConversation3(String name,int conversationID){
-        idtopane.put(new Integer(conversationID), new Integer(3));
+    private void addConversation3(String name,long conversationID){
+        idtopane.put(new Long(conversationID), new Integer(3));
         conversation3_name.setText(name);
         messages1.clear();
     }
-    private void addConversation4(String name,int conversationID){
-        idtopane.put(new Integer(conversationID), new Integer(4));
+    private void addConversation4(String name,long conversationID){
+        idtopane.put(new Long(conversationID), new Integer(4));
         conversation4_name.setText(name);
         messages1.clear();
     }
-    private void addConversation5(String name,int conversationID){
-        idtopane.put(new Integer(conversationID), new Integer(5));
+    private void addConversation5(String name,long conversationID){
+        idtopane.put(new Long(conversationID), new Integer(5));
         conversation5_name.setText(name);
         messages1.clear();
     }
@@ -625,7 +626,7 @@ public class GUIController implements Initializable {
      * @param conversationID5 id of the fifth conversation
      * @return returns true if it has initialized the conversations false otherwise
      */
-    public boolean initConversations(String name1,int conversationID1,String name2,int conversationID2,String name3,int conversationID3,String name4,int conversationID4,String name5,int conversationID5){
+    public boolean initConversations(String name1,long conversationID1,String name2,long conversationID2,String name3,long conversationID3,String name4,long conversationID4,String name5,long conversationID5){
         if (!idtopane.isEmpty()){return false;}
         addConversation1(name1,conversationID1);
         addConversation2(name2,conversationID2);
@@ -644,14 +645,14 @@ public class GUIController implements Initializable {
      * @throws uk.ac.cam.echo.TouchClient.NotCurrentConversationException an exception that is thrown if the conversation to be replaced is not currently displayed on screen
      * @throws uk.ac.cam.echo.TouchClient.ConversationAlredyDisplayedException an exception thrown if the conversation you tried to add is already shown on the screen
      */
-    public void replaceConversation(int conversationID1,String name,int conversationID2) throws NoMessageListException, NotCurrentConversationException, ConversationAlredyDisplayedException{
+    public void replaceConversation(long conversationID1,String name,long conversationID2) throws NoMessageListException, NotCurrentConversationException, ConversationAlredyDisplayedException{
         int pane = 10;
         try {//this NullPointerException ocurs if the item is not in the map
             pane = idtopane.get(conversationID1);
         } catch (NullPointerException e){
             throw new NotCurrentConversationException(conversationID1);
         }
-        if (idtopane.containsValue(conversationID2)){
+        if (idtopane.containsKey(conversationID2)){
             throw new ConversationAlredyDisplayedException();
         }
         idtopane.remove(conversationID1);
@@ -685,7 +686,7 @@ public class GUIController implements Initializable {
     * @param ConversationID the id of the conversation the message is from
     * @exception NoMessageListException happens if pane is not a number between 1 and 5
     */
-    public void displayMessage(String s,int ConversationID) throws NoMessageListException{
+    public void displayMessage(String s,long ConversationID) throws NoMessageListException{
         int pane = 10;
         try{//this NullPointerException ocurs if the item requested is not in the map
             pane = idtopane.get(ConversationID).intValue();

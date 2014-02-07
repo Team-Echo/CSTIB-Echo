@@ -27,6 +27,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -76,6 +78,25 @@ public class ConfrenceLoadScreenController implements Initializable {
         ToggleGroup group = new ToggleGroup();
         radio_button_url.setToggleGroup(group);
         radio_button_ip.setToggleGroup(group);
+        
+        EventHandler enter = new EventHandler<KeyEvent>(){
+            @Override
+            public void handle(KeyEvent t) {
+                if (t.getCode() == KeyCode.ENTER){
+                    Launch_button.fire();
+                }
+            }
+        };
+        Launch_button.setOnKeyPressed(enter);
+        Confrence_Name_textfield.setOnKeyPressed(enter);
+        IP_Adress_textfield1.setOnKeyPressed(enter);
+        IP_Adress_textfield2.setOnKeyPressed(enter);
+        IP_Adress_textfield3.setOnKeyPressed(enter);
+        IP_Adress_textfield4.setOnKeyPressed(enter);
+        Port_textfield.setOnKeyPressed(enter);
+        Confrence_ID_textfield.setOnKeyPressed(enter);
+        textfield_url.setOnKeyPressed(enter);
+        
         
         radio_button_url.setOnAction(new EventHandler<ActionEvent>(){
             @Override

@@ -10,10 +10,9 @@ package uk.ac.cam.echo.TouchClient;
  *
  * @author Philip
  */
-class NotCurrentConversationException extends Exception {
+class ConfrenceNotFoundException extends Exception {
 
-    public NotCurrentConversationException(long conversationID) {
-        super("the conversation represented by the ID " + conversationID + " is not currently displayed on screen so cannot be replaced");
+    public ConfrenceNotFoundException() {
     }
     
 }

@@ -1,12 +1,18 @@
 package uk.ac.cam.echo.TouchClient;
 
 import java.io.IOException;
+import java.util.ListResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  *the main class that provides connections between classes and stores information about the Conference for both back and front ends to use 
@@ -20,7 +26,8 @@ public class TouchClient extends Application {
     private Integer port = null;
     private Integer confrenceID = null;
     private String url = null;
-    private GUIController mGUI = null; 
+    private GUIController mGUI = null;
+    private ServerConnection mServ = null;
     
     public TouchClient(){}
     
@@ -30,7 +37,7 @@ public class TouchClient extends Application {
      * @throws IOException if the FXML file cant be found
      */
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(final Stage primaryStage) throws IOException {
         ECHOResource echoresource = new ECHOResource(this); 
         Parent root = FXMLLoader.load(getClass().getResource("ConfrenceLoadScreen.fxml"),echoresource);
         
@@ -39,7 +46,23 @@ public class TouchClient extends Application {
         primaryStage.setTitle("ECHO GUI v2");
         primaryStage.setScene(scene);
         primaryStage.show();
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>(){
+            @Override
+            public void handle(WindowEvent t) {
+                killAllThreads();
+                primaryStage.close();
+                Runtime.getRuntime().exit(0);
+            }
+        });
     }
+    
+    private void killAllThreads() {
+                try{
+                    mServ.kill();
+                }catch (NullPointerException e){
+                    //Do nothing as this indicates the sever thred was never started
+                }
+            }
     
     public String getConfrenceName() throws NotInstantiatedYetException{
         if (confrenceName==null){
@@ -128,6 +151,37 @@ public class TouchClient extends Application {
 
     public void setConfrenceURL(String text) {
         url = text;
+    }
+
+    void exit(int errorCode, final String error) {
+        
+        Platform.runLater(new Runnable(){
+            @Override
+            public void run() {
+                ListResourceBundle errorRB = new ErrorResourceBundle(error);
+                Stage errorMessage = new Stage();
+                Parent root = null;
+                try {
+                    root = FXMLLoader.load(getClass().getResource("ErrorMessagePopup.fxml"),errorRB);
+                } catch (IOException ex) {
+                    Logger.getLogger(TouchClient.class.getName()).log(Level.SEVERE, null, ex);
+                }
+        
+                Scene scene = new Scene(root);
+                
+                errorMessage.setTitle("ECHO Error Message");
+                errorMessage.setScene(scene);
+                errorMessage.show();
+            }
+        });
+        
+        System.err.println(error);
+        //killAllThreads();
+        //Runtime.getRuntime().exit(1);
+    }
+
+    void regesterServerConnection(ServerConnection sc) {
+        mServ = sc;
     }
     
 }

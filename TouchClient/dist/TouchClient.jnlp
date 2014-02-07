@@ -11,7 +11,33 @@
   </resources>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="TouchClient.jar" size="90348" download="eager" />
+    <jar href="TouchClient.jar" size="110687" download="eager" />
+    <jar href="lib/asm-all-repackaged-2.2.0-b21.jar" size="320122" download="eager" />
+    <jar href="lib/cglib-2.2.0-b21.jar" size="282811" download="eager" />
+    <jar href="lib/client.jar" size="15207" download="eager" />
+    <jar href="lib/commons-beanutils-1.9.1.jar" size="232563" download="eager" />
+    <jar href="lib/commons-collections-3.2.1.jar" size="575389" download="eager" />
+    <jar href="lib/commons-logging-1.1.1.jar" size="60686" download="eager" />
+    <jar href="lib/data.jar" size="9933" download="eager" />
+    <jar href="lib/guava-14.0.1.jar" size="2189117" download="eager" />
+    <jar href="lib/hk2-api-2.2.0-b21.jar" size="130236" download="eager" />
+    <jar href="lib/hk2-locator-2.2.0-b21.jar" size="147772" download="eager" />
+    <jar href="lib/hk2-utils-2.2.0-b21.jar" size="66742" download="eager" />
+    <jar href="lib/jackson-core-asl-1.9.13.jar" size="232248" download="eager" />
+    <jar href="lib/jackson-jaxrs-1.9.13.jar" size="18336" download="eager" />
+    <jar href="lib/jackson-mapper-asl-1.9.13.jar" size="780664" download="eager" />
+    <jar href="lib/jackson-xc-1.9.13.jar" size="27084" download="eager" />
+    <jar href="lib/javax.annotation-api-1.2.jar" size="26366" download="eager" />
+    <jar href="lib/javax.inject-2.2.0-b21.jar" size="5982" download="eager" />
+    <jar href="lib/javax.ws.rs-api-2.0.jar" size="112758" download="eager" />
+    <jar href="lib/jersey-client-2.5.1.jar" size="159742" download="eager" />
+    <jar href="lib/jersey-common-2.5.1.jar" size="700399" download="eager" />
+    <jar href="lib/jersey-media-json-jackson-2.5.1.jar" size="4929" download="eager" />
+    <jar href="lib/jersey-media-sse-2.5.1.jar" size="39101" download="eager" />
+    <jar href="lib/jersey-proxy-client-2.4.1.jar" size="9040" download="eager" />
+    <jar href="lib/jersey-server-2.5.1.jar" size="828016" download="eager" />
+    <jar href="lib/osgi-resource-locator-1.0.1.jar" size="20235" download="eager" />
+    <jar href="lib/validation-api-1.1.0.Final.jar" size="63777" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="TouchClient" >
     <param name="requiredFXVersion" value="2.2+"/>
