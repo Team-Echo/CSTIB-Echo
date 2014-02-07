@@ -1,6 +1,5 @@
 package uk.ac.cam.echo.TouchClient;
 
-import com.sun.javafx.scene.control.skin.VirtualContainerBase;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
@@ -14,7 +13,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TabPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.RotateEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.Pane;
 

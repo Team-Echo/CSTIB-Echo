@@ -168,8 +168,9 @@ public class ConfrenceLoadScreenController implements Initializable {
             error_message.setText("The file could not be Read from");
         }
       }
-      private int ip() throws InvalidServerCredentialsIPException{
-          int ip,ip1,ip2,ip3,ip4;
+      private String ip() throws InvalidServerCredentialsIPException{
+          String ip;
+          int ip1,ip2,ip3,ip4;
           try{
             ip1 = Integer.parseInt(IP_Adress_textfield1.getText());
             ip2 = Integer.parseInt(IP_Adress_textfield2.getText());
@@ -178,7 +179,7 @@ public class ConfrenceLoadScreenController implements Initializable {
           }catch(NumberFormatException e){
               throw new InvalidServerCredentialsIPException();
           }
-          ip = (ip4&0xff)&((ip3&0xff)<<8)&((ip2&0xff)<<16)&((ip1&0xff)<<24);
+          ip = ip1+"."+ip2+"."+ip3+"."+ip4+":";
           return ip;
       }
       private int port(String val) throws InvalidServerCredentialsPortException{
