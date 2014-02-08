@@ -1,13 +1,5 @@
 package uk.ac.cam.echo.fragments;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import uk.ac.cam.echo.ConversationAdapter;
-import uk.ac.cam.echo.R;
-import uk.ac.cam.echo.Toaster;
-import uk.ac.cam.echo.client.ClientApi;
-import uk.ac.cam.echo.dummy.Conversation;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -20,6 +12,14 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import uk.ac.cam.echo.ConversationAdapter;
+import uk.ac.cam.echo.R;
+import uk.ac.cam.echo.Toaster;
+import uk.ac.cam.echo.client.ClientApi;
+import uk.ac.cam.echo.dummy.Conversation;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConversationListFragment extends Fragment implements
 											OnItemClickListener {
@@ -92,21 +92,22 @@ public class ConversationListFragment extends Fragment implements
 	
 	private class PerformSearch extends AsyncTask<String, Void, List<Conversation>> {
 		
-		//ClientApi api = new ClientApi("http://echoconf.herokuapp.com/");
+		ClientApi api = new ClientApi("http://echoconf.herokuapp.com/");
 		
 		@Override
 		protected List<Conversation> doInBackground(String... params) {
-		//	List<uk.ac.cam.echo.data.Conversation> result = null;
+		    List<uk.ac.cam.echo.data.Conversation> result = null;
 			
 			if(params.length == 0) {
-				//result = api.conferenceResource.getConversations(1);
+				result = api.conferenceResource.getConversations(1);
 			} else {
 				String query = params[0];
 				// TODO: perform search for name using api.conferenceResource
 				
 			}
-			//for(uk.ac.cam.echo.data.Conversation c : result)
-			//	Toaster.displayLong(context, c.getName());
+			for(uk.ac.cam.echo.data.Conversation c : result)
+                Log.d("EchoAndroid", c.getName());
+				//Toaster.displayLong(context, c.getName());
 			
 			return getDummyConversations();
 		}
