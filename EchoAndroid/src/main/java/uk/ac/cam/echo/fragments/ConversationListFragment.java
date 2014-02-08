@@ -16,7 +16,7 @@ import uk.ac.cam.echo.ConversationAdapter;
 import uk.ac.cam.echo.R;
 import uk.ac.cam.echo.Toaster;
 import uk.ac.cam.echo.client.ClientApi;
-import uk.ac.cam.echo.dummy.Conversation;
+import uk.ac.cam.echo.data.Conversation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,6 @@ public class ConversationListFragment extends Fragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		Log.d("SEARCH", "onCreateView");
 		context = getActivity();
 		return inflater.inflate(R.layout.conv_listview_layout, container, false);
 	}
@@ -50,8 +49,6 @@ public class ConversationListFragment extends Fragment implements
 	}
 	
 	public void performSearch(String query) {
-		Toaster.displayLong(getActivity(), "searching for "+query);
-		Log.d("SEARCH", "performSearch");
 		new PerformSearch().execute(query);
 	}
 
@@ -59,16 +56,16 @@ public class ConversationListFragment extends Fragment implements
 		return adapter;
 	}
 
-	public List<Conversation> getDummyConversations() {
-		ArrayList<Conversation> cs = new ArrayList<Conversation>();
-
-		for(int i = 0; i < 20; i++) {
-			Conversation c = new Conversation(i);
-			cs.add(c);
-		}
-		Log.d("SEARCH", "making dummy conversation ");
-		return cs;
-	}
+//	public List<Conversation> getDummyConversations() {
+//		ArrayList<Conversation> cs = new ArrayList<Conversation>();
+//
+//		for(int i = 0; i < 20; i++) {
+//			Conversation c = new Conversation(i);
+//			cs.add(c);
+//		}
+//		Log.d("SEARCH", "making dummy conversation ");
+//		return cs;
+//	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -93,30 +90,34 @@ public class ConversationListFragment extends Fragment implements
 	private class PerformSearch extends AsyncTask<String, Void, List<Conversation>> {
 		
 		ClientApi api = new ClientApi("http://echoconf.herokuapp.com/");
+        ArrayList<String> some = new ArrayList<String>();
 		
 		@Override
 		protected List<Conversation> doInBackground(String... params) {
-		    List<uk.ac.cam.echo.data.Conversation> result = null;
+		    List<Conversation> result;
 			
 			if(params.length == 0) {
 				result = api.conferenceResource.getConversations(1);
 			} else {
 				String query = params[0];
-				// TODO: perform search for name using api.conferenceResource
-				
+                result = api.conferenceResource.onlyNameSearch(1, query, 10);
 			}
+
 			for(uk.ac.cam.echo.data.Conversation c : result)
-                Log.d("EchoAndroid", c.getName());
-				//Toaster.displayLong(context, c.getName());
-			
-			return getDummyConversations();
+                some.add(c.getName());
+			Log.d("ConversationListFragment", result.get(0).getName());
+            Log.d("ConversationListFragment", result.size()+"");
+			return result;
 		}
 
 		@Override
 		protected void onPostExecute(List<Conversation> result) {
-			// update listview
+			// update list view
 			super.onPostExecute(result);
-			
+			if(some.size() > 0)
+                for(String s : some) {
+                    Toaster.displayShort(getActivity(), s);
+                }
 			if(adapter == null) {
 				adapter = new ConversationAdapter(context, R.layout.conv_list_row, result);
 				listView.setAdapter(adapter);
