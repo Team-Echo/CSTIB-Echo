@@ -8,6 +8,7 @@ import uk.ac.cam.echo.dummy.Conversation.Tag;
 import uk.ac.cam.echo.dummy.Conversation.User;
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,18 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 	}
 	
 	
+	@Override
+	public long getItemId(int position) {
+		//return data.get(position).getId();
+		return 0;
+	}
+	
+	public void updateList(List<Conversation> newData) {
+		data = newData;
+		Log.d("SEARCH", "updateList Adapter");
+		notifyDataSetChanged();
+	}
+
 	@Override
     public View getView(int position, View convertView, ViewGroup parent) {
 		

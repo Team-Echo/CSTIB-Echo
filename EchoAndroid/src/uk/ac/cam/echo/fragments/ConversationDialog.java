@@ -45,10 +45,10 @@ public class ConversationDialog extends DialogFragment implements
 		progress = (ProgressBar)view.findViewById(R.id.convProgressDialog);
 		join = (Button)view.findViewById(R.id.convJoinDialog);
 		join.setOnClickListener(this);
+		
 		return view;
 	}
-	
-	
+
 	
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {

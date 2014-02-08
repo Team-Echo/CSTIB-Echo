@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="100.0" prefWidth="441.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="uk.ac.cam.echo.TouchClient.ErrorMessagePopupController">
+  <children>
+    <Label fx:id="error_message" layoutX="14.0" layoutY="31.0" prefWidth="413.0" text="" />
+    <Button fx:id="close" layoutX="196.0" layoutY="68.0" mnemonicParsing="false" text="Close" />
+  </children>
+</AnchorPane>

@@ -3,6 +3,7 @@ package uk.ac.cam.echo.server.analysis.hunspell;
 import com.atlascopco.hunspell.Hunspell;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  Author: Petar 'PetarV' Veličković

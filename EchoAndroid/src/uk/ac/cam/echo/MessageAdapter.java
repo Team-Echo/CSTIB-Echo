@@ -39,7 +39,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		DisplayMetrics metrics = context.getResources().getDisplayMetrics();
 		width = metrics.widthPixels;
 		height = metrics.heightPixels;
-		Toaster.displayShort(context, width+"");
 	}
 
 	@Override

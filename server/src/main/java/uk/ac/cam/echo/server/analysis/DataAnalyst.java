@@ -33,6 +33,9 @@ public class DataAnalyst implements ServerDataAnalyst
     @Override
     public List<Conversation> onlyTagSearch(String keyword, int n)
     {
+        keyword = keyword.toLowerCase(Locale.ENGLISH);
+        String[] keywords = keyword.split("\\s+");
+
         List<Conversation> ret = new LinkedList<Conversation>();
 
         List<Conversation> matchesByName = new LinkedList<Conversation>();
@@ -42,17 +45,32 @@ public class DataAnalyst implements ServerDataAnalyst
 
         for (Conversation C : conversations)
         {
-            if (C.getName().contains(keyword)) matchesByName.add(C);
-            else
+            boolean foundByName = false;
+            for (String kwd : keywords)
             {
+                if (C.getName().toLowerCase(Locale.ENGLISH).contains(kwd))
+                {
+                    matchesByName.add(C);
+                    foundByName = true;
+                    break;
+                }
+            }
+            if (!foundByName)
+            {
+                boolean foundByTag = false;
                 Collection<Tag> tags = C.getTags();
                 for (Tag t : tags)
                 {
-                    if (t.getName().contains(keyword))
+                    for (String kwd : keywords)
                     {
-                        matchesByTag.add(C);
-                        break;
+                        if (t.getName().toLowerCase(Locale.ENGLISH).contains(kwd))
+                        {
+                            matchesByTag.add(C);
+                            foundByTag = true;
+                            break;
+                        }
                     }
+                    if (foundByTag) break;
                 }
             }
         }
@@ -74,6 +92,32 @@ public class DataAnalyst implements ServerDataAnalyst
 
         return ret;
     }
+
+    @Override
+    public List<Conversation> onlyNameSearch(String keyword, int n)
+    {
+        keyword = keyword.toLowerCase(Locale.ENGLISH);
+        String[] keywords = keyword.split("\\s+");
+
+        List<Conversation> ret = new LinkedList<Conversation>();
+        Collection<Conversation> conversations = parentConference.getConversationSet();
+
+        for (Conversation C : conversations)
+        {
+            for (String kwd : keywords)
+            {
+                if (C.getName().toLowerCase(Locale.ENGLISH).contains(kwd))
+                {
+                    ret.add(C);
+                    break;
+                }
+            }
+            if (ret.size() == n) break;
+        }
+
+        return ret;
+    }
+
 
     @Override
     public List<Conversation> mostUsers(int n)

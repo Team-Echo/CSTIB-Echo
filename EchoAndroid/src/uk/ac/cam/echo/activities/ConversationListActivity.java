@@ -1,44 +1,52 @@
 package uk.ac.cam.echo.activities;
 
+import java.util.List;
+
 import uk.ac.cam.echo.R;
 import uk.ac.cam.echo.Toaster;
+import uk.ac.cam.echo.dummy.Conversation;
+import uk.ac.cam.echo.fragments.AddConversationDialog;
 import uk.ac.cam.echo.fragments.ConversationDialog;
 import uk.ac.cam.echo.fragments.ConversationListFragment;
 import uk.ac.cam.echo.fragments.ConversationListFragment.Communicator;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.SearchView;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 public class ConversationListActivity extends Activity implements Communicator {
 	
-	private static final String ID = "_id";
-	
 	FragmentManager manager;
 	boolean dualPane; //to manage orientations/different screensizes
 	
 	ConversationListFragment clf;
+	List<Conversation> conversations;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.conv_list_detail_layout);
             
-            manager = getFragmentManager();
-            
+            manager = getFragmentManager(); 
             View detailsFrame = findViewById(R.id.convFrame);
             dualPane = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
-                       
+            
             clf = (ConversationListFragment) manager.findFragmentById(R.id.convListFragment);
             clf.setCommunicator(this);
+            
+            handleIntent(getIntent());
+            Log.d("SEARCH","List Activity onCreate");
             
     }
 	
@@ -71,7 +79,16 @@ public class ConversationListActivity extends Activity implements Communicator {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu items for use in the action bar
 		getMenuInflater().inflate(R.menu.list_activity_actions, menu);
-		return super.onCreateOptionsMenu(menu);
+		
+		// Associate searchable configuration with the SearchView
+		SearchManager searchManager =
+				(SearchManager) getSystemService(Context.SEARCH_SERVICE);
+		SearchView searchView =
+				(SearchView) menu.findItem(R.id.action_search).getActionView();
+		searchView.setSearchableInfo(
+				searchManager.getSearchableInfo(getComponentName()));
+		
+		return true;
 	}
 	
 	@Override
@@ -79,23 +96,43 @@ public class ConversationListActivity extends Activity implements Communicator {
 	    // Handle presses on the action bar items
 	    switch (item.getItemId()) {
 	        case R.id.action_search:
-	        	openSearch();
+	        	//openSearch();
 	            return true;
 	        case R.id.action_scan:
 	            openScan();
 	            return true;
+	        case R.id.action_add_conv:
+	        	addConversation();
+	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
 	}
+	
+	@Override
+	protected void onNewIntent(Intent intent) {
+		Log.d("SEARCH", "onNewIntent");
+	    setIntent(intent);
+	    handleIntent(intent);
+	}
+	
+	private void handleIntent(Intent intent) {
+		if(Intent.ACTION_SEARCH.equals(intent.getAction())) {
+			String query = intent.getStringExtra(SearchManager.QUERY);
+			clf.performSearch(query);
+			Log.d("SEARCH", "handleIntent");
+		}	
+	}
+
 	
 	private void openScan() {
 		IntentIntegrator scanIntegrator = new IntentIntegrator(this);
 		scanIntegrator.initiateScan();
 	}
 	
-	private void openSearch() {
-		// TODO: search client api call
+	private void addConversation() {
+		AddConversationDialog addDialog = AddConversationDialog.newInstance();
+		addDialog.show(manager, "add_conv");
 	}
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {

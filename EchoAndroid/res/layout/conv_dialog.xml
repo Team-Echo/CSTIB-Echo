@@ -11,7 +11,6 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="5dp"
         android:layout_toLeftOf="@+id/convOnlineDialog"
-        android:text="Medium Text"
         android:textAllCaps="true"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -21,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:text="TextView"
+        android:layout_marginRight="5dp"
         android:textAllCaps="true"
         android:textSize="10sp"
         android:textColor="@color/midBlue" />
@@ -33,7 +32,7 @@
         android:layout_alignLeft="@+id/convTitleDialog"
         android:layout_alignRight="@+id/convTitleDialog"
         android:layout_below="@+id/convTitleDialog"
-        android:text="TextView"
+        android:layout_marginLeft="5dp"
         android:textAllCaps="true" />
 
     <TextView
@@ -42,22 +41,21 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/convUsersDialog"
         android:layout_below="@+id/convUsersDialog"
-        android:text="TextView"
         android:textAllCaps="true" />
 
     <Button
         android:id="@+id/convJoinDialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/scrollView1"
+        android:layout_below="@+id/scrollView"
         android:layout_alignParentLeft="true"
         android:layout_margin="5dp"
-        android:background="@color/darkGreen"
+        android:background="@color/buttonBackground"
         android:text="@string/join"
         android:textColor="@color/white" />
 
     <ScrollView
-        android:id="@+id/scrollView1"
+        android:id="@+id/scrollView"
         android:background="@color/lightBlue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

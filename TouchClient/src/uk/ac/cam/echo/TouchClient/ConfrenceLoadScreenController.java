@@ -27,6 +27,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -76,6 +78,25 @@ public class ConfrenceLoadScreenController implements Initializable {
         ToggleGroup group = new ToggleGroup();
         radio_button_url.setToggleGroup(group);
         radio_button_ip.setToggleGroup(group);
+        
+        EventHandler enter = new EventHandler<KeyEvent>(){
+            @Override
+            public void handle(KeyEvent t) {
+                if (t.getCode() == KeyCode.ENTER){
+                    Launch_button.fire();
+                }
+            }
+        };
+        Launch_button.setOnKeyPressed(enter);
+        Confrence_Name_textfield.setOnKeyPressed(enter);
+        IP_Adress_textfield1.setOnKeyPressed(enter);
+        IP_Adress_textfield2.setOnKeyPressed(enter);
+        IP_Adress_textfield3.setOnKeyPressed(enter);
+        IP_Adress_textfield4.setOnKeyPressed(enter);
+        Port_textfield.setOnKeyPressed(enter);
+        Confrence_ID_textfield.setOnKeyPressed(enter);
+        textfield_url.setOnKeyPressed(enter);
+        
         
         radio_button_url.setOnAction(new EventHandler<ActionEvent>(){
             @Override
@@ -168,8 +189,9 @@ public class ConfrenceLoadScreenController implements Initializable {
             error_message.setText("The file could not be Read from");
         }
       }
-      private int ip() throws InvalidServerCredentialsIPException{
-          int ip,ip1,ip2,ip3,ip4;
+      private String ip() throws InvalidServerCredentialsIPException{
+          String ip;
+          int ip1,ip2,ip3,ip4;
           try{
             ip1 = Integer.parseInt(IP_Adress_textfield1.getText());
             ip2 = Integer.parseInt(IP_Adress_textfield2.getText());
@@ -178,7 +200,7 @@ public class ConfrenceLoadScreenController implements Initializable {
           }catch(NumberFormatException e){
               throw new InvalidServerCredentialsIPException();
           }
-          ip = (ip4&0xff)&((ip3&0xff)<<8)&((ip2&0xff)<<16)&((ip1&0xff)<<24);
+          ip = ip1+"."+ip2+"."+ip3+"."+ip4+":";
           return ip;
       }
       private int port(String val) throws InvalidServerCredentialsPortException{
