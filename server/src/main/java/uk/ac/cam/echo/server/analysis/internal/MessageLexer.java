@@ -23,6 +23,7 @@ public class MessageLexer
 {
     private static SpellChecker checker = null;
     private static Set<String> stopWords = null;
+    private static Map<String, String> cache = new HashMap<String, String>();
 
     /**
      The main method that handles lexical analysis.
@@ -82,20 +83,18 @@ public class MessageLexer
             if (!stopWords.contains(tokens[i]) && tokens[i].length() > 1) ret.add(tokens[i]);
         }
 
-        // Step 6.
+        // Steps 6 & 7.
         ListIterator<String> it = ret.listIterator();
         while (it.hasNext())
         {
             String word = it.next();
-            it.set(StemProxy.stem(word));
-        }
-
-        // Step 7.
-        it = ret.listIterator();
-        while (it.hasNext())
-        {
-            String word = it.next();
-            it.set(checker.correct(word).toLowerCase(Locale.ENGLISH));
+            if (cache.containsKey(word)) it.set(cache.get(word));
+            else
+            {
+                String baseWord = checker.correct(StemProxy.stem(word)).toLowerCase(Locale.ENGLISH);
+                cache.put(word, baseWord);
+                it.set(baseWord);
+            }
         }
 
         // Step 8.
