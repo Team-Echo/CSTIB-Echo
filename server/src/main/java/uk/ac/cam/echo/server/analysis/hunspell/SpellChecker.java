@@ -3,6 +3,7 @@ package uk.ac.cam.echo.server.analysis.hunspell;
 import com.atlascopco.hunspell.Hunspell;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  Author: Petar 'PetarV' Veličković
@@ -45,7 +46,7 @@ public class SpellChecker
                 speller.add(word);
                 return word;
             }
-            return suggestions.get(0);
+            return suggestions.get(0).toLowerCase(Locale.ENGLISH);
         }
     }
 
