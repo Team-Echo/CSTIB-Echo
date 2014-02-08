@@ -13,7 +13,8 @@ import java.net.URISyntaxException;
 
 public class HibernateUtil {
 
-    private static SessionFactory sf=configureSessionFactory();
+    private static SessionFactory sf = null;
+    //configureSessionFactory();
     private static void applyHerokuConfigs(Configuration config) {
         URI dbUri = null;
         try {
@@ -44,9 +45,19 @@ public class HibernateUtil {
         return config;
     }
 
-    private static SessionFactory configureSessionFactory()
+    public static void configureSessionFactory()
             throws HibernateException {
+        configureSessionFactory(null);
+    }
+    public static void configureSessionFactory(HibernateConfigurator configurator) {
+        if (sf != null)
+            sf.close();
+
         Configuration configuration = getConfiguration();
+
+        if (configurator != null)
+            configurator.configure(configuration);
+
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties())
                 .build();
@@ -54,18 +65,23 @@ public class HibernateUtil {
         SessionFactory sessionFactory = configuration
                 .buildSessionFactory(serviceRegistry);
 
-        return sessionFactory;
+        sf = sessionFactory;
+
+
     }
 
     public static SessionFactory getSessionFactory() {
+        if (sf == null) {
+            configureSessionFactory();
+        }
         return sf;
     }
 
     public static Session getSession() {
-        return sf.getCurrentSession();
+        return getSessionFactory().getCurrentSession();
     }
     public static Session getTransaction() {
-        Session session = sf.getCurrentSession();
+        Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.getTransaction();
         if (!transaction.isActive())
             session.beginTransaction();
