@@ -24,6 +24,8 @@ public class StringMatcher
     {
         int n = hystck.length(), m = ndl.length();
 
+        if (m == 0) return 0;
+
         char[] needle = ndl.toCharArray();
         char[] haystack = hystck.toCharArray();
 
