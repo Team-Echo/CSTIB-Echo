@@ -10,7 +10,7 @@ public class DemoTest extends HibernateTestCase {
     }
 
     @Test
-    public void fixturesTest() {
+    public void testFixtures() {
         startTransaction();
         assertEquals(session.createCriteria(MessageModel.class).list().size(), 5);
         endTransaction();
