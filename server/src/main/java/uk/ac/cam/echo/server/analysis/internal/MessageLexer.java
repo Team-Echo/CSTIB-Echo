@@ -95,7 +95,7 @@ public class MessageLexer
         while (it.hasNext())
         {
             String word = it.next();
-            it.set(checker.correct(word));
+            it.set(checker.correct(word).toLowerCase(Locale.ENGLISH));
         }
 
         // Step 8.

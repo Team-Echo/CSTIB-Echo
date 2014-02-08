@@ -46,7 +46,7 @@ public class SpellChecker
                 speller.add(word);
                 return word;
             }
-            return suggestions.get(0).toLowerCase(Locale.ENGLISH);
+            return suggestions.get(0);
         }
     }
 
