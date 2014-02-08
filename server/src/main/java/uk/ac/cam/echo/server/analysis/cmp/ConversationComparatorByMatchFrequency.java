@@ -1,26 +1,26 @@
 package uk.ac.cam.echo.server.analysis.cmp;
 
-import uk.ac.cam.echo.server.analysis.internal.IntegerConversationPair;
+import uk.ac.cam.echo.server.analysis.internal.DoubleConversationPair;
 
 import java.util.Comparator;
 
 /**
  Author: Petar 'PetarV' Veličković
 
- A Comparator that compares two conversations by recent activity (with an interval parameter).
+ A Comparator that compares two conversations by keyword match frequency.
  It is reversed, in order to make our priority queues max-heaps instead of min-heaps.
 */
-public class ConversationComparatorByActivity implements Comparator<IntegerConversationPair>
+public class ConversationComparatorByMatchFrequency implements Comparator<DoubleConversationPair>
 {
     @Override
-    public int compare(IntegerConversationPair cnvA, IntegerConversationPair cnvB)
+    public int compare(DoubleConversationPair cnvA, DoubleConversationPair cnvB)
     {
         // Immutability of Conversations involved assumed! Only use on snapshots.
         // Otherwise extremely thread-unsafe.
 
-        int iA = cnvA.getInt(), iB = cnvB.getInt();
-        if (iA < iB) return 1;
-        if (iA > iB) return -1;
+        double dA = cnvA.getDouble(), dB = cnvB.getDouble();
+        if (dA < dB) return 1;
+        if (dA > dB) return -1;
 
         return new ConversationComparatorByUserCount().compare(cnvA.getConvo(), cnvB.getConvo());
     }

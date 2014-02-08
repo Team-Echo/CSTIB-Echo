@@ -56,7 +56,6 @@ public class MessageLexer
                 BufferedReader reader = new BufferedReader(new InputStreamReader(new BufferedInputStream(new FileInputStream(stopList))));
                 String stopWord;
                 while ((stopWord = reader.readLine()) != null) stopWords.add(stopWord);
-
             }
             catch (IOException e)
             {

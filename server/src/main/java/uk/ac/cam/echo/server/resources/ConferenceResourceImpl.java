@@ -31,7 +31,7 @@ public class ConferenceResourceImpl implements ConferenceResource {
 
     @Override
     public List<Conversation> search(long id, String keyword, int n) {
-        throw  new UnsupportedOperationException("Not Implemented yet");
+        return AnalystFactory.get(id).search(keyword, n);
     }
 
     @Override
