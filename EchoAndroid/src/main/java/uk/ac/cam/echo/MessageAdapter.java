@@ -1,18 +1,20 @@
 package uk.ac.cam.echo;
 
-import java.util.List;
-
-import uk.ac.cam.echo.dummy.Conversation.Message;
 import android.app.Activity;
 import android.content.Context;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
+import uk.ac.cam.echo.data.Message;
 
 public class MessageAdapter extends ArrayAdapter<Message> {
 	
@@ -67,17 +69,22 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		}
 		
 		Message message = data.get(position);
-		String user = message.getSender().getName();
-		String time = "4:20";
+
+		String user = message.getSender() == null ? "Anonymous" : message.getSender().getUsername();
+
+		long time = message.getTimeStamp();
+        Date date = new Date(time);
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+        String timeString = formatter.format(date);
+
 		String contents = message.getContents();
-		Log.d("ADAPTER", user);
 		
 		holder.contents.setMaxWidth((int) (width*0.66));
 		holder.contents.setMinWidth(width/3);
 		holder.user.setText(user);
 		holder.contents.setText(contents);
 		
-		holder.time.setText(time);
+		holder.time.setText(timeString);
 
 		return row;
 	}
@@ -89,12 +96,13 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 	
 	@Override
 	public int getItemViewType(int position) {
-		return data.get(position).isRemote() ? 1 : 0;
+		//return data.get(position).isRemote() ? 1 : 0;
+        return Math.random() < 0.5 ? 1 : 0;
 	}
 	
 	@Override
 	public int getCount() {
-		return data.size();
+		return data == null ? 0 : data.size();
 	}
 	
 	static class MessageHolder {
@@ -103,4 +111,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		TextView time;
 		TextView contents;
 	}
+
+
 }

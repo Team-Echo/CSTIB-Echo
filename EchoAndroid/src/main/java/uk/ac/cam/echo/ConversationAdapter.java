@@ -88,7 +88,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 
     @Override
     public int getCount() {
-        return data.size();
+        return data == null ? 0 : data.size();
     }
 	
 	public static String getUserText(Collection<User> users) {
