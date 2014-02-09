@@ -1,16 +1,10 @@
 package uk.ac.cam.echo.fragments;
 
-import java.util.Set;
-
-import uk.ac.cam.echo.ConversationAdapter;
-import uk.ac.cam.echo.R;
-import uk.ac.cam.echo.activities.ConversationDetailActivity;
-import uk.ac.cam.echo.dummy.Conversation;
-import uk.ac.cam.echo.dummy.Conversation.Tag;
-import uk.ac.cam.echo.dummy.Conversation.User;
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,6 +13,15 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.Collection;
+
+import uk.ac.cam.echo.R;
+import uk.ac.cam.echo.activities.ConversationDetailActivity;
+import uk.ac.cam.echo.client.ClientApi;
+import uk.ac.cam.echo.data.Conversation;
+import uk.ac.cam.echo.data.Message;
+import uk.ac.cam.echo.data.User;
+
 public class ConversationDialog extends DialogFragment implements
 									OnClickListener{
 
@@ -26,6 +29,7 @@ public class ConversationDialog extends DialogFragment implements
 	TextView users;
 	TextView tags;
 	TextView online;
+    TextView preview;
 	Button join;
 	ProgressBar progress;
 	
@@ -42,6 +46,7 @@ public class ConversationDialog extends DialogFragment implements
 		users = (TextView)view.findViewById(R.id.convUsersDialog);
 		tags = (TextView)view.findViewById(R.id.convTagsDialog);
 		online = (TextView)view.findViewById(R.id.convOnlineDialog);
+        preview = (TextView)view.findViewById(R.id.previewDialog);
 		progress = (ProgressBar)view.findViewById(R.id.convProgressDialog);
 		join = (Button)view.findViewById(R.id.convJoinDialog);
 		join.setOnClickListener(this);
@@ -53,21 +58,7 @@ public class ConversationDialog extends DialogFragment implements
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		
-		Conversation c = new Conversation(id);
-		if(getDialog() != null) {
-			getDialog().setTitle("CONVERSATION " + id);
-			title.setVisibility(View.GONE);
-		}else {
-			title.setText(c.getName());
-		}
-		
-		Set<User> userSet = c.getUsers();
-		Set<Tag> tagSet = c.getTags();
-		users.setText(ConversationAdapter.getUserText(userSet));
-		tags.setText(ConversationAdapter.getTagText(tagSet));
-		online.setText(userSet.size() + " online users");
-		
+		new GetConversation().execute(id);
 	}
 
 	// Factory to create dialog based on id
@@ -92,4 +83,69 @@ public class ConversationDialog extends DialogFragment implements
 		}
 		
 	}
+
+    private class GetConversation extends AsyncTask<Long, Void, Conversation> {
+
+        ClientApi api = new ClientApi("http://echoconf.herokuapp.com/");
+        String convName;
+        String usersText;
+        String onlineText;
+        String previewText;
+
+        @Override
+        protected Conversation doInBackground(Long... params) {
+
+            Conversation conversation = api.conversationResource.get(params[0]);
+
+            Collection<Message> messages = conversation.getMessages();
+            //Collection<User> users = conversation.getUsers();
+
+            convName = conversation.getName();
+
+//            StringBuilder userBuilder = new StringBuilder();
+//            for(User u : users ) {
+//                userBuilder.append(u.getUsername() + " ");
+//            }
+            //usersText = userBuilder.toString();
+
+            //onlineText = users.size() + " users online";
+
+            StringBuilder previewBuilder = new StringBuilder();
+            for(Message m : messages) {
+                previewBuilder.append(
+                        (m.getSender() == null ? "Anonymous" : m.getSender().getUsername()) + ": " +
+                        m.getContents() + "\n");
+            }
+            previewText = previewBuilder.toString();
+
+            return conversation;
+        }
+
+        @Override
+        protected void onPostExecute(Conversation conversation) {
+            super.onPostExecute(conversation);
+            if(conversation == null) {
+                Log.d("ConvDialog", "No conversation retrieved!");
+                return;
+            }
+
+
+            progress.setVisibility(View.GONE);
+            preview.setVisibility(View.VISIBLE);
+            preview.setText(previewText);
+
+            if(getDialog() != null) {
+                getDialog().setTitle(convName);
+                title.setVisibility(View.GONE);
+            }else {
+                title.setText(convName);
+            }
+
+            //users.setText(usersText);
+            //tags.setText(tagsText);
+            users.setText("Yojan Alex Petar Mona Philip");
+            tags.setText("Echo Multi Touch Conference");
+            online.setText("5 users online");
+        }
+    }
 }

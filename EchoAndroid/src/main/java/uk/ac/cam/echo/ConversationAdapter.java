@@ -1,11 +1,5 @@
 package uk.ac.cam.echo;
 
-import java.util.List;
-import java.util.Set;
-
-import uk.ac.cam.echo.dummy.Conversation;
-import uk.ac.cam.echo.dummy.Conversation.Tag;
-import uk.ac.cam.echo.dummy.Conversation.User;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
@@ -15,6 +9,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.Collection;
+import java.util.List;
+
+import uk.ac.cam.echo.data.Conversation;
+import uk.ac.cam.echo.data.Tag;
+import uk.ac.cam.echo.data.User;
 
 public class ConversationAdapter extends ArrayAdapter<Conversation> {
 	
@@ -34,8 +35,8 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 	
 	@Override
 	public long getItemId(int position) {
-		//return data.get(position).getId();
-		return 0;
+		return data.get(position).getId();
+		//return 0;
 	}
 	
 	public void updateList(List<Conversation> newData) {
@@ -48,8 +49,8 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
     public View getView(int position, View convertView, ViewGroup parent) {
 		
 		View row = convertView;
-		ConversationHolder holder = null;
-		
+		ConversationHolder holder;
+		Log.d("Adapter", "getting View " + position+"");
 		if(row == null) {
 			LayoutInflater inflater = ((Activity)context).getLayoutInflater();
 			row = inflater.inflate(layoutResourceId, parent, false);
@@ -69,25 +70,33 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		}
 		
 		Conversation conversation = data.get(position);
-		Set<User> users = conversation.getUsers();
-		Set<Tag> tags = conversation.getTags();
+		//Collection<User> users = conversation.getUsers();
+		//Collection<Tag> tags = conversation.getTags();
 		
 		//TODO: set imgIcon from the icon resource of conversation
 		//holder.imgIcon.setImageBitmap(bm);
 		holder.title.setText(conversation.getName());
-		holder.users.setText(getUserText(users));
-		holder.tags.setText(getTagText(tags));
-		holder.totalOnline.setText(getOnlineText(users));
+		//holder.users.setText(getUserText(users));
+        holder.users.setText("TestUser");
+		//holder.tags.setText(getTagText(tags));
+        holder.tags.setText("tag1 tag2 tag3");
+		//holder.totalOnline.setText(getOnlineText(users));
+        holder.totalOnline.setText("14 users online");
 
 		return row;
 	}
+
+    @Override
+    public int getCount() {
+        return data == null ? 0 : data.size();
+    }
 	
-	public static String getUserText(Set<User> users) {
+	public static String getUserText(Collection<User> users) {
 
 		if(users.size() > 0) {
 			StringBuffer userString = new StringBuffer();
 			for(User u : users)
-				userString.append(u.getName() +"; ");
+				userString.append(u.getUsername() +"; ");
 			return userString.toString();
 		} else {
 			return "No active users.";
@@ -95,7 +104,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		
 	}
 	
-	public static String getTagText(Set<Tag> tags) {
+	public static String getTagText(Collection<Tag> tags) {
 		if(tags.size() > 0) {
 			StringBuffer tagString = new StringBuffer();
 			for(Tag t : tags) 
@@ -107,10 +116,12 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		}
 	}
 	
-	public static String getOnlineText(Set<User> users) {
+	public static String getOnlineText(Collection<User> users) {
 		return users.size() + " online users";
 	}
-	
+
+
+    // ViewHolder to prevent multiple findViewById calls
 	static class ConversationHolder {
 		ImageView imgIcon;
 		TextView title;

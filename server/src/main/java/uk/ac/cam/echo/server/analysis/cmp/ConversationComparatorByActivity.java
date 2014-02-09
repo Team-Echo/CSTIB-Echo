@@ -1,6 +1,5 @@
 package uk.ac.cam.echo.server.analysis.cmp;
 
-import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.server.analysis.internal.IntegerConversationPair;
 
 import java.util.Comparator;
@@ -23,6 +22,6 @@ public class ConversationComparatorByActivity implements Comparator<IntegerConve
         if (iA < iB) return 1;
         if (iA > iB) return -1;
 
-        return new ConversationComparatorByUserCount().compare(cnvA.getConvo(), cnvB.getConvo());
+        return 0;
     }
 }

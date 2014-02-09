@@ -1,0 +1,11 @@
+Feb 8, 2014 23:39:01 +0000 [28326 1] com.newrelic INFO: Writing to New Relic log file: /Users/hadesgames/work/cambridge/CSTIB-Echo/newrelic/logs/newrelic_agent.log
+Feb 8, 2014 23:39:01 +0000 [28326 1] com.newrelic INFO: Agent Host: macbook IP: 127.0.0.1
+Feb 8, 2014 23:39:08 +0000 [28326 1] com.newrelic.agent.RPMServiceManagerImpl INFO: Configured to connect to New Relic at collector.newrelic.com:443
+Feb 8, 2014 23:39:08 +0000 [28326 1] com.newrelic INFO: Setting audit_mode to false
+Feb 8, 2014 23:39:08 +0000 [28326 1] com.newrelic INFO: Setting protocol to "https"
+Feb 8, 2014 23:39:09 +0000 [28326 1] com.newrelic.agent.config.ConfigServiceImpl INFO: Configuration file is /Users/hadesgames/work/cambridge/CSTIB-Echo/newrelic/./newrelic.yml
+Feb 8, 2014 23:39:09 +0000 [28326 1] com.newrelic INFO: New Relic Agent v3.4.2 has started
+Feb 8, 2014 23:39:09 +0000 [28326 1] com.newrelic INFO: Java version: 1.7.0_17
+Feb 8, 2014 23:39:09 +0000 [28326 1] com.newrelic INFO: Agent class loader: sun.misc.Launcher$AppClassLoader@54f690e4
+Feb 8, 2014 23:39:09 +0000 [28326 5] com.newrelic.agent.Agent INFO: JVM is shutting down
+Feb 8, 2014 23:39:09 +0000 [28326 5] com.newrelic.agent.Agent INFO: New Relic Agent has shutdown

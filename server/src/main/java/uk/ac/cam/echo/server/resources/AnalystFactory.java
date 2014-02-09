@@ -19,7 +19,7 @@ public class AnalystFactory
     {
         if (!analysts.containsKey(key))
         {
-            analysts.putIfAbsent(key, new DataAnalyst((Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, key)));
+            analysts.putIfAbsent(key, new DataAnalyst(key));
         }
         return analysts.get(key);
     }

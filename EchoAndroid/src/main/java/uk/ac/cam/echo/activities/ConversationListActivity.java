@@ -29,8 +29,10 @@ public class ConversationListActivity extends Activity implements Communicator {
 	
 	FragmentManager manager;
 	boolean dualPane; //to manage orientations/different screensizes
-	
-	ConversationListFragment clf;
+
+
+
+    private ConversationListFragment clf;
 	List<Conversation> conversations;
 	
 	@Override
@@ -155,6 +157,9 @@ public class ConversationListActivity extends Activity implements Communicator {
 			Toaster.displayLong(this, "No scan data received!");
 		}
 	}
-	
+
+    public ConversationListFragment getConvListFrag() {
+        return clf;
+    }
 	
 }
