@@ -11,7 +11,21 @@ package uk.ac.cam.echo.TouchClient;
  * @author Philip
  */
 class Delta {
-    public boolean pressed = false;
+    private boolean pressed = false;
+    public synchronized boolean testAndPress(){
+        if (pressed){
+            return false;
+        }else{
+            pressed = true;
+            return true;
+        }
+    }
+    public synchronized boolean isPressed(){
+        return pressed;
+    }
+    public synchronized void unPress(){
+        pressed = false;
+    }
     public int id;
     public double x;
     public double y;

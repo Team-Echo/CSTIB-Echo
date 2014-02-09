@@ -1,8 +1,19 @@
 package uk.ac.cam.echo.TouchClient;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -11,6 +22,8 @@ import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TabPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.RotateEvent;
 import javafx.scene.input.TouchEvent;
@@ -42,6 +55,17 @@ public class GUIController implements Initializable {
     private ObservableList<String> messages5;
     
     @FXML
+    private ImageView conversation1_QR;
+    @FXML
+    private ImageView conversation2_QR;
+    @FXML
+    private ImageView conversation3_QR;
+    @FXML
+    private ImageView conversation4_QR;
+    @FXML
+    private ImageView conversation5_QR;
+    
+    @FXML
     private Label conversation1_name;
     @FXML
     private Label conversation2_name;
@@ -65,8 +89,12 @@ public class GUIController implements Initializable {
     @FXML
     private Pane stats_pane;
     
-    //a hash map from the conversation id tot eh pane that it is displaed in
+    //a hash map from the conversation id to the pane that it is displaed in
     private HashMap<Long,Integer> idtopane;
+    
+    public HashMap<Long,Integer> getMap(){
+        return (HashMap<Long,Integer>)idtopane.clone();
+    }
     
     private void addMessage1(String mess){
         messages1.add(mess);
@@ -124,18 +152,18 @@ public class GUIController implements Initializable {
         conversation1.setOnTouchPressed(new EventHandler<TouchEvent>(){
            @Override
            public void handle(TouchEvent t) {
-                if (dragDeltaTouch.pressed){t.consume();return;}
-                dragDeltaTouch.pressed = true;
-                dragDeltaTouch.id = t.getTouchPoint().getId();
-                dragDeltaTouch.x = conversation1.getLayoutX() - t.getTouchPoint().getSceneX();
-                dragDeltaTouch.y = conversation1.getLayoutY() - t.getTouchPoint().getSceneY();
+                if (dragDeltaTouch.testAndPress()){
+                    dragDeltaTouch.id = t.getTouchPoint().getId();
+                    dragDeltaTouch.x = conversation1.getLayoutX() - t.getTouchPoint().getSceneX();
+                    dragDeltaTouch.y = conversation1.getLayoutY() - t.getTouchPoint().getSceneY();
+                }
                 t.consume();
            }
         });
         conversation1.setOnTouchMoved(new EventHandler<TouchEvent>(){
            @Override
            public void handle(TouchEvent t) {
-                if (dragDeltaTouch.pressed && (dragDeltaTouch.id==t.getTouchPoint().getId())){
+                if (dragDeltaTouch.isPressed() && (dragDeltaTouch.id==t.getTouchPoint().getId())){
                     conversation1.setLayoutX(t.getTouchPoint().getSceneX() + dragDeltaTouch.x);
                     conversation1.setLayoutY(t.getTouchPoint().getSceneY() + dragDeltaTouch.y);
                 }
@@ -146,25 +174,17 @@ public class GUIController implements Initializable {
            @Override
            public void handle(TouchEvent t) {
                 if (dragDeltaTouch.id==t.getTouchPoint().getId()){
-                    dragDeltaTouch.pressed = false;
+                    dragDeltaTouch.unPress();
                 }
                 t.consume();
-           }
-       });
-        final RotateDelta rotatedelta = new RotateDelta();
-        conversation1.setOnRotationStarted(new EventHandler<RotateEvent>() {
-           @Override
-           public void handle(RotateEvent t) {
-               rotatedelta.theta = conversation1.getRotate();
-               t.consume();
            }
        });
         conversation1.setOnRotate(new EventHandler<RotateEvent>() {
            @Override
            public void handle(RotateEvent t) {
-               conversation1.setRotate(t.getAngle()+(rotatedelta.theta*10));
-               t.consume();
-           }
+                conversation1.setRotate(conversation1.getRotate() + t.getAngle());
+            t.consume();
+            }
        });
     }
     
@@ -203,18 +223,18 @@ public class GUIController implements Initializable {
         conversation2.setOnTouchPressed(new EventHandler<TouchEvent>(){
            @Override
            public void handle(TouchEvent t) {
-                if (dragDeltaTouch.pressed){t.consume();return;}
-                dragDeltaTouch.pressed = true;
-                dragDeltaTouch.id = t.getTouchPoint().getId();
-                dragDeltaTouch.x = conversation2.getLayoutX() - t.getTouchPoint().getSceneX();
-                dragDeltaTouch.y = conversation2.getLayoutY() - t.getTouchPoint().getSceneY();
+                if (dragDeltaTouch.testAndPress()){
+                    dragDeltaTouch.id = t.getTouchPoint().getId();
+                    dragDeltaTouch.x = conversation2.getLayoutX() - t.getTouchPoint().getSceneX();
+                    dragDeltaTouch.y = conversation2.getLayoutY() - t.getTouchPoint().getSceneY();
+                }
                 t.consume();
            }
         });
         conversation2.setOnTouchMoved(new EventHandler<TouchEvent>(){
            @Override
            public void handle(TouchEvent t) {
-                if (dragDeltaTouch.pressed && (dragDeltaTouch.id==t.getTouchPoint().getId())){
+                if (dragDeltaTouch.isPressed() && (dragDeltaTouch.id==t.getTouchPoint().getId())){
                     conversation2.setLayoutX(t.getTouchPoint().getSceneX() + dragDeltaTouch.x);
                     conversation2.setLayoutY(t.getTouchPoint().getSceneY() + dragDeltaTouch.y);
                 }
@@ -225,25 +245,17 @@ public class GUIController implements Initializable {
            @Override
            public void handle(TouchEvent t) {
                 if (dragDeltaTouch.id==t.getTouchPoint().getId()){
-                    dragDeltaTouch.pressed = false;
+                    dragDeltaTouch.unPress();
                 }
                 t.consume();
-           }
-       });
-        final RotateDelta rotatedelta = new RotateDelta();
-        conversation2.setOnRotationStarted(new EventHandler<RotateEvent>() {
-           @Override
-           public void handle(RotateEvent t) {
-               rotatedelta.theta = conversation2.getRotate();
-               t.consume();
            }
        });
         conversation2.setOnRotate(new EventHandler<RotateEvent>() {
            @Override
            public void handle(RotateEvent t) {
-               conversation2.setRotate(t.getAngle()+(rotatedelta.theta*10));
-               t.consume();
-           }
+                conversation2.setRotate(conversation2.getRotate() + t.getAngle());
+            t.consume();
+            }
        });
     }
     
@@ -282,18 +294,18 @@ public class GUIController implements Initializable {
         conversation3.setOnTouchPressed(new EventHandler<TouchEvent>(){
            @Override
            public void handle(TouchEvent t) {
-                if (dragDeltaTouch.pressed){t.consume();return;}
-                dragDeltaTouch.pressed = true;
-                dragDeltaTouch.id = t.getTouchPoint().getId();
-                dragDeltaTouch.x = conversation3.getLayoutX() - t.getTouchPoint().getSceneX();
-                dragDeltaTouch.y = conversation3.getLayoutY() - t.getTouchPoint().getSceneY();
+                if (dragDeltaTouch.testAndPress()){
+                    dragDeltaTouch.id = t.getTouchPoint().getId();
+                    dragDeltaTouch.x = conversation3.getLayoutX() - t.getTouchPoint().getSceneX();
+                    dragDeltaTouch.y = conversation3.getLayoutY() - t.getTouchPoint().getSceneY();
+                }
                 t.consume();
            }
         });
         conversation3.setOnTouchMoved(new EventHandler<TouchEvent>(){
            @Override
            public void handle(TouchEvent t) {
-                if (dragDeltaTouch.pressed && (dragDeltaTouch.id==t.getTouchPoint().getId())){
+                if (dragDeltaTouch.isPressed() && (dragDeltaTouch.id==t.getTouchPoint().getId())){
                     conversation3.setLayoutX(t.getTouchPoint().getSceneX() + dragDeltaTouch.x);
                     conversation3.setLayoutY(t.getTouchPoint().getSceneY() + dragDeltaTouch.y);
                 }
@@ -304,25 +316,17 @@ public class GUIController implements Initializable {
            @Override
            public void handle(TouchEvent t) {
                 if (dragDeltaTouch.id==t.getTouchPoint().getId()){
-                    dragDeltaTouch.pressed = false;
+                    dragDeltaTouch.unPress();
                 }
                 t.consume();
-           }
-       });
-        final RotateDelta rotatedelta = new RotateDelta();
-        conversation3.setOnRotationStarted(new EventHandler<RotateEvent>() {
-           @Override
-           public void handle(RotateEvent t) {
-               rotatedelta.theta = conversation3.getRotate();
-               t.consume();
            }
        });
         conversation3.setOnRotate(new EventHandler<RotateEvent>() {
            @Override
            public void handle(RotateEvent t) {
-               conversation3.setRotate(t.getAngle()+(rotatedelta.theta*10));
-               t.consume();
-           }
+                conversation3.setRotate(conversation3.getRotate() + t.getAngle());
+            t.consume();
+            }
        });
     }
     
@@ -361,18 +365,18 @@ public class GUIController implements Initializable {
         conversation4.setOnTouchPressed(new EventHandler<TouchEvent>(){
            @Override
            public void handle(TouchEvent t) {
-                if (dragDeltaTouch.pressed){t.consume();return;}
-                dragDeltaTouch.pressed = true;
-                dragDeltaTouch.id = t.getTouchPoint().getId();
-                dragDeltaTouch.x = conversation4.getLayoutX() - t.getTouchPoint().getSceneX();
-                dragDeltaTouch.y = conversation4.getLayoutY() - t.getTouchPoint().getSceneY();
+                if (dragDeltaTouch.testAndPress()){
+                    dragDeltaTouch.id = t.getTouchPoint().getId();
+                    dragDeltaTouch.x = conversation4.getLayoutX() - t.getTouchPoint().getSceneX();
+                    dragDeltaTouch.y = conversation4.getLayoutY() - t.getTouchPoint().getSceneY();
+                }
                 t.consume();
            }
         });
         conversation4.setOnTouchMoved(new EventHandler<TouchEvent>(){
            @Override
            public void handle(TouchEvent t) {
-                if (dragDeltaTouch.pressed && (dragDeltaTouch.id==t.getTouchPoint().getId())){
+                if (dragDeltaTouch.isPressed() && (dragDeltaTouch.id==t.getTouchPoint().getId())){
                     conversation4.setLayoutX(t.getTouchPoint().getSceneX() + dragDeltaTouch.x);
                     conversation4.setLayoutY(t.getTouchPoint().getSceneY() + dragDeltaTouch.y);
                 }
@@ -383,25 +387,17 @@ public class GUIController implements Initializable {
            @Override
            public void handle(TouchEvent t) {
                 if (dragDeltaTouch.id==t.getTouchPoint().getId()){
-                    dragDeltaTouch.pressed = false;
+                    dragDeltaTouch.unPress();
                 }
                 t.consume();
-           }
-       });
-        final RotateDelta rotatedelta = new RotateDelta();
-        conversation4.setOnRotationStarted(new EventHandler<RotateEvent>() {
-           @Override
-           public void handle(RotateEvent t) {
-               rotatedelta.theta = conversation4.getRotate();
-               t.consume();
            }
        });
         conversation4.setOnRotate(new EventHandler<RotateEvent>() {
            @Override
            public void handle(RotateEvent t) {
-               conversation4.setRotate(t.getAngle()+(rotatedelta.theta*10));
-               t.consume();
-           }
+                conversation4.setRotate(conversation4.getRotate() + t.getAngle());
+            t.consume();
+            }
        });
     }
     
@@ -440,18 +436,18 @@ public class GUIController implements Initializable {
         conversation5.setOnTouchPressed(new EventHandler<TouchEvent>(){
            @Override
            public void handle(TouchEvent t) {
-                if (dragDeltaTouch.pressed){t.consume();return;}
-                dragDeltaTouch.pressed = true;
-                dragDeltaTouch.id = t.getTouchPoint().getId();
-                dragDeltaTouch.x = conversation5.getLayoutX() - t.getTouchPoint().getSceneX();
-                dragDeltaTouch.y = conversation5.getLayoutY() - t.getTouchPoint().getSceneY();
+                if (dragDeltaTouch.testAndPress()){
+                    dragDeltaTouch.id = t.getTouchPoint().getId();
+                    dragDeltaTouch.x = conversation5.getLayoutX() - t.getTouchPoint().getSceneX();
+                    dragDeltaTouch.y = conversation5.getLayoutY() - t.getTouchPoint().getSceneY();
+                }
                 t.consume();
            }
         });
         conversation5.setOnTouchMoved(new EventHandler<TouchEvent>(){
            @Override
            public void handle(TouchEvent t) {
-                if (dragDeltaTouch.pressed && (dragDeltaTouch.id==t.getTouchPoint().getId())){
+                if (dragDeltaTouch.isPressed() && (dragDeltaTouch.id==t.getTouchPoint().getId())){
                     conversation5.setLayoutX(t.getTouchPoint().getSceneX() + dragDeltaTouch.x);
                     conversation5.setLayoutY(t.getTouchPoint().getSceneY() + dragDeltaTouch.y);
                 }
@@ -462,25 +458,17 @@ public class GUIController implements Initializable {
            @Override
            public void handle(TouchEvent t) {
                 if (dragDeltaTouch.id==t.getTouchPoint().getId()){
-                    dragDeltaTouch.pressed = false;
+                    dragDeltaTouch.unPress();
                 }
                 t.consume();
-           }
-       });
-        final RotateDelta rotatedelta = new RotateDelta();
-        conversation5.setOnRotationStarted(new EventHandler<RotateEvent>() {
-           @Override
-           public void handle(RotateEvent t) {
-               rotatedelta.theta = conversation5.getRotate();
-               t.consume();
            }
        });
         conversation5.setOnRotate(new EventHandler<RotateEvent>() {
            @Override
            public void handle(RotateEvent t) {
-               conversation5.setRotate(t.getAngle()+(rotatedelta.theta*10));
-               t.consume();
-           }
+                conversation5.setRotate(conversation5.getRotate() + t.getAngle());
+            t.consume();
+            }
        });
     }
     
@@ -519,18 +507,18 @@ public class GUIController implements Initializable {
         stats_pane.setOnTouchPressed(new EventHandler<TouchEvent>(){
            @Override
            public void handle(TouchEvent t) {
-                if (dragDeltaTouch.pressed){t.consume();return;}
-                dragDeltaTouch.pressed = true;
-                dragDeltaTouch.id = t.getTouchPoint().getId();
-                dragDeltaTouch.x = stats_pane.getLayoutX() - t.getTouchPoint().getSceneX();
-                dragDeltaTouch.y = stats_pane.getLayoutY() - t.getTouchPoint().getSceneY();
+                if (dragDeltaTouch.testAndPress()){
+                    dragDeltaTouch.id = t.getTouchPoint().getId();
+                    dragDeltaTouch.x = stats_pane.getLayoutX() - t.getTouchPoint().getSceneX();
+                    dragDeltaTouch.y = stats_pane.getLayoutY() - t.getTouchPoint().getSceneY();
+                }
                 t.consume();
            }
         });
         stats_pane.setOnTouchMoved(new EventHandler<TouchEvent>(){
            @Override
            public void handle(TouchEvent t) {
-                if (dragDeltaTouch.pressed && (dragDeltaTouch.id==t.getTouchPoint().getId())){
+                if (dragDeltaTouch.isPressed() && (dragDeltaTouch.id==t.getTouchPoint().getId())){
                     stats_pane.setLayoutX(t.getTouchPoint().getSceneX() + dragDeltaTouch.x);
                     stats_pane.setLayoutY(t.getTouchPoint().getSceneY() + dragDeltaTouch.y);
                 }
@@ -541,25 +529,17 @@ public class GUIController implements Initializable {
            @Override
            public void handle(TouchEvent t) {
                 if (dragDeltaTouch.id==t.getTouchPoint().getId()){
-                    dragDeltaTouch.pressed = false;
+                    dragDeltaTouch.unPress();
                 }
                 t.consume();
-           }
-       });
-        final RotateDelta rotatedelta = new RotateDelta();
-        stats_pane.setOnRotationStarted(new EventHandler<RotateEvent>() {
-           @Override
-           public void handle(RotateEvent t) {
-               rotatedelta.theta = stats_pane.getRotate();
-               t.consume();
            }
        });
         stats_pane.setOnRotate(new EventHandler<RotateEvent>() {
            @Override
            public void handle(RotateEvent t) {
-               stats_pane.setRotate(t.getAngle()+(rotatedelta.theta*10));
-               t.consume();
-           }
+                stats_pane.setRotate(stats_pane.getRotate() + t.getAngle());
+            t.consume();
+            }
        });
     }
     
@@ -585,28 +565,32 @@ public class GUIController implements Initializable {
     
     private void addConversation1(String name,long conversationID){
         idtopane.put(new Long(conversationID), new Integer(1));
-        boolean retry =true;
         conversation1_name.setText(name);
+        conversation1_QR.setImage(genarateQRCode(conversationID,100));
         messages1.clear();
     }
     private void addConversation2(String name,long conversationID){
         idtopane.put(new Long(conversationID), new Integer(2));
         conversation2_name.setText(name);
+        conversation2_QR.setImage(genarateQRCode(conversationID,100));
         messages1.clear();
     }
     private void addConversation3(String name,long conversationID){
         idtopane.put(new Long(conversationID), new Integer(3));
         conversation3_name.setText(name);
+        conversation3_QR.setImage(genarateQRCode(conversationID,100));
         messages1.clear();
     }
     private void addConversation4(String name,long conversationID){
         idtopane.put(new Long(conversationID), new Integer(4));
         conversation4_name.setText(name);
+        conversation4_QR.setImage(genarateQRCode(conversationID,100));
         messages1.clear();
     }
     private void addConversation5(String name,long conversationID){
         idtopane.put(new Long(conversationID), new Integer(5));
         conversation5_name.setText(name);
+        conversation5_QR.setImage(genarateQRCode(conversationID,100));
         messages1.clear();
     }
     
@@ -666,10 +650,26 @@ public class GUIController implements Initializable {
         }
     }
     
+    private static Image genarateQRCode(long conversationID,int wandh){
+        BitMatrix bitMatrix;
+        ByteArrayOutputStream image = new ByteArrayOutputStream();
+        try {
+            bitMatrix = new QRCodeWriter().encode(Long.toString(conversationID),BarcodeFormat.QR_CODE,wandh,wandh,null);
+            
+            MatrixToImageWriter.writeToStream(bitMatrix, "png", image);
+        } catch (IOException ex) {
+            Logger.getLogger(GUIController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (WriterException ex) {
+            Logger.getLogger(GUIController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return new Image(new ByteArrayInputStream(image.toByteArray()));
+    }
+    
     /**
      * Initialises the controller class.
      * @param url currently unused
-     * @param rb currently unused
+     * @param rb this must be of type ECHOResource!!!
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -703,22 +703,37 @@ public class GUIController implements Initializable {
     }
     
     /**
-     * @deprecated
+     * this method scrolls to the end of a conversation and returns true
      * 
-     * currently dosen't work as the scrollto(int) command it uses just clears the list.
-     * 
-     * @param pane which pane you want to scroll to the bottom
-     * @return 
+     * @param conversationID the id of the conversation you want to scroll to the end
+     * @return boolean representing if it has been scrolled or not
      */
-    public boolean scrollToEnd(int pane){
-        switch (pane){
-            case 1: conversation1_messages.scrollTo(messages1.size()-1);return true;
-            case 2: conversation2_messages.scrollTo(messages2.size()-1);return true;
-            case 3: conversation3_messages.scrollTo(messages3.size()-1);return true;
-            case 4: conversation4_messages.scrollTo(messages4.size()-1);return true;
-            case 5: conversation5_messages.scrollTo(messages5.size()-1);return true;
-            default: return false;
+    public boolean scrollToEnd(final long conversationID){
+        
+        try{
+            Platform.runLater(new Runnable(){
+                @Override
+                public void run() {
+                    int pane;
+                    try{
+                        pane = idtopane.get(conversationID);
+                    } catch (Exception e){
+                        throw new RuntimeException();
+                    }
+                    switch (pane){
+                        case 1: conversation1_messages.scrollTo(messages1.size()-1);break;
+                        case 2: conversation2_messages.scrollTo(messages2.size()-1);break;
+                        case 3: conversation3_messages.scrollTo(messages3.size()-1);break;
+                        case 4: conversation4_messages.scrollTo(messages4.size()-1);break;
+                        case 5: conversation5_messages.scrollTo(messages5.size()-1);break;
+                        default: throw new RuntimeException();
+                    }
+                }
+            });
+        } catch (RuntimeException e){
+            return false;
         }
+        return true; 
     }
     
 }
