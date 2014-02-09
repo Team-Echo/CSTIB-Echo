@@ -124,11 +124,6 @@ public class AddConversationDialog extends DialogFragment implements
             newConv.setConference(conference);
 
             try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            try {
                 newConv.save();
                 Log.d("ESCAPE", "Escaped");
             } catch(Error e) {
@@ -141,7 +136,7 @@ public class AddConversationDialog extends DialogFragment implements
         @Override
         protected void onPostExecute(Conversation result) {
             getDialog().dismiss();
-            
+
         }
     }
 
