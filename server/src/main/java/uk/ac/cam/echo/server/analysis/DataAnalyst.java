@@ -22,14 +22,13 @@ import java.util.*;
 public class DataAnalyst implements ServerDataAnalyst
 {
     Conference parentConference = null;
-    String dictionary, affix, stopWords;
+    String dictionary = this.getClass().getResource("/dictionaries/en_GB/en_GB.dic").getPath();
+    String affix = this.getClass().getResource("/dictionaries/en_GB/en_GB.aff").getPath();
+    String stopWords = this.getClass().getResource("/stop_lists/stop_list.txt").getPath();
 
     public DataAnalyst(Conference c)
     {
         parentConference = c;
-        dictionary = this.getClass().getResource("/dictionaries/en_GB/en_GB.dic").getPath();
-        affix = this.getClass().getResource("/dictionaries/en_GB/en_GB.aff").getPath();
-        stopWords = this.getClass().getResource("/stop_lists/stop_list.txt").getPath();
     }
 
     @Override
@@ -108,6 +107,7 @@ public class DataAnalyst implements ServerDataAnalyst
                 for (Message msg : messages)
                 {
                     List<String> baseWords = MessageLexer.lexAnalyse(msg.getContents(), dictionary, affix, stopWords);
+                    if (baseWords.isEmpty()) continue;
                     double total = (double)baseWords.size();
                     for (String word : baseWords)
                     {
