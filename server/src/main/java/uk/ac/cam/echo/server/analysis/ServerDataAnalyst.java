@@ -74,5 +74,13 @@ public interface ServerDataAnalyst
     */
     public List<Conversation> recommend(User user, int n);
 
+    /**
+     Displays the most active conversations in terms of total message count.
+
+     @param n         The maximal amount of solutions to return.
+     @return          The list of (up to n) conversations with the most messages, sorted by message count.
+    */
+    public List<Conversation> mostMessages(int n);
+
     // TODO: Add more methods as necessary.
 }

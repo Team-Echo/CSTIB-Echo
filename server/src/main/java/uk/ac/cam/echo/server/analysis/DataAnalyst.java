@@ -4,6 +4,7 @@ import uk.ac.cam.echo.data.*;
 import uk.ac.cam.echo.server.HibernateUtil;
 import uk.ac.cam.echo.server.analysis.cmp.ConversationComparatorByActivity;
 import uk.ac.cam.echo.server.analysis.cmp.ConversationComparatorByMatchFrequency;
+import uk.ac.cam.echo.server.analysis.cmp.ConversationComparatorByMessageCount;
 import uk.ac.cam.echo.server.analysis.cmp.ConversationComparatorByUserCount;
 import uk.ac.cam.echo.server.analysis.internal.DoubleConversationPair;
 import uk.ac.cam.echo.server.analysis.internal.IntegerConversationPair;
@@ -285,5 +286,24 @@ public class DataAnalyst implements ServerDataAnalyst
     public List<Conversation> recommend(User user, int n)
     {
         return null;
+    }
+
+    @Override
+    public List<Conversation> mostMessages(int n)
+    {
+        Conference parentConference = (Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, parentID);
+
+        List<Conversation> ret = new LinkedList<Conversation>();
+        Collection<Conversation> conversations = parentConference.getConversationSet();
+        PriorityQueue<IntegerConversationPair> pq = new PriorityQueue<IntegerConversationPair>(11, new ConversationComparatorByMessageCount());
+
+        for (Conversation C : conversations) pq.offer(new IntegerConversationPair(C.getMessages().size(), C));
+        while (n > 0 && !pq.isEmpty())
+        {
+            ret.add(pq.poll().getConvo());
+            n--;
+        }
+
+        return ret;
     }
 }

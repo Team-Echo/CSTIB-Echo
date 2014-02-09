@@ -59,6 +59,11 @@ public class ConferenceResourceImpl implements ConferenceResource {
         throw  new UnsupportedOperationException("Not Implemented yet");
     }
 
+    @Override
+    public List<Conversation> mostMessages(long id, int n) {
+        return AnalystFactory.get(id).mostMessages(n);
+    }
+
     public Conference get(long id) {
         return (Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, id);
     }
