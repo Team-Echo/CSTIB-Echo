@@ -15,13 +15,11 @@ import android.widget.TextView;
 
 import java.util.Collection;
 
-import uk.ac.cam.echo.ConversationAdapter;
 import uk.ac.cam.echo.R;
 import uk.ac.cam.echo.activities.ConversationDetailActivity;
 import uk.ac.cam.echo.client.ClientApi;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.Message;
-import uk.ac.cam.echo.data.Tag;
 import uk.ac.cam.echo.data.User;
 
 public class ConversationDialog extends DialogFragment implements
@@ -86,35 +84,41 @@ public class ConversationDialog extends DialogFragment implements
 		
 	}
 
-    // update dialog title
-    private void updateDialogView(Conversation c) {
-
-        if(getDialog() != null) {
-            getDialog().setTitle(c.getName());
-            title.setVisibility(View.GONE);
-        }else {
-            title.setText(c.getName());
-        }
-
-        //Collection<User> userSet = c.getUsers();
-       //Collection<Tag> tagSet = c.getTags();
-        //users.setText(ConversationAdapter.getUserText(userSet));
-        //tags.setText(ConversationAdapter.getTagText(tagSet));
-        users.setText("Yojan Alex Petar Mona Philip");
-        tags.setText("Echo Multi Touch Conference");
-        online.setText("5 users online");
-
-
-    }
-
     private class GetConversation extends AsyncTask<Long, Void, Conversation> {
 
         ClientApi api = new ClientApi("http://echoconf.herokuapp.com/");
+        String convName;
+        String usersText;
+        String onlineText;
+        String previewText;
 
         @Override
         protected Conversation doInBackground(Long... params) {
-            Log.d("ConvDialog", params[0]+"");
-            return api.conversationResource.get(params[0]);
+
+            Conversation conversation = api.conversationResource.get(params[0]);
+
+            Collection<Message> messages = conversation.getMessages();
+            //Collection<User> users = conversation.getUsers();
+
+            convName = conversation.getName();
+
+//            StringBuilder userBuilder = new StringBuilder();
+//            for(User u : users ) {
+//                userBuilder.append(u.getUsername() + " ");
+//            }
+            //usersText = userBuilder.toString();
+
+            //onlineText = users.size() + " users online";
+
+            StringBuilder previewBuilder = new StringBuilder();
+            for(Message m : messages) {
+                previewBuilder.append(
+                        (m.getSender() == null ? "Anonymous" : m.getSender().getUsername()) + ": " +
+                        m.getContents() + "\n");
+            }
+            previewText = previewBuilder.toString();
+
+            return conversation;
         }
 
         @Override
@@ -124,14 +128,24 @@ public class ConversationDialog extends DialogFragment implements
                 Log.d("ConvDialog", "No conversation retrieved!");
                 return;
             }
-            updateDialogView(conversation);
-            Log.d("CONVDIALOG", conversation.getName());
-            StringBuilder previewText = new StringBuilder();
-            //Collection<Message> messages = conversation.getMessages();
+
 
             progress.setVisibility(View.GONE);
             preview.setVisibility(View.VISIBLE);
-            preview.setText(previewText.toString());
+            preview.setText(previewText);
+
+            if(getDialog() != null) {
+                getDialog().setTitle(convName);
+                title.setVisibility(View.GONE);
+            }else {
+                title.setText(convName);
+            }
+
+            //users.setText(usersText);
+            //tags.setText(tagsText);
+            users.setText("Yojan Alex Petar Mona Philip");
+            tags.setText("Echo Multi Touch Conference");
+            online.setText("5 users online");
         }
     }
 }
