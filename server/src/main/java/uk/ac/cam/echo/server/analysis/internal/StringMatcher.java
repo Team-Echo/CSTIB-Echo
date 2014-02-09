@@ -29,7 +29,7 @@ public class StringMatcher
         char[] needle = ndl.toCharArray();
         char[] haystack = hystck.toCharArray();
 
-        int[] P = new int[m];
+        int[] P = new int[m+1];
 
         for (int i=0;i<m;i++) P[i] = -1;
 
@@ -42,7 +42,7 @@ public class StringMatcher
 
         int longestMatch = 0;
 
-        for (int i=0,j=0;i<n;i++)
+        for (int i=0,j=0;i<n;)
         {
             while (j > -1 && haystack[i] != needle[j]) j = P[j];
             i++; j++;
