@@ -224,12 +224,12 @@ public class DataAnalyst implements ServerDataAnalyst
     {
         List<Conversation> ret = new LinkedList<Conversation>();
         Collection<Conversation> conversations = parentConference.getConversationSet();
-        PriorityQueue<Conversation> pq = new PriorityQueue<Conversation>(11, new ConversationComparatorByUserCount());
+        PriorityQueue<IntegerConversationPair> pq = new PriorityQueue<IntegerConversationPair>(11, new ConversationComparatorByUserCount());
 
-        for (Conversation C : conversations) pq.offer(C);
+        for (Conversation C : conversations) pq.offer(new IntegerConversationPair(C.getUsers().size(), C));
         while (n > 0 && !pq.isEmpty())
         {
-            ret.add(pq.poll());
+            ret.add(pq.poll().getConvo());
             n--;
         }
 

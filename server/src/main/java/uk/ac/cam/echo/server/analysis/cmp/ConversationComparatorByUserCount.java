@@ -1,6 +1,6 @@
 package uk.ac.cam.echo.server.analysis.cmp;
 
-import uk.ac.cam.echo.data.Conversation;
+import uk.ac.cam.echo.server.analysis.internal.IntegerConversationPair;
 
 import java.util.Comparator;
 
@@ -10,16 +10,15 @@ import java.util.Comparator;
  A Comparator that compares two conversations by user count.
  It is reversed, in order to make our priority queues max-heaps instead of min-heaps.
 */
-public class ConversationComparatorByUserCount implements Comparator<Conversation>
+public class ConversationComparatorByUserCount implements Comparator<IntegerConversationPair>
 {
     @Override
-    public int compare(Conversation cnvA, Conversation cnvB)
+    public int compare(IntegerConversationPair cnvA, IntegerConversationPair cnvB)
     {
-        int A = cnvA.getUsers().size();
-        int B = cnvB.getUsers().size();
+        int iA = cnvA.getInt(), iB = cnvB.getInt();
+        if (iA < iB) return 1;
+        if (iA > iB) return -1;
 
-        if (A < B) return 1;
-        else if (A > B) return -1;
         return 0;
     }
 }
