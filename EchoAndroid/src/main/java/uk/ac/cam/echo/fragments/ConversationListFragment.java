@@ -100,7 +100,7 @@ public class ConversationListFragment extends Fragment implements
 				result = api.conferenceResource.getConversations(1);
 			} else {
 				String query = params[0];
-                result = api.conferenceResource.onlyNameSearch(1, query, 10);
+                result = api.conferenceResource.search(1, query, 10);
 			}
 
 			for(uk.ac.cam.echo.data.Conversation c : result)

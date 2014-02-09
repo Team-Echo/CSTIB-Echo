@@ -57,7 +57,8 @@ public class ConversationDetailActivity extends Activity implements View.OnClick
             if(msgContents.equals("")) {
                 return;
             }
-
+            send.setVisibility(View.INVISIBLE);
+            input.setText("");
             new SendMessage().execute(msgContents);
         }
     }
@@ -91,6 +92,8 @@ public class ConversationDetailActivity extends Activity implements View.OnClick
         protected void onPostExecute(Message newMsg) {
             cf.getAdapter().add(newMsg);
             cf.getAdapter().notifyDataSetChanged();
+            cf.getListView().setSelection(cf.getAdapter().getCount()-1);
+            send.setVisibility(View.VISIBLE);
         }
     }
 }

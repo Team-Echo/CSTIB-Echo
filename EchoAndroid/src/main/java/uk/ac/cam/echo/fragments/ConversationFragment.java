@@ -63,7 +63,9 @@ public class ConversationFragment extends Fragment {
     public MessageAdapter getAdapter() {
         return adapter;
     }
-	
+
+    public ListView getListView() { return listView; }
+
 	// update GUI to reflect conversation
 	private void updateViews() {
 		//TODO:
