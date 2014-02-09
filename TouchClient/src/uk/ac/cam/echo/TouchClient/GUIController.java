@@ -20,6 +20,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
@@ -28,6 +29,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.RotateEvent;
 import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
+import javafx.util.Callback;
 
 /**
  * FXML Controller class
@@ -121,6 +124,7 @@ public class GUIController implements Initializable {
      * a function to setup all the event handlers for coversation1
      */
     private void setupConversationPane1(){
+        conversation1_messages.setCellFactory(new messageCellFactory());
         final Delta dragDeltaMouse = new Delta();
         conversation1.setOnMousePressed(new EventHandler<MouseEvent>(){
             @Override 
@@ -192,6 +196,7 @@ public class GUIController implements Initializable {
      * a function to setup all the event handlers for coversation2
      */
     private void setupConversationPane2(){
+        conversation2_messages.setCellFactory(new messageCellFactory());
         final Delta dragDeltaMouse = new Delta();
         conversation2.setOnMousePressed(new EventHandler<MouseEvent>(){
             @Override 
@@ -263,6 +268,7 @@ public class GUIController implements Initializable {
      * a function to setup all the event handlers for coversation3
      */
     private void setupConversationPane3(){
+        conversation3_messages.setCellFactory(new messageCellFactory());
         final Delta dragDeltaMouse = new Delta();
         conversation3.setOnMousePressed(new EventHandler<MouseEvent>(){
             @Override 
@@ -334,6 +340,7 @@ public class GUIController implements Initializable {
      * a function to setup all the event handlers for coversation4
      */
     private void setupConversationPane4(){
+        conversation4_messages.setCellFactory(new messageCellFactory());
         final Delta dragDeltaMouse = new Delta();
         conversation4.setOnMousePressed(new EventHandler<MouseEvent>(){
             @Override 
@@ -405,6 +412,7 @@ public class GUIController implements Initializable {
      * a function to setup all the event handlers for coversation5
      */
     private void setupConversationPane5(){
+        conversation5_messages.setCellFactory(new messageCellFactory());
         final Delta dragDeltaMouse = new Delta();
         conversation5.setOnMousePressed(new EventHandler<MouseEvent>(){
             @Override 
