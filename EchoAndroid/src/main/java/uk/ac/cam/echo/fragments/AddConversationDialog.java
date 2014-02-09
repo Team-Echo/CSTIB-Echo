@@ -128,10 +128,20 @@ public class AddConversationDialog extends DialogFragment implements
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
-            newConv.save();
-            Log.d("ESCAPE", "Escaped");
+            try {
+                newConv.save();
+                Log.d("ESCAPE", "Escaped");
+            } catch(Error e) {
+                Log.e("Save", e.getMessage());
+                return null;
+            }
             return newConv;
+        }
+
+        @Override
+        protected void onPostExecute(Conversation result) {
+            getDialog().dismiss();
+            
         }
     }
 

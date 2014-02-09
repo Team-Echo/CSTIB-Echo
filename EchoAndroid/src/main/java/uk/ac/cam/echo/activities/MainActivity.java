@@ -58,14 +58,14 @@ public class MainActivity extends Activity
     	if(!user.equals("") && !pass.equals("")) {
     		toggleButton();
     		
-    		if(user.equals("user") && pass.equals("pass")) { //userAuntheticated(user, pass) == ClientAPI.AUTH_SUCCESS
+    		//if(user.equals("user") && pass.equals("pass")) { //userAuntheticated(user, pass) == ClientAPI.AUTH_SUCCESS
     			Intent i = new Intent(this, ConversationListActivity.class);
     			startActivity(i);
   
-    		} else {
-    			Toaster.displayShort(this, "authentication failed");
-    			toggleButton();
-    		}
+    		//} else {
+    		//	Toaster.displayShort(this, "authentication failed");
+    		//	toggleButton();
+    		//}
     		
     		
     	} else {
