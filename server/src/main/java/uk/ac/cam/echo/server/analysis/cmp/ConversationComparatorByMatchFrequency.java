@@ -22,6 +22,6 @@ public class ConversationComparatorByMatchFrequency implements Comparator<Double
         if (dA < dB) return 1;
         if (dA > dB) return -1;
 
-        return new ConversationComparatorByUserCount().compare(cnvA.getConvo(), cnvB.getConvo());
+        return 0;
     }
 }
