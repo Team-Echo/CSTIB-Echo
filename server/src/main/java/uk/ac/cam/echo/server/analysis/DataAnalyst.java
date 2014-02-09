@@ -1,6 +1,7 @@
 package uk.ac.cam.echo.server.analysis;
 
 import uk.ac.cam.echo.data.*;
+import uk.ac.cam.echo.server.HibernateUtil;
 import uk.ac.cam.echo.server.analysis.cmp.ConversationComparatorByActivity;
 import uk.ac.cam.echo.server.analysis.cmp.ConversationComparatorByMatchFrequency;
 import uk.ac.cam.echo.server.analysis.cmp.ConversationComparatorByUserCount;
@@ -8,6 +9,7 @@ import uk.ac.cam.echo.server.analysis.internal.DoubleConversationPair;
 import uk.ac.cam.echo.server.analysis.internal.IntegerConversationPair;
 import uk.ac.cam.echo.server.analysis.internal.MessageLexer;
 import uk.ac.cam.echo.server.analysis.internal.StringMatcher;
+import uk.ac.cam.echo.server.models.ConferenceModel;
 
 import java.util.*;
 
@@ -21,19 +23,21 @@ import java.util.*;
 */
 public class DataAnalyst implements ServerDataAnalyst
 {
-    Conference parentConference = null;
+    long parentID;
     String dictionary = this.getClass().getResource("/dictionaries/en_GB/en_GB.dic").getPath();
     String affix = this.getClass().getResource("/dictionaries/en_GB/en_GB.aff").getPath();
     String stopWords = this.getClass().getResource("/stop_lists/stop_list.txt").getPath();
 
-    public DataAnalyst(Conference c)
+    public DataAnalyst(long conferenceID)
     {
-        parentConference = c;
+        parentID = conferenceID;
     }
 
     @Override
     public List<Conversation> search(String keyword, int n)
     {
+        Conference parentConference = (Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, parentID);
+
         keyword = keyword.toLowerCase(Locale.ENGLISH);
         String[] keywords = keyword.split("\\s+");
 
@@ -133,6 +137,8 @@ public class DataAnalyst implements ServerDataAnalyst
     @Override
     public List<Conversation> onlyTagSearch(String keyword, int n)
     {
+        Conference parentConference = (Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, parentID);
+
         keyword = keyword.toLowerCase(Locale.ENGLISH);
         String[] keywords = keyword.split("\\s+");
 
@@ -196,6 +202,8 @@ public class DataAnalyst implements ServerDataAnalyst
     @Override
     public List<Conversation> onlyNameSearch(String keyword, int n)
     {
+        Conference parentConference = (Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, parentID);
+
         keyword = keyword.toLowerCase(Locale.ENGLISH);
         String[] keywords = keyword.split("\\s+");
 
@@ -222,6 +230,8 @@ public class DataAnalyst implements ServerDataAnalyst
     @Override
     public List<Conversation> mostUsers(int n)
     {
+        Conference parentConference = (Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, parentID);
+
         List<Conversation> ret = new LinkedList<Conversation>();
         Collection<Conversation> conversations = parentConference.getConversationSet();
         PriorityQueue<IntegerConversationPair> pq = new PriorityQueue<IntegerConversationPair>(11, new ConversationComparatorByUserCount());
@@ -239,6 +249,8 @@ public class DataAnalyst implements ServerDataAnalyst
     @Override
     public List<Conversation> mostActiveRecently(long minutes, int n)
     {
+        Conference parentConference = (Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, parentID);
+
         List<Conversation> ret = new LinkedList<Conversation>();
         Collection<Conversation> conversations = parentConference.getConversationSet();
         PriorityQueue<IntegerConversationPair> pq = new PriorityQueue<IntegerConversationPair>(11, new ConversationComparatorByActivity());
