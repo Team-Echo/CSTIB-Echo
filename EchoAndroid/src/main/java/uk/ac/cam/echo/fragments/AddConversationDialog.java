@@ -32,8 +32,6 @@ public class AddConversationDialog extends DialogFragment implements
     Button add;
     ProgressBar progress;
 
-    long id;
-
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -87,13 +85,7 @@ public class AddConversationDialog extends DialogFragment implements
                 Toaster.displayShort(getActivity(), "Please enter atleast one tag");
                 return;
             }
-            Toaster.displayLong(getActivity(), titleInput + " ~ " + tagsInput);
-			/*TODO: API calls to add conversation
-			 * Conversation c = api.newConversation();
-			 * c.setName(titleInput);
-			 * c.setTags(tagsInput);
-			 * c.save();
-			 */
+
             new AddConversation().execute(titleInput, tagsInput);
         }
     }
@@ -116,7 +108,7 @@ public class AddConversationDialog extends DialogFragment implements
         @Override
         protected Conversation doInBackground(String... params) {
             String convName = params[0];
-            String convTags = params[1];
+            //String convTags = params[1];
 
             conference = api.conferenceResource.getAll().get(0);
             Conversation newConv = api.newConversation();

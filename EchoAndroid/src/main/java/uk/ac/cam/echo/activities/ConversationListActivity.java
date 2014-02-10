@@ -9,6 +9,8 @@ import uk.ac.cam.echo.fragments.AddConversationDialog;
 import uk.ac.cam.echo.fragments.ConversationDialog;
 import uk.ac.cam.echo.fragments.ConversationListFragment;
 import uk.ac.cam.echo.fragments.ConversationListFragment.Communicator;
+import uk.ac.cam.echo.onListLoadedListener;
+
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -25,12 +27,11 @@ import android.widget.SearchView;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-public class ConversationListActivity extends Activity implements Communicator {
+public class ConversationListActivity extends Activity
+        implements Communicator, onListLoadedListener {
 	
 	FragmentManager manager;
 	boolean dualPane; //to manage orientations/different screensizes
-
-
 
     private ConversationListFragment clf;
 	List<Conversation> conversations;
@@ -45,7 +46,9 @@ public class ConversationListActivity extends Activity implements Communicator {
             dualPane = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
             
             clf = (ConversationListFragment) manager.findFragmentById(R.id.convListFragment);
+
             clf.setCommunicator(this);
+
             
             handleIntent(getIntent());
             Log.d("SEARCH","List Activity onCreate");
@@ -156,10 +159,15 @@ public class ConversationListActivity extends Activity implements Communicator {
 		}else {
 			Toaster.displayLong(this, "No scan data received!");
 		}
-	}
+    }
 
     public ConversationListFragment getConvListFrag() {
         return clf;
     }
-	
+
+    // called when listview has rendered
+    @Override
+    public void onRendered() {
+        Toaster.displayLong(this, "toggleeee");
+    }
 }
