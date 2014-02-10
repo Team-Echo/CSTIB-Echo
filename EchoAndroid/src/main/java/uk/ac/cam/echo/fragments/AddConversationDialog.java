@@ -39,7 +39,7 @@ public class AddConversationDialog extends DialogFragment implements
 
         title = (EditText)view.findViewById(R.id.convTitle);
         tags = (EditText)view.findViewById(R.id.convTags);
-        progress = (ProgressBar)view.findViewById(R.id.convProgressDialog);
+        progress = (ProgressBar)view.findViewById(R.id.addProgress);
         add = (Button)view.findViewById(R.id.addButton);
 
         add.setOnClickListener(this);
@@ -73,6 +73,9 @@ public class AddConversationDialog extends DialogFragment implements
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.addButton) {
+
+            add.setVisibility(View.GONE);
+            progress.setVisibility(View.VISIBLE);
 
             String titleInput = title.getText().toString();
             if(titleInput.equals("")) {

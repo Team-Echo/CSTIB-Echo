@@ -48,5 +48,16 @@
 	    android:layout_below="@+id/convTags"
 	    android:layout_margin="5dp"
 	    android:text="@string/addConversation" />
-    
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:id="@+id/addProgress"
+        android:indeterminate="true"
+        android:layout_below="@+id/convTags"
+        android:layout_alignLeft="@+id/convTags"
+        android:layout_alignRight="@id/convTags" />
+
 </RelativeLayout>

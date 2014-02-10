@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.SearchView;
 
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -29,35 +30,36 @@ import com.google.zxing.integration.android.IntentResult;
 
 public class ConversationListActivity extends Activity
         implements Communicator, onListLoadedListener {
-	
-	FragmentManager manager;
-	boolean dualPane; //to manage orientations/different screensizes
+
+    private Menu menu;
+
+	private FragmentManager manager;
+	private boolean dualPane; //to manage orientations/different screensizes
 
     private ConversationListFragment clf;
-	List<Conversation> conversations;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.conv_list_detail_layout);
-            
-            manager = getFragmentManager(); 
-            View detailsFrame = findViewById(R.id.convFrame);
-            dualPane = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
-            
-            clf = (ConversationListFragment) manager.findFragmentById(R.id.convListFragment);
+        super.onCreate(savedInstanceState);
 
-            clf.setCommunicator(this);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        setProgressBarIndeterminateVisibility(true);
+        setContentView(R.layout.conv_list_detail_layout);
 
-            
-            handleIntent(getIntent());
-            Log.d("SEARCH","List Activity onCreate");
-            
+        manager = getFragmentManager();
+        View detailsFrame = findViewById(R.id.convFrame);
+        dualPane = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
+
+        clf = (ConversationListFragment) manager.findFragmentById(R.id.convListFragment);
+
+        clf.setCommunicator(this);
+
+
+        handleIntent(getIntent());
     }
 	
-	/* if current view is dual-pane, update the fragment, otherwise
-	 * start the stand-alone conversation activity.
-	 */
+	// If current view is dual-pane, update the fragment,
+	// otherwise start the stand-alone conversation activity
 	@Override
 	public void respond(long id) {
 		
@@ -79,9 +81,13 @@ public class ConversationListActivity extends Activity
 			
 		}
 	}
-	
+
+    // Set up action-bar and Search functionality
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+
+        this.menu = menu;
+
 		// Inflate the menu items for use in the action bar
 		getMenuInflater().inflate(R.menu.list_activity_actions, menu);
 		
@@ -95,14 +101,12 @@ public class ConversationListActivity extends Activity
 		
 		return true;
 	}
-	
+
+    // Attaching functionality to menu-items
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    // Handle presses on the action bar items
 	    switch (item.getItemId()) {
-	        case R.id.action_search:
-	        	//openSearch();
-	            return true;
 	        case R.id.action_scan:
 	            openScan();
 	            return true;
@@ -112,33 +116,36 @@ public class ConversationListActivity extends Activity
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
-	}
-	
-	@Override
-	protected void onNewIntent(Intent intent) {
-		Log.d("SEARCH", "onNewIntent");
-	    setIntent(intent);
-	    handleIntent(intent);
-	}
-	
-	private void handleIntent(Intent intent) {
-		if(Intent.ACTION_SEARCH.equals(intent.getAction())) {
-			String query = intent.getStringExtra(SearchManager.QUERY);
-			clf.performSearch(query);
-			Log.d("SEARCH", "handleIntent");
-		}	
-	}
+    }
 
-	
-	private void openScan() {
-		IntentIntegrator scanIntegrator = new IntentIntegrator(this);
-		scanIntegrator.initiateScan();
-	}
-	
+    // Methods to handle search queries to the same activity
+    @Override
+    protected void onNewIntent(Intent intent) {
+        Log.d("SEARCH", "onNewIntent");
+        setIntent(intent);
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        if(Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            clf.performSearch(query);
+            Log.d("SEARCH", "handleIntent");
+        }
+    }
+
+	// Opening a Dialog form to add new Conversation
 	private void addConversation() {
 		AddConversationDialog addDialog = AddConversationDialog.newInstance();
 		addDialog.show(manager, "add_conv");
 	}
+
+
+    // Methods to handle QR code scanning and retrieving results
+    private void openScan() {
+        IntentIntegrator scanIntegrator = new IntentIntegrator(this);
+        scanIntegrator.initiateScan();
+    }
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		//retrieve scan result
@@ -161,13 +168,10 @@ public class ConversationListActivity extends Activity
 		}
     }
 
-    public ConversationListFragment getConvListFrag() {
-        return clf;
-    }
-
-    // called when listview has rendered
+    // Callback method when ListView has fully rendered
     @Override
     public void onRendered() {
+        setProgressBarIndeterminateVisibility(false);
         Toaster.displayLong(this, "toggleeee");
     }
 }
