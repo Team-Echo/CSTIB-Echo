@@ -77,10 +77,17 @@ public interface ServerDataAnalyst
     /**
      Displays the most active conversations in terms of total message count.
 
-     @param n         The maximal amount of solutions to return.
-     @return          The list of (up to n) conversations with the most messages, sorted by message count.
+     @param n           The maximal amount of solutions to return.
+     @return            The list of (up to n) conversations with the most messages, sorted by message count.
     */
     public List<Conversation> mostMessages(int n);
+
+    /**
+     Displays the most active users of all time, in terms of message count.
+     @param n           The maximal amount of solutions to return.
+     @return            The list of (up to n) users with the most messages, sorted by message count.
+    */
+    public List<User> mostActiveUsers(int n);
 
     // TODO: Add more methods as necessary.
 }

@@ -46,6 +46,10 @@ public interface ConferenceResource extends RestResource<Conference> {
     @GET
     public List<Conversation> mostMessages(@PathParam("conferenceId") long id, @QueryParam("num") int n);
 
+    @Path("/{conferenceId}/most-active-users")
+    @GET
+    public List<User> mostActiveUsers(@PathParam("conferenceId") long id, @QueryParam("num") int n);
+
     @GET
     @Path("/{conferenceId}/conversations")
     public List<Conversation> getConversations(@PathParam("conferenceId") long id);

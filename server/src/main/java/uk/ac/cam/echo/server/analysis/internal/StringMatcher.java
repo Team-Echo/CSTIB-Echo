@@ -7,7 +7,7 @@ package uk.ac.cam.echo.server.analysis.internal;
  algorithm for fast string matching.
 
  It uses a slightly modified version that records
- the largest partial match, in the event of no
+ the longest partial match, in the event of no
  full matches being found.
 */
 public class StringMatcher
@@ -18,7 +18,7 @@ public class StringMatcher
 
      @param ndl         The string containing the pattern to match.
      @param hystck      The string in which to look for matches.
-     @return            (largest partial match) / (needle length). 1 if full match found.
+     @return            (longest partial match) / (needle length). 1 if full match found.
     */
     public static double Match(String ndl, String hystck)
     {

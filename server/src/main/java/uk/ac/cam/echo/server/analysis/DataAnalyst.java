@@ -306,4 +306,11 @@ public class DataAnalyst implements ServerDataAnalyst
 
         return ret;
     }
+
+    @Override
+    public List<User> mostActiveUsers(int n)
+    {
+        return null;
+    }
+
 }
