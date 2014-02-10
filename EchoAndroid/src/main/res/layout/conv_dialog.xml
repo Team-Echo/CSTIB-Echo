@@ -33,7 +33,9 @@
         android:layout_alignRight="@+id/convTitleDialog"
         android:layout_below="@+id/convTitleDialog"
         android:layout_marginLeft="5dp"
-        android:textAllCaps="true" />
+        android:textAllCaps="true"
+        android:textSize="12sp"
+        />
 
     <TextView
         android:id="@+id/convTagsDialog"
@@ -41,24 +43,24 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/convUsersDialog"
         android:layout_below="@+id/convUsersDialog"
+        android:textSize="12sp"
         android:textAllCaps="true" />
-
 
 
     <ScrollView
         android:id="@+id/scrollView"
-        android:background="@color/lightBlue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/convTagsDialog">
+        android:layout_below="@+id/convTagsDialog"
+        android:layout_above="@+id/convJoinDialog">
 
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
 
                 <ProgressBar
@@ -73,11 +75,13 @@
                     android:id="@+id/previewDialog"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Medium Text"
-                    android:visibility="gone"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/darkGrey"
+                    android:visibility="visible"
                     android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true" />
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentRight="true" />
 
             </RelativeLayout>
 
@@ -88,12 +92,14 @@
         android:id="@+id/convJoinDialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_margin="5dp"
         android:background="@color/buttonBackground"
         android:text="@string/join"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="5dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignRight="@+id/convUsersDialog" />
 
 
 

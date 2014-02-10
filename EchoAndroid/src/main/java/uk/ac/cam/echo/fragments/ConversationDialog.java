@@ -25,15 +25,15 @@ import uk.ac.cam.echo.data.User;
 public class ConversationDialog extends DialogFragment implements
 									OnClickListener{
 
-	TextView title;
-	TextView users;
-	TextView tags;
-	TextView online;
-    TextView preview;
-	Button join;
-	ProgressBar progress;
+	private TextView title;
+	private TextView users;
+	private TextView tags;
+	private TextView online;
+    private TextView preview;
+	private Button join;
+	private ProgressBar progress;
 	
-	long id;
+	private long id;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -49,6 +49,7 @@ public class ConversationDialog extends DialogFragment implements
         preview = (TextView)view.findViewById(R.id.previewDialog);
 		progress = (ProgressBar)view.findViewById(R.id.convProgressDialog);
 		join = (Button)view.findViewById(R.id.convJoinDialog);
+
 		join.setOnClickListener(this);
 		
 		return view;
@@ -81,7 +82,6 @@ public class ConversationDialog extends DialogFragment implements
 			intent.putExtra("_id", id);
 			startActivity(intent);
 		}
-		
 	}
 
     private class GetConversation extends AsyncTask<Long, Void, Conversation> {

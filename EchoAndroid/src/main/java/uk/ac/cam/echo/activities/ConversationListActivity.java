@@ -1,16 +1,5 @@
 package uk.ac.cam.echo.activities;
 
-import java.util.List;
-
-import uk.ac.cam.echo.R;
-import uk.ac.cam.echo.Toaster;
-import uk.ac.cam.echo.dummy.Conversation;
-import uk.ac.cam.echo.fragments.AddConversationDialog;
-import uk.ac.cam.echo.fragments.ConversationDialog;
-import uk.ac.cam.echo.fragments.ConversationListFragment;
-import uk.ac.cam.echo.fragments.ConversationListFragment.Communicator;
-import uk.ac.cam.echo.onListLoadedListener;
-
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -22,16 +11,23 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.SearchView;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import uk.ac.cam.echo.R;
+import uk.ac.cam.echo.Toaster;
+import uk.ac.cam.echo.fragments.AddConversationDialog;
+import uk.ac.cam.echo.fragments.ConversationDialog;
+import uk.ac.cam.echo.fragments.ConversationListFragment;
+import uk.ac.cam.echo.fragments.ConversationListFragment.Communicator;
+import uk.ac.cam.echo.onListLoadedListener;
+
 public class ConversationListActivity extends Activity
         implements Communicator, onListLoadedListener {
 
-    private Menu menu;
+    private MenuItem qrScan;
 
 	private FragmentManager manager;
 	private boolean dualPane; //to manage orientations/different screensizes
@@ -41,9 +37,6 @@ public class ConversationListActivity extends Activity
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        setProgressBarIndeterminateVisibility(true);
         setContentView(R.layout.conv_list_detail_layout);
 
         manager = getFragmentManager();
@@ -85,9 +78,6 @@ public class ConversationListActivity extends Activity
     // Set up action-bar and Search functionality
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-
-        this.menu = menu;
-
 		// Inflate the menu items for use in the action bar
 		getMenuInflater().inflate(R.menu.list_activity_actions, menu);
 		
@@ -171,7 +161,6 @@ public class ConversationListActivity extends Activity
     // Callback method when ListView has fully rendered
     @Override
     public void onRendered() {
-        setProgressBarIndeterminateVisibility(false);
         Toaster.displayLong(this, "toggleeee");
     }
 }

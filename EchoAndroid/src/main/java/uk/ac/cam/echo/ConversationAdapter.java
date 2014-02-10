@@ -20,13 +20,13 @@ import uk.ac.cam.echo.data.User;
 
 public class ConversationAdapter extends ArrayAdapter<Conversation> {
 	
-	Context context;
-	int layoutResourceId;
+	private Context context;
+	private int layoutResourceId;
 
     private onListLoadedListener listener; // callback when listview has rendered
 
-	List<Conversation> data = null;
-    HashMap<Long, Integer> positionMap;
+	private List<Conversation> data = null;
+    private HashMap<Long, Integer> positionMap;
 	
 	public ConversationAdapter(Context context, int layoutResourceId,
 									List<Conversation> data) {
