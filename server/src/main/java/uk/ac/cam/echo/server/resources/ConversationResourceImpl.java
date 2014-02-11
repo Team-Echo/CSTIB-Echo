@@ -7,6 +7,7 @@ import uk.ac.cam.echo.data.User;
 import uk.ac.cam.echo.data.async.SubscriptionResource;
 import uk.ac.cam.echo.data.resources.ConversationResource;
 import uk.ac.cam.echo.data.resources.MessageResource;
+import uk.ac.cam.echo.data.resources.TagResource;
 import uk.ac.cam.echo.server.HibernateUtil;
 import uk.ac.cam.echo.server.models.ConversationModel;
 
@@ -27,6 +28,11 @@ public class ConversationResourceImpl implements ConversationResource {
 
     public MessageResource getMessageResource(long id) {
         return new MessageResourceImpl(get(id));
+    }
+
+    @Override
+    public TagResource getTagResource(long id) {
+        return new TagResourceImpl(get(id));
     }
 
     public Conversation create(String name, long conference_id) {

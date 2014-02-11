@@ -37,6 +37,9 @@ public class ConversationModel extends BaseModel implements Conversation {
     private Conference conference;
 
     @ManyToMany(targetEntity = TagModel.class)
+    @JoinTable(name="CONVERSATION_TAG",
+               joinColumns = {@JoinColumn(name = "conversation_id")},
+               inverseJoinColumns = {@JoinColumn(name = "tag_id")})
     private Set<Tag> tags;
 
     @OneToMany(targetEntity = MessageModel.class,

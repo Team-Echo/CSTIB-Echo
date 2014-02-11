@@ -10,17 +10,11 @@ import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.media.sse.SseFeature;
 import org.glassfish.jersey.server.ResourceConfig;
-import uk.ac.cam.echo.data.Conference;
-import uk.ac.cam.echo.data.Conversation;
-import uk.ac.cam.echo.data.Message;
-import uk.ac.cam.echo.data.User;
+import uk.ac.cam.echo.data.*;
 import uk.ac.cam.echo.server.filters.HibernateRequestFilter;
 import uk.ac.cam.echo.server.filters.HibernateResponseFilter;
 import uk.ac.cam.echo.server.filters.JacksonWithHibernateJsonProvider;
-import uk.ac.cam.echo.server.models.ConferenceModel;
-import uk.ac.cam.echo.server.models.ConversationModel;
-import uk.ac.cam.echo.server.models.MessageModel;
-import uk.ac.cam.echo.server.models.UserModel;
+import uk.ac.cam.echo.server.models.*;
 import uk.ac.cam.echo.server.resources.ConferenceResourceImpl;
 import uk.ac.cam.echo.server.resources.ConversationResourceImpl;
 import uk.ac.cam.echo.server.resources.MessageResourceImpl;
@@ -58,7 +52,9 @@ public class Main {
                 .addAbstractTypeMapping(Conference.class, ConferenceModel.class)
                 .addAbstractTypeMapping(Conversation.class, ConversationModel.class)
                 .addAbstractTypeMapping(Message.class, MessageModel.class)
+                .addAbstractTypeMapping(Tag.class, TagModel.class)
                 .addAbstractTypeMapping(User.class, UserModel.class);
+
 
         mapper.registerModule(testModule);
 
