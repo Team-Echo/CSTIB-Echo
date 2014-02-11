@@ -41,7 +41,8 @@ public class ConversationModel extends BaseModel implements Conversation {
 
     @OneToMany(targetEntity = MessageModel.class,
                mappedBy = "conversation")
-    private Set<Message> messages;
+    @OrderBy("timeStamp DESC")
+    private List<Message> messages;
 
     @OneToMany(targetEntity = UserModel.class, mappedBy = "currentConversation")
     private Set<User> users;
@@ -88,11 +89,11 @@ public class ConversationModel extends BaseModel implements Conversation {
         this.tags = tags;
     }
 
-    public Set<Message> getMessages() {
+    public List<Message> getMessages() {
         return messages;
     }
 
-    public void setMessages(Set<Message> messages) {
+    public void setMessages(List<Message> messages) {
         this.messages = messages;
     }
 

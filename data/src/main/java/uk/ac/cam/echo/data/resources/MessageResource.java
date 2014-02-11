@@ -4,13 +4,13 @@ import uk.ac.cam.echo.data.Message;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
-import java.util.List;
+import java.util.Collection;
 
 @Produces("application/json")
 public interface MessageResource extends RestResource<Message>{
 
     @GET
-    public List<Message> getAll();
+    public Collection<Message> getAll();
 
     @GET
     @Path("/{id}")
