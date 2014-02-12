@@ -37,7 +37,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		this.context = context;
 		this.layoutResourceId = layoutResourceId;
 		this.data = data;
-
         this.inflater = ((Activity)context).getLayoutInflater();
 		
 		DisplayMetrics metrics = context.getResources().getDisplayMetrics();
@@ -76,7 +75,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
 		long time = message.getTimeStamp();
         Date date = new Date(time);
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM\nHH:mm");
         String timeString = formatter.format(date);
 
 		String contents = message.getContents();
@@ -94,6 +93,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     public void updateMessage(Message m) {
         data.add(m); // prepend new messages
         notifyDataSetChanged();
+
     }
 
 	@Override
