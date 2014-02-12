@@ -75,7 +75,7 @@ public class ConversationDetailActivity extends Activity implements View.OnClick
             current = api.conversationResource.get(id);
             Message msg = api.newMessage(current);
             msg.setContents(contents);
-            //msg.getSender();
+            //msg.setSender()
 
             try {
                 msg.save();
@@ -90,8 +90,6 @@ public class ConversationDetailActivity extends Activity implements View.OnClick
 
         @Override
         protected void onPostExecute(Message newMsg) {
-            cf.getAdapter().add(newMsg);
-            cf.getAdapter().notifyDataSetChanged();
             cf.getListView().setSelection(cf.getAdapter().getCount()-1);
             send.setVisibility(View.VISIBLE);
         }

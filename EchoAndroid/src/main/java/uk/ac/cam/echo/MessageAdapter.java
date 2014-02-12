@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -36,7 +37,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		this.context = context;
 		this.layoutResourceId = layoutResourceId;
 		this.data = data;
-		this.inflater = ((Activity)context).getLayoutInflater();
+
+        this.inflater = ((Activity)context).getLayoutInflater();
 		
 		DisplayMetrics metrics = context.getResources().getDisplayMetrics();
 		width = metrics.widthPixels;
@@ -88,7 +90,12 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
 		return row;
 	}
-	
+
+    public void updateMessage(Message m) {
+        data.add(m); // prepend new messages
+        notifyDataSetChanged();
+    }
+
 	@Override
 	public int getViewTypeCount() {
 		return 2;
@@ -96,7 +103,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 	
 	@Override
 	public int getItemViewType(int position) {
-		//return data.get(position).isRemote() ? 1 : 0;
+        // data.get(position).getSender().getUsername() == username ? 0 : 1;
         return Math.random() < 0.5 ? 1 : 0;
 	}
 	

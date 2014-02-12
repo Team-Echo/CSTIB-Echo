@@ -5,11 +5,13 @@ import uk.ac.cam.echo.R;
 import uk.ac.cam.echo.client.ClientApi;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.Message;
+import uk.ac.cam.echo.data.async.Handler;
 
 import android.app.Fragment;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +46,7 @@ public class ConversationFragment extends Fragment {
 		super.onViewCreated(view, savedInstanceState);
 		listView = (ListView)view.findViewById(R.id.messageListView);
         new GetMessage().execute(id);
+        new Listen().execute(id);
 	}
 	
 	// Factory method to create a fragment based on the conversationID
@@ -66,13 +69,29 @@ public class ConversationFragment extends Fragment {
 
     public ListView getListView() { return listView; }
 
-	// update GUI to reflect conversation
-	private void updateViews() {
-		//TODO:
-		// get previous messages from network
-        //adapter.add();
-        //adapter.notifyDataSetChanged();
-	}
+    private class Listen extends AsyncTask<Long, Void, Message> {
+        long id;
+        ClientApi api;
+
+        @Override
+        protected Message doInBackground(Long... longs) {
+            id = longs[0];
+            api = new ClientApi("http://echoconf.herokuapp.com/");
+
+            Handler<Message> handler = new Handler<Message>() {
+                @Override
+                public void handle(Message message) {
+                    // when message received, update the adapter
+                    adapter.updateMessage(message);
+                    getListView().setSelection(adapter.getCount()-1);
+                }
+            };
+
+            api.conversationResource.listenToMessages(id).subscribe(handler);
+
+            return null;
+        }
+    }
 
     private class GetMessage extends AsyncTask<Long, Void, List<Message>> {
 
