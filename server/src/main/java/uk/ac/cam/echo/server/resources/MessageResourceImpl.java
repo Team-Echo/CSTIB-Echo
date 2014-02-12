@@ -21,7 +21,7 @@ public class MessageResourceImpl implements MessageResource {
 
     public List<Message> getAll() {
         return HibernateUtil.getTransaction().createCriteria(MessageModel.class)
-                .add(Restrictions.eq("conversation", conversation)).addOrder( Order.desc("timeStamp") ).list();
+                .add(Restrictions.eq("conversation", conversation)).addOrder(Order.asc("timeStamp")).list();
     }
 
     public Message get(long id) {
