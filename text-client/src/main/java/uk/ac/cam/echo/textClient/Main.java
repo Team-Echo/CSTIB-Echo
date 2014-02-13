@@ -75,7 +75,12 @@ public class Main {
     private static Conversation configureConversation(Conference conference) {
         System.out.println("Insert the id of the conversation or a new name in order to create a new Conversation.");
         for (Conversation conversation : conference.getConversationSet()) {
-            System.out.println(conversation.getId() + ": " + conversation.getName());
+            System.out.print(conversation.getId() + ": " + conversation.getName());
+           /* System.out.print("| Tags: ");
+            for (Tag t: conversation.getTags()){
+                System.out.print(t.getName() + " ");
+            } */
+            System.out.println();
         }
 
         System.out.print("Please insert your choice: ");
@@ -101,7 +106,11 @@ public class Main {
             conversation.setName(input);
             conversation.save();
         }
-
+        /*
+        Tag t = api.newTag(conversation);
+        t.setName("Test tag");
+        t.save();
+        */
         return conversation;
 
     }

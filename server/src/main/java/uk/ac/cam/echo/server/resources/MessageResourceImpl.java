@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+
 public class MessageResourceImpl implements MessageResource {
     private Conversation conversation;
     public MessageResourceImpl(Conversation conversation) {

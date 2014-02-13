@@ -5,14 +5,8 @@ import org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.module.SimpleModule;
 import org.glassfish.jersey.media.sse.SseFeature;
-import uk.ac.cam.echo.client.data.ConferenceData;
-import uk.ac.cam.echo.client.data.ConversationData;
-import uk.ac.cam.echo.client.data.MessageData;
-import uk.ac.cam.echo.client.data.UserData;
-import uk.ac.cam.echo.data.Conference;
-import uk.ac.cam.echo.data.Conversation;
-import uk.ac.cam.echo.data.Message;
-import uk.ac.cam.echo.data.User;
+import uk.ac.cam.echo.client.data.*;
+import uk.ac.cam.echo.data.*;
 import uk.ac.cam.echo.data.resources.ConferenceResource;
 import uk.ac.cam.echo.data.resources.ConversationResource;
 import uk.ac.cam.echo.data.resources.UserResource;
@@ -29,7 +23,8 @@ public class ClientApi {
                 .addAbstractTypeMapping(Conference.class, ConferenceData.class)
                 .addAbstractTypeMapping(Conversation.class, ConversationData.class)
                 .addAbstractTypeMapping(Message.class, MessageData.class)
-                .addAbstractTypeMapping(User.class, UserData.class);
+                .addAbstractTypeMapping(User.class, UserData.class)
+                .addAbstractTypeMapping(Tag.class, TagData.class);
 
         mapper.registerModule(testModule);
 
@@ -75,6 +70,14 @@ public class ClientApi {
         ConferenceData res = new ConferenceData();
         res.setApi(this);
         return res;
+    }
+
+    public Tag newTag(Conversation conversation) {
+        TagData tag = new TagData();
+        tag.setApi(this);
+        tag.configureResource(conversation.getId());
+
+        return tag;
     }
 
     public User newUser() {

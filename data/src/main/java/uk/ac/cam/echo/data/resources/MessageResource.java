@@ -4,13 +4,14 @@ import uk.ac.cam.echo.data.Message;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
+import java.util.Collection;
 import java.util.List;
 
 @Produces("application/json")
 public interface MessageResource extends RestResource<Message>{
 
     @GET
-    public List<Message> getAll();
+    public Collection<Message> getAll();
 
     @GET
     public List<Message> getRecent(@QueryParam("num") int n);

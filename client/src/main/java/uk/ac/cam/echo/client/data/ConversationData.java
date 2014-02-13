@@ -5,9 +5,10 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import uk.ac.cam.echo.client.ProxyResource;
 import uk.ac.cam.echo.data.*;
 import uk.ac.cam.echo.data.resources.ConferenceResource;
+import uk.ac.cam.echo.data.resources.ConversationResource;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 public class ConversationData extends BaseData implements Conversation {
     private String name;
@@ -45,13 +46,19 @@ public class ConversationData extends BaseData implements Conversation {
 
     @Override
     @JsonIgnore
-    public Set<Tag> getTags() {
-        throw new UnsupportedOperationException("Not implemented yet");
+    public Collection<Tag> getTags() {
+        Collection<Tag> tags = ((ConversationResource) getResource()).getTagResource(getId()).getAll();
+
+        for (Tag t: tags) {
+            ((TagData) t).configureResource(getId());
+        }
+
+        return tags;
     }
 
     @Override
     @JsonIgnore
-    public List<Message> getMessages() {
+    public Collection<Message> getMessages() {
         return getApi().conversationResource.getMessageResource(getId()).getAll();
     }
 

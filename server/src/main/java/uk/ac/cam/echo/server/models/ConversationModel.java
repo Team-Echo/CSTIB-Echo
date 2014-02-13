@@ -37,11 +37,15 @@ public class ConversationModel extends BaseModel implements Conversation {
     private Conference conference;
 
     @ManyToMany(targetEntity = TagModel.class)
+    @JoinTable(name="CONVERSATION_TAG",
+               joinColumns = {@JoinColumn(name = "conversation_id")},
+               inverseJoinColumns = {@JoinColumn(name = "tag_id")})
     private Set<Tag> tags;
 
     @OneToMany(targetEntity = MessageModel.class,
                mappedBy = "conversation")
-    private Set<Message> messages;
+    @OrderBy("timeStamp DESC")
+    private List<Message> messages;
 
     @OneToMany(targetEntity = UserModel.class, mappedBy = "currentConversation")
     private Set<User> users;
@@ -88,7 +92,7 @@ public class ConversationModel extends BaseModel implements Conversation {
         this.tags = tags;
     }
 
-    public Set<Message> getMessages() {
+    public List<Message> getMessages() {
         return messages;
     }
 
@@ -99,7 +103,7 @@ public class ConversationModel extends BaseModel implements Conversation {
         return ret;
     }
 
-    public void setMessages(Set<Message> messages) {
+    public void setMessages(List<Message> messages) {
         this.messages = messages;
     }
 

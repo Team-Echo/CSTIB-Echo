@@ -29,6 +29,9 @@ public interface ConversationResource extends RestResource<Conversation> {
     @Path("/{conversationId}/messages")
     public MessageResource getMessageResource(@PathParam("conversationId") long id);
 
+    @Path("/{conversationId}/tags")
+    public TagResource getTagResource(@PathParam("conversationId") long id);
+
     @PUT
     @Consumes("application/json")
     public Response update(Conversation item);
