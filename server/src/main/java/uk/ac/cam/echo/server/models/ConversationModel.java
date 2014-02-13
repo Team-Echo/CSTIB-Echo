@@ -9,10 +9,8 @@ import uk.ac.cam.echo.server.HibernateUtil;
 import uk.ac.cam.echo.server.serializers.ConversationSerializer;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+
 @JsonSerialize(using = ConversationSerializer.class)
 @Entity
 @Table(name="Conversation")
@@ -95,8 +93,10 @@ public class ConversationModel extends BaseModel implements Conversation {
     }
 
     public List<Message> getMessages(int n) {
-        return HibernateUtil.getTransaction().createCriteria(MessageModel.class)
+        List<Message> ret = HibernateUtil.getTransaction().createCriteria(MessageModel.class)
                 .add(Restrictions.eq("conversation", this)).addOrder(Order.desc("timeStamp")).setMaxResults(n).list();
+        Collections.reverse(ret);
+        return ret;
     }
 
     public void setMessages(Set<Message> messages) {
