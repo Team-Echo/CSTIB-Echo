@@ -24,6 +24,11 @@ public class MessageResourceImpl implements MessageResource {
                 .add(Restrictions.eq("conversation", conversation)).addOrder(Order.asc("timeStamp")).list();
     }
 
+    public List<Message> getRecent(int n) {
+        return HibernateUtil.getTransaction().createCriteria(MessageModel.class)
+                .add(Restrictions.eq("conversation", conversation)).addOrder(Order.desc("timeStamp")).setMaxResults(n).list();
+    }
+
     public Message get(long id) {
         return (Message) HibernateUtil.getTransaction().get(MessageModel.class, id);
     }

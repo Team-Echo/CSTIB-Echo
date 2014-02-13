@@ -2,6 +2,8 @@ package uk.ac.cam.echo.server.models;
 
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import uk.ac.cam.echo.data.*;
 import uk.ac.cam.echo.server.HibernateUtil;
 import uk.ac.cam.echo.server.serializers.ConversationSerializer;
@@ -90,6 +92,11 @@ public class ConversationModel extends BaseModel implements Conversation {
 
     public Set<Message> getMessages() {
         return messages;
+    }
+
+    public List<Message> getMessages(int n) {
+        return HibernateUtil.getTransaction().createCriteria(MessageModel.class)
+                .add(Restrictions.eq("conversation", this)).addOrder(Order.desc("timeStamp")).setMaxResults(n).list();
     }
 
     public void setMessages(Set<Message> messages) {

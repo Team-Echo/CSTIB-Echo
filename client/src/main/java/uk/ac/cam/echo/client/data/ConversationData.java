@@ -57,6 +57,12 @@ public class ConversationData extends BaseData implements Conversation {
 
     @Override
     @JsonIgnore
+    public List<Message> getMessages(int n) {
+        return getApi().conversationResource.getMessageResource(getID()).getRecent(n);
+    }
+
+    @Override
+    @JsonIgnore
     public List<User> getUsers() {
         return (List<User>) getApi().conversationResource.getUsers(getId());
     }

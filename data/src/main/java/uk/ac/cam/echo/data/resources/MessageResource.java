@@ -13,6 +13,9 @@ public interface MessageResource extends RestResource<Message>{
     public List<Message> getAll();
 
     @GET
+    public List<Message> getRecent(@QueryParam("num") int n);
+
+    @GET
     @Path("/{id}")
     public Message get(@PathParam("id") long id);
 
