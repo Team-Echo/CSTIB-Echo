@@ -5,6 +5,8 @@ import uk.ac.cam.echo.client.ClientApi;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.Message;
 import uk.ac.cam.echo.fragments.ConversationFragment;
+
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -13,6 +15,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -25,17 +28,19 @@ public class ConversationDetailActivity extends Activity implements View.OnClick
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		
 		super.onCreate(savedInstanceState);
+
 		setContentView(R.layout.activity_conversation_detail);
-		
+		setTitle("");
 		id = getIntent().getLongExtra("_id", 0);
 
         input = (EditText)findViewById(R.id.inputMessage);
         send = (Button)findViewById(R.id.sendButton);
         send.setOnClickListener(this);
-		
-		cf = ConversationFragment.newInstance(id);
+
+
+
+        cf = ConversationFragment.newInstance(id);
 		FragmentManager manager = getFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		transaction.replace(R.id.messageFrame, cf);
