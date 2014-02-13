@@ -10,6 +10,7 @@ import uk.ac.cam.echo.server.HibernateUtil;
 import uk.ac.cam.echo.server.models.MessageModel;
 
 import javax.ws.rs.core.Response;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -26,8 +27,10 @@ public class MessageResourceImpl implements MessageResource {
     }
 
     public List<Message> getRecent(int n) {
-        return HibernateUtil.getTransaction().createCriteria(MessageModel.class)
+        List<Message> ret = HibernateUtil.getTransaction().createCriteria(MessageModel.class)
                 .add(Restrictions.eq("conversation", conversation)).addOrder(Order.desc("timeStamp")).setMaxResults(n).list();
+        Collections.reverse(ret);
+        return ret;
     }
 
     public Message get(long id) {
