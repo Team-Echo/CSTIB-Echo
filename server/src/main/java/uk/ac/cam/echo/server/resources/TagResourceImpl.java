@@ -51,7 +51,8 @@ public class TagResourceImpl implements TagResource {
 
     public Response delete(long id) {
         Tag u = get(id);
-        HibernateUtil.getTransaction().delete(u);
+        conversation.getTags().remove(u);
+        HibernateUtil.getTransaction().save(conversation);
         return Response.ok().build();
     }
 }
