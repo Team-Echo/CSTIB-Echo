@@ -19,9 +19,9 @@ import javafx.collections.ObservableList;
 public class AddChange<T> extends Change{
     
     private final T added;
-    private final ObservableList mlist;
+    private final MessageDisplayList mlist;
     
-            public AddChange(T message, ObservableList list){
+            public AddChange(T message, MessageDisplayList list){
                 super(list);
                 mlist = list;
                 added = message;
@@ -34,7 +34,7 @@ public class AddChange<T> extends Change{
 
             @Override
             public void reset() {
-                mlist.remove(added);
+                mlist.removeQuiet(added);
             }
 
             @Override
