@@ -21,6 +21,7 @@ dependencies {
 //    compile 'javax.xml.bind:jaxb-api:2.1'
 //    compile 'javax.xml.stream:stax-api:1.0-2'
     compile 'stax:stax-api:1.0.1'
+    compile fileTree(dir: "libs", include: "*.jar")
 }
 
 android {

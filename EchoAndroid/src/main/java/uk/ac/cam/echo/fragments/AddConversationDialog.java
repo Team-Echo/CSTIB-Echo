@@ -1,27 +1,21 @@
 package uk.ac.cam.echo.fragments;
 
-import uk.ac.cam.echo.R;
-import uk.ac.cam.echo.Toaster;
-import uk.ac.cam.echo.client.ClientApi;
-import uk.ac.cam.echo.data.Conference;
-import uk.ac.cam.echo.data.Conversation;
-
 import android.app.DialogFragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+import uk.ac.cam.echo.R;
+import uk.ac.cam.echo.Toaster;
+import uk.ac.cam.echo.client.ClientApi;
+import uk.ac.cam.echo.data.Conference;
+import uk.ac.cam.echo.data.Conversation;
 
 
 public class AddConversationDialog extends DialogFragment implements
@@ -118,13 +112,7 @@ public class AddConversationDialog extends DialogFragment implements
             newConv.setName(convName);
             newConv.setConference(conference);
 
-            try {
-                newConv.save();
-                Log.d("ESCAPE", "Escaped");
-            } catch(Error e) {
-                Log.e("Save", e.getMessage());
-                return null;
-            }
+            newConv.save();
             return newConv;
         }
 
