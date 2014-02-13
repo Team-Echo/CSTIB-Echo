@@ -29,7 +29,7 @@
                       <children>
                         <ListView fx:id="conversation1_messages" cache="true" cacheHint="ROTATE" prefHeight="317.0" prefWidth="258.0" styleClass="messageListClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
                         <Label fx:id="conversation1_name" cache="true" cacheHint="ROTATE" layoutX="14.0" layoutY="14.0" styleClass="nameLabelClass" text="conversation name" />
-                        <ImageView cache="true" cacheHint="ROTATE" fitHeight="50.0" fitWidth="50.0" layoutX="208.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView cache="true" fx:id="conversation1_QR" cacheHint="ROTATE" fitHeight="50.0" fitWidth="50.0" layoutX="208.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
                       </children>
                     </AnchorPane>
                   </items>
@@ -62,7 +62,7 @@
                       <children>
                         <ListView fx:id="conversation2_messages" prefHeight="317.0" prefWidth="258.0" styleClass="messageListClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
                         <Label fx:id="conversation2_name" layoutX="14.0" layoutY="14.0" styleClass="nameLabelClass" text="conversation name" />
-                        <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="208.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="50.0" fx:id="conversation2_QR" fitWidth="50.0" layoutX="208.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
                       </children>
                     </AnchorPane>
                   </items>
@@ -95,7 +95,7 @@
                       <children>
                         <ListView fx:id="conversation3_messages" prefHeight="317.0" prefWidth="258.0" styleClass="messageListClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
                         <Label fx:id="conversation3_name" layoutX="14.0" layoutY="14.0" styleClass="nameLabelClass" text="conversation name" />
-                        <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="208.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="50.0" fx:id="conversation3_QR" fitWidth="50.0" layoutX="208.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
                       </children>
                     </AnchorPane>
                   </items>
@@ -128,7 +128,7 @@
                       <children>
                         <ListView fx:id="conversation4_messages" prefHeight="317.0" prefWidth="258.0" styleClass="messageListClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
                         <Label fx:id="conversation4_name" layoutX="14.0" layoutY="14.0" styleClass="nameLabelClass" text="conversation name" />
-                        <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="208.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="50.0" fx:id="conversation4_QR" fitWidth="50.0" layoutX="208.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
                       </children>
                     </AnchorPane>
                   </items>
@@ -161,7 +161,7 @@
                       <children>
                         <ListView fx:id="conversation5_messages" prefHeight="317.0" prefWidth="258.0" styleClass="messageListClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
                         <Label fx:id="conversation5_name" layoutX="14.0" layoutY="14.0" styleClass="nameLabelClass" text="conversation name" />
-                        <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="208.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="50.0" fx:id="conversation5_QR" fitWidth="50.0" layoutX="208.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" />
                       </children>
                     </AnchorPane>
                   </items>

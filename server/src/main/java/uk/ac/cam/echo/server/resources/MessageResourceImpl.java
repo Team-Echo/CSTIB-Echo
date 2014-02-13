@@ -1,5 +1,7 @@
 package uk.ac.cam.echo.server.resources;
 
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.Message;
 import uk.ac.cam.echo.data.User;
@@ -8,8 +10,9 @@ import uk.ac.cam.echo.server.HibernateUtil;
 import uk.ac.cam.echo.server.models.MessageModel;
 
 import javax.ws.rs.core.Response;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+
 
 public class MessageResourceImpl implements MessageResource {
     private Conversation conversation;
@@ -17,8 +20,14 @@ public class MessageResourceImpl implements MessageResource {
         this.conversation = conversation;
     }
 
-    public Collection<Message> getAll() {
-        return conversation.getMessages();
+    public List<Message> getAll() {
+        return HibernateUtil.getTransaction().createCriteria(MessageModel.class)
+                .add(Restrictions.eq("conversation", conversation)).addOrder(Order.asc("timeStamp")).list();
+    }
+
+    public List<Message> getRecent(int n) {
+        return HibernateUtil.getTransaction().createCriteria(MessageModel.class)
+                .add(Restrictions.eq("conversation", conversation)).addOrder(Order.desc("timeStamp")).setMaxResults(n).list();
     }
 
     public Message get(long id) {

@@ -15,8 +15,10 @@ import android.widget.ProgressBar;
 import uk.ac.cam.echo.ConversationAdapter;
 import uk.ac.cam.echo.R;
 import uk.ac.cam.echo.Toaster;
+import uk.ac.cam.echo.activities.ConversationListActivity;
 import uk.ac.cam.echo.client.ClientApi;
 import uk.ac.cam.echo.data.Conversation;
+import uk.ac.cam.echo.onListLoadedListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,8 @@ public class ConversationListFragment extends Fragment implements
 	
 	private ListView listView;
 	private ProgressBar listProgress;
+
+
 	
 	
 	@Override
@@ -52,31 +56,20 @@ public class ConversationListFragment extends Fragment implements
 		new PerformSearch().execute(query);
 	}
 
-	public ConversationAdapter getAdapter() {
-		return adapter;
-	}
-
-//	public List<Conversation> getDummyConversations() {
-//		ArrayList<Conversation> cs = new ArrayList<Conversation>();
-//
-//		for(int i = 0; i < 20; i++) {
-//			Conversation c = new Conversation(i);
-//			cs.add(c);
-//		}
-//		Log.d("SEARCH", "making dummy conversation ");
-//		return cs;
-//	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 		comm.respond(id);
 	}
 
-	public void openConversation(int id) {
+	public void openConversation(long id) {
+        int pos = adapter.getPosition(id);
+
+        Toaster.displayShort(context, pos+"");
 		listView.performItemClick(
-				listView.getAdapter().getView(id, null, null),
-				id,
-				listView.getAdapter().getItemId(id));
+				listView.getAdapter().getView(pos, null, null),
+				pos,
+                id);
 	}
 
 	public interface Communicator {
@@ -100,7 +93,7 @@ public class ConversationListFragment extends Fragment implements
 				result = api.conferenceResource.getConversations(1);
 			} else {
 				String query = params[0];
-                result = api.conferenceResource.onlyNameSearch(1, query, 10);
+                result = api.conferenceResource.search(1, query, 10);
 			}
 
 			for(uk.ac.cam.echo.data.Conversation c : result)
@@ -114,13 +107,11 @@ public class ConversationListFragment extends Fragment implements
 		protected void onPostExecute(List<Conversation> result) {
 			// update list view
 			super.onPostExecute(result);
-			if(some.size() > 0)
-                for(String s : some) {
-                    Toaster.displayShort(getActivity(), s);
-                }
+
 			if(adapter == null) {
 				adapter = new ConversationAdapter(context, R.layout.conv_list_row, result);
 				listView.setAdapter(adapter);
+                adapter.setListViewListener((ConversationListActivity)getActivity());
 				listView.setOnItemClickListener(ConversationListFragment.this);
 				listView.setVisibility(View.VISIBLE);
 				listProgress.setVisibility(View.GONE);
@@ -130,8 +121,5 @@ public class ConversationListFragment extends Fragment implements
 				adapter.updateList(result);
 			}
 		}
-		
-		
-		
 	}
 }

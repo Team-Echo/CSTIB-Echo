@@ -32,8 +32,6 @@ public class AddConversationDialog extends DialogFragment implements
     Button add;
     ProgressBar progress;
 
-    long id;
-
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -41,7 +39,7 @@ public class AddConversationDialog extends DialogFragment implements
 
         title = (EditText)view.findViewById(R.id.convTitle);
         tags = (EditText)view.findViewById(R.id.convTags);
-        progress = (ProgressBar)view.findViewById(R.id.convProgressDialog);
+        progress = (ProgressBar)view.findViewById(R.id.addProgress);
         add = (Button)view.findViewById(R.id.addButton);
 
         add.setOnClickListener(this);
@@ -76,6 +74,9 @@ public class AddConversationDialog extends DialogFragment implements
     public void onClick(View v) {
         if(v.getId() == R.id.addButton) {
 
+            add.setVisibility(View.GONE);
+            progress.setVisibility(View.VISIBLE);
+
             String titleInput = title.getText().toString();
             if(titleInput.equals("")) {
                 Toaster.displayShort(getActivity(), "Please name the conversation");
@@ -87,13 +88,7 @@ public class AddConversationDialog extends DialogFragment implements
                 Toaster.displayShort(getActivity(), "Please enter atleast one tag");
                 return;
             }
-            Toaster.displayLong(getActivity(), titleInput + " ~ " + tagsInput);
-			/*TODO: API calls to add conversation
-			 * Conversation c = api.newConversation();
-			 * c.setName(titleInput);
-			 * c.setTags(tagsInput);
-			 * c.save();
-			 */
+
             new AddConversation().execute(titleInput, tagsInput);
         }
     }
@@ -116,7 +111,7 @@ public class AddConversationDialog extends DialogFragment implements
         @Override
         protected Conversation doInBackground(String... params) {
             String convName = params[0];
-            String convTags = params[1];
+            //String convTags = params[1];
 
             conference = api.conferenceResource.getAll().get(0);
             Conversation newConv = api.newConversation();

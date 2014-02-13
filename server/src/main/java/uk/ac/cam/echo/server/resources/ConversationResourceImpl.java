@@ -1,5 +1,6 @@
 package uk.ac.cam.echo.server.resources;
 
+import org.hibernate.criterion.Order;
 import uk.ac.cam.echo.data.Conference;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.Message;
@@ -19,7 +20,7 @@ public class ConversationResourceImpl implements ConversationResource {
 
     static private IdSubscriptionFactory<Long, Message> messagesSub = new IdSubscriptionFactory<Long, Message>();
     public List<Conversation> getAll() {
-        return HibernateUtil.getTransaction().createCriteria(ConversationModel.class).list();
+        return HibernateUtil.getTransaction().createCriteria(ConversationModel.class).addOrder(Order.asc("id")).list();
     }
 
     public Conversation get(long id) {

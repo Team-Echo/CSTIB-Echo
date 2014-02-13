@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import uk.ac.cam.echo.data.Conversation;
@@ -19,30 +20,24 @@ import uk.ac.cam.echo.data.User;
 
 public class ConversationAdapter extends ArrayAdapter<Conversation> {
 	
-	Context context;
-	int layoutResourceId;
-	List<Conversation> data = null;
+	private Context context;
+	private int layoutResourceId;
+
+    private onListLoadedListener listener; // callback when listview has rendered
+
+	private List<Conversation> data = null;
+    private HashMap<Long, Integer> positionMap;
 	
 	public ConversationAdapter(Context context, int layoutResourceId,
 									List<Conversation> data) {
 		
 		super(context, layoutResourceId, data);
+
+        positionMap = new HashMap<Long, Integer>();
+
 		this.context = context;
 		this.layoutResourceId = layoutResourceId;
 		this.data = data;
-	}
-	
-	
-	@Override
-	public long getItemId(int position) {
-		return data.get(position).getId();
-		//return 0;
-	}
-	
-	public void updateList(List<Conversation> newData) {
-		data = newData;
-		Log.d("SEARCH", "updateList Adapter");
-		notifyDataSetChanged();
 	}
 
 	@Override
@@ -72,7 +67,10 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		Conversation conversation = data.get(position);
 		//Collection<User> users = conversation.getUsers();
 		//Collection<Tag> tags = conversation.getTags();
-		
+
+        // record the position at which the conversation appears on list
+        positionMap.put(conversation.getId(), position);
+
 		//TODO: set imgIcon from the icon resource of conversation
 		//holder.imgIcon.setImageBitmap(bm);
 		holder.title.setText(conversation.getName());
@@ -83,6 +81,10 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		//holder.totalOnline.setText(getOnlineText(users));
         holder.totalOnline.setText("14 users online");
 
+        if(position == getCount() - 1) {
+            listener.onRendered();
+        }
+
 		return row;
 	}
 
@@ -90,36 +92,24 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
     public int getCount() {
         return data == null ? 0 : data.size();
     }
-	
-	public static String getUserText(Collection<User> users) {
 
-		if(users.size() > 0) {
-			StringBuffer userString = new StringBuffer();
-			for(User u : users)
-				userString.append(u.getUsername() +"; ");
-			return userString.toString();
-		} else {
-			return "No active users.";
-		}
-		
-	}
-	
-	public static String getTagText(Collection<Tag> tags) {
-		if(tags.size() > 0) {
-			StringBuffer tagString = new StringBuffer();
-			for(Tag t : tags) 
-				tagString.append(t.getName() + " ");
-			
-			return tagString.toString();
-		} else {
-			return "No tags associated.";
-		}
-	}
-	
-	public static String getOnlineText(Collection<User> users) {
-		return users.size() + " online users";
-	}
+    public int getPosition(long id) {
+        return positionMap.get(id);
+    }
 
+    @Override
+    public long getItemId(int position) {
+        return data.get(position).getId();
+    }
+
+    public void updateList(List<Conversation> newData) {
+        data = newData;
+        notifyDataSetChanged();
+    }
+
+    public void setListViewListener(onListLoadedListener l) {
+        listener = l;
+    }
 
     // ViewHolder to prevent multiple findViewById calls
 	static class ConversationHolder {

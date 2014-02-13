@@ -2,6 +2,7 @@ package uk.ac.cam.echo.server.resources;
 
 import uk.ac.cam.echo.data.Conference;
 import uk.ac.cam.echo.data.Conversation;
+import uk.ac.cam.echo.data.User;
 import uk.ac.cam.echo.data.resources.ConferenceResource;
 import uk.ac.cam.echo.server.HibernateUtil;
 import uk.ac.cam.echo.server.models.ConferenceModel;
@@ -56,6 +57,16 @@ public class ConferenceResourceImpl implements ConferenceResource {
 
     @Override
     public List<Conversation> recommend(long id, long userID, int n) {
+        throw  new UnsupportedOperationException("Not Implemented yet");
+    }
+
+    @Override
+    public List<Conversation> mostMessages(long id, int n) {
+        return AnalystFactory.get(id).mostMessages(n);
+    }
+
+    @Override
+    public List<User> mostActiveUsers(long id, int n) {
         throw  new UnsupportedOperationException("Not Implemented yet");
     }
 

@@ -11,6 +11,7 @@ public interface Conversation extends Base
     public void setConference(Conference conf);
     public Collection<Tag> getTags();
     public Collection<Message> getMessages();
+    public Collection<Message> getMessages(int n);
     //public Collection<Message> getSortedMessages();
     public Collection<User> getUsers();
     public void addUser(User u);

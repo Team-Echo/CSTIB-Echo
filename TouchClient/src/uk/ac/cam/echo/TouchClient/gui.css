@@ -19,7 +19,7 @@
     -fx-background-color: #696969;
     -fx-text-fill: #ffffff;
     -fx-border-color: #778899;
-    -fx-border-width: 0.08;
+    -fx-border-width: 0.08; 
 }
 
 .messageListClass .list-cell:focused {

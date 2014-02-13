@@ -6,7 +6,9 @@
 
 package uk.ac.cam.echo.TouchClient;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -163,19 +165,23 @@ public class ServerConnection implements Runnable{
         }
     }
 
-    private Subscription listenToConversation(Conversation c) {
+    private Subscription listenToConversation(final Conversation c) {
+        displayPreviousMessages(c);
         Handler<Message> handler = new Handler<Message>(){
             @Override
             public void handle(Message t) {
                 final String sender = t.getSender() == null ? "Anonymous" :t.getSender().getUsername();
                 final String message = (sender+" : "+t.getContents());
-                final long id = t.getId();
+                final long id = c.getId();
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
                         try{
                             mGUI.displayMessage(message, id);
+                            mGUI.scrollToEnd(id);
                         } catch (NoMessageListException ex) {
+                            System.err.println(id);
+                            System.err.println(mGUI.getMap());
                             Logger.getLogger(ServerConnection.class.getName()).log (Level.SEVERE, "message from conversation "+id+" could not be displayed ", ex);
                         }
                     }
@@ -187,6 +193,34 @@ public class ServerConnection implements Runnable{
 
     void kill() {
         Runtime.getRuntime().exit(1);
+    }
+
+    private void displayPreviousMessages(final Conversation c) {
+        int count = 0;
+        ArrayList<Message> list = new ArrayList();
+        for (Message msg: c.getMessages()) {
+            count++;
+            list.add(msg);
+            if (count > 50){ break;}
+        }
+        Collections.reverse(list);
+        for (Message msg: list){
+            String sender = msg.getSender() == null ? "Anonymous" : msg.getSender().getUsername();
+            final String message = sender.concat(" : ".concat(msg.getContents()));
+            Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        try{
+                            mGUI.displayMessage(message, c.getId());
+                        } catch (NoMessageListException ex) {
+                            System.err.println(c.getId());
+                            System.err.println(mGUI.getMap());
+                            Logger.getLogger(ServerConnection.class.getName()).log (Level.SEVERE, "message from conversation "+c.getId()+" could not be displayed ", ex);
+                        }
+                    mGUI.scrollToEnd(c.getId());
+                    }
+                });
+        }
     }
     
 }
