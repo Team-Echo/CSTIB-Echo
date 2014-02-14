@@ -31,7 +31,11 @@ public class ServerConnection implements Runnable{
     private final TouchClient mTC;
     private GUIController mGUI;
     private ClientApi mAPI;
+    private List<Conversation> mConversations;
+    private Conference mConfrence;
+    private List<Subscription> mSub;
 
+    @SuppressWarnings("LeakingThisInConstructor")
     public ServerConnection(TouchClient tc){
         mTC = tc;
         mTC.regesterServerConnection(this);
@@ -39,6 +43,9 @@ public class ServerConnection implements Runnable{
     
     @Override
     public void run() {
+        mConversations = Collections.synchronizedList(new ArrayList<Conversation>());
+        mSub = Collections.synchronizedList(new ArrayList<Subscription>());
+        
         //tries to get the GUI repetedly untill the gui has been initalized
         while (true){
             try {
@@ -49,7 +56,7 @@ public class ServerConnection implements Runnable{
             break;
         }
         
-        //some code to get the url/ip to connect to the srver
+        //some code to get the url/ip to connect to the server defalut local host
         String url = "http://127.0.0.1";
         boolean retry = true;
         while (retry){
@@ -71,7 +78,7 @@ public class ServerConnection implements Runnable{
         retry = true;
         while(retry){
             try {
-                Conference confrence = configureConference();
+                mConfrence = configureConference();
             } catch (NotInstantiatedYetException ex) {
                 continue;
             } catch (ConfrenceNotFoundException ex) {
@@ -137,18 +144,24 @@ public class ServerConnection implements Runnable{
                                        conversation5.getName(), conversation5.getId());
             }
         });
-
         
-        listenToConversation(conversation1);
-        listenToConversation(conversation2);
-        listenToConversation(conversation3);
-        listenToConversation(conversation4);
-        listenToConversation(conversation5);
+        synchronized (mConversations){
+            synchronized (mSub){
+                mConversations.add(conversation1);
+                mConversations.add(conversation2);
+                mConversations.add(conversation3);
+                mConversations.add(conversation4);
+                mConversations.add(conversation5);
         
+                for (Conversation c: mConversations){
+                    mSub.add(listenToConversation(c));
+                }
+            }
+        }
+        
+        replaceConversations();
         
         System.out.println("the server is connected");
-        /*MessageTest mt = new MessageTest(mGUI);
-        (new Thread(mt)).start();*/
     }
 
     private Conference configureConference() throws NotInstantiatedYetException, ConfrenceNotFoundException {
@@ -173,19 +186,21 @@ public class ServerConnection implements Runnable{
                 final String sender = t.getSender() == null ? "Anonymous" :t.getSender().getUsername();
                 final String message = (sender+" : "+t.getContents());
                 final long id = c.getId();
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        try{
-                            mGUI.displayMessage(message, id);
-                            mGUI.scrollToEnd(id);
-                        } catch (NoMessageListException ex) {
-                            System.err.println(id);
-                            System.err.println(mGUI.getMap());
-                            Logger.getLogger(ServerConnection.class.getName()).log (Level.SEVERE, "message from conversation "+id+" could not be displayed ", ex);
+                synchronized (mConversations){
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            try{
+                                mGUI.displayMessage(message, id);
+                                mGUI.scrollToEnd(id);
+                            } catch (NoMessageListException ex) {
+                                System.err.println(id);
+                                System.err.println(mGUI.getMap());
+                                Logger.getLogger(ServerConnection.class.getName()).log (Level.SEVERE, "message from conversation "+id+" could not be displayed ", ex);
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         };
         return mAPI.conversationResource.listenToMessages(c.getId()).subscribe(handler);
@@ -196,14 +211,9 @@ public class ServerConnection implements Runnable{
     }
 
     private void displayPreviousMessages(final Conversation c) {
-        int count = 0;
-        ArrayList<Message> list = new ArrayList();
-        for (Message msg: c.getMessages()) {
-            count++;
-            list.add(msg);
-            if (count > 50){ break;}
-        }
-        Collections.reverse(list);
+
+        List<Message> list = (List)c.getMessages(50);
+        
         for (Message msg: list){
             String sender = msg.getSender() == null ? "Anonymous" : msg.getSender().getUsername();
             final String message = sender.concat(" : ".concat(msg.getContents()));
@@ -213,14 +223,90 @@ public class ServerConnection implements Runnable{
                         try{
                             mGUI.displayMessage(message, c.getId());
                         } catch (NoMessageListException ex) {
-                            System.err.println(c.getId());
-                            System.err.println(mGUI.getMap());
-                            Logger.getLogger(ServerConnection.class.getName()).log (Level.SEVERE, "message from conversation "+c.getId()+" could not be displayed ", ex);
+                            Logger.getLogger(ServerConnection.class.getName()).log (Level.SEVERE, "message from conversation "+c.getId()+" could not be displayed the map contains " +mGUI.getMap().toString(), ex);
                         }
                     mGUI.scrollToEnd(c.getId());
                     }
                 });
         }
+    }
+
+    private void replaceConversations() {
+        (new Thread(new Runnable(){
+            @Override
+            @SuppressWarnings("SleepWhileInLoop")
+            public void run() {
+                while (true){
+                    try {
+                        Thread.sleep(1000*60);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(ServerConnection.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    List<Conversation> conv = null;
+                    try {
+                        conv = mAPI.conferenceResource.mostUsers(mTC.getConfrenceID(), 10);
+                    } catch (NotInstantiatedYetException ex) {//should never happen
+                        Logger.getLogger(ServerConnection.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    synchronized (mConversations){
+                        synchronized (mSub){
+                            for (int c = 0; c<mConversations.size(); c++){
+                                if (!conv.contains(mConversations.get(c))){
+                                    for (int c2 = 0; c2<conv.size(); c2++){
+                                        
+                                        //the conversation to be replaced
+                                        Conversation currentConversation = mConversations.get(c);
+                                        
+                                        //the conversation to replace
+                                        Conversation newConversation = conv.get(c2);
+                                        
+                                        //new lists
+                                        List<Conversation> newmConversations = new ArrayList();
+                                        List<Subscription> newmSub = new ArrayList();
+                                        
+                                        //unsubscribe to old subscription
+                                        mSub.get(c).unsubscribe();
+                                        
+                                        //replace conversation in mConversations
+                                        for (int i = 0; i < c; i++){newmConversations.add(mConversations.get(i));}
+                                        newmConversations.add(newConversation);
+                                        for (int i = c+1;i<mConversations.size();i++){newmConversations.add(mConversations.get(i));}
+                                        
+                                        //map the conversation to the correct GUI pane
+                                        try{
+                                            mGUI.replaceConversation(currentConversation.getId(), newConversation.getName(), newConversation.getId());
+                                        } catch (NoMessageListException ex) {
+                                            Logger.getLogger(ServerConnection.class.getName()).log(Level.SEVERE, "there has been an issue while replacing conversation "+mConversations.get(c).getName(), ex);
+                                        } catch (NotCurrentConversationException ex) {
+                                            Logger.getLogger(ServerConnection.class.getName()).log(Level.SEVERE, null, ex); break;
+                                        } catch (ConversationAlredyDisplayedException ex) {
+                                            continue;//this ocurs if the replacement conversation is alredy on screen
+                                        }
+                                        
+                                        //display the privious messages
+                                        displayPreviousMessages(newConversation);
+                                        
+                                        //replace subscription in mSub
+                                        for (int i = 0; i < c; i++){newmSub.add(mSub.get(i));}
+                                        newmSub.add(listenToConversation(newConversation));
+                                        for (int i = c+1;i<mSub.size();i++){newmSub.add(mSub.get(i));}
+                                        
+                                        //set mSub and mConversation
+                                        mSub.clear();
+                                        mConversations.clear();
+                                        mSub.addAll(newmSub);
+                                        mConversations.addAll(newmConversations);
+                                        
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        
+        })).start();
     }
     
 }
