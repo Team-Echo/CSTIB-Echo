@@ -20,7 +20,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
@@ -29,8 +28,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.RotateEvent;
 import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Text;
-import javafx.util.Callback;
 
 /**
  * FXML Controller class
@@ -60,13 +57,23 @@ public class GUIController implements Initializable {
     @FXML
     private ImageView conversation1_QR;
     @FXML
+    private ImageView conversation1_code_large;
+    @FXML
     private ImageView conversation2_QR;
+    @FXML
+    private ImageView conversation2_code_large;
     @FXML
     private ImageView conversation3_QR;
     @FXML
+    private ImageView conversation3_code_large;
+    @FXML
     private ImageView conversation4_QR;
     @FXML
+    private ImageView conversation4_code_large;
+    @FXML
     private ImageView conversation5_QR;
+    @FXML
+    private ImageView conversation5_code_large;
     
     @FXML
     private Label conversation1_name;
@@ -124,6 +131,7 @@ public class GUIController implements Initializable {
      * a function to setup all the event handlers for coversation1
      */
     private void setupConversationPane1(){
+        conversation1_name.setWrapText(true);
         conversation1_messages.setCellFactory(new messageCellFactory());
         final Delta dragDeltaMouse = new Delta();
         conversation1.setOnMousePressed(new EventHandler<MouseEvent>(){
@@ -196,6 +204,7 @@ public class GUIController implements Initializable {
      * a function to setup all the event handlers for coversation2
      */
     private void setupConversationPane2(){
+        conversation2_name.setWrapText(true);
         conversation2_messages.setCellFactory(new messageCellFactory());
         final Delta dragDeltaMouse = new Delta();
         conversation2.setOnMousePressed(new EventHandler<MouseEvent>(){
@@ -268,6 +277,7 @@ public class GUIController implements Initializable {
      * a function to setup all the event handlers for coversation3
      */
     private void setupConversationPane3(){
+        conversation3_name.setWrapText(true);
         conversation3_messages.setCellFactory(new messageCellFactory());
         final Delta dragDeltaMouse = new Delta();
         conversation3.setOnMousePressed(new EventHandler<MouseEvent>(){
@@ -340,6 +350,7 @@ public class GUIController implements Initializable {
      * a function to setup all the event handlers for coversation4
      */
     private void setupConversationPane4(){
+        conversation4_name.setWrapText(true);
         conversation4_messages.setCellFactory(new messageCellFactory());
         final Delta dragDeltaMouse = new Delta();
         conversation4.setOnMousePressed(new EventHandler<MouseEvent>(){
@@ -412,6 +423,7 @@ public class GUIController implements Initializable {
      * a function to setup all the event handlers for coversation5
      */
     private void setupConversationPane5(){
+        conversation5_name.setWrapText(true);
         conversation5_messages.setCellFactory(new messageCellFactory());
         final Delta dragDeltaMouse = new Delta();
         conversation5.setOnMousePressed(new EventHandler<MouseEvent>(){
@@ -571,39 +583,69 @@ public class GUIController implements Initializable {
 
     }
     
-    private void addConversation1(String name,long conversationID){
-        idtopane.put(new Long(conversationID), new Integer(1));
-        conversation1_name.setText(name);
-        conversation1_QR.setImage(genarateQRCode(conversationID,100));
-        messages1.clear();
+    private void addConversation1(final String name,final long conversationID){
+        Platform.runLater(new Runnable(){
+            @Override
+            public void run() {
+                messages1.clear();
+                idtopane.put(new Long(conversationID), new Integer(1));
+                conversation1_name.setText(name);
+                conversation1_QR.setImage(genarateQRCode(conversationID,(int)(conversation1_QR.getFitHeight())*3));
+                conversation1_code_large.setImage(genarateQRCode(conversationID,(int)(conversation1_code_large.getFitHeight()-1)));
+            }
+        });
+        
     }
-    private void addConversation2(String name,long conversationID){
-        idtopane.put(new Long(conversationID), new Integer(2));
-        conversation2_name.setText(name);
-        conversation2_QR.setImage(genarateQRCode(conversationID,100));
-        messages1.clear();
+    private void addConversation2(final String name,final long conversationID){
+        Platform.runLater(new Runnable(){
+            @Override
+            public void run() {
+                messages2.clear();
+                idtopane.put(new Long(conversationID), new Integer(2));
+                conversation2_name.setText(name);
+                conversation2_QR.setImage(genarateQRCode(conversationID,(int)(conversation2_QR.getFitHeight())*3));
+                conversation2_code_large.setImage(genarateQRCode(conversationID,(int)(conversation2_code_large.getFitHeight()-1)));
+            }
+        }); 
     }
-    private void addConversation3(String name,long conversationID){
-        idtopane.put(new Long(conversationID), new Integer(3));
-        conversation3_name.setText(name);
-        conversation3_QR.setImage(genarateQRCode(conversationID,100));
-        messages1.clear();
+    private void addConversation3(final String name,final long conversationID){
+        Platform.runLater(new Runnable(){
+            @Override
+            public void run() {
+                messages3.clear();
+                idtopane.put(new Long(conversationID), new Integer(3));
+                conversation3_name.setText(name);
+                conversation3_QR.setImage(genarateQRCode(conversationID,(int)(conversation3_QR.getFitHeight())*3));
+                conversation3_code_large.setImage(genarateQRCode(conversationID,(int)(conversation3_code_large.getFitHeight()-1)));
+            }
+        });   
     }
-    private void addConversation4(String name,long conversationID){
-        idtopane.put(new Long(conversationID), new Integer(4));
-        conversation4_name.setText(name);
-        conversation4_QR.setImage(genarateQRCode(conversationID,100));
-        messages1.clear();
+    private void addConversation4(final String name,final long conversationID){
+        Platform.runLater(new Runnable(){
+            @Override
+            public void run() {
+                messages4.clear();
+                idtopane.put(new Long(conversationID), new Integer(4));
+                conversation4_name.setText(name);
+                conversation4_QR.setImage(genarateQRCode(conversationID,(int)(conversation4_QR.getFitHeight())*3));
+                conversation4_code_large.setImage(genarateQRCode(conversationID,(int)(conversation4_code_large.getFitHeight()-1)));
+            }
+        });  
     }
-    private void addConversation5(String name,long conversationID){
-        idtopane.put(new Long(conversationID), new Integer(5));
-        conversation5_name.setText(name);
-        conversation5_QR.setImage(genarateQRCode(conversationID,100));
-        messages1.clear();
+    private void addConversation5(final String name,final long conversationID){
+        Platform.runLater(new Runnable(){
+            @Override
+            public void run() {
+                messages5.clear();
+                idtopane.put(new Long(conversationID), new Integer(5));
+                conversation5_name.setText(name);
+                conversation5_QR.setImage(genarateQRCode(conversationID,(int)(conversation5_QR.getFitHeight())*3));
+                conversation5_code_large.setImage(genarateQRCode(conversationID,(int)(conversation5_code_large.getFitHeight()-1)));
+            }
+        });
     }
     
     /**
-     * 
      * this function initializes the conversation panes if they are not initialized and returns true if they are it returns false
      * 
      * @param name1 name of the first conversation
@@ -658,6 +700,13 @@ public class GUIController implements Initializable {
         }
     }
     
+    /**
+     * a method to create an QR Code of an conversation ID
+     * 
+     * @param conversationID the number to be converted into the QR Code
+     * @param wandh size of the image both width and height
+     * @return an image that represents the QRcode of the conversation
+     */
     private static Image genarateQRCode(long conversationID,int wandh){
         BitMatrix bitMatrix;
         ByteArrayOutputStream image = new ByteArrayOutputStream();
@@ -665,9 +714,7 @@ public class GUIController implements Initializable {
             bitMatrix = new QRCodeWriter().encode(Long.toString(conversationID),BarcodeFormat.QR_CODE,wandh,wandh,null);
             
             MatrixToImageWriter.writeToStream(bitMatrix, "png", image);
-        } catch (IOException ex) {
-            Logger.getLogger(GUIController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (WriterException ex) {
+        } catch (IOException | WriterException ex) {
             Logger.getLogger(GUIController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
@@ -707,40 +754,34 @@ public class GUIController implements Initializable {
             case 4: addMessage4(s);break;
             case 5: addMessage5(s);break;
             default: throw new NoMessageListException();
-        }          
+        }
+        scrollToEnd(ConversationID);
     }
     
     /**
-     * this method scrolls to the end of a conversation and returns true
+     * this method may scroll to the end of a conversation and return true but it may not
      * 
      * @param conversationID the id of the conversation you want to scroll to the end
      * @return boolean representing if it has been scrolled or not
      */
     public boolean scrollToEnd(final long conversationID){
-        
-        try{
             Platform.runLater(new Runnable(){
                 @Override
                 public void run() {
-                    int pane;
+                    int pane = 10;
                     try{
                         pane = idtopane.get(conversationID);
-                    } catch (Exception e){
-                        throw new RuntimeException();
-                    }
+                    } catch (NullPointerException e){return;/*do nothing as nothing can be done*/}
                     switch (pane){
                         case 1: conversation1_messages.scrollTo(messages1.size()-1);break;
                         case 2: conversation2_messages.scrollTo(messages2.size()-1);break;
                         case 3: conversation3_messages.scrollTo(messages3.size()-1);break;
                         case 4: conversation4_messages.scrollTo(messages4.size()-1);break;
                         case 5: conversation5_messages.scrollTo(messages5.size()-1);break;
-                        default: throw new RuntimeException();
+                        default: return;
                     }
                 }
             });
-        } catch (RuntimeException e){
-            return false;
-        }
         return true; 
     }
     
