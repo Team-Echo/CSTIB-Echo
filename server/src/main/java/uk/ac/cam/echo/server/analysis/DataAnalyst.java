@@ -261,7 +261,7 @@ public class DataAnalyst implements ServerDataAnalyst
         for (Conversation C : conversations)
         {
             int cnt = 0;
-            List<Message> msgs = (List<Message>)C.getMessages();
+            List<Message> msgs = (List<Message>)C.getSortedMessages();
             Collections.reverse(msgs); // because the query returns them in the opposite order
 
             // PRECONDITION: msgs is sorted descending by timestamp.
@@ -326,7 +326,7 @@ public class DataAnalyst implements ServerDataAnalyst
 
         for (Conversation C : conversations)
         {
-            List<Message> msgs = (List<Message>) C.getMessages();
+            List<Message> msgs = (List<Message>) C.getSortedMessages();
             Collections.reverse(msgs);
 
             for (Message M : msgs)
