@@ -20,6 +20,10 @@ public interface ConversationResource extends RestResource<Conversation> {
     public Conversation get(@PathParam("id") long id);
 
     @GET
+    @Path("/by-name")
+    public Conversation get(@QueryParam("name") String name);
+
+    @GET
     @Path("/{conversationId}/users")
     public Collection<User> getUsers(@PathParam("conversationId") long id);
 

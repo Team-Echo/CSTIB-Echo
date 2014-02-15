@@ -1,6 +1,7 @@
 package uk.ac.cam.echo.server.resources;
 
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import uk.ac.cam.echo.data.Conference;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.Message;
@@ -26,6 +27,12 @@ public class ConversationResourceImpl implements ConversationResource {
     public Conversation get(long id) {
         return (Conversation) HibernateUtil.getTransaction().get(ConversationModel.class, id);
     }
+
+    public Conversation get(String name) {
+        return (Conversation) HibernateUtil.getTransaction().createCriteria(ConversationModel.class)
+                .add(Restrictions.eq("name", name)).addOrder(Order.desc("id")).list().get(0);
+    }
+
 
     public MessageResource getMessageResource(long id) {
         return new MessageResourceImpl(get(id));
