@@ -51,8 +51,8 @@ public class ConferenceResourceImpl implements ConferenceResource {
     }
 
     @Override
-    public List<Conversation> mostActiveRecently(long id, long minutes, int n) {
-        return AnalystFactory.get(id).mostActiveRecently(minutes, n);
+    public List<Conversation> mostActiveRecently(long id, long millis, int n) {
+        return AnalystFactory.get(id).mostActiveRecently(millis, n);
     }
 
     @Override
@@ -68,6 +68,11 @@ public class ConferenceResourceImpl implements ConferenceResource {
     @Override
     public List<User> mostActiveUsers(long id, int n) {
         throw  new UnsupportedOperationException("Not Implemented yet");
+    }
+
+    @Override
+    public int activity(long id, long millis) {
+        return AnalystFactory.get(id).activity(millis);
     }
 
     public Conference get(long id) {

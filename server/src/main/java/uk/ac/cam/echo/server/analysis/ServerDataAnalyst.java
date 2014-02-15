@@ -57,11 +57,11 @@ public interface ServerDataAnalyst
     /**
      Displays the most active conversations in terms of message count, in the interval [now-minutes, now].
 
-     @param minutes     The size of the interval to consider, in minutes.
+     @param millis      The size of the interval to consider, in milliseconds.
      @param n           The maximal amount of solutions to return.
      @return            The list of (up to n) conversations that have been most active recently, sorted descending by activity.
     */
-    public List<Conversation> mostActiveRecently(long minutes, int n);
+    public List<Conversation> mostActiveRecently(long millis, int n);
 
     /**
      Displays a list of suggested conversation for a user, based on:
@@ -88,6 +88,14 @@ public interface ServerDataAnalyst
      @return            The list of (up to n) users with the most messages, sorted by message count.
     */
     public List<User> mostActiveUsers(int n);
+
+    /**
+     Displays the amount of activity in the conference.
+     It is represented as the amount of messages divided by the interval.
+     @param millis      The size of the interval to consider, in milliseconds.
+     @return            The activity in the conference over the interval.
+    */
+    public int activity(long millis);
 
     // TODO: Add more methods as necessary.
 }
