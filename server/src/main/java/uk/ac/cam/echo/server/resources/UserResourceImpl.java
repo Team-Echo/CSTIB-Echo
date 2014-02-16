@@ -1,6 +1,7 @@
 package uk.ac.cam.echo.server.resources;
 
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.User;
 import uk.ac.cam.echo.data.resources.UserResource;
@@ -33,6 +34,16 @@ public class UserResourceImpl implements UserResource {
         HibernateUtil.getTransaction().save(user);
         return user;
     }
+
+    public User authenticate(String username, String password) {
+       User user = (User) HibernateUtil.getTransaction().createCriteria(UserModel.class)
+                                      .add(Restrictions.eq("username", username))
+                                      .add(Restrictions.eq("hashedPassword", UserModel.hashPassword(password)))
+                                      .uniqueResult();
+
+        return user;
+    }
+
     public Response update(User item) {
         HibernateUtil.getTransaction().update(item);
         return Response.ok().build();

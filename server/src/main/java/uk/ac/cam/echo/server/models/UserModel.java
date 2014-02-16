@@ -2,6 +2,7 @@ package uk.ac.cam.echo.server.models;
 
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.User;
@@ -18,8 +19,13 @@ public class UserModel extends BaseModel implements User {
 
     }
 
+    public static String hashPassword(String password) {
+        return password;
+    }
+
     private static String[] allowed = {
             "username",
+            "password",
             "currentConversationId",
             "firstName",
             "lastName",
@@ -167,5 +173,11 @@ public class UserModel extends BaseModel implements User {
 
     public void setHashedPassword(String hashedPassword) {
         this.hashedPassword = hashedPassword;
+    }
+
+    @Transient
+    @JsonProperty
+    public void setPassword(String password) {
+        setHashedPassword(hashPassword(password));
     }
 }
