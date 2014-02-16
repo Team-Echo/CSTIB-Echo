@@ -1,13 +1,15 @@
 package uk.ac.cam.echo.server.models;
 
 import org.codehaus.jackson.annotate.JsonCreator;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.User;
 import uk.ac.cam.echo.server.HibernateUtil;
 
 import javax.persistence.*;
 import java.util.Map;
-
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 @Entity
 @Table(name="UserTable")
 public class UserModel extends BaseModel implements User {
@@ -16,7 +18,19 @@ public class UserModel extends BaseModel implements User {
 
     }
 
-    private static String[] allowed = {"username", "currentConversationId"};
+    private static String[] allowed = {
+            "username",
+            "currentConversationId",
+            "firstName",
+            "lastName",
+            "phoneNumber",
+            "avatarLink",
+            "email",
+            "jobTitle",
+            "company",
+            "gender"
+    };
+
     @JsonCreator
     public UserModel(Map<String, Object> props) {
         super(props, allowed);
@@ -27,10 +41,31 @@ public class UserModel extends BaseModel implements User {
     @SequenceGenerator(name="UserIdSeq", sequenceName="USER_SEQ", allocationSize=1)
     private long id;
     private String username;
+    private String hashedPassword;
 
     @ManyToOne(targetEntity = ConversationModel.class)
     private Conversation currentConversation;
+    private String firstName;
+    private String lastName;
+    private String phoneNumber;
+    private String avatarLink;
+    private String email;
+    private String jobTitle;
+    private String company;
+    private String gender;
 
+
+    @Transient
+    public String getDisplayName() {
+        if (getFirstName() == null && getLastName() == null)
+            return null;
+        if (getFirstName() == null)
+            return getLastName();
+        if (getLastName() == null)
+            return getFirstName();
+
+        return getFirstName() + " " + getLastName();
+    }
 
     /*    Getters and Setters */
     public long getId() {
@@ -59,5 +94,78 @@ public class UserModel extends BaseModel implements User {
 
     public void setCurrentConversationId(long id) {
         setCurrentConversation((Conversation) HibernateUtil.getSession().load(ConversationModel.class, id));
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getAvatarLink() {
+        return avatarLink;
+    }
+
+    public void setAvatarLink(String avatarLink) {
+        this.avatarLink = avatarLink;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getJobTitle() {
+        return jobTitle;
+    }
+
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    @JsonIgnore
+    public String getHashedPassword() {
+        return hashedPassword;
+    }
+
+    public void setHashedPassword(String hashedPassword) {
+        this.hashedPassword = hashedPassword;
     }
 }

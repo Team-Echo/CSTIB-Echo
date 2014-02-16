@@ -45,8 +45,21 @@ public class BaseModel {
     }
 
     private void sanitizieLong(Map<String, Object> props, String key) {
-        if (props.containsKey(key) && props.get(key) instanceof Integer) {
-            props.put(key, ((Integer) props.get(key)).longValue());
+        if (! props.containsKey(key))
+            return;
+        Object value = props.get(key);
+        Object res = value;
+        if (value instanceof String) {
+            try {
+                res = Long.parseLong((String) value);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
         }
+
+        if (value instanceof Integer)
+            res = ((Integer) value).longValue();
+
+        props.put(key, res);
     }
 }
