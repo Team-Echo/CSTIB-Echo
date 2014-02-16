@@ -14,12 +14,13 @@ public class HibernateResponseFilter implements ContainerResponseFilter{
     @Override
     public void filter(ContainerRequestContext containerRequestContext, ContainerResponseContext containerResponseContext) throws IOException {
 
-        if (!(containerResponseContext.getEntity() instanceof Response))
+        if (!(containerResponseContext.getEntity() instanceof Response || containerResponseContext.getEntity() == null))
             return ;
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction transaction = session.getTransaction();
 
         if (transaction.isActive()) {
+            System.out.println("Commiting Transaction");
             session.getTransaction().commit();
         }
     }

@@ -10,7 +10,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
@@ -18,7 +20,12 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Side;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TabPane;
@@ -28,6 +35,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.RotateEvent;
 import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
+import uk.ac.cam.echo.TouchClient.ConfrenceStats.Tuple;
+import uk.ac.cam.echo.data.Conversation;
+import uk.ac.cam.echo.data.User;
 
 /**
  * FXML Controller class
@@ -99,6 +110,15 @@ public class GUIController implements Initializable {
     @FXML
     private Pane stats_pane;
     
+    @FXML private PieChart global_stats_pie;
+    private ObservableList<PieChart.Data> global_pie;
+    @FXML private LineChart global_stats_line;
+    private XYChart.Series<Number,Number> global_line;
+    @FXML private ListView stats_conversationlist;
+    private ObservableList<Conversation> conversationList;
+    
+    private TouchClient mTC;
+    
     //a hash map from the conversation id to the pane that it is displaed in
     private HashMap<Long,Integer> idtopane;
     
@@ -125,6 +145,25 @@ public class GUIController implements Initializable {
     private void addMessage5(String mess){
         messages5.add(mess);
         conversation5_messages.setItems(messages5);
+    }
+    
+    @FXML Text pie_chart_lable;
+    private void setupGlobalStats(){
+        conversationList = new MessageDisplayList();
+        stats_conversationlist.setCellFactory(new ConversationListCellFactory());
+        
+        global_pie = new MessageDisplayList();
+        global_stats_pie.setLegendSide(Side.LEFT);
+        global_stats_pie.setLabelLineLength(5);
+        global_stats_pie.setLegendVisible(true);
+        
+        System.out.println(global_stats_pie.getLabelsVisible());
+        global_stats_pie.setLabelsVisible(true);
+
+        global_line = new XYChart.Series();
+        global_line.setName("Activity");
+        global_stats_line.getData().add(global_line);
+        
     }
     
     /**
@@ -580,15 +619,19 @@ public class GUIController implements Initializable {
        setupConversationPane4();
        setupConversationPane5();
        setupStatsPane();
+       setupGlobalStats();
 
     }
     
     private void addConversation1(final String name,final long conversationID){
+        setStatsConv1(mTC.getServerConnection().getStats(conversationID));
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
                 messages1.clear();
-                idtopane.put(new Long(conversationID), new Integer(1));
+                synchronized (idtopane){
+                    idtopane.put(new Long(conversationID), new Integer(1));
+                }
                 conversation1_name.setText(name);
                 conversation1_QR.setImage(genarateQRCode(conversationID,(int)(conversation1_QR.getFitHeight())*3));
                 conversation1_code_large.setImage(genarateQRCode(conversationID,(int)(conversation1_code_large.getFitHeight()-1)));
@@ -597,11 +640,14 @@ public class GUIController implements Initializable {
         
     }
     private void addConversation2(final String name,final long conversationID){
+        setStatsConv2(mTC.getServerConnection().getStats(conversationID));
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
                 messages2.clear();
-                idtopane.put(new Long(conversationID), new Integer(2));
+                synchronized (idtopane){
+                    idtopane.put(new Long(conversationID), new Integer(2));
+                }
                 conversation2_name.setText(name);
                 conversation2_QR.setImage(genarateQRCode(conversationID,(int)(conversation2_QR.getFitHeight())*3));
                 conversation2_code_large.setImage(genarateQRCode(conversationID,(int)(conversation2_code_large.getFitHeight()-1)));
@@ -609,11 +655,14 @@ public class GUIController implements Initializable {
         }); 
     }
     private void addConversation3(final String name,final long conversationID){
+        setStatsConv3(mTC.getServerConnection().getStats(conversationID));
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
                 messages3.clear();
-                idtopane.put(new Long(conversationID), new Integer(3));
+                synchronized (idtopane){
+                    idtopane.put(new Long(conversationID), new Integer(3));
+                }
                 conversation3_name.setText(name);
                 conversation3_QR.setImage(genarateQRCode(conversationID,(int)(conversation3_QR.getFitHeight())*3));
                 conversation3_code_large.setImage(genarateQRCode(conversationID,(int)(conversation3_code_large.getFitHeight()-1)));
@@ -621,11 +670,14 @@ public class GUIController implements Initializable {
         });   
     }
     private void addConversation4(final String name,final long conversationID){
+        setStatsConv4(mTC.getServerConnection().getStats(conversationID));
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
                 messages4.clear();
-                idtopane.put(new Long(conversationID), new Integer(4));
+                synchronized (idtopane){
+                    idtopane.put(new Long(conversationID), new Integer(4));
+                }
                 conversation4_name.setText(name);
                 conversation4_QR.setImage(genarateQRCode(conversationID,(int)(conversation4_QR.getFitHeight())*3));
                 conversation4_code_large.setImage(genarateQRCode(conversationID,(int)(conversation4_code_large.getFitHeight()-1)));
@@ -633,11 +685,14 @@ public class GUIController implements Initializable {
         });  
     }
     private void addConversation5(final String name,final long conversationID){
+        setStatsConv5(mTC.getServerConnection().getStats(conversationID));
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
                 messages5.clear();
-                idtopane.put(new Long(conversationID), new Integer(5));
+                synchronized (idtopane){
+                    idtopane.put(new Long(conversationID), new Integer(5));
+                }
                 conversation5_name.setText(name);
                 conversation5_QR.setImage(genarateQRCode(conversationID,(int)(conversation5_QR.getFitHeight())*3));
                 conversation5_code_large.setImage(genarateQRCode(conversationID,(int)(conversation5_code_large.getFitHeight()-1)));
@@ -646,7 +701,7 @@ public class GUIController implements Initializable {
     }
     
     /**
-     * this function initializes the conversation panes if they are not initialized and returns true if they are it returns false
+     * this function initialises the conversation panes if they are not initialised and returns true if they are it returns false
      * 
      * @param name1 name of the first conversation
      * @param conversationID1 id of the first conversation
@@ -658,15 +713,19 @@ public class GUIController implements Initializable {
      * @param conversationID4 id of the fourth conversation
      * @param name5 name of the fifth conversation
      * @param conversationID5 id of the fifth conversation
-     * @return returns true if it has initialized the conversations false otherwise
+     * @return returns true if it has initialised the conversations false otherwise
      */
     public boolean initConversations(String name1,long conversationID1,String name2,long conversationID2,String name3,long conversationID3,String name4,long conversationID4,String name5,long conversationID5){
         if (!idtopane.isEmpty()){return false;}
-        addConversation1(name1,conversationID1);
-        addConversation2(name2,conversationID2);
-        addConversation3(name3,conversationID3);
-        addConversation4(name4,conversationID4);
-        addConversation5(name5,conversationID5);
+        synchronized (idtopane){
+            addConversation1(name1,conversationID1);
+            addConversation2(name2,conversationID2);
+            addConversation3(name3,conversationID3);
+            addConversation4(name4,conversationID4);
+            addConversation5(name5,conversationID5);
+        }
+        pollStats();
+        setupUserLists();
         return true;
     }
     
@@ -681,22 +740,25 @@ public class GUIController implements Initializable {
      */
     public void replaceConversation(long conversationID1,String name,long conversationID2) throws NoMessageListException, NotCurrentConversationException, ConversationAlredyDisplayedException{
         int pane = 10;
-        try {//this NullPointerException ocurs if the item is not in the map
-            pane = idtopane.get(conversationID1);
-        } catch (NullPointerException e){
-            throw new NotCurrentConversationException(conversationID1);
-        }
-        if (idtopane.containsKey(conversationID2)){
-            throw new ConversationAlredyDisplayedException();
-        }
-        idtopane.remove(conversationID1);
-        switch (pane){
-            case 1:addConversation1(name,conversationID2);break;
-            case 2:addConversation2(name,conversationID2);break;
-            case 3:addConversation3(name,conversationID2);break;
-            case 4:addConversation4(name,conversationID2);break;
-            case 5:addConversation5(name,conversationID2);break;
-            default:/*should never happen*/ throw new NoMessageListException();
+        synchronized (idtopane){
+            try {//this NullPointerException ocurs if the item is not in the map
+                pane = idtopane.get(conversationID1);
+            } catch (NullPointerException e){
+                throw new NotCurrentConversationException(conversationID1);
+            }
+            if (idtopane.containsKey(conversationID2)){
+                throw new ConversationAlredyDisplayedException();
+            }
+            idtopane.remove(conversationID1);
+            switch (pane){
+                case 1:addConversation1(name,conversationID2);break;
+                case 2:addConversation2(name,conversationID2);break;
+                case 3:addConversation3(name,conversationID2);break;
+                case 4:addConversation4(name,conversationID2);break;
+                case 5:addConversation5(name,conversationID2);break;
+                default:break;
+            }
+            scrollToEnd(conversationID2);
         }
     }
     
@@ -732,6 +794,7 @@ public class GUIController implements Initializable {
             if (rb instanceof ECHOResource){
                 er = (ECHOResource)rb;
                 er.getTouchClient().setGUI(this);
+                mTC = er.getTouchClient();
             }else {System.err.println("the wrong resource type has been provided to the confrenceloadscreencontroller class a resource of type ECHOResource must be provided");System.exit(1);}
             init();
     }    
@@ -746,14 +809,15 @@ public class GUIController implements Initializable {
         try{//this NullPointerException ocurs if the item requested is not in the map
             pane = idtopane.get(ConversationID).intValue();
         } catch(NullPointerException e) {throw new NoMessageListException();}
-        
-        switch (pane){
-            case 1: addMessage1(s);break;
-            case 2: addMessage2(s);break;
-            case 3: addMessage3(s);break;
-            case 4: addMessage4(s);break;
-            case 5: addMessage5(s);break;
-            default: throw new NoMessageListException();
+        synchronized (idtopane){
+            switch (pane){
+                case 1: addMessage1(s);break;
+                case 2: addMessage2(s);break;
+                case 3: addMessage3(s);break;
+                case 4: addMessage4(s);break;
+                case 5: addMessage5(s);break;
+                default: break;
+            }
         }
         scrollToEnd(ConversationID);
     }
@@ -768,7 +832,7 @@ public class GUIController implements Initializable {
             Platform.runLater(new Runnable(){
                 @Override
                 public void run() {
-                    int pane = 10;
+                    int pane;
                     try{
                         pane = idtopane.get(conversationID);
                     } catch (NullPointerException e){return;/*do nothing as nothing can be done*/}
@@ -778,11 +842,286 @@ public class GUIController implements Initializable {
                         case 3: conversation3_messages.scrollTo(messages3.size()-1);break;
                         case 4: conversation4_messages.scrollTo(messages4.size()-1);break;
                         case 5: conversation5_messages.scrollTo(messages5.size()-1);break;
-                        default: return;
+                        default: break;
                     }
                 }
             });
         return true; 
+    }
+    
+    @FXML Label conversation1_stat_1;
+    @FXML Label conversation1_stat_2;
+    @FXML Label conversation1_stat_3;
+    @FXML PieChart conversation1_stat_4;
+    
+    private void setStatsConv1(final ConvStats s){
+        Platform.runLater(new Runnable(){
+            @Override
+            public void run() {
+                conversation1_stat_1.setText(s.getCurrentUsers());
+                conversation1_stat_2.setText(s.getContributingUsers());
+                conversation1_stat_3.setText(s.getNumberOfMessages());
+                ObservableList<PieChart.Data> pieData = new MessageDisplayList();
+                pieData.add(new PieChart.Data("Male",(int)(s.getMaleRatio()*100)));
+                pieData.add(new PieChart.Data("Female",100-(int)(s.getMaleRatio()*100)));
+                conversation1_stat_4.setData(pieData);
+            }
+        });
+    }
+    
+    @FXML Label conversation2_stat_1;
+    @FXML Label conversation2_stat_2;
+    @FXML Label conversation2_stat_3;
+    @FXML PieChart conversation2_stat_4;
+    
+    private void setStatsConv2(final ConvStats s){
+        Platform.runLater(new Runnable(){
+            @Override
+            public void run() {
+                conversation2_stat_1.setText(s.getCurrentUsers());
+                conversation2_stat_2.setText(s.getContributingUsers());
+                conversation2_stat_3.setText(s.getNumberOfMessages());
+                ObservableList<PieChart.Data> pieData = new MessageDisplayList();
+                pieData.add(new PieChart.Data("Male",(int)(s.getMaleRatio()*100)));
+                pieData.add(new PieChart.Data("Female",100-(int)(s.getMaleRatio()*100)));
+                conversation2_stat_4.setData(pieData);            }
+        });
+    }
+    
+    @FXML Label conversation3_stat_1;
+    @FXML Label conversation3_stat_2;
+    @FXML Label conversation3_stat_3;
+    @FXML PieChart conversation3_stat_4;
+    
+    private void setStatsConv3(final ConvStats s){
+        Platform.runLater(new Runnable(){
+            @Override
+            public void run() {
+                conversation3_stat_1.setText(s.getCurrentUsers());
+                conversation3_stat_2.setText(s.getContributingUsers());
+                conversation3_stat_3.setText(s.getNumberOfMessages());
+                ObservableList<PieChart.Data> pieData = new MessageDisplayList();
+                pieData.add(new PieChart.Data("Male",(int)(s.getMaleRatio()*100)));
+                pieData.add(new PieChart.Data("Female",100-(int)(s.getMaleRatio()*100)));
+                conversation3_stat_4.setData(pieData);            }
+        });
+    }
+    
+    @FXML Label conversation4_stat_1;
+    @FXML Label conversation4_stat_2;
+    @FXML Label conversation4_stat_3;
+    @FXML PieChart conversation4_stat_4;
+    
+    private void setStatsConv4(final ConvStats s){
+        Platform.runLater(new Runnable(){
+            @Override
+            public void run() {
+                conversation4_stat_1.setText(s.getCurrentUsers());
+                conversation4_stat_2.setText(s.getContributingUsers());
+                conversation4_stat_3.setText(s.getNumberOfMessages());
+                ObservableList<PieChart.Data> pieData = new MessageDisplayList();
+                pieData.add(new PieChart.Data("Male",(int)(s.getMaleRatio()*100)));
+                pieData.add(new PieChart.Data("Female",100-(int)(s.getMaleRatio()*100)));
+                conversation4_stat_4.setData(pieData);
+            }
+        });
+        
+    }
+    
+    @FXML Label conversation5_stat_1;
+    @FXML Label conversation5_stat_2;
+    @FXML Label conversation5_stat_3;
+    @FXML PieChart conversation5_stat_4;
+    
+    private void setStatsConv5(final ConvStats s){
+        Platform.runLater(new Runnable(){
+            @Override
+            public void run() {
+                conversation5_stat_1.setText(s.getCurrentUsers());
+                conversation5_stat_2.setText(s.getContributingUsers());
+                conversation5_stat_3.setText(s.getNumberOfMessages());
+                ObservableList<PieChart.Data> pieData = new MessageDisplayList();
+                pieData.add(new PieChart.Data("Male",(int)(s.getMaleRatio()*100)));
+                pieData.add(new PieChart.Data("Female",100-(int)(s.getMaleRatio()*100)));
+                conversation5_stat_4.setData(pieData);            }
+        });
+    }
+    
+    @FXML Label mCaption;
+    
+    private void setStatsGlobal(final ConfrenceStats s, final long val){
+        Platform.runLater(new Runnable(){
+            @Override
+            public void run() {
+                global_pie.clear();
+                for (Tuple<String,Long> t: s.getUsersInConv()){
+                    global_pie.add(new PieChart.Data(t.getVal1(), mTC.getServerConnection().getNumberOfMessages(t.getVal2())));
+                }
+                global_stats_pie.setData(global_pie);
+                for (Node node : global_stats_pie.lookupAll(".text.chart-pie-label")) {
+                    if (node instanceof Text){
+                        for (PieChart.Data data : global_pie){ 
+                            if (data.getName().equals(((Text) node).getText())){
+                                final String name = data.getName();
+                                System.out.println(name);
+                                ((Text) node).setText(String.format("%s", name));
+                            }
+                        }
+                    }
+                }
+                
+                conversationList.clear();
+                conversationList.addAll(s.getConversations());
+                stats_conversationlist.setItems(conversationList);
+                
+                if (val%5 == 0){
+                    global_line.getData().add(new XYChart.Data<Number,Number>((int)(val/5),mTC.getServerConnection().getActivity()));
+                }
+                }
+        });    
+    }
+
+    private void pollStats() {
+        (new Thread(new Runnable(){
+            @Override
+            public void run() {
+                long val =0;
+                while (true){
+                    
+                    setStatsGlobal(mTC.getServerConnection().getGlobalStats(),(int)(val));
+                    
+                    val++;
+                    try {
+                        Thread.sleep(1000*60);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(GUIController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        })).start();
+    }
+    
+    @FXML private ListView conversation1_avitars;
+    private ObservableList<User> avitars1;
+    @FXML private ListView conversation2_avitars;
+    private ObservableList<User> avitars2;
+    @FXML private ListView conversation3_avitars;
+    private ObservableList<User> avitars3;
+    @FXML private ListView conversation4_avitars;
+    private ObservableList<User> avitars4;
+    @FXML private ListView conversation5_avitars;
+    private ObservableList<User> avitars5;
+    
+    private void setupUserLists(){
+        conversation1_avitars.setCellFactory(new avitarCellFactory());
+        avitars1 = new MessageDisplayList();
+        conversation2_avitars.setCellFactory(new avitarCellFactory());
+        avitars2 = new MessageDisplayList();
+        conversation3_avitars.setCellFactory(new avitarCellFactory());
+        avitars3 = new MessageDisplayList();
+        conversation4_avitars.setCellFactory(new avitarCellFactory());
+        avitars4 = new MessageDisplayList();
+        conversation5_avitars.setCellFactory(new avitarCellFactory());
+        avitars5 = new MessageDisplayList();
+        pollAvitars();
+    }
+    
+    private void pollAvitars(){
+        (new Thread(new Runnable(){
+            @Override
+            public void run() {
+                while (true){
+                    refreshAvitars1(findId(1));
+                    refreshAvitars2(findId(2));
+                    refreshAvitars3(findId(3));
+                    refreshAvitars4(findId(4));
+                    refreshAvitars5(findId(5));
+                    try {
+                        Thread.sleep(1000*60);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(GUIController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        })).start();
+    }
+    
+    private long findId(int pane){
+        Set<Long> ids = idtopane.keySet();
+        for(Long l: ids){
+            if (idtopane.get(l).equals(Integer.valueOf(pane))){return l;}
+        }
+        return -1;
+    }
+    
+    private void refreshAvitars1(long id){
+        final List<User> users = mTC.getServerConnection().getUsers(id);
+        Platform.runLater(new Runnable(){
+            @Override
+            public void run() {
+                if (users!=null){
+                    if (!avitars1.isEmpty()){avitars1.clear();}
+                    avitars1.addAll(users);
+                    conversation1_avitars.setItems(avitars1);
+                }
+            }
+        });
+    }
+    
+    private void refreshAvitars2(long id){
+        final List<User> users = mTC.getServerConnection().getUsers(id);
+        Platform.runLater(new Runnable(){
+            @Override
+            public void run() {
+                if (users!=null){
+                    if (!avitars2.isEmpty()){avitars2.clear();}
+                    avitars2.addAll(users);
+                    conversation2_avitars.setItems(avitars2);
+                }
+            }
+        });
+    }
+    
+    private void refreshAvitars3(long id){
+        final List<User> users = mTC.getServerConnection().getUsers(id);
+        Platform.runLater(new Runnable(){
+            @Override
+            public void run() {
+                if (users!=null){
+                    if (!avitars3.isEmpty()){avitars3.clear();}
+                    avitars3.addAll(users);
+                    conversation3_avitars.setItems(avitars3);
+                }
+            }
+        });
+    }
+    
+    private void refreshAvitars4(long id){
+        final List<User> users = mTC.getServerConnection().getUsers(id);
+        Platform.runLater(new Runnable(){
+            @Override
+            public void run() {
+                if (users!=null){
+                    if (!avitars4.isEmpty()){avitars4.clear();}
+                    avitars4.addAll(users);
+                    conversation4_avitars.setItems(avitars4);
+                }
+            }
+        });
+    }
+    
+    private void refreshAvitars5(long id){
+        final List<User> users = mTC.getServerConnection().getUsers(id);
+        Platform.runLater(new Runnable(){
+            @Override
+            public void run() {
+                if (users!=null){
+                    if (!avitars5.isEmpty()){avitars5.clear();}
+                    avitars5.addAll(users);
+                    conversation5_avitars.setItems(avitars5);
+                }
+            }
+        });
     }
     
 }
