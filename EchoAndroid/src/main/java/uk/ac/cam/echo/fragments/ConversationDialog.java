@@ -15,11 +15,13 @@ import android.widget.TextView;
 
 import java.util.Collection;
 
+import uk.ac.cam.echo.ConversationStringUtil;
 import uk.ac.cam.echo.R;
 import uk.ac.cam.echo.activities.ConversationDetailActivity;
 import uk.ac.cam.echo.client.ClientApi;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.Message;
+import uk.ac.cam.echo.data.Tag;
 import uk.ac.cam.echo.data.User;
 
 public class ConversationDialog extends DialogFragment implements
@@ -89,6 +91,7 @@ public class ConversationDialog extends DialogFragment implements
         ClientApi api = new ClientApi("http://echoconf.herokuapp.com/");
         String convName;
         String usersText;
+        String tagText;
         String onlineText;
         String previewText;
 
@@ -99,6 +102,8 @@ public class ConversationDialog extends DialogFragment implements
 
             Collection<Message> messages = conversation.getMessages();
             //Collection<User> users = conversation.getUsers();
+            Collection<Tag> tags = conversation.getTags();
+            tagText = ConversationStringUtil.getTagText(tags);
 
             convName = conversation.getName();
 
@@ -107,6 +112,9 @@ public class ConversationDialog extends DialogFragment implements
 //                userBuilder.append(u.getUsername() + " ");
 //            }
             //usersText = userBuilder.toString();
+
+
+
 
             //onlineText = users.size() + " users online";
 
@@ -144,7 +152,7 @@ public class ConversationDialog extends DialogFragment implements
             //users.setText(usersText);
             //tags.setText(tagsText);
             users.setText("Yojan Alex Petar Mona Philip");
-            tags.setText("Echo Multi Touch Conference");
+            tags.setText(tagText);
             online.setText("5 users online");
         }
     }

@@ -2,6 +2,7 @@ package uk.ac.cam.echo;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
+import uk.ac.cam.echo.client.ClientApi;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.Tag;
 import uk.ac.cam.echo.data.User;
@@ -27,6 +29,8 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 
 	private List<Conversation> data = null;
     private HashMap<Long, Integer> positionMap;
+
+    private ClientApi api;
 	
 	public ConversationAdapter(Context context, int layoutResourceId,
 									List<Conversation> data) {
@@ -38,6 +42,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		this.context = context;
 		this.layoutResourceId = layoutResourceId;
 		this.data = data;
+
 	}
 
 	@Override
@@ -66,7 +71,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		
 		Conversation conversation = data.get(position);
 		//Collection<User> users = conversation.getUsers();
-		//Collection<Tag> tags = conversation.getTags();
+		//Collection<Tag> tags = api.conversationResource.getTagResource(conversation.getId()).getAll();
 
         // record the position at which the conversation appears on list
         positionMap.put(conversation.getId(), position);
@@ -76,8 +81,9 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		holder.title.setText(conversation.getName());
 		//holder.users.setText(getUserText(users));
         holder.users.setText("TestUser");
-		//holder.tags.setText(getTagText(tags));
-        holder.tags.setText("tag1 tag2 tag3");
+        new AsyncAdapter().execute(conversation, holder.tags);
+		//holder.tags.setText(ConversationStringUtil.getTagText(tags));
+        //holder.tags.setText("tag1 tag2 tag3");
 		//holder.totalOnline.setText(getOnlineText(users));
         holder.totalOnline.setText("14 users online");
 
@@ -111,6 +117,8 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
         listener = l;
     }
 
+    public void setApi(ClientApi api) { this.api = api;}
+
     // ViewHolder to prevent multiple findViewById calls
 	static class ConversationHolder {
 		ImageView imgIcon;
@@ -119,5 +127,29 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		TextView tags;
 		TextView totalOnline;
 	}
+
+    private class AsyncAdapter extends AsyncTask<Object, Void, String> {
+
+        TextView tagView;
+
+
+        @Override
+        protected String doInBackground(Object... params) {
+            Conversation conversation = (Conversation)params[0];
+             tagView = (TextView)params[1];
+
+            Collection<Tag> tags = conversation.getTags();
+            String tagText = ConversationStringUtil.getTagText(tags);
+
+            return tagText;
+        }
+
+        @Override
+        protected void onPostExecute(String str) {
+            super.onPostExecute(str);
+
+            tagView.setText(str);
+        }
+    }
 	
 }

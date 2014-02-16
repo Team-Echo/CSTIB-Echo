@@ -33,9 +33,8 @@ public class ConversationListFragment extends Fragment implements
 	private ListView listView;
 	private ProgressBar listProgress;
 
+    private static ClientApi api = new ClientApi("http://echoconf.herokuapp.com/");
 
-	
-	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -79,10 +78,12 @@ public class ConversationListFragment extends Fragment implements
 	public void setCommunicator(Communicator comm) {
 		this.comm = comm;
 	}
+
+    public ClientApi getApi() { return api; }
 	
 	private class PerformSearch extends AsyncTask<String, Void, List<Conversation>> {
 		
-		ClientApi api = new ClientApi("http://echoconf.herokuapp.com/");
+
         ArrayList<String> some = new ArrayList<String>();
 		
 		@Override
@@ -110,6 +111,7 @@ public class ConversationListFragment extends Fragment implements
 
 			if(adapter == null) {
 				adapter = new ConversationAdapter(context, R.layout.conv_list_row, result);
+                adapter.setApi(api);
 				listView.setAdapter(adapter);
                 adapter.setListViewListener((ConversationListActivity)getActivity());
 				listView.setOnItemClickListener(ConversationListFragment.this);
