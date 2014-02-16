@@ -18,6 +18,7 @@ import uk.ac.cam.echo.client.ClientApi;
 import uk.ac.cam.echo.data.Conference;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.Message;
+import uk.ac.cam.echo.data.User;
 import uk.ac.cam.echo.data.async.Handler;
 import uk.ac.cam.echo.data.async.Subscription;
 
@@ -145,6 +146,10 @@ public class ServerConnection implements Runnable{
             }
         });
         
+        while (mGUI.getMap().isEmpty()){}
+        
+        Logger.getLogger(ServerConnection.class.getName()).log(Level.INFO, mGUI.getMap().toString());
+        
         synchronized (mConversations){
             synchronized (mSub){
                 mConversations.add(conversation1);
@@ -160,8 +165,7 @@ public class ServerConnection implements Runnable{
         }
         
         replaceConversations();
-        
-        System.out.println("the server is connected");
+        Logger.getLogger(ServerConnection.class.getName()).log(Level.INFO, "the server ("+url+") is connected");
     }
 
     private Conference configureConference() throws NotInstantiatedYetException, ConfrenceNotFoundException {
@@ -214,6 +218,21 @@ public class ServerConnection implements Runnable{
 
         List<Message> list = (List)c.getMessages(50);
         
+        if (list.isEmpty()){
+            synchronized (mConversations){ 
+                Platform.runLater(new Runnable(){
+                    @Override
+                    public void run() {
+                        try {
+                            mGUI.displayMessage("you have connected to "+c.getName(), c.getId());
+                        } catch (NoMessageListException ex) {
+                            Logger.getLogger(ServerConnection.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                });
+            }
+        }
+        
         for (Message msg: list){
             String sender = msg.getSender() == null ? "Anonymous" : msg.getSender().getUsername();
             final String message = sender.concat(" : ".concat(msg.getContents()));
@@ -248,12 +267,11 @@ public class ServerConnection implements Runnable{
                     } catch (NotInstantiatedYetException ex) {//should never happen
                         Logger.getLogger(ServerConnection.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    synchronized (mConversations){
-                        synchronized (mSub){
+                    /*synchronized (mConversations){
+                        synchronized (mSub){*/
                             for (int c = 0; c<mConversations.size(); c++){
-                                if (!conv.contains(mConversations.get(c))){
+                                if (!isContainedIn(conv,mConversations.get(c))){
                                     for (int c2 = 0; c2<conv.size(); c2++){
-                                        
                                         //the conversation to be replaced
                                         Conversation currentConversation = mConversations.get(c);
                                         
@@ -283,8 +301,6 @@ public class ServerConnection implements Runnable{
                                             continue;//this ocurs if the replacement conversation is alredy on screen
                                         }
                                         
-                                        //display the privious messages
-                                        displayPreviousMessages(newConversation);
                                         
                                         //replace subscription in mSub
                                         for (int i = 0; i < c; i++){newmSub.add(mSub.get(i));}
@@ -292,21 +308,61 @@ public class ServerConnection implements Runnable{
                                         for (int i = c+1;i<mSub.size();i++){newmSub.add(mSub.get(i));}
                                         
                                         //set mSub and mConversation
-                                        mSub.clear();
-                                        mConversations.clear();
-                                        mSub.addAll(newmSub);
-                                        mConversations.addAll(newmConversations);
+                                        synchronized (mConversations){
+                                            synchronized (mSub){
+                                                mSub.clear();
+                                                mConversations.clear();
+                                                mSub.addAll(newmSub);
+                                                mConversations.addAll(newmConversations);
+                                            }
+                                        }
                                         
                                         break;
-                                    }
+                                    }  
                                 }
                             }
-                        }
-                    }
+                       /* }
+                    }*/
                 }
+            }
+
+            private boolean isContainedIn(List<Conversation> conv, Conversation val) {
+                for (Conversation c: conv){
+                    if (c.getId()==val.getId()){return true;}
+                }
+                return false;
             }
         
         })).start();
+    }
+
+    public ConvStats getStats(long conversationID) { 
+        Conversation c = mAPI.conversationResource.get(conversationID);
+        return new ConvStats(c.getUsers().size(),0,c.getMessages().size(),0.5);
+    }
+
+    public ConfrenceStats getGlobalStats() {
+        return new ConfrenceStats(mAPI.conferenceResource.getConversations(mConfrence.getId())); 
+    }
+
+    double getNumberOfMessages(Long val2) {
+        for (Conversation c:mAPI.conferenceResource.getConversations(mConfrence.getId())){
+            if (c.getId()==val2){
+                return c.getMessages().size();
+            }
+        }
+        return 0;
+    }
+
+    Number getActivity() {
+        return mAPI.conferenceResource.activity(mConfrence.getId(), (1000*60*5));
+    }
+
+    List<User> getUsers(long id) {
+        for (Conversation c: mAPI.conferenceResource.getConversations(mConfrence.getId())){
+            if (c.getId()==id){return (List<User>)c.getUsers();}
+        }
+        return null;
     }
     
 }
