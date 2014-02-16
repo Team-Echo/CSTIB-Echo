@@ -1,6 +1,8 @@
 package uk.ac.cam.echo.fragments;
 
 import android.app.DialogFragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import java.util.Collection;
 import uk.ac.cam.echo.ConversationStringUtil;
 import uk.ac.cam.echo.R;
 import uk.ac.cam.echo.activities.ConversationDetailActivity;
+import uk.ac.cam.echo.activities.ConversationListActivity;
 import uk.ac.cam.echo.client.ClientApi;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.Message;
@@ -34,13 +37,14 @@ public class ConversationDialog extends DialogFragment implements
     private TextView preview;
 	private Button join;
 	private ProgressBar progress;
-	
+
+    private ConversationFragment cf;
 	private long id;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		
-		View view = inflater.inflate(R.layout.conv_dialog, container, false);
+		View view = inflater.inflate(R.layout.conv_dialog_two, container, false);
 		
 		id = getArguments().getLong("_id");
 		
@@ -53,7 +57,14 @@ public class ConversationDialog extends DialogFragment implements
 		join = (Button)view.findViewById(R.id.convJoinDialog);
 
 		join.setOnClickListener(this);
-		
+
+        cf = ConversationFragment.newInstance(id, true);
+
+        FragmentManager manager = getChildFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.replace(R.id.previewFrame, cf);
+        transaction.commit();
+
 		return view;
 	}
 
@@ -83,6 +94,8 @@ public class ConversationDialog extends DialogFragment implements
 			Intent intent = new Intent(getActivity(), ConversationDetailActivity.class);
 			intent.putExtra("_id", id);
 			startActivity(intent);
+
+            ((ConversationListActivity)getActivity()).getService().listenToConversation(id);
 		}
 	}
 
@@ -93,14 +106,11 @@ public class ConversationDialog extends DialogFragment implements
         String usersText;
         String tagText;
         String onlineText;
-        String previewText;
 
         @Override
         protected Conversation doInBackground(Long... params) {
 
             Conversation conversation = api.conversationResource.get(params[0]);
-
-            Collection<Message> messages = conversation.getMessages();
             //Collection<User> users = conversation.getUsers();
             Collection<Tag> tags = conversation.getTags();
             tagText = ConversationStringUtil.getTagText(tags);
@@ -112,19 +122,7 @@ public class ConversationDialog extends DialogFragment implements
 //                userBuilder.append(u.getUsername() + " ");
 //            }
             //usersText = userBuilder.toString();
-
-
-
-
             //onlineText = users.size() + " users online";
-
-            StringBuilder previewBuilder = new StringBuilder();
-            for(Message m : messages) {
-                previewBuilder.append(
-                        (m.getSender() == null ? "Anonymous" : m.getSender().getUsername()) + ": " +
-                        m.getContents() + "\n");
-            }
-            previewText = previewBuilder.toString();
 
             return conversation;
         }
@@ -139,8 +137,6 @@ public class ConversationDialog extends DialogFragment implements
 
 
             progress.setVisibility(View.GONE);
-            preview.setVisibility(View.VISIBLE);
-            preview.setText(previewText);
 
             if(getDialog() != null) {
                 getDialog().setTitle(convName);

@@ -37,6 +37,14 @@
         android:textSize="12sp"
         />
 
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/convProgressDialog"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center" />
+
     <TextView
         android:id="@+id/convTagsDialog"
         android:layout_width="wrap_content"
@@ -47,46 +55,17 @@
         android:textAllCaps="true" />
 
 
-    <ScrollView
-        android:id="@+id/scrollView"
+    <FrameLayout
+        android:id="@+id/previewFrame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
+        android:layout_margin="5dp"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
         android:layout_below="@+id/convTagsDialog"
-        android:layout_above="@+id/convJoinDialog">
+        android:layout_above="@+id/convJoinDialog"
+        android:layout_alignParentRight="true">
 
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-
-                <ProgressBar
-                    android:id="@+id/convProgressDialog"
-                    style="?android:attr/progressBarStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true" />
-
-                <TextView
-                    android:id="@+id/previewDialog"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:textColor="@color/darkGrey"
-                    android:visibility="visible"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentRight="true" />
-
-            </RelativeLayout>
-
-
-    </ScrollView>
+    </FrameLayout>
 
     <Button
         android:id="@+id/convJoinDialog"
