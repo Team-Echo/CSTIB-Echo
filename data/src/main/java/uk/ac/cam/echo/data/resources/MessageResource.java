@@ -1,5 +1,6 @@
 package uk.ac.cam.echo.data.resources;
 
+
 import uk.ac.cam.echo.data.Message;
 
 import javax.ws.rs.*;
@@ -14,7 +15,7 @@ public interface MessageResource extends RestResource<Message>{
     public Collection<Message> getAll();
 
     @GET
-    @Path("/recent")
+    @Path("/recent-messages")
     public List<Message> getRecent(@QueryParam("num") int n);
 
     @GET

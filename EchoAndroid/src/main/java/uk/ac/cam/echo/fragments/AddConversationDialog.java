@@ -3,6 +3,7 @@ package uk.ac.cam.echo.fragments;
 import android.app.DialogFragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
@@ -16,6 +17,7 @@ import uk.ac.cam.echo.Toaster;
 import uk.ac.cam.echo.client.ClientApi;
 import uk.ac.cam.echo.data.Conference;
 import uk.ac.cam.echo.data.Conversation;
+import uk.ac.cam.echo.data.Tag;
 
 
 public class AddConversationDialog extends DialogFragment implements
@@ -105,14 +107,26 @@ public class AddConversationDialog extends DialogFragment implements
         @Override
         protected Conversation doInBackground(String... params) {
             String convName = params[0];
-            //String convTags = params[1];
+            String convTags = params[1];
 
             conference = api.conferenceResource.getAll().get(0);
             Conversation newConv = api.newConversation();
             newConv.setName(convName);
             newConv.setConference(conference);
 
-            newConv.save();
+            //newConv.save();
+
+            try { newConv.save(); } catch (Error e) { Log.e("Error", e.getMessage());}
+            newConv = api.conversationResource.get(convName); //temp hack to load information from db
+
+            String[] tags = convTags.split(" ");
+
+            for(String tagName : tags) {
+               Tag t = api.newTag(api.conversationResource.get(newConv.getId()));
+               t.setName(tagName);
+               api.conversationResource.getTagResource(newConv.getId()).create(t);
+            }
+
             return newConv;
         }
 

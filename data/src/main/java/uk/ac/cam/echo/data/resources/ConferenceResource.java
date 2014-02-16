@@ -36,7 +36,7 @@ public interface ConferenceResource extends RestResource<Conference> {
 
     @Path("/{conferenceId}/most-active")
     @GET
-    public List<Conversation> mostActiveRecently(@PathParam("conferenceId") long id, @QueryParam("minutes") long minutes, @QueryParam("num") int n);
+    public List<Conversation> mostActiveRecently(@PathParam("conferenceId") long id, @QueryParam("millis") long millis, @QueryParam("num") int n);
 
     @Path("/{conferenceId}/recommend")
     @GET
@@ -49,6 +49,10 @@ public interface ConferenceResource extends RestResource<Conference> {
     @Path("/{conferenceId}/most-active-users")
     @GET
     public List<User> mostActiveUsers(@PathParam("conferenceId") long id, @QueryParam("num") int n);
+
+    @Path("/{conferenceId}/activity")
+    @GET
+    public int activity(@PathParam("conferenceId") long id, @QueryParam("millis") long millis);
 
     @GET
     @Path("/{conferenceId}/conversations")

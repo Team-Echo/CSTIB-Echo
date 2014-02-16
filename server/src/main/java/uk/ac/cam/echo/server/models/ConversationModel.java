@@ -73,7 +73,9 @@ public class ConversationModel extends BaseModel implements Conversation {
     }
 
     public List<Message> getSortedMessages() {
-        return new ArrayList<Message>(messages);
+        List<Message> ret = HibernateUtil.getTransaction().createCriteria(MessageModel.class)
+                .add(Restrictions.eq("conversation", this)).addOrder(Order.asc("timeStamp")).list();
+        return ret;
     }
 
     public String getName() {

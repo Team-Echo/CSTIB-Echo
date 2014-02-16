@@ -248,7 +248,7 @@ public class DataAnalyst implements ServerDataAnalyst
     }
 
     @Override
-    public List<Conversation> mostActiveRecently(long minutes, int n)
+    public List<Conversation> mostActiveRecently(long millis, int n)
     {
         Conference parentConference = (Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, parentID);
 
@@ -261,14 +261,14 @@ public class DataAnalyst implements ServerDataAnalyst
         for (Conversation C : conversations)
         {
             int cnt = 0;
-            List<Message> msgs = (List<Message>)C.getMessages();
+            List<Message> msgs = (List<Message>)C.getSortedMessages();
             Collections.reverse(msgs); // because the query returns them in the opposite order
 
             // PRECONDITION: msgs is sorted descending by timestamp.
 
             for (Message M : msgs)
             {
-                if ((now - M.getTimeStamp()) / 60000 > minutes) break;
+                if ((now - M.getTimeStamp()) > millis) break;
                 else cnt++;
             }
             pq.offer(new IntegerConversationPair(cnt, C));
@@ -312,6 +312,31 @@ public class DataAnalyst implements ServerDataAnalyst
     public List<User> mostActiveUsers(int n)
     {
         return null;
+    }
+
+    @Override
+    public int activity(long millis)
+    {
+        Conference parentConference = (Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, parentID);
+
+        Collection<Conversation> conversations = parentConference.getConversationSet();
+        long now = new Date().getTime();
+
+        int cnt = 0;
+
+        for (Conversation C : conversations)
+        {
+            List<Message> msgs = (List<Message>) C.getSortedMessages();
+            Collections.reverse(msgs);
+
+            for (Message M : msgs)
+            {
+                if ((now - M.getTimeStamp()) > millis) break;
+                else cnt++;
+            }
+        }
+
+        return cnt;
     }
 
 }

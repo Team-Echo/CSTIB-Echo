@@ -184,4 +184,8 @@ public class TouchClient extends Application {
         mServ = sc;
     }
     
+    ServerConnection getServerConnection(){
+        return mServ;
+    }
+    
 }
