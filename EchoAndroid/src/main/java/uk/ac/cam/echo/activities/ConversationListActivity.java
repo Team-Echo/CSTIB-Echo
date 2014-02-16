@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,9 +26,21 @@ import uk.ac.cam.echo.fragments.ConversationDialog;
 import uk.ac.cam.echo.fragments.ConversationListFragment;
 import uk.ac.cam.echo.fragments.ConversationListFragment.Communicator;
 import uk.ac.cam.echo.onListLoadedListener;
+import uk.ac.cam.echo.services.EchoService;
 
 public class ConversationListActivity extends Activity
         implements Communicator, onListLoadedListener {
+
+    private EchoService echoService;
+    private ServiceConnection connection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            echoService = ((EchoService.LocalBinder)service).getService();
+        }
+
+        public void onServiceDisconnected(ComponentName className) {
+            echoService = null;
+        }
+    };
 
     private MenuItem qrScan;
 
@@ -50,8 +65,23 @@ public class ConversationListActivity extends Activity
 
         handleIntent(getIntent());
     }
-	
-	// If current view is dual-pane, update the fragment,
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Intent service = new Intent(this, EchoService.class);
+        bindService(service, connection, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unbindService(connection);
+    }
+
+    public EchoService getService() { return echoService; }
+
+    // If current view is dual-pane, update the fragment,
 	// otherwise start the stand-alone conversation activity
 	@Override
 	public void respond(long id) {
