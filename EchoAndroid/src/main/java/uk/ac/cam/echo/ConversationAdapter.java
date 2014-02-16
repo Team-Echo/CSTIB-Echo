@@ -18,7 +18,6 @@ import java.util.List;
 import uk.ac.cam.echo.client.ClientApi;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.Tag;
-import uk.ac.cam.echo.data.User;
 
 public class ConversationAdapter extends ArrayAdapter<Conversation> {
 	
@@ -30,8 +29,11 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 	private List<Conversation> data = null;
     private HashMap<Long, Integer> positionMap;
     private HashMap<Long, String> tagMap;
+    private HashMap<Long, Integer> avatarMap;
 
     private ClientApi api;
+
+    private int[] avatars;
 	
 	public ConversationAdapter(Context context, int layoutResourceId,
 									List<Conversation> data) {
@@ -40,10 +42,13 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 
         positionMap = new HashMap<Long, Integer>();
         tagMap = new HashMap<Long, String>();
+        avatarMap = new HashMap<Long, Integer>();
 
 		this.context = context;
 		this.layoutResourceId = layoutResourceId;
 		this.data = data;
+
+        avatars = getAvatars();
 
 	}
 
@@ -86,11 +91,12 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		//holder.users.setText(getUserText(users));
         holder.users.setText("TestUser");
 
-        if(tagMap.containsKey(conversation.getId()))
+        if(tagMap.containsKey(conversation.getId())) {
             holder.tags.setText(tagMap.get(conversation.getId()));
-        else
-            new AsyncAdapter().execute(conversation, holder.tags);
-
+            holder.imgIcon.setImageResource(avatarMap.get(conversation.getId()));
+        } else {
+            new AsyncAdapter().execute(conversation, holder.tags, holder.imgIcon);
+        }
 		//holder.totalOnline.setText(getOnlineText(users));
         holder.totalOnline.setText("14 users online");
 
@@ -137,12 +143,16 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 
     private class AsyncAdapter extends AsyncTask<Object, Void, String> {
         Conversation conversation;
+
+
         TextView tagView;
+        ImageView imgView;
 
         @Override
         protected String doInBackground(Object... params) {
             conversation = (Conversation)params[0];
             tagView = (TextView)params[1];
+            imgView = (ImageView)params[2];
 
             Collection<Tag> tags = conversation.getTags();
             String tagText = ConversationStringUtil.getTagText(tags);
@@ -153,9 +163,22 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
         @Override
         protected void onPostExecute(String str) {
             super.onPostExecute(str);
+
             tagMap.put(conversation.getId(), str);
             tagView.setText(str);
+
+            int avatarId = (int)(Math.random()*avatars.length);
+            avatarMap.put(conversation.getId(), avatars[avatarId]);
+            imgView.setImageResource(avatars[avatarId]);
         }
     }
-	
+
+
+    private int[] getAvatars() {
+        int[] avatars = {R.drawable.admin, R.drawable.angel, R.drawable.arab_boss, R.drawable.captain, R.drawable.chief,
+        R.drawable.devil, R.drawable.engineer, R.drawable.general, R.drawable.judge, R.drawable.king, R.drawable.queen,
+        R.drawable.prof, R.drawable.king, R.drawable.superman, R.drawable.wizard, R.drawable.policeman};
+
+        return avatars;
+    }
 }
