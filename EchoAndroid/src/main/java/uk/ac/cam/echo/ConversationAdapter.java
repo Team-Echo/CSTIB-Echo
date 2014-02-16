@@ -29,6 +29,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 
 	private List<Conversation> data = null;
     private HashMap<Long, Integer> positionMap;
+    private HashMap<Long, String> tagMap;
 
     private ClientApi api;
 	
@@ -38,6 +39,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		super(context, layoutResourceId, data);
 
         positionMap = new HashMap<Long, Integer>();
+        tagMap = new HashMap<Long, String>();
 
 		this.context = context;
 		this.layoutResourceId = layoutResourceId;
@@ -78,12 +80,17 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 
 		//TODO: set imgIcon from the icon resource of conversation
 		//holder.imgIcon.setImageBitmap(bm);
+
 		holder.title.setText(conversation.getName());
+
 		//holder.users.setText(getUserText(users));
         holder.users.setText("TestUser");
-        new AsyncAdapter().execute(conversation, holder.tags);
-		//holder.tags.setText(ConversationStringUtil.getTagText(tags));
-        //holder.tags.setText("tag1 tag2 tag3");
+
+        if(tagMap.containsKey(conversation.getId()))
+            holder.tags.setText(tagMap.get(conversation.getId()));
+        else
+            new AsyncAdapter().execute(conversation, holder.tags);
+
 		//holder.totalOnline.setText(getOnlineText(users));
         holder.totalOnline.setText("14 users online");
 
@@ -129,14 +136,13 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 	}
 
     private class AsyncAdapter extends AsyncTask<Object, Void, String> {
-
+        Conversation conversation;
         TextView tagView;
-
 
         @Override
         protected String doInBackground(Object... params) {
-            Conversation conversation = (Conversation)params[0];
-             tagView = (TextView)params[1];
+            conversation = (Conversation)params[0];
+            tagView = (TextView)params[1];
 
             Collection<Tag> tags = conversation.getTags();
             String tagText = ConversationStringUtil.getTagText(tags);
@@ -147,7 +153,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
         @Override
         protected void onPostExecute(String str) {
             super.onPostExecute(str);
-
+            tagMap.put(conversation.getId(), str);
             tagView.setText(str);
         }
     }
