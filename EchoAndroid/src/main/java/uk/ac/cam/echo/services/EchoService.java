@@ -2,14 +2,13 @@ package uk.ac.cam.echo.services;
 
 import java.util.List;
 
+import uk.ac.cam.echo.R;
 import uk.ac.cam.echo.activities.ConversationDetailActivity;
 import uk.ac.cam.echo.client.ClientApi;
 import uk.ac.cam.echo.data.Conference;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.Message;
 import uk.ac.cam.echo.data.async.Handler;
-
-import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -17,6 +16,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 
 public class EchoService extends Service {
 
@@ -52,11 +52,29 @@ public class EchoService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
+        Log.d("EchoService", "onBind");
+
+
+
         return binder;
+    }
+     public void notify(Message message) {
+         Intent intent = new Intent(EchoService.this, ConversationDetailActivity.class);
+         intent.putExtra("_id", 5);
+         PendingIntent pIntent = PendingIntent.getActivity(EchoService.this, 0, intent, 0);
+
+         Notification.Builder notifBuilder = new Notification.Builder(EchoService.this)
+                 .setContentTitle("New message in " )
+                 .setContentIntent(pIntent)
+                 .setSmallIcon(R.drawable.devil)
+                 .addAction(R.drawable.admin, "See", pIntent)
+                 .setAutoCancel(true)
+                 .setContentText("Anon" + ": " + message.getContents());
+         notificationManager.notify(0,
+                 notifBuilder.build());
     }
 
     public void toggleNotifs() { notifEnabled = !notifEnabled; }
-
 
     private Notification.Builder getNotification(Message message) {
 
@@ -69,26 +87,23 @@ public class EchoService extends Service {
 
         Notification.Builder notifBuilder = new Notification.Builder(this)
                 .setContentTitle("New message in " + conversation.getName())
-                .setContentText(message.getSender().getUsername() + ": " + message.getContents())
                 .setContentIntent(pIntent)
+                .setSmallIcon(R.drawable.devil)
+                .addAction(R.drawable.admin, "See", pIntent)
                 .setAutoCancel(true);
 
         return notifBuilder;
     }
 
    public void listenToConversation(long id) {
-
+       Log.d("EchoListen", "listening to " + id);
        if(conversationId != id) {
-           //TODO: unsubscribe conversationId
-
            conversationId = id;
            Handler<Message> handler = new Handler<Message>() {
                @Override
                public void handle(Message message) {
-                   Notification.Builder notifBuilder = getNotification(message);
-                   notifBuilder.setNumber(++numMessages);
-                   notificationManager.notify((int)message.getConversation().getId(),
-                           notifBuilder.build());
+                   Log.d("EchoListen", message.getContents());
+                   EchoService.this.notify(message);
                }
            };
            api.conversationResource.listenToMessages(id).subscribe(handler);

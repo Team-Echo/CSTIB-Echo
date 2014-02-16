@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -35,6 +36,9 @@ public class ConversationListActivity extends Activity
     private ServiceConnection connection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
             echoService = ((EchoService.LocalBinder)service).getService();
+            Log.d("ServiceConnection", "connecting to EchoService");
+            Log.d("ServiceConnection", echoService==null ? "null" : "not null");
+            Toast.makeText(ConversationListActivity.this, "Service connected", Toast.LENGTH_LONG).show();
         }
 
         public void onServiceDisconnected(ComponentName className) {
@@ -70,6 +74,7 @@ public class ConversationListActivity extends Activity
     protected void onResume() {
         super.onResume();
         Intent service = new Intent(this, EchoService.class);
+        Log.d("ConversationListActivity", "onResume - binding EchoService");
         bindService(service, connection, Context.BIND_AUTO_CREATE);
     }
 
