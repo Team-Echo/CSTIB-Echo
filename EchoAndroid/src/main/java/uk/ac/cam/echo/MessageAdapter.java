@@ -3,11 +3,13 @@ package uk.ac.cam.echo;
 import android.app.Activity;
 import android.content.Context;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -22,8 +24,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 	Context context;
 	int layoutResourceId;
 	LayoutInflater inflater;
+    ListView listView;
 	
-	List<Message> data = null;
+	static List<Message> data = null;
 	
 	// for scaling message TextViews
 	int width;
@@ -91,10 +94,13 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 	}
 
     public void updateMessage(Message m) {
-        data.add(m); // prepend new messages
+        add(m);
         notifyDataSetChanged();
-
+        listView.setSelection(getCount());
+        Log.d("MessageList", "done..." + m.getContents());
     }
+
+    public void setListView(ListView lv) { listView = lv; }
 
 	@Override
 	public int getViewTypeCount() {

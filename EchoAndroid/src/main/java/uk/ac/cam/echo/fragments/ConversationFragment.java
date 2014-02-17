@@ -54,9 +54,13 @@ public class ConversationFragment extends Fragment {
 		super.onViewCreated(view, savedInstanceState);
 		listView = (ListView)view.findViewById(R.id.messageListView);
 
+
+	}
+
+    public void getAndListen() {
         new GetMessage().execute(id);
         new Listen().execute(id);
-	}
+    }
 	
 	// Factory method to create a fragment based on the conversationID
 	public static ConversationFragment newInstance(long id) {
@@ -95,37 +99,34 @@ public class ConversationFragment extends Fragment {
     // ASYNCHRONOUS TASKS
 
     //  Listening to new messages
-    private class Listen extends AsyncTask<Long, Void, Message> {
+    private class Listen extends AsyncTask<Long, Message, Void> {
         long id;
-        ClientApi api;
 
         @Override
-        protected Message doInBackground(Long... longs) {
+        protected Void doInBackground(Long... longs) {
             id = longs[0];
-            api = new ClientApi("http://echoconf.herokuapp.com/");
 
             Handler<Message> handler = new Handler<Message>() {
                 @Override
                 public void handle(Message message) {
-
-                    // when message received, update the adapter
-                    //adapter.updateMessage(message);
-                    adapter.add(message); // prepend new messages
-                    adapter.notifyDataSetChanged();
-                    getListView().setSelection(adapter.getCount()-1);
+                    publishProgress(message);
                 }
             };
 
             api.conversationResource.listenToMessages(id).subscribe(handler);
-
             return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Message... values) {
+            super.onProgressUpdate(values);
+            adapter.updateMessage(values[0]);
         }
     }
 
     // Getting previous messages
     private class GetMessage extends AsyncTask<Long, Void, List<Message>> {
 
-        ClientApi api;
         long id;
         Conversation conversation;
 
@@ -136,7 +137,6 @@ public class ConversationFragment extends Fragment {
         @Override
         protected List<Message> doInBackground(Long... args) {
             id = args[0];
-            api = new ClientApi("http://echoconf.herokuapp.com/");
             conversation = api.conversationResource.get(id);
 
             title = conversation.getName();
@@ -161,6 +161,8 @@ public class ConversationFragment extends Fragment {
             messageList = msgList;
             adapter =
                     new MessageAdapter(context, R.layout.message_row_remote, messageList);
+            adapter.setListView(listView);
+            adapter.setNotifyOnChange(true);
             listView.setAdapter(adapter);
             listView.setSelection(adapter.getCount() - 1);
         }
