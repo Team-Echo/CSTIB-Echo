@@ -1,13 +1,5 @@
 package uk.ac.cam.echo.activities;
 
-import uk.ac.cam.echo.R;
-import uk.ac.cam.echo.client.ClientApi;
-import uk.ac.cam.echo.data.Conversation;
-import uk.ac.cam.echo.data.Message;
-import uk.ac.cam.echo.fragments.ConversationFragment;
-import uk.ac.cam.echo.services.EchoService;
-
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -21,10 +13,15 @@ import android.os.IBinder;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+
+import uk.ac.cam.echo.R;
+import uk.ac.cam.echo.client.ClientApi;
+import uk.ac.cam.echo.data.Conversation;
+import uk.ac.cam.echo.data.Message;
+import uk.ac.cam.echo.fragments.ConversationFragment;
+import uk.ac.cam.echo.services.EchoService;
 
 public class ConversationDetailActivity extends Activity implements View.OnClickListener {
 
@@ -33,6 +30,8 @@ public class ConversationDetailActivity extends Activity implements View.OnClick
         public void onServiceConnected(ComponentName className, IBinder service) {
             echoService = ((EchoService.LocalBinder)service).getService();
             echoService.setNotifEnabled(false);
+            api = echoService.getApi();
+            cf.setApi(api);
 
         }
         public void onServiceDisconnected(ComponentName className) {
@@ -40,6 +39,8 @@ public class ConversationDetailActivity extends Activity implements View.OnClick
             echoService = null;
         }
     };
+
+    private static ClientApi api;
 
     long id;
     ConversationFragment cf;
@@ -59,6 +60,7 @@ public class ConversationDetailActivity extends Activity implements View.OnClick
         send.setOnClickListener(this);
 
         cf = ConversationFragment.newInstance(id);
+
 		FragmentManager manager = getFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		transaction.replace(R.id.messageFrame, cf);
@@ -105,13 +107,13 @@ public class ConversationDetailActivity extends Activity implements View.OnClick
 
     private class SendMessage extends AsyncTask<String, Void, Message> {
 
-        ClientApi api;
+
         Conversation current;
 
         @Override
         protected Message doInBackground(String... strings) {
             String contents = strings[0];
-            api = new ClientApi("http://echoconf.herokuapp.com");
+
             current = api.conversationResource.get(id);
             Message msg = api.newMessage(current);
             msg.setContents(contents);

@@ -53,6 +53,9 @@ public class EchoService extends Service {
     public IBinder onBind(Intent intent) {
         return binder;
     }
+
+    public ClientApi getApi() { return api; }
+
      public void notify(Message message) {
          if(notifEnabled) {
              Intent intent = new Intent(EchoService.this, ConversationDetailActivity.class);

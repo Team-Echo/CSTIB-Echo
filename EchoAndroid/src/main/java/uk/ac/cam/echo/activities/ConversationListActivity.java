@@ -22,6 +22,7 @@ import com.google.zxing.integration.android.IntentResult;
 
 import uk.ac.cam.echo.R;
 import uk.ac.cam.echo.Toaster;
+import uk.ac.cam.echo.client.ClientApi;
 import uk.ac.cam.echo.fragments.AddConversationDialog;
 import uk.ac.cam.echo.fragments.ConversationDialog;
 import uk.ac.cam.echo.fragments.ConversationListFragment;
@@ -36,13 +37,16 @@ public class ConversationListActivity extends Activity
     private ServiceConnection connection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
             echoService = ((EchoService.LocalBinder)service).getService();
+            api = echoService.getApi();
+            clf.setApi(api);
+            clf.getAllConversations();
         }
 
         public void onServiceDisconnected(ComponentName className) {
             echoService = null;
         }
     };
-
+    private static ClientApi api;
     private MenuItem qrScan;
 
 	private FragmentManager manager;
@@ -60,6 +64,7 @@ public class ConversationListActivity extends Activity
         dualPane = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
 
         clf = (ConversationListFragment) manager.findFragmentById(R.id.convListFragment);
+
         clf.setCommunicator(this);
 
         handleIntent(getIntent());
@@ -92,6 +97,7 @@ public class ConversationListActivity extends Activity
 					(ConversationDialog)manager.findFragmentById(R.id.convFrame);
 			if(convFrag == null || convFrag.getShownIndex() != id) {
 				convFrag = ConversationDialog.newInstance(id);
+                convFrag.setApi(getService().getApi());
 				FragmentTransaction ft = manager.beginTransaction();
 				ft.replace(R.id.convFrame, convFrag);
 				ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -100,6 +106,7 @@ public class ConversationListActivity extends Activity
 		} else {
 	
 			ConversationDialog cd = ConversationDialog.newInstance(id);
+            cd.setApi(getService().getApi());
 			cd.show(manager, "conversation_info");
 			
 		}
@@ -157,6 +164,7 @@ public class ConversationListActivity extends Activity
 	// Opening a Dialog form to add new Conversation
 	private void addConversation() {
 		AddConversationDialog addDialog = AddConversationDialog.newInstance();
+        addDialog.setApi(getService().getApi());
 		addDialog.show(manager, "add_conv");
 	}
 
