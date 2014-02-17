@@ -12,6 +12,10 @@ public interface UserResource extends RestResource<User>{
     @GET
     public List<User> getAll();
 
+    @POST
+    @Path("/authenticate")
+    public User authenticate(@FormParam("username") String username,
+                             @FormParam("password") String password);
     @GET
     @Path("/{id}")
     public User get(@PathParam("id") long id);
@@ -23,4 +27,5 @@ public interface UserResource extends RestResource<User>{
     @POST
     @Consumes("application/json")
     public User create (User data);
+
 }
