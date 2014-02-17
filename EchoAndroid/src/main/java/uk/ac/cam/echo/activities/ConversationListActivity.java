@@ -4,29 +4,49 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import uk.ac.cam.echo.R;
 import uk.ac.cam.echo.Toaster;
+import uk.ac.cam.echo.client.ClientApi;
 import uk.ac.cam.echo.fragments.AddConversationDialog;
 import uk.ac.cam.echo.fragments.ConversationDialog;
 import uk.ac.cam.echo.fragments.ConversationListFragment;
 import uk.ac.cam.echo.fragments.ConversationListFragment.Communicator;
 import uk.ac.cam.echo.onListLoadedListener;
+import uk.ac.cam.echo.services.EchoService;
 
 public class ConversationListActivity extends Activity
         implements Communicator, onListLoadedListener {
 
+    private EchoService echoService;
+    private ServiceConnection connection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            echoService = ((EchoService.LocalBinder)service).getService();
+            api = echoService.getApi();
+            clf.setApi(api);
+            clf.getAllConversations();
+        }
+
+        public void onServiceDisconnected(ComponentName className) {
+            echoService = null;
+        }
+    };
+    private static ClientApi api;
     private MenuItem qrScan;
 
 	private FragmentManager manager;
@@ -47,11 +67,26 @@ public class ConversationListActivity extends Activity
 
         clf.setCommunicator(this);
 
-
         handleIntent(getIntent());
     }
-	
-	// If current view is dual-pane, update the fragment,
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Intent service = new Intent(this, EchoService.class);
+        Log.d("ConversationListActivity", "onResume - binding EchoService");
+        bindService(service, connection, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unbindService(connection);
+    }
+
+    public EchoService getService() { return echoService; }
+
+    // If current view is dual-pane, update the fragment,
 	// otherwise start the stand-alone conversation activity
 	@Override
 	public void respond(long id) {
@@ -62,6 +97,7 @@ public class ConversationListActivity extends Activity
 					(ConversationDialog)manager.findFragmentById(R.id.convFrame);
 			if(convFrag == null || convFrag.getShownIndex() != id) {
 				convFrag = ConversationDialog.newInstance(id);
+                convFrag.setApi(getService().getApi());
 				FragmentTransaction ft = manager.beginTransaction();
 				ft.replace(R.id.convFrame, convFrag);
 				ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -70,6 +106,7 @@ public class ConversationListActivity extends Activity
 		} else {
 	
 			ConversationDialog cd = ConversationDialog.newInstance(id);
+            cd.setApi(getService().getApi());
 			cd.show(manager, "conversation_info");
 			
 		}
@@ -127,6 +164,7 @@ public class ConversationListActivity extends Activity
 	// Opening a Dialog form to add new Conversation
 	private void addConversation() {
 		AddConversationDialog addDialog = AddConversationDialog.newInstance();
+        addDialog.setApi(getService().getApi());
 		addDialog.show(manager, "add_conv");
 	}
 

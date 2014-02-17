@@ -28,6 +28,8 @@ public class AddConversationDialog extends DialogFragment implements
     Button add;
     ProgressBar progress;
 
+    private static ClientApi api;
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -58,13 +60,13 @@ public class AddConversationDialog extends DialogFragment implements
         }
     }
 
-
-
     // Factory to create dialog based on id
     public static AddConversationDialog newInstance() {
         AddConversationDialog cd = new AddConversationDialog();
         return cd;
     }
+
+    public void setApi(ClientApi clientApi) { api = clientApi; }
 
     @Override
     public void onClick(View v) {
@@ -101,7 +103,7 @@ public class AddConversationDialog extends DialogFragment implements
 
     private class AddConversation extends AsyncTask<String, Void, Conversation> {
 
-        ClientApi api = new ClientApi("http://echoconf.herokuapp.com/");
+
         Conference conference;
 
         @Override

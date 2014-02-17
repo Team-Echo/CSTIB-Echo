@@ -22,12 +22,16 @@ import android.widget.ListView;
 import java.util.List;
 
 import javax.validation.constraints.Null;
+import javax.ws.rs.client.Client;
 
 public class ConversationFragment extends Fragment {
 
 	private static final String ID = "_id";
 	long id;
-	
+    boolean preview;
+
+    private static ClientApi api;
+
 	Context context;
 	ListView listView;
 
@@ -62,6 +66,15 @@ public class ConversationFragment extends Fragment {
 		cf.setArguments(args);
 		return cf;
 	}
+
+    public static ConversationFragment newInstance(long id, boolean preview) {
+        ConversationFragment cf = new ConversationFragment();
+        cf.setIsPreview(preview);
+        Bundle args = new Bundle();
+        args.putLong(ID, id);
+        cf.setArguments(args);
+        return cf;
+    }
 	
 	// returns id of the conversation current displayed
 	public long getShownIndex() {
@@ -73,6 +86,10 @@ public class ConversationFragment extends Fragment {
     }
 
     public ListView getListView() { return listView; }
+
+    public void setIsPreview(boolean p) { preview = p; }
+
+    public void setApi(ClientApi clientApi) { api = clientApi; }
 
 
     // ASYNCHRONOUS TASKS
@@ -90,6 +107,7 @@ public class ConversationFragment extends Fragment {
             Handler<Message> handler = new Handler<Message>() {
                 @Override
                 public void handle(Message message) {
+
                     // when message received, update the adapter
                     //adapter.updateMessage(message);
                     adapter.add(message); // prepend new messages
@@ -124,7 +142,11 @@ public class ConversationFragment extends Fragment {
             title = conversation.getName();
             //users = ConversationStringUtil.getUserText(conversation.getUsers());
             users = "Yojan Alex Petar Mona Philip";
-            msgList = (List)conversation.getMessages();
+            if(preview) {
+                msgList = (List)conversation.getMessages(25);
+            } else {
+                msgList = (List)conversation.getMessages();
+            }
             return msgList;
         }
 

@@ -37,17 +37,14 @@
     		</intent-filter>
     		
         </activity>
-        <activity
-            android:name="uk.ac.cam.echo.activities.ScanActivity"
-            android:label="@string/title_activity_scan" >
-        </activity>
+
         <activity
             android:name="uk.ac.cam.echo.activities.ConversationDetailActivity"
             android:label="@string/title_activity_conversation_detail" >
         </activity>
         
         <service
-            android:name=".EchoService" />
+            android:name="uk.ac.cam.echo.services.EchoService" />
 
     </application>
 
