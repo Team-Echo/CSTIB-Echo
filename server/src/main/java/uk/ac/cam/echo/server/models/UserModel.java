@@ -98,7 +98,7 @@ public class UserModel extends BaseModel implements User {
         this.currentConversation = currentConversation;
     }
 
-    public void setCurrentConversationId(long id) {
+    public void setCurrentConversationId(Long id) {
         setCurrentConversation((Conversation) HibernateUtil.getSession().load(ConversationModel.class, id));
     }
 
