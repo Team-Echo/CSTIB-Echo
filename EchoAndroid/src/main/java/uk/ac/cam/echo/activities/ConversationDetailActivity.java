@@ -5,21 +5,41 @@ import uk.ac.cam.echo.client.ClientApi;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.Message;
 import uk.ac.cam.echo.fragments.ConversationFragment;
+import uk.ac.cam.echo.services.EchoService;
 
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class ConversationDetailActivity extends Activity implements View.OnClickListener {
+
+    private EchoService echoService;
+    private ServiceConnection connection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            echoService = ((EchoService.LocalBinder)service).getService();
+            echoService.setNotifEnabled(false);
+
+        }
+        public void onServiceDisconnected(ComponentName className) {
+            echoService.setNotifEnabled(true);
+            echoService = null;
+        }
+    };
 
     long id;
     ConversationFragment cf;
@@ -38,14 +58,27 @@ public class ConversationDetailActivity extends Activity implements View.OnClick
         send = (Button)findViewById(R.id.sendButton);
         send.setOnClickListener(this);
 
-
-
         cf = ConversationFragment.newInstance(id);
 		FragmentManager manager = getFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		transaction.replace(R.id.messageFrame, cf);
 		transaction.commit();
 	}
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Intent service = new Intent(this, EchoService.class);
+        bindService(service, connection, Context.BIND_AUTO_CREATE);
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        echoService.setNotifEnabled(true);
+        unbindService(connection);
+    }
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -67,6 +100,8 @@ public class ConversationDetailActivity extends Activity implements View.OnClick
             new SendMessage().execute(msgContents);
         }
     }
+
+    public EchoService getService() { return echoService; }
 
     private class SendMessage extends AsyncTask<String, Void, Message> {
 

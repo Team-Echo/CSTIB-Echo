@@ -33,7 +33,7 @@ public class EchoService extends Service {
 	private static ClientApi api;
 
     private NotificationManager notificationManager;
-    private boolean notifEnabled;
+    private static boolean notifEnabled;
     private int numMessages;
 
 
@@ -42,7 +42,6 @@ public class EchoService extends Service {
         super.onCreate();
         api = new ClientApi("http://echoconf.herokuapp.com/");
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        notifEnabled = true;
     }
 
     @Override
@@ -52,48 +51,27 @@ public class EchoService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d("EchoService", "onBind");
-
-
-
         return binder;
     }
      public void notify(Message message) {
-         Intent intent = new Intent(EchoService.this, ConversationDetailActivity.class);
-         intent.putExtra("_id", 5);
-         PendingIntent pIntent = PendingIntent.getActivity(EchoService.this, 0, intent, 0);
+         if(notifEnabled) {
+             Intent intent = new Intent(EchoService.this, ConversationDetailActivity.class);
+             intent.putExtra("_id", 5);
+             PendingIntent pIntent = PendingIntent.getActivity(EchoService.this, 0, intent, 0);
 
-         Notification.Builder notifBuilder = new Notification.Builder(EchoService.this)
-                 .setContentTitle("New message in " )
-                 .setContentIntent(pIntent)
-                 .setSmallIcon(R.drawable.devil)
-                 .addAction(R.drawable.admin, "See", pIntent)
-                 .setAutoCancel(true)
-                 .setContentText("Anon" + ": " + message.getContents());
-         notificationManager.notify(0,
-                 notifBuilder.build());
+             Notification.Builder notifBuilder = new Notification.Builder(EchoService.this)
+                     .setContentTitle("New message in ")
+                     .setContentIntent(pIntent)
+                     .setSmallIcon(R.drawable.devil)
+                     .addAction(R.drawable.admin, "See", pIntent)
+                     .setAutoCancel(true)
+                     .setContentText("Anon" + ": " + message.getContents());
+             notificationManager.notify(0,
+                     notifBuilder.build());
+         }
     }
 
-    public void toggleNotifs() { notifEnabled = !notifEnabled; }
-
-    private Notification.Builder getNotification(Message message) {
-
-        Conversation conversation = message.getConversation();
-
-        // Intent that is triggered from notification
-        Intent intent = new Intent(this, ConversationDetailActivity.class);
-        intent.putExtra("_id", conversation.getId());
-        PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
-
-        Notification.Builder notifBuilder = new Notification.Builder(this)
-                .setContentTitle("New message in " + conversation.getName())
-                .setContentIntent(pIntent)
-                .setSmallIcon(R.drawable.devil)
-                .addAction(R.drawable.admin, "See", pIntent)
-                .setAutoCancel(true);
-
-        return notifBuilder;
-    }
+   public void setNotifEnabled(boolean enabled) { notifEnabled = enabled; }
 
    public void listenToConversation(long id) {
        Log.d("EchoListen", "listening to " + id);
@@ -102,7 +80,6 @@ public class EchoService extends Service {
            Handler<Message> handler = new Handler<Message>() {
                @Override
                public void handle(Message message) {
-                   Log.d("EchoListen", message.getContents());
                    EchoService.this.notify(message);
                }
            };

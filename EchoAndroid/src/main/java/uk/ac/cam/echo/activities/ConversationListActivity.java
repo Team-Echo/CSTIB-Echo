@@ -36,9 +36,6 @@ public class ConversationListActivity extends Activity
     private ServiceConnection connection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
             echoService = ((EchoService.LocalBinder)service).getService();
-            Log.d("ServiceConnection", "connecting to EchoService");
-            Log.d("ServiceConnection", echoService==null ? "null" : "not null");
-            Toast.makeText(ConversationListActivity.this, "Service connected", Toast.LENGTH_LONG).show();
         }
 
         public void onServiceDisconnected(ComponentName className) {
@@ -63,9 +60,7 @@ public class ConversationListActivity extends Activity
         dualPane = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
 
         clf = (ConversationListFragment) manager.findFragmentById(R.id.convListFragment);
-
         clf.setCommunicator(this);
-
 
         handleIntent(getIntent());
     }
