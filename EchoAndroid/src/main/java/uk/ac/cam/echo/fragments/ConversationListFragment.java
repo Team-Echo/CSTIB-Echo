@@ -27,13 +27,13 @@ public class ConversationListFragment extends Fragment implements
 											OnItemClickListener {
 
 	private Context context;
+    private static ClientApi api;
+
 	private Communicator comm;
 	private ConversationAdapter adapter;
 	
 	private ListView listView;
 	private ProgressBar listProgress;
-
-    private static ClientApi api = new ClientApi("http://echoconf.herokuapp.com/");
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,9 +48,13 @@ public class ConversationListFragment extends Fragment implements
 		listView = (ListView)getView().findViewById(R.id.convListView);
 		listProgress = (ProgressBar)getView().findViewById(R.id.listProgress);
 		Log.d("SEARCH", "Frag onViewCreated");
-		new PerformSearch().execute();
+        //new PerformSearch().execute();
 	}
-	
+
+    public void getAllConversations() {
+        new PerformSearch().execute();
+    }
+
 	public void performSearch(String query) {
 		new PerformSearch().execute(query);
 	}
@@ -80,6 +84,7 @@ public class ConversationListFragment extends Fragment implements
 	}
 
     public ClientApi getApi() { return api; }
+    public void setApi(ClientApi clientApi) { api = clientApi; }
 	
 	private class PerformSearch extends AsyncTask<String, Void, List<Conversation>> {
 		

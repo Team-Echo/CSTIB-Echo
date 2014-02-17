@@ -38,6 +38,8 @@ public class ConversationDialog extends DialogFragment implements
 	private Button join;
 	private ProgressBar progress;
 
+    private static ClientApi api;
+
     private ConversationFragment cf;
 	private long id;
 	
@@ -99,9 +101,10 @@ public class ConversationDialog extends DialogFragment implements
 		}
 	}
 
+    public void setApi(ClientApi clientApi) { api = clientApi; }
+
     private class GetConversation extends AsyncTask<Long, Void, Conversation> {
 
-        ClientApi api = new ClientApi("http://echoconf.herokuapp.com/");
         String convName;
         String usersText;
         String tagText;

@@ -22,13 +22,16 @@ import android.widget.ListView;
 import java.util.List;
 
 import javax.validation.constraints.Null;
+import javax.ws.rs.client.Client;
 
 public class ConversationFragment extends Fragment {
 
 	private static final String ID = "_id";
 	long id;
     boolean preview;
-	
+
+    private static ClientApi api;
+
 	Context context;
 	ListView listView;
 
@@ -85,6 +88,8 @@ public class ConversationFragment extends Fragment {
     public ListView getListView() { return listView; }
 
     public void setIsPreview(boolean p) { preview = p; }
+
+    public void setApi(ClientApi clientApi) { api = clientApi; }
 
 
     // ASYNCHRONOUS TASKS
