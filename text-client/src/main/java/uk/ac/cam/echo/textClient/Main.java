@@ -2,9 +2,8 @@ package uk.ac.cam.echo.textClient;
 
 
 import uk.ac.cam.echo.client.ClientApi;
-import uk.ac.cam.echo.data.Conference;
-import uk.ac.cam.echo.data.Conversation;
-import uk.ac.cam.echo.data.Message;
+import uk.ac.cam.echo.client.data.MessageData;
+import uk.ac.cam.echo.data.*;
 import uk.ac.cam.echo.data.async.Handler;
 import uk.ac.cam.echo.data.async.Subscription;
 
@@ -18,20 +17,24 @@ public class Main {
 
     public static void main(String[] args) {
         Conference conference = configureConference();
+        User user = configureUser();
         Conversation conversation = configureConversation(conference);
+
+        user.setCurrentConversation(conversation);
 
         System.out.println("Welcome to conversation [" + conversation.getName() + "]:");
 
         displayPreviousMessages(conversation);
 
         listenToMessages(conversation);
-        listenToInputs(conversation);
+        listenToInputs(conversation, user);
     }
 
-    private static void listenToInputs(Conversation conversation) {
+    private static void listenToInputs(Conversation conversation, User user) {
         while (true) {
             String input = readline();
-            Message msg = api.newMessage(conversation);
+            MessageData msg = (MessageData)api.newMessage(conversation);
+            msg.setSender(user);
             msg.setContents(input);
             msg.save();
         }
@@ -72,14 +75,15 @@ public class Main {
 
         return input;
     }
+
     private static Conversation configureConversation(Conference conference) {
         System.out.println("Insert the id of the conversation or a new name in order to create a new Conversation.");
         for (Conversation conversation : conference.getConversationSet()) {
             System.out.print(conversation.getId() + ": " + conversation.getName());
-           /* System.out.print("| Tags: ");
+            System.out.print("| Tags: ");
             for (Tag t: conversation.getTags()){
                 System.out.print(t.getName() + " ");
-            } */
+            }
             System.out.println();
         }
 
@@ -105,16 +109,48 @@ public class Main {
             conversation.setConference(conference);
             conversation.setName(input);
             conversation.save();
+
+            Tag t = api.newTag(conversation);
+            t.setName("Happy tag");
+            t.save();
         }
-        /*
-        Tag t = api.newTag(conversation);
-        t.setName("Test tag");
-        t.save();
-        */
+
         return conversation;
 
     }
 
+    private static User configureUser() {
+        System.out.println("Insert the id of the user or a new name in order to create a new User");
+        for (User user : api.userResource.getAll()) {
+            System.out.println(user.getId() + ": " + user.getUsername());
+        }
+
+        System.out.print("Please insert your choice: ");
+        String input = readline();
+        User ret = null;
+        try {
+            long id = Long.parseLong(input);
+            for (User user : api.userResource.getAll()) {
+                if (user.getId() == id) {
+                    ret = user;
+                    break;
+                }
+            }
+        } catch (NumberFormatException e) {
+            // Long.parseLong can throw an error
+        }
+
+
+        if (ret == null) {
+            ret = api.newUser();
+
+            ret.setCurrentConversation(null);
+            ret.setUsername(input);
+            ret.save();
+        }
+
+        return ret;
+    }
 
     private static Conference configureConference() {
         List<Conference> conferences = api.conferenceResource.getAll();
