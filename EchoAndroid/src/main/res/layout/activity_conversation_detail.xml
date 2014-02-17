@@ -25,9 +25,12 @@
         android:layout_alignParentLeft="true"
         android:layout_toLeftOf="@+id/sendButton"
         android:textColor="@color/textInputColor"
-        android:layout_margin="5dp"
         android:ems="10"
-        android:hint="@string/inputMessage" >
+        android:hint="@string/inputMessage"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_alignTop="@+id/sendButton">
 
         <requestFocus />
     </EditText>
@@ -38,7 +41,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/inputMessage"
         android:background="@drawable/ic_action_send_now"
          />
 
