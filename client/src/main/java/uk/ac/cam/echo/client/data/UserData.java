@@ -74,11 +74,6 @@ public class UserData extends BaseData implements User{
         setResource(getApi().userResource);
     }
 
-    @Override
-    public boolean authenticate(String password) {
-        return getApi().userResource.get(getId()).authenticate(password);
-    }
-
     public String getFirstName() {
         return firstName;
     }

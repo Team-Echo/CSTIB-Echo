@@ -30,6 +30,4 @@ public interface User extends Base {
     public void setJobTitle(String jobTitle);
     public void setCompany(String company);
     public void setGender(String gender);
-
-    public boolean authenticate(String password);
 }

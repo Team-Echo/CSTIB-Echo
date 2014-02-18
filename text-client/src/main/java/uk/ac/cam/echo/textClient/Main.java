@@ -126,31 +126,16 @@ public class Main {
         }
 
         System.out.print("Please insert your choice: ");
-        String input = readline();
+        String username = readline();
 
         System.out.print("Enter your password, or a new password if you made a new user: ");
         String pass = readline();
 
-        User ret = null;
-        try {
-            long id = Long.parseLong(input);
-            for (User user : api.userResource.getAll()) {
-                if (user.getId() == id) {
-                    if (!user.authenticate(pass)) {
-                        System.out.println("Username and password don't match!");
-                        System.exit(1);
-                    }
-                    ret = user;
-                    break;
-                }
-            }
-        } catch (NumberFormatException e) {
-            // Long.parseLong can throw an error
-        }
+        User ret = api.userResource.authenticate(username, pass);
 
         if (ret == null) {
             ret = api.newUser();
-            ret.setUsername(input);
+            ret.setUsername(username);
             ret.setPassword(pass);
             ret.save();
         }
