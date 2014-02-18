@@ -9,6 +9,8 @@ import uk.ac.cam.echo.data.User;
 import uk.ac.cam.echo.server.HibernateUtil;
 
 import javax.persistence.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 @JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 @Entity
@@ -20,7 +22,22 @@ public class UserModel extends BaseModel implements User {
     }
 
     public static String hashPassword(String password) {
-        return password;
+
+        try {
+            byte[] hash = MessageDigest.getInstance("SHA-512").digest(password.getBytes());
+
+            StringBuffer sb = new StringBuffer();
+            for(byte b : hash) {
+                sb.append(String.format("%02x", b));
+            }
+
+            return sb.toString();
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
+
     }
 
     private static String[] allowed = {
