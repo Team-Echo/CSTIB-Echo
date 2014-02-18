@@ -33,7 +33,7 @@ public class Main {
     private static void listenToInputs(Conversation conversation, User user) {
         while (true) {
             String input = readline();
-            MessageData msg = (MessageData)api.newMessage(conversation);
+            Message msg = api.newMessage(conversation);
             msg.setSender(user);
             msg.setContents(input);
             msg.save();
@@ -143,8 +143,6 @@ public class Main {
 
         if (ret == null) {
             ret = api.newUser();
-
-            ret.setCurrentConversation(null);
             ret.setUsername(input);
             ret.save();
         }
