@@ -98,6 +98,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         add(m);
         notifyDataSetChanged();
         listView.setSelection(getCount());
+        Log.d("MessageList", m.getSender() == null ? "Anon" : m.getSender().getUsername());
         Log.d("MessageList", "done..." + m.getContents());
     }
 

@@ -69,13 +69,15 @@ public class EchoService extends Service {
              intent.putExtra("_id", 5);
              PendingIntent pIntent = PendingIntent.getActivity(EchoService.this, 0, intent, 0);
 
+             String user = message.getSender()==null ? "Anon" : message.getSender().getUsername();
+
              Notification.Builder notifBuilder = new Notification.Builder(EchoService.this)
                      .setContentTitle("New message in ")
                      .setContentIntent(pIntent)
-                     .setSmallIcon(R.drawable.devil)
+                     .setSmallIcon(R.drawable.ic_perm_group_messages)
                      .addAction(R.drawable.admin, "See", pIntent)
                      .setAutoCancel(true)
-                     .setContentText("Anon" + ": " + message.getContents());
+                     .setContentText(user + ": " + message.getContents());
              notificationManager.notify(0,
                      notifBuilder.build());
          }

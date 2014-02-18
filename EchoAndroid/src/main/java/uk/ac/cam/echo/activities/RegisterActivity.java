@@ -80,7 +80,6 @@ public class RegisterActivity extends Activity
     @Override
     protected void onPause() {
         super.onPause();
-        echoService.setNotifEnabled(true);
         unbindService(connection);
     }
 
