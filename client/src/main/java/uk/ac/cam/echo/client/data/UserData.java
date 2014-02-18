@@ -23,10 +23,21 @@ public class UserData extends BaseData implements User{
     private String gender;
     private String displayName;
 
+    private String password;
+
     @Override
     public void setApi(ClientApi api) {
         super.setApi(api);
         conversationProxy.setResource(api.conversationResource);
+    }
+
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getUsername() {

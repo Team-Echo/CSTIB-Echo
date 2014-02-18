@@ -16,6 +16,18 @@ public interface User extends Base {
     public String getCompany();
     public String getGender();
 
+
     public void setUsername(String username);
     public void setCurrentConversation(Conversation conv);
+    public void setPassword(String password);
+    public void setFirstName(String name);
+    public void setLastName(String name);
+    public void setPhoneNumber(String number);
+    public void setAvatarLink(String link);
+    public void setEmail(String email);
+    // public Location setCurrentLocation();
+    // public List<Interest> setInterests();
+    public void setJobTitle(String jobTitle);
+    public void setCompany(String company);
+    public void setGender(String gender);
 }
