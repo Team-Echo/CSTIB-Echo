@@ -18,7 +18,7 @@ public class HibernateUtil {
     private static void applyHerokuConfigs(Configuration config) {
         URI dbUri = null;
         try {
-            dbUri = new URI(System.getenv("DATABASE_URL"));
+            dbUri = new URI(System.getenv("HEROKU_POSTGRESQL_GRAY_URL"));
         } catch (URISyntaxException e) {
             e.printStackTrace();
             return ;

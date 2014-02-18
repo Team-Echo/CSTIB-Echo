@@ -51,7 +51,7 @@ public class ResourceFactory implements InvocationHandler{
 
             Field targetField = ih.getClass().getDeclaredField("target");
             targetField.setAccessible(true);
-            return new ClientSubscription(
+            return new ClientSubscription(api,
                     (WebTarget) targetField.get(ih), (Handler<Message>)args[0], clazz);
         }
 
