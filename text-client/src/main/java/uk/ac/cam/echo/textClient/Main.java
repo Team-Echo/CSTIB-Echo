@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class Main {
-    private static ClientApi api = new ClientApi("http://echoconf.herokuapp.com");
+    private static ClientApi api = new ClientApi("http://localhost:8080");
 
     public static void main(String[] args) {
         Conference conference = configureConference();
@@ -120,7 +120,7 @@ public class Main {
     }
 
     private static User configureUser() {
-        System.out.println("Insert the id of the user or a new name in order to create a new User");
+        System.out.println("Insert the id of the user or a new name in order to create a new user.");
         for (User user : api.userResource.getAll()) {
             System.out.println(user.getId() + ": " + user.getUsername());
         }
@@ -128,12 +128,31 @@ public class Main {
         System.out.print("Please insert your choice: ");
         String username = readline();
 
+        boolean auth = false;
+
+        try {
+            long id = Long.parseLong(username);
+            for (User user : api.userResource.getAll()) {
+                if (user.getId() == id) {
+                    username = user.getUsername();
+                    auth = true;
+                    break;
+                }
+            }
+        } catch (NumberFormatException e) {
+            // Long.parseLong can throw an error
+        }
+
         System.out.print("Enter your password, or a new password if you made a new user: ");
         String pass = readline();
 
         User ret = api.userResource.authenticate(username, pass);
 
         if (ret == null) {
+            if (auth) {
+                System.out.println("Username and password don't match!");
+                System.exit(1);
+            }
             ret = api.newUser();
             ret.setUsername(username);
             ret.setPassword(pass);
