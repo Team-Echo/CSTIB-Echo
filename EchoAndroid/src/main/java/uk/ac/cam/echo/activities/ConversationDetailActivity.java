@@ -118,17 +118,9 @@ public class ConversationDetailActivity extends Activity implements View.OnClick
             current = api.conversationResource.get(id);
             Message msg = api.newMessage(current);
             msg.setContents(contents);
-            //msg.setSender()
-
-            try {
-                msg.save();
-                Log.d("ESCAPE", "Escaped");
-            } catch(Error e) {
-                Log.e("Save", e.getMessage());
-                return msg;
-            }
-
-                return msg;
+            msg.setSender(echoService.getUser());
+            msg.save();
+            return msg;
         }
 
         @Override

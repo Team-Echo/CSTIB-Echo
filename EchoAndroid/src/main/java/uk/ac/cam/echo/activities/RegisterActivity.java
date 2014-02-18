@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.KeyEvent;
@@ -106,14 +107,20 @@ public class RegisterActivity extends Activity
             return;
         }
 
+        toggleButton();
+
         String firstText = firstName.getText().toString();
         String lastText = lastName.getText().toString();
 
+        if(firstText.equals("") || lastText.equals("")) {
+            Toaster.displayLong(this, "Please enter your name");
+            return;
+        }
+
         Toaster.displayShort(this, api == null ? "api is null" : "api not null");
         Toaster.displayShort(this, echoService == null ? "service is null" : "service not null");
-        //User user = api.newUser();
-       //user.setUsername(usernameText);
 
+        new RegisterUser().execute(usernameText, passwordText, firstText, lastText);
 
     }
 
@@ -143,6 +150,31 @@ public class RegisterActivity extends Activity
             register.setVisibility(View.GONE);
             progress.setVisibility(View.VISIBLE);
             loginScreen.setVisibility(View.GONE);
+        }
+    }
+
+    private class RegisterUser extends AsyncTask<String, Void, User> {
+
+        @Override
+        protected User doInBackground(String... args) {
+            String usernameText = args[0];
+            String passwordText = args[1];
+            String firstText = args[2];
+            String lastText = args[3];
+
+            User user = api.newUser();
+            user.setUsername(usernameText);
+            user.setPassword(passwordText);
+            user.setFirstName(firstText);
+            user.setLastName(lastText);
+
+            echoService.setUser(user);
+            user.save();
+
+            Intent i = new Intent(getApplicationContext(), ConversationListActivity.class);
+            startActivity(i);
+
+            return user;
         }
     }
 

@@ -74,7 +74,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		
 		Message message = data.get(position);
 
-		String user = message.getSender() == null ? "Anonymous" : message.getSender().getUsername();
+		//String user = message.getSender() == null ? "Anonymous" : message.getSender().getUsername();
+        String user = "Anon";
 
 		long time = message.getTimeStamp();
         Date date = new Date(time);

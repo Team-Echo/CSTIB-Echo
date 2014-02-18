@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.KeyEvent;
@@ -96,13 +97,19 @@ public class MainActivity extends Activity
     	 * perform API call for login authentication */
     	if(!user.equals("") && !pass.equals("")) {
     		toggleButton();
-    		
+            new AsyncTask<Void,Void,Void>() {
+
+                @Override
+                protected Void doInBackground(Void... voids) {
+                    echoService.setUser(echoService.getApi().userResource.get(3));
+                    return null;
+                }
+            }.execute();
 
     	    Intent i = new Intent(this, ConversationListActivity.class);
     		startActivity(i);
 
-    		
-    		
+
     	} else {
     		Toaster.displayShort(this, "username/password blank");
     	}

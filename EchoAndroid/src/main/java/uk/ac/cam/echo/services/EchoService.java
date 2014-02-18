@@ -8,12 +8,14 @@ import uk.ac.cam.echo.client.ClientApi;
 import uk.ac.cam.echo.data.Conference;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.Message;
+import uk.ac.cam.echo.data.User;
 import uk.ac.cam.echo.data.async.Handler;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
@@ -31,6 +33,8 @@ public class EchoService extends Service {
 	private Conversation conversation;
 
 	private static ClientApi api;
+    private static User user;
+
 
     private NotificationManager notificationManager;
     private static boolean notifEnabled;
@@ -54,7 +58,10 @@ public class EchoService extends Service {
         return binder;
     }
 
-    public ClientApi getApi() { return api; }
+    public ClientApi getApi() {return api; }
+
+    public void setUser(User u) { user = u; }
+    public User getUser() { return user; }
 
      public void notify(Message message) {
          if(notifEnabled) {
@@ -74,11 +81,22 @@ public class EchoService extends Service {
          }
     }
 
-   public void setNotifEnabled(boolean enabled) { notifEnabled = enabled; }
+   public void setNotifEnabled(boolean enabled) {
+       notifEnabled = enabled;
+   }
 
    public void listenToConversation(long id) {
        Log.d("EchoListen", "listening to " + id);
        if(conversationId != id) {
+
+           new AsyncTask<Long, Void, Void>() {
+               @Override
+               protected Void doInBackground(Long... args) {
+                   getUser().setCurrentConversation(api.conversationResource.get(args[0]));
+                   return null;
+               }
+           }.execute(id);
+
            conversationId = id;
            Handler<Message> handler = new Handler<Message>() {
                @Override
@@ -91,43 +109,11 @@ public class EchoService extends Service {
    }
 
 	public long getConversationId() {
-		return conversationId;
+        return conversationId;
 	}
 
-	public void sendMessage(String msgContents) {
-		Message msg = api.newMessage(conversation);
-		msg.setContents(msgContents);
-		msg.save();
-	}
-	
-	public boolean joinConference() {
-		List<Conference> allConf = api.conferenceResource.getAll();
-		if(allConf.size() > 0) {
-			conference = allConf.get(0);
-			return true;
-		}
-		return false;
-	}
-	
-	public boolean selectConversation(long conversationId) {
-		if(conference != null) {
-			conversation = api.conversationResource.get(conversationId);
-			return true;
-		}
-		return false;
-	}
-	
-	public boolean createConversation(String name, String tags) {
-		
-		Conversation newConversation = api.newConversation();
-		newConversation.setConference(conference);
-		newConversation.setName(name);
-		//newConversation.setTags(tags);
-		newConversation.save();
-		conversation = newConversation;
-		
-		return true;
-	}
+
+
 
     /**
      * Class for clients to access.  Because we know this service always

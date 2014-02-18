@@ -116,10 +116,8 @@ public class AddConversationDialog extends DialogFragment implements
             newConv.setName(convName);
             newConv.setConference(conference);
 
-            //newConv.save();
-
-            try { newConv.save(); } catch (Error e) { Log.e("Error", e.getMessage());}
-            newConv = api.conversationResource.get(convName); //temp hack to load information from db
+            newConv.save();
+            //newConv = api.conversationResource.get(convName); //temp hack to load information from db
 
             String[] tags = convTags.split(" ");
 
