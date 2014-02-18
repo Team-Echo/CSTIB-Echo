@@ -42,6 +42,11 @@
             android:name="uk.ac.cam.echo.activities.ConversationDetailActivity"
             android:label="@string/title_activity_conversation_detail" >
         </activity>
+
+        <activity
+            android:name="uk.ac.cam.echo.activities.RegisterActivity"
+            android:label="Join Echo" >
+        </activity>
         
         <service
             android:name="uk.ac.cam.echo.services.EchoService" />
