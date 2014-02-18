@@ -61,7 +61,7 @@ public class ConversationDialog extends DialogFragment implements
 		join.setOnClickListener(this);
 
         cf = ConversationFragment.newInstance(id, true);
-
+        cf.setApi(api);
         FragmentManager manager = getChildFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.previewFrame, cf);

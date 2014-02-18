@@ -3,6 +3,7 @@ package uk.ac.cam.echo.activities;
 import uk.ac.cam.echo.R;
 import uk.ac.cam.echo.Toaster;
 import uk.ac.cam.echo.client.ClientApi;
+import uk.ac.cam.echo.data.User;
 import uk.ac.cam.echo.services.EchoService;
 
 import android.app.Activity;
@@ -14,6 +15,7 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
@@ -96,19 +98,27 @@ public class MainActivity extends Activity
     	 * perform API call for login authentication */
     	if(!user.equals("") && !pass.equals("")) {
     		toggleButton();
-            new AsyncTask<Void,Void,Void>() {
+            new AsyncTask<String, Void, User>() {
 
                 @Override
-                protected Void doInBackground(Void... voids) {
-                    echoService.setUser(echoService.getApi().userResource.get(3));
-                    return null;
+                protected User doInBackground(String... args) {
+                    Log.d("Login", args[0] + " - " + args[1]);
+                    User ret = api.userResource.authenticate(args[0], args[1]);
+                    return ret;
                 }
-            }.execute();
-
-    	    Intent i = new Intent(this, ConversationListActivity.class);
-    		startActivity(i);
-
-
+                @Override
+                protected void onPostExecute(User user) {
+                    super.onPostExecute(user);
+                    if(user == null) {
+                        Toaster.displayLong(MainActivity.this, "Username or Password incorrect");
+                        toggleButton();
+                    } else {
+                        echoService.setUser(user);
+                        Intent i = new Intent(MainActivity.this, ConversationListActivity.class);
+                        startActivity(i);
+                    }
+                }
+            }.execute(user, pass);
     	} else {
     		Toaster.displayShort(this, "username/password blank");
     	}

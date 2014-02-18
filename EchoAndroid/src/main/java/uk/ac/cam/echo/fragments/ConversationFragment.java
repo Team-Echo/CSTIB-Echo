@@ -54,6 +54,8 @@ public class ConversationFragment extends Fragment {
 		super.onViewCreated(view, savedInstanceState);
 		listView = (ListView)view.findViewById(R.id.messageListView);
 
+        if(api != null)
+            getAndListen();
 
 	}
 
