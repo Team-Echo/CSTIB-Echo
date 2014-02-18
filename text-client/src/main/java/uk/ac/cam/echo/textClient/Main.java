@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class Main {
-    private static ClientApi api = new ClientApi("http://localhost:8080");
+    private static ClientApi api = new ClientApi("http://echoconf.herokuapp.com");
 
     public static void main(String[] args) {
         Conference conference = configureConference();
@@ -127,11 +127,19 @@ public class Main {
 
         System.out.print("Please insert your choice: ");
         String input = readline();
+
+        System.out.print("Enter your password, or a new password if you made a new user: ");
+        String pass = readline();
+
         User ret = null;
         try {
             long id = Long.parseLong(input);
             for (User user : api.userResource.getAll()) {
                 if (user.getId() == id) {
+                    if (!user.authenticate(pass)) {
+                        System.out.println("Username and password don't match!");
+                        System.exit(1);
+                    }
                     ret = user;
                     break;
                 }
@@ -140,10 +148,10 @@ public class Main {
             // Long.parseLong can throw an error
         }
 
-
         if (ret == null) {
             ret = api.newUser();
             ret.setUsername(input);
+            ret.setPassword(pass);
             ret.save();
         }
 

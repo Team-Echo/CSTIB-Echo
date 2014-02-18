@@ -90,6 +90,11 @@ public class UserModel extends BaseModel implements User {
         return getFirstName() + " " + getLastName();
     }
 
+    @Override
+    public boolean authenticate(String password) {
+        return (hashPassword(password).equals(getHashedPassword()));
+    }
+
     /*    Getters and Setters */
     public long getId() {
         return id;
