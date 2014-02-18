@@ -8,8 +8,10 @@
     <string name="echoLogo">Echo Logo</string>
     <string name="login">Login</string>
     <string name="password">password</string>
+    <string name="passwordVerify">Verify password</string>
     <string name="title_activity_scan">Scan Conversation QR code</string>
     <string name="scan">Scan</string>
+    <string name="register">Register</string>
     <string name="action_search">Search</string>
     <string name="action_scan">Scan</string>
     <string name="title_activity_conversation_detail">ConversationDetailActivity</string>

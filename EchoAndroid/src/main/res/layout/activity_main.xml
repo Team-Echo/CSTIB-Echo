@@ -33,8 +33,8 @@
 	        android:layout_alignParentRight="true"
 	        android:layout_below="@+id/logoLogin"
 	        android:layout_marginTop="20dp"
-	        android:layout_marginLeft="10dp"
-	        android:layout_marginRight="10dp"
+	        android:layout_marginLeft="20dp"
+	        android:layout_marginRight="20dp"
 	        android:ems="10"
 	        android:hint="@string/username"
 	        android:imeOptions="actionNext"
@@ -65,9 +65,24 @@
 	        android:layout_alignRight="@+id/passwordLogin"
 	        android:layout_below="@+id/passwordLogin"
 	        android:text="@string/login"
+            android:layout_marginTop="10dp"
 	        android:textColor="@color/white"
 	        android:background="@color/buttonBackground"
 	        android:onClick="loginUser" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textStyle="italic"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Register a new account"
+            android:clickable="true"
+            android:onClick="registerScreen"
+            android:id="@+id/registerScreen"
+            android:textColor="@color/buttonBackground"
+            android:layout_below="@+id/buttonLogin"
+            android:layout_centerHorizontal="true"/>
 	
 	    <ProgressBar
 	        android:id="@+id/progressLogin"
