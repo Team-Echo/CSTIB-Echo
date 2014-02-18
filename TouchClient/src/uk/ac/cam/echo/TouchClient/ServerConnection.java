@@ -215,7 +215,7 @@ public class ServerConnection implements Runnable{
     }
 
     private void displayPreviousMessages(final Conversation c) {
-
+        if (c.getId()<0){return;}
         List<Message> list = (List)c.getMessages(50);
         
         if (list.isEmpty()){
@@ -336,7 +336,8 @@ public class ServerConnection implements Runnable{
         })).start();
     }
 
-    public ConvStats getStats(long conversationID) { 
+    public ConvStats getStats(long conversationID) {
+        if (conversationID<0){return new ConvStats(0,0,0,0.5);}
         Conversation c = mAPI.conversationResource.get(conversationID);
         return new ConvStats(c.getUsers().size(),0,c.getMessages().size(),0.5);
     }
@@ -362,7 +363,7 @@ public class ServerConnection implements Runnable{
         for (Conversation c: mAPI.conferenceResource.getConversations(mConfrence.getId())){
             if (c.getId()==id){return (List<User>)c.getUsers();}
         }
-        return null;
+        return new ArrayList<User>();
     }
     
 }
