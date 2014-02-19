@@ -42,7 +42,7 @@ public class Main {
 
     private static void displayPreviousMessages(Conversation conversation) {
         for (Message msg: conversation.getMessages()) {
-            String sender = msg.getSender() == null ? "Anonymous" : msg.getSender().getUsername();
+            String sender = msg.getSender() == null ? "Anonymous" : msg.getSenderName();
             System.out.println(sender + ": " + msg.getContents());
         }
     }
@@ -51,7 +51,7 @@ public class Main {
         Handler<Message> handler = new Handler<Message>() {
             @Override
             public void handle(Message msg) {
-                String sender = msg.getSender() == null ? "Anonymous" : msg.getSender().getUsername();
+                String sender = msg.getSender() == null ? "Anonymous" : msg.getSenderName();
                 System.out.println(sender + ": " + msg.getContents());
             }
         };

@@ -32,6 +32,7 @@ public class MessageModel extends BaseModel implements Message {
 
     private long timeStamp;
     private String contents;
+    private String senderName;
 
     @ManyToOne(targetEntity = ConversationModel.class)
     private Conversation conversation;
@@ -81,6 +82,14 @@ public class MessageModel extends BaseModel implements Message {
 
     public User getSender() {
         return sender;
+    }
+
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
     }
 
     public void setSender(User sender) {
