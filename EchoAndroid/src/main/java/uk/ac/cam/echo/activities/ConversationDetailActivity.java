@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import uk.ac.cam.echo.R;
+import uk.ac.cam.echo.Toaster;
 import uk.ac.cam.echo.client.ClientApi;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.Message;
@@ -29,11 +30,10 @@ public class ConversationDetailActivity extends Activity implements View.OnClick
     private ServiceConnection connection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
             echoService = ((EchoService.LocalBinder)service).getService();
-            echoService.setNotifEnabled(false);
+            echoService.setNotifEnabled(true);
             api = echoService.getApi();
             cf.setApi(api);
-            cf.getAndListen();
-
+            cf.setUser(echoService.getUser());
         }
         public void onServiceDisconnected(ComponentName className) {
             echoService.setNotifEnabled(true);
@@ -60,7 +60,8 @@ public class ConversationDetailActivity extends Activity implements View.OnClick
         send = (Button)findViewById(R.id.sendButton);
         send.setOnClickListener(this);
 
-        cf = ConversationFragment.newInstance(id);
+        // new ConversationFragment that is not a preview, with the current user
+        cf = ConversationFragment.newInstance(id, false, null);
 
 		FragmentManager manager = getFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
@@ -119,6 +120,7 @@ public class ConversationDetailActivity extends Activity implements View.OnClick
             Message msg = api.newMessage(current);
             msg.setContents(contents);
             msg.setSender(echoService.getUser());
+            msg.setSenderName(echoService.getUser().getDisplayName());
             msg.save();
             return msg;
         }
@@ -127,6 +129,7 @@ public class ConversationDetailActivity extends Activity implements View.OnClick
         protected void onPostExecute(Message newMsg) {
             cf.getListView().setSelection(cf.getAdapter().getCount()-1);
             send.setVisibility(View.VISIBLE);
+            Toaster.displayShort(getApplicationContext(), newMsg.getSenderName());
         }
     }
 }

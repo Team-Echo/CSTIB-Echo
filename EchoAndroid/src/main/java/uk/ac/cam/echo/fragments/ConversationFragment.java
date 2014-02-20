@@ -3,9 +3,12 @@ package uk.ac.cam.echo.fragments;
 import uk.ac.cam.echo.ConversationStringUtil;
 import uk.ac.cam.echo.MessageAdapter;
 import uk.ac.cam.echo.R;
+import uk.ac.cam.echo.Toaster;
 import uk.ac.cam.echo.client.ClientApi;
+import uk.ac.cam.echo.client.data.MessageData;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.Message;
+import uk.ac.cam.echo.data.User;
 import uk.ac.cam.echo.data.async.Handler;
 
 import android.app.ActionBar;
@@ -30,6 +33,7 @@ public class ConversationFragment extends Fragment {
 	long id;
     boolean preview;
 
+    private static User user;
     private static ClientApi api;
 
 	Context context;
@@ -60,22 +64,16 @@ public class ConversationFragment extends Fragment {
 	}
 
     public void getAndListen() {
+        Log.d("LISTEN", "getAndListen");
         new GetMessage().execute(id);
         new Listen().execute(id);
     }
 	
 	// Factory method to create a fragment based on the conversationID
-	public static ConversationFragment newInstance(long id) {
-		ConversationFragment cf = new ConversationFragment();
-		Bundle args = new Bundle();
-		args.putLong(ID, id);
-		cf.setArguments(args);
-		return cf;
-	}
-
-    public static ConversationFragment newInstance(long id, boolean preview) {
+    public static ConversationFragment newInstance(long id, boolean preview, User user) {
         ConversationFragment cf = new ConversationFragment();
         cf.setIsPreview(preview);
+        if(user != null) cf.setUser(user);
         Bundle args = new Bundle();
         args.putLong(ID, id);
         cf.setArguments(args);
@@ -96,6 +94,7 @@ public class ConversationFragment extends Fragment {
     public void setIsPreview(boolean p) { preview = p; }
 
     public void setApi(ClientApi clientApi) { api = clientApi; }
+    public void setUser(User u) { user = u; }
 
 
     // ASYNCHRONOUS TASKS
@@ -112,6 +111,7 @@ public class ConversationFragment extends Fragment {
                 @Override
                 public void handle(Message message) {
                     publishProgress(message);
+                    Log.d("LISTEN", "message received");
                 }
             };
 
@@ -149,6 +149,8 @@ public class ConversationFragment extends Fragment {
             } else {
                 msgList = (List)conversation.getMessages();
             }
+
+
             return msgList;
         }
 
@@ -159,10 +161,9 @@ public class ConversationFragment extends Fragment {
                 ab.setTitle(title);
                 ab.setSubtitle(users);
             } catch(NullPointerException e) { Log.e("ConversationFrag", e.getMessage()); }
-
+            Toaster.displayShort(getActivity(), users);
             messageList = msgList;
-            adapter =
-                    new MessageAdapter(context, R.layout.message_row_remote, messageList);
+            adapter = MessageAdapter.newInstance(context, R.layout.message_row_remote, messageList, api, user);
             adapter.setListView(listView);
             adapter.setNotifyOnChange(true);
             listView.setAdapter(adapter);
