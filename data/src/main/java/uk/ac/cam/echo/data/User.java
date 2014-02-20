@@ -23,7 +23,7 @@ public interface User extends Base {
     public void setFirstName(String name);
     public void setLastName(String name);
     public void setPhoneNumber(String number);
-    public void setAvatarLink(String link);
+//    public void setAvatarLink(String link);
     public void setEmail(String email);
     // public Location setCurrentLocation();
     // public List<Interest> setInterests();
