@@ -156,14 +156,12 @@ public class Main {
                 System.out.println("Username and password don't match!");
                 System.exit(1);
             }
-            UserData ret2 = (UserData)api.newUser();
-            ret2.setUsername(username);
-            ret2.setPassword(pass);
-            ret2.setFirstName("Petar");
-            ret2.setLastName("Velickovic");
-            ret2.setDisplayName("Petar Velickovic");
-            ret2.save();
-            ret = ret2;
+            ret = api.newUser();
+            ret.setUsername(username);
+            ret.setPassword(pass);
+            ret.setFirstName("Petar");
+            ret.setLastName("Velickovic");
+            ret.save();
         }
 
         return ret;
