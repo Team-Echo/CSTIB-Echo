@@ -396,7 +396,7 @@ public class DataAnalyst implements ServerDataAnalyst
         for (User U : users)
         {
             int msgCnt = HibernateUtil.getTransaction().createCriteria(MessageModel.class)
-                    .add(Restrictions.eq("senderId", U.getId())).list().size();
+                    .add(Restrictions.eq("sender", U)).list().size();
             pq.offer(new IntegerUserPair(msgCnt, U));
         }
 
@@ -447,11 +447,14 @@ public class DataAnalyst implements ServerDataAnalyst
             Collection<User> users = C.getUsers();
             for (User U : users)
             {
+                if (U.getGender() == null) continue;
+
                 if (U.getGender().equals("M") || U.getGender().equals("Male")) maleCount++;
                 if (U.getGender().equals("F") || U.getGender().equals("Female")) femaleCount++;
             }
         }
 
+        if (femaleCount == 0.0) return Double.POSITIVE_INFINITY;
         return maleCount / femaleCount;
     }
 
