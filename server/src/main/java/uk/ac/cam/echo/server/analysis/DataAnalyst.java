@@ -1,17 +1,14 @@
 package uk.ac.cam.echo.server.analysis;
 
+import org.hibernate.criterion.Restrictions;
 import uk.ac.cam.echo.data.*;
 import uk.ac.cam.echo.server.HibernateUtil;
-import uk.ac.cam.echo.server.analysis.cmp.ConversationComparatorByActivity;
-import uk.ac.cam.echo.server.analysis.cmp.ConversationComparatorByMatchFrequency;
-import uk.ac.cam.echo.server.analysis.cmp.ConversationComparatorByMessageCount;
-import uk.ac.cam.echo.server.analysis.cmp.ConversationComparatorByUserCount;
-import uk.ac.cam.echo.server.analysis.internal.DoubleConversationPair;
-import uk.ac.cam.echo.server.analysis.internal.IntegerConversationPair;
-import uk.ac.cam.echo.server.analysis.internal.MessageLexer;
-import uk.ac.cam.echo.server.analysis.internal.StringMatcher;
+import uk.ac.cam.echo.server.analysis.cmp.*;
+import uk.ac.cam.echo.server.analysis.internal.*;
 import uk.ac.cam.echo.server.models.ConferenceModel;
 import uk.ac.cam.echo.server.models.ConversationModel;
+import uk.ac.cam.echo.server.models.MessageModel;
+import uk.ac.cam.echo.server.models.UserModel;
 
 import java.util.*;
 
@@ -390,7 +387,26 @@ public class DataAnalyst implements ServerDataAnalyst
     @Override
     public List<User> mostActiveUsers(int n)
     {
-        return null;
+        List<User> users = HibernateUtil.getTransaction().createCriteria(UserModel.class).list();
+
+        List<User> ret = new LinkedList<User>();
+
+        PriorityQueue<IntegerUserPair> pq = new PriorityQueue<IntegerUserPair>(11, new UserComparatorByActivity());
+
+        for (User U : users)
+        {
+            int msgCnt = HibernateUtil.getTransaction().createCriteria(MessageModel.class)
+                    .add(Restrictions.eq("senderId", U.getId())).list().size();
+            pq.offer(new IntegerUserPair(msgCnt, U));
+        }
+
+        while (n > 0 && !pq.isEmpty())
+        {
+            ret.add(pq.poll().getUser());
+            n--;
+        }
+
+        return ret;
     }
 
     @Override
@@ -490,9 +506,18 @@ public class DataAnalyst implements ServerDataAnalyst
     {
         Conversation convo = (Conversation) HibernateUtil.getTransaction().get(ConversationModel.class, convoId);
 
+        Set<User> users = (Set<User>)convo.getUsers();
+        Collection<Message> msgs = convo.getMessages();
+
         Set<Long> ret = new HashSet<Long>();
 
-        return 0;
+        for (Message M : msgs)
+        {
+            long id = M.getSender().getId();
+            if (!current || users.contains(M.getSender())) ret.add(id);
+        }
+
+        return ret.size();
     }
 
 }
