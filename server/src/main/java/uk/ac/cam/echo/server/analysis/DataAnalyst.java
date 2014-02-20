@@ -396,7 +396,7 @@ public class DataAnalyst implements ServerDataAnalyst
         for (User U : users)
         {
             int msgCnt = HibernateUtil.getTransaction().createCriteria(MessageModel.class)
-                    .add(Restrictions.eq("senderId", U.getId())).list().size();
+                    .add(Restrictions.eq("sender", U)).list().size();
             pq.offer(new IntegerUserPair(msgCnt, U));
         }
 
