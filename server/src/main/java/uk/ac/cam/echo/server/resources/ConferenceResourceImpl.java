@@ -77,7 +77,7 @@ public class ConferenceResourceImpl implements ConferenceResource {
 
     @Override
     public List<User> mostActiveUsers(long id, int n) {
-        throw  new UnsupportedOperationException("Not Implemented yet");
+        return AnalystFactory.get(id).mostActiveUsers(n);
     }
 
     @Override
