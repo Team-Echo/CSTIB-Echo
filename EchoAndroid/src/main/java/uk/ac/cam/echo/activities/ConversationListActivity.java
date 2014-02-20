@@ -207,6 +207,6 @@ public class ConversationListActivity extends Activity
     // Callback method when ListView has fully rendered
     @Override
     public void onRendered() {
-        Toaster.displayLong(this, "toggleeee");
+
     }
 }

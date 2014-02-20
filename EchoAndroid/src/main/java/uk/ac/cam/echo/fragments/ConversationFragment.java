@@ -142,8 +142,8 @@ public class ConversationFragment extends Fragment {
             conversation = api.conversationResource.get(id);
 
             title = conversation.getName();
-            //users = ConversationStringUtil.getUserText(conversation.getUsers());
-            users = "Yojan Alex Petar Mona Philip";
+            users = ConversationStringUtil.getUserText(conversation.getUsers());
+            //users = "Yojan Alex Petar Mona Philip";
             if(preview) {
                 msgList = (List)conversation.getMessages(25);
             } else {
@@ -161,7 +161,6 @@ public class ConversationFragment extends Fragment {
                 ab.setTitle(title);
                 ab.setSubtitle(users);
             } catch(NullPointerException e) { Log.e("ConversationFrag", e.getMessage()); }
-            Toaster.displayShort(getActivity(), users);
             messageList = msgList;
             adapter = MessageAdapter.newInstance(context, R.layout.message_row_remote, messageList, api, user);
             adapter.setListView(listView);
