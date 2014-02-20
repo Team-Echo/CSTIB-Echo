@@ -46,6 +46,7 @@ public class MessageResourceImpl implements MessageResource {
         message.setTimeStamp(new Date().getTime());
         message.setConversation(conversation);
         message.setSender(sender);
+        message.setSenderName(sender.getDisplayName());
 
         HibernateUtil.getTransaction().save(message);
         ConversationResourceImpl.broadcastMessage(message);

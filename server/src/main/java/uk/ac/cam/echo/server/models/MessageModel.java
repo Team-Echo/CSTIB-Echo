@@ -19,7 +19,7 @@ public class MessageModel extends BaseModel implements Message {
 
     }
 
-    private static String[] allowed = {"contents", "senderId", "conversationId"};
+    private static String[] allowed = {"contents", "senderId", "conversationId", "senderName"};
     @JsonCreator
     public MessageModel(Map<String, Object> props) {
         super(props, allowed);
@@ -32,6 +32,7 @@ public class MessageModel extends BaseModel implements Message {
 
     private long timeStamp;
     private String contents;
+    private String senderName;
 
     @ManyToOne(targetEntity = ConversationModel.class)
     private Conversation conversation;
@@ -84,8 +85,13 @@ public class MessageModel extends BaseModel implements Message {
     }
 
     public String getSenderName() {
+        if (senderName != null) return senderName;
         if (sender.getDisplayName() != null) return sender.getDisplayName();
         return sender.getUsername();
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
     }
 
     public void setSender(User sender) {

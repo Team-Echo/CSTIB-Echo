@@ -13,6 +13,7 @@ import uk.ac.cam.echo.data.resources.UserResource;
 public class MessageData extends BaseData implements Message {
     private String contents;
     private long timeStamp;
+    private String senderName;
 
     private ProxyResource<User, UserResource> senderProxy = new ProxyResource<User, UserResource>();
     private ProxyResource<Conversation, ConversationResource> conversationProxy =
@@ -50,9 +51,13 @@ public class MessageData extends BaseData implements Message {
 
     @Override
     public String getSenderName() {
-        User u = senderProxy.getData();
-        if (u.getDisplayName() != null) return u.getDisplayName();
-        else return u.getUsername();
+        if (senderName != null) return senderName;
+        return getApi().userResource.get(getSenderId()).getUsername();
+    }
+
+    @Override
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
     }
 
     public Long getSenderId() {
