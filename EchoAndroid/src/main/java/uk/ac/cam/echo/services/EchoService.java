@@ -58,6 +58,14 @@ public class EchoService extends Service {
         return binder;
     }
 
+    @Override
+    public void onDestroy() {
+        getUser().setCurrentConversation(null);
+        getUser().save();
+        super.onDestroy();
+
+    }
+
     public ClientApi getApi() {return api; }
 
     public void setUser(User u) { user = u; }
@@ -66,15 +74,15 @@ public class EchoService extends Service {
      public void notify(Message message) {
          if(notifEnabled) {
              Intent intent = new Intent(EchoService.this, ConversationDetailActivity.class);
-             intent.putExtra("_id", 5);
+             intent.putExtra("_id", message.getConversation().getId());
              PendingIntent pIntent = PendingIntent.getActivity(EchoService.this, 0, intent, 0);
 
-             String user = message.getSender()==null ? "Anon" : message.getSender().getUsername();
+             String user = message.getSenderName();
 
              Notification.Builder notifBuilder = new Notification.Builder(EchoService.this)
-                     .setContentTitle("New message in ")
+                     .setContentTitle("New message in " + message.getConversation().getId())
                      .setContentIntent(pIntent)
-                     .setSmallIcon(R.drawable.ic_perm_group_messages)
+                     .setSmallIcon(android.R.drawable.ic_dialog_email)
                      .addAction(R.drawable.admin, "See", pIntent)
                      .setAutoCancel(true)
                      .setContentText(user + ": " + message.getContents());
@@ -88,13 +96,14 @@ public class EchoService extends Service {
    }
 
    public void listenToConversation(long id) {
-       Log.d("EchoListen", "listening to " + id);
+       Log.d("LISTEN", "listening for notifs to " + id);
        if(conversationId != id) {
 
            new AsyncTask<Long, Void, Void>() {
                @Override
                protected Void doInBackground(Long... args) {
                    getUser().setCurrentConversation(api.conversationResource.get(args[0]));
+                   getUser().save();
                    return null;
                }
            }.execute(id);
@@ -103,6 +112,7 @@ public class EchoService extends Service {
            Handler<Message> handler = new Handler<Message>() {
                @Override
                public void handle(Message message) {
+                   Log.d("LISTEN", "new notif received");
                    EchoService.this.notify(message);
                }
            };

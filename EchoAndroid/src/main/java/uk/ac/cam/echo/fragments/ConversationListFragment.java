@@ -115,8 +115,9 @@ public class ConversationListFragment extends Fragment implements
 			super.onPostExecute(result);
 
 			if(adapter == null) {
-				adapter = new ConversationAdapter(context, R.layout.conv_list_row, result);
-                adapter.setApi(api);
+				//adapter = new ConversationAdapter(context, R.layout.conv_list_row, result);
+                adapter = ConversationAdapter.newInstance(context, R.layout.conv_list_row, result, api);
+
 				listView.setAdapter(adapter);
                 adapter.setListViewListener((ConversationListActivity)getActivity());
 				listView.setOnItemClickListener(ConversationListFragment.this);

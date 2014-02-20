@@ -52,6 +52,15 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 
 	}
 
+    public static ConversationAdapter newInstance(Context context, int layoutResourceId,
+                                      List<Conversation> data, ClientApi api) {
+
+        ConversationAdapter adapter = new ConversationAdapter(context, layoutResourceId, data);
+        adapter.setApi(api);
+        return adapter;
+
+    }
+
 	@Override
     public View getView(int position, View convertView, ViewGroup parent) {
 		
@@ -130,7 +139,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
         listener = l;
     }
 
-    public void setApi(ClientApi api) { this.api = api;}
+    private void setApi(ClientApi api) { this.api = api;}
 
     // ViewHolder to prevent multiple findViewById calls
 	static class ConversationHolder {

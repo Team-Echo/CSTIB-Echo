@@ -93,11 +93,15 @@ public class ConversationDialog extends DialogFragment implements
 	@Override
 	public void onClick(View v) {
 		if(v.getId() == R.id.convJoinDialog) {
+            ConversationListActivity cla = (ConversationListActivity)getActivity();
+            if(id != cla.getService().getConversationId()) {
+                    cla.getService().listenToConversation(id);
+            }
+
 			Intent intent = new Intent(getActivity(), ConversationDetailActivity.class);
 			intent.putExtra("_id", id);
 			startActivity(intent);
-            ConversationListActivity cla = (ConversationListActivity)getActivity();
-            cla.getService().listenToConversation(id);
+
 		}
 	}
 

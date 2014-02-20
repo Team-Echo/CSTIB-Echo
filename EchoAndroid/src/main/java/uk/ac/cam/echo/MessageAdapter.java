@@ -2,6 +2,7 @@ package uk.ac.cam.echo;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,7 +18,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import uk.ac.cam.echo.client.ClientApi;
+import uk.ac.cam.echo.client.data.MessageData;
 import uk.ac.cam.echo.data.Message;
+import uk.ac.cam.echo.data.User;
 
 public class MessageAdapter extends ArrayAdapter<Message> {
 	
@@ -27,6 +31,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     ListView listView;
 	
 	static List<Message> data = null;
+
+    ClientApi api;
 	
 	// for scaling message TextViews
 	int width;
@@ -47,6 +53,14 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		height = metrics.heightPixels;
 	}
 
+    public static MessageAdapter newInstance(Context context, int layoutResourceId,
+                                      List<Message> data, ClientApi api) {
+
+        MessageAdapter adapter = new MessageAdapter(context, layoutResourceId, data);
+        adapter.setApi(api);
+        return adapter;
+    }
+
 	@Override
     public View getView(int position, View convertView, ViewGroup parent) {
 		
@@ -66,7 +80,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			holder.user = (TextView)row.findViewById(R.id.userText);
 			holder.time = (TextView)row.findViewById(R.id.dateText);
 			holder.contents = (TextView)row.findViewById(R.id.message);
-			
+
 			row.setTag(holder);
 		} else {
 			holder = (MessageHolder)row.getTag();
@@ -77,8 +91,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         //////////////////////////
         // GETSENDER() BUG IS HERE
         //////////////////////////
-		String user = message.getSender() == null ? "Anonymous" : message.getSender().getUsername();
-        //String user = "Anon";
+		//String user = message.getSender() == null ? "Anonymous" : message.getSender().getUsername();
+        //new GetUserName().execute(holder.user, message);
+        String user = message.getSenderName();
 
 		long time = message.getTimeStamp();
         Date date = new Date(time);
@@ -97,8 +112,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		return row;
 	}
 
+
+
     public void updateMessage(Message m) {
         add(m);
+        Log.d("LISTEN", "adding new m");
         notifyDataSetChanged();
         listView.setSelection(getCount());
         //.d("MessageList", m.getSender() == null ? "Anon" : m.getSender().getUsername());
@@ -114,14 +132,17 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 	
 	@Override
 	public int getItemViewType(int position) {
-        // data.get(position).getSender().getUsername() == username ? 0 : 1;
+        return data.get(position).getSenderName() ==
         return Math.random() < 0.5 ? 1 : 0;
+
 	}
 	
 	@Override
 	public int getCount() {
 		return data == null ? 0 : data.size();
 	}
+
+    private void setApi(ClientApi clientApi) { api = clientApi; }
 	
 	static class MessageHolder {
 		ImageView img;
@@ -129,6 +150,5 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		TextView time;
 		TextView contents;
 	}
-
 
 }
