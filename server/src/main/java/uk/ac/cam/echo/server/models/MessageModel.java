@@ -85,6 +85,7 @@ public class MessageModel extends BaseModel implements Message {
     }
 
     public String getSenderName() {
+        if (sender == null) return null;
         if (senderName != null) return senderName;
         if (sender.getDisplayName() != null) return sender.getDisplayName();
         return sender.getUsername();
