@@ -447,6 +447,8 @@ public class DataAnalyst implements ServerDataAnalyst
             Collection<User> users = C.getUsers();
             for (User U : users)
             {
+                if (U.getGender() == null) continue;
+
                 if (U.getGender().equals("M") || U.getGender().equals("Male")) maleCount++;
                 if (U.getGender().equals("F") || U.getGender().equals("Female")) femaleCount++;
             }
