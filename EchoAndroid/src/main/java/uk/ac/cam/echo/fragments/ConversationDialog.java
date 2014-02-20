@@ -39,6 +39,7 @@ public class ConversationDialog extends DialogFragment implements
 	private ProgressBar progress;
 
     private static ClientApi api;
+    private static User user;
 
     private ConversationFragment cf;
 	private long id;
@@ -60,7 +61,7 @@ public class ConversationDialog extends DialogFragment implements
 
 		join.setOnClickListener(this);
 
-        cf = ConversationFragment.newInstance(id, true);
+        cf = ConversationFragment.newInstance(id, true, user);
         cf.setApi(api);
         FragmentManager manager = getChildFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
@@ -78,11 +79,12 @@ public class ConversationDialog extends DialogFragment implements
 	}
 
 	// Factory to create dialog based on id
-	public static ConversationDialog newInstance(long id) {
+	public static ConversationDialog newInstance(long id, User u) {
 		ConversationDialog cd = new ConversationDialog();
 		Bundle args = new Bundle();
 		args.putLong("_id", id);
 		cd.setArguments(args);
+        user = u;
 		return cd;
 	}
 

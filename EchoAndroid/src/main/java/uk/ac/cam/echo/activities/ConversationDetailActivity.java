@@ -33,9 +33,7 @@ public class ConversationDetailActivity extends Activity implements View.OnClick
             echoService.setNotifEnabled(true);
             api = echoService.getApi();
             cf.setApi(api);
-            cf.getAdapter().
-            //cf.getAndListen();
-
+            cf.setUser(echoService.getUser());
         }
         public void onServiceDisconnected(ComponentName className) {
             echoService.setNotifEnabled(true);
@@ -62,7 +60,8 @@ public class ConversationDetailActivity extends Activity implements View.OnClick
         send = (Button)findViewById(R.id.sendButton);
         send.setOnClickListener(this);
 
-        cf = ConversationFragment.newInstance(id);
+        // new ConversationFragment that is not a preview, with the current user
+        cf = ConversationFragment.newInstance(id, false, null);
 
 		FragmentManager manager = getFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();

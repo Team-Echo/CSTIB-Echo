@@ -25,18 +25,19 @@ import uk.ac.cam.echo.data.User;
 
 public class MessageAdapter extends ArrayAdapter<Message> {
 	
-	Context context;
-	int layoutResourceId;
-	LayoutInflater inflater;
-    ListView listView;
+	private Context context;
+	private int layoutResourceId;
+	private LayoutInflater inflater;
+    private ListView listView;
 	
-	static List<Message> data = null;
+	private static List<Message> data = null;
 
-    ClientApi api;
+    private ClientApi api;
+    private User user;
 	
 	// for scaling message TextViews
-	int width;
-	int height;
+	private int width;
+	private int height;
 	
 	public MessageAdapter(Context context, int layoutResourceId,
 			List<Message> data) {
@@ -54,10 +55,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 	}
 
     public static MessageAdapter newInstance(Context context, int layoutResourceId,
-                                      List<Message> data, ClientApi api) {
+                                      List<Message> data, ClientApi api, User user) {
 
         MessageAdapter adapter = new MessageAdapter(context, layoutResourceId, data);
         adapter.setApi(api);
+        adapter.setUser(user);
         return adapter;
     }
 
@@ -65,7 +67,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     public View getView(int position, View convertView, ViewGroup parent) {
 		
 		View row = convertView;
-		MessageHolder holder = null;
+		MessageHolder holder;
 		int type = getItemViewType(position);
 		
 		if(row == null) {
@@ -88,11 +90,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		
 		Message message = data.get(position);
 
-        //////////////////////////
-        // GETSENDER() BUG IS HERE
-        //////////////////////////
-		//String user = message.getSender() == null ? "Anonymous" : message.getSender().getUsername();
-        //new GetUserName().execute(holder.user, message);
         String user = message.getSenderName();
 
 		long time = message.getTimeStamp();
@@ -119,8 +116,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         Log.d("LISTEN", "adding new m");
         notifyDataSetChanged();
         listView.setSelection(getCount());
-        //.d("MessageList", m.getSender() == null ? "Anon" : m.getSender().getUsername());
-        Log.d("MessageList", "done..." + m.getContents());
     }
 
     public void setListView(ListView lv) { listView = lv; }
@@ -132,9 +127,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 	
 	@Override
 	public int getItemViewType(int position) {
-        return data.get(position).getSenderName() ==
-        return Math.random() < 0.5 ? 1 : 0;
-
+        return (data.get(position).getSenderName()).equals(user.getDisplayName())? 0 : 1;
 	}
 	
 	@Override
@@ -143,6 +136,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 	}
 
     private void setApi(ClientApi clientApi) { api = clientApi; }
+    private void setUser(User u) { user = u; }
 	
 	static class MessageHolder {
 		ImageView img;
