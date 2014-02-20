@@ -2,6 +2,7 @@ package uk.ac.cam.echo.services;
 
 import java.util.List;
 
+import uk.ac.cam.echo.BitmapUtil;
 import uk.ac.cam.echo.R;
 import uk.ac.cam.echo.activities.ConversationDetailActivity;
 import uk.ac.cam.echo.activities.ConversationListActivity;
@@ -17,6 +18,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
@@ -85,13 +87,17 @@ public class EchoService extends Service {
                      Intent intent = new Intent(context, ConversationListActivity.class);
                      intent.putExtra("_id", 3/* msg.getConversation().getId()*/);
                      PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, 0);
-                     //String user = msg.getSenderName();
+
                      String user = msg.getSender().getFirstName();
+
+                     Bitmap avatar = BitmapUtil.getBitmapFromURL(msg.getSender().getAvatarLink()+"&s=200");
+
 
                      Notification.Builder notifBuilder = new Notification.Builder(context)
                              .setContentTitle(conversation.getName())
                              .setContentIntent(pIntent)
                              .setSmallIcon(android.R.drawable.ic_dialog_email)
+                             .setLargeIcon(avatar)
                              //.addAction(R.drawable.admin, "See", pIntent)
                              .setAutoCancel(true)
                              .setContentText(user + ": " + msg.getContents());

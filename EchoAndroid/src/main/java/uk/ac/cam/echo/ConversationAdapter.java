@@ -2,6 +2,7 @@ package uk.ac.cam.echo;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,7 +30,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 	private List<Conversation> data = null;
     private HashMap<Long, Integer> positionMap;
     private HashMap<Long, String> tagMap;
-    private HashMap<Long, Integer> avatarMap;
+    private HashMap<Long, Bitmap> avatarMap;
 
     private ClientApi api;
 
@@ -42,7 +43,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 
         positionMap = new HashMap<Long, Integer>();
         tagMap = new HashMap<Long, String>();
-        avatarMap = new HashMap<Long, Integer>();
+        avatarMap = new HashMap<Long, Bitmap>();
 
 		this.context = context;
 		this.layoutResourceId = layoutResourceId;
@@ -102,7 +103,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 
         if(tagMap.containsKey(conversation.getId())) {
             holder.tags.setText(tagMap.get(conversation.getId()));
-            holder.imgIcon.setImageResource(avatarMap.get(conversation.getId()));
+            holder.imgIcon.setImageBitmap(avatarMap.get(conversation.getId()));
         } else {
             new AsyncAdapter().execute(conversation, holder.tags, holder.imgIcon);
         }
@@ -156,6 +157,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 
         TextView tagView;
         ImageView imgView;
+        Bitmap avatar;
 
         @Override
         protected String doInBackground(Object... params) {
@@ -165,6 +167,9 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 
             Collection<Tag> tags = conversation.getTags();
             String tagText = ConversationStringUtil.getTagText(tags);
+
+            avatar = BitmapUtil.getBitmapFromURL(api.conversationResource.getMessageResource(conversation.getId())
+                    .getRecent(1).get(0).getSender().getAvatarLink() + "&s=200");
 
             return tagText;
         }
@@ -176,9 +181,8 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
             tagMap.put(conversation.getId(), str);
             tagView.setText(str);
 
-            int avatarId = (int)(Math.random()*avatars.length);
-            avatarMap.put(conversation.getId(), avatars[avatarId]);
-            imgView.setImageResource(avatars[avatarId]);
+            avatarMap.put(conversation.getId(), avatar);
+            imgView.setImageBitmap(avatar);
         }
     }
 
