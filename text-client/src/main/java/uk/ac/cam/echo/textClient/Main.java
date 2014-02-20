@@ -3,6 +3,7 @@ package uk.ac.cam.echo.textClient;
 
 import uk.ac.cam.echo.client.ClientApi;
 import uk.ac.cam.echo.client.data.MessageData;
+import uk.ac.cam.echo.client.data.UserData;
 import uk.ac.cam.echo.data.*;
 import uk.ac.cam.echo.data.async.Handler;
 import uk.ac.cam.echo.data.async.Subscription;
@@ -21,6 +22,7 @@ public class Main {
         Conversation conversation = configureConversation(conference);
 
         user.setCurrentConversation(conversation);
+        user.save(); // MUST call save after setting conversation!
 
         System.out.println("Welcome to conversation [" + conversation.getName() + "]:");
 
@@ -36,13 +38,14 @@ public class Main {
             Message msg = api.newMessage(conversation);
             msg.setSender(user);
             msg.setContents(input);
+            msg.setSenderName(user.getDisplayName());
             msg.save();
         }
     }
 
     private static void displayPreviousMessages(Conversation conversation) {
         for (Message msg: conversation.getMessages()) {
-            String sender = msg.getSender() == null ? "Anonymous" : msg.getSenderName();
+            String sender = msg.getSenderName() == null ? "Anonymous" : msg.getSenderName();
             System.out.println(sender + ": " + msg.getContents());
         }
     }
@@ -51,7 +54,7 @@ public class Main {
         Handler<Message> handler = new Handler<Message>() {
             @Override
             public void handle(Message msg) {
-                String sender = msg.getSender() == null ? "Anonymous" : msg.getSenderName();
+                String sender = msg.getSenderName() == null ? "Anonymous" : msg.getSenderName();
                 System.out.println(sender + ": " + msg.getContents());
             }
         };
@@ -156,6 +159,8 @@ public class Main {
             ret = api.newUser();
             ret.setUsername(username);
             ret.setPassword(pass);
+            ret.setFirstName("Petar");
+            ret.setLastName("Velickovic");
             ret.save();
         }
 

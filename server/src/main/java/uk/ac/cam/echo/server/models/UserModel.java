@@ -6,6 +6,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.User;
+import uk.ac.cam.echo.server.GravatarUtil;
 import uk.ac.cam.echo.server.HibernateUtil;
 
 import javax.persistence.*;
@@ -71,7 +72,7 @@ public class UserModel extends BaseModel implements User {
     private String firstName;
     private String lastName;
     private String phoneNumber;
-    private String avatarLink;
+    //private String avatarLink;
     private String email;
     private String jobTitle;
     private String company;
@@ -143,13 +144,11 @@ public class UserModel extends BaseModel implements User {
         this.phoneNumber = phoneNumber;
     }
 
+    @Transient
     public String getAvatarLink() {
-        return avatarLink;
+        return GravatarUtil.getUrl(this);
     }
 
-    public void setAvatarLink(String avatarLink) {
-        this.avatarLink = avatarLink;
-    }
 
     public String getEmail() {
         return email;
