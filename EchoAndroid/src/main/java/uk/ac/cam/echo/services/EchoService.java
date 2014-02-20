@@ -4,6 +4,7 @@ import java.util.List;
 
 import uk.ac.cam.echo.R;
 import uk.ac.cam.echo.activities.ConversationDetailActivity;
+import uk.ac.cam.echo.activities.ConversationListActivity;
 import uk.ac.cam.echo.client.ClientApi;
 import uk.ac.cam.echo.data.Conference;
 import uk.ac.cam.echo.data.Conversation;
@@ -14,6 +15,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Binder;
@@ -72,31 +74,46 @@ public class EchoService extends Service {
     public User getUser() { return user; }
 
      public void notify(Message message) {
+         Log.d("NOTIF", "notify called " + notifEnabled);
          if(notifEnabled) {
-             Intent intent = new Intent(EchoService.this, ConversationDetailActivity.class);
-             intent.putExtra("_id", message.getConversation().getId());
-             PendingIntent pIntent = PendingIntent.getActivity(EchoService.this, 0, intent, 0);
+             new AsyncTask<Message, Void, Notification.Builder>(){
+                 @Override
+                 protected Notification.Builder doInBackground(Message... args) {
+                     Message msg = args[0];
+                     Log.d("NOTIFY",""+ conversation.getId());
+                     Context context = getApplicationContext();
+                     Intent intent = new Intent(context, ConversationListActivity.class);
+                     intent.putExtra("_id", 3/* msg.getConversation().getId()*/);
+                     PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, 0);
+                     String user = msg.getSenderName();
 
-             String user = message.getSenderName();
+                     Notification.Builder notifBuilder = new Notification.Builder(context)
+                             .setContentTitle(conversation.getName())
+                             .setContentIntent(pIntent)
+                             .setSmallIcon(android.R.drawable.ic_dialog_email)
+                             //.addAction(R.drawable.admin, "See", pIntent)
+                             .setAutoCancel(true)
+                             .setContentText(user + ": " + msg.getContents());
 
-             Notification.Builder notifBuilder = new Notification.Builder(EchoService.this)
-                     .setContentTitle("New message in " + message.getConversation().getId())
-                     .setContentIntent(pIntent)
-                     .setSmallIcon(android.R.drawable.ic_dialog_email)
-                     .addAction(R.drawable.admin, "See", pIntent)
-                     .setAutoCancel(true)
-                     .setContentText(user + ": " + message.getContents());
-             notificationManager.notify(0,
-                     notifBuilder.build());
+                     return notifBuilder;
+                 }
+
+                 @Override
+                 protected void onPostExecute(Notification.Builder nb) {
+                     super.onPostExecute(nb);
+                     notificationManager.notify(0, nb.build());
+                 }
+             }.execute(message);
          }
     }
 
    public void setNotifEnabled(boolean enabled) {
+       Log.d("NOTIF", "notifications are now " + enabled);
        notifEnabled = enabled;
    }
 
    public void listenToConversation(long id) {
-       Log.d("LISTEN", "listening for notifs to " + id);
+
        if(conversationId != id) {
 
            new AsyncTask<Long, Void, Void>() {
@@ -107,15 +124,16 @@ public class EchoService extends Service {
                    return null;
                }
            }.execute(id);
-
+           conversation = getUser().getCurrentConversation();
            conversationId = id;
            Handler<Message> handler = new Handler<Message>() {
                @Override
                public void handle(Message message) {
-                   Log.d("LISTEN", "new notif received");
+                   Log.d("NOTIF", "new notif received");
                    EchoService.this.notify(message);
                }
            };
+           Log.d("NOTIF", "listening for notifs to " + id);
            api.conversationResource.listenToMessages(id).subscribe(handler);
        }
    }
@@ -123,9 +141,6 @@ public class EchoService extends Service {
 	public long getConversationId() {
         return conversationId;
 	}
-
-
-
 
     /**
      * Class for clients to access.  Because we know this service always
