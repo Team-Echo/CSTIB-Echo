@@ -11,6 +11,7 @@ import uk.ac.cam.echo.server.analysis.internal.IntegerConversationPair;
 import uk.ac.cam.echo.server.analysis.internal.MessageLexer;
 import uk.ac.cam.echo.server.analysis.internal.StringMatcher;
 import uk.ac.cam.echo.server.models.ConferenceModel;
+import uk.ac.cam.echo.server.models.ConversationModel;
 
 import java.util.*;
 
@@ -315,7 +316,7 @@ public class DataAnalyst implements ServerDataAnalyst
     }
 
     @Override
-    public int activity(long millis)
+    public int hail(long millis)
     {
         Conference parentConference = (Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, parentID);
 
@@ -337,6 +338,83 @@ public class DataAnalyst implements ServerDataAnalyst
         }
 
         return cnt;
+    }
+
+    @Override
+    public double maleToFemaleRatio()
+    {
+        Conference parentConference = (Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, parentID);
+        Collection<Conversation> conversations = parentConference.getConversationSet();
+
+        double maleCount = 0, femaleCount = 0;
+
+        for (Conversation C : conversations)
+        {
+            Collection<User> users = C.getUsers();
+            for (User U : users)
+            {
+                if (U.getGender().equals("M") || U.getGender().equals("Male")) maleCount++;
+                if (U.getGender().equals("F") || U.getGender().equals("Female")) femaleCount++;
+            }
+        }
+
+        return maleCount / femaleCount;
+    }
+
+    @Override
+    public int messageCount(long convoId)
+    {
+        Conversation convo = (Conversation) HibernateUtil.getTransaction().get(ConversationModel.class, convoId);
+        return convo.getMessages().size();
+    }
+
+    @Override
+    public int messageCount()
+    {
+        Conference parentConference = (Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, parentID);
+        Collection<Conversation> conversations = parentConference.getConversationSet();
+
+        int ret = 0;
+
+        for (Conversation C : conversations)
+        {
+            ret += C.getMessages().size();
+        }
+
+        return ret;
+    }
+
+    @Override
+    public int userCount(long convoId)
+    {
+        Conversation convo = (Conversation) HibernateUtil.getTransaction().get(ConversationModel.class, convoId);
+        return convo.getUsers().size();
+    }
+
+    @Override
+    public int userCount()
+    {
+        Conference parentConference = (Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, parentID);
+        Collection<Conversation> conversations = parentConference.getConversationSet();
+
+        int ret = 0;
+
+        for (Conversation C : conversations)
+        {
+            ret += C.getUsers().size();
+        }
+
+        return ret;
+    }
+
+    @Override
+    public int contributingUsers(long convoId, boolean current)
+    {
+        Conversation convo = (Conversation) HibernateUtil.getTransaction().get(ConversationModel.class, convoId);
+
+        Set<Long> ret = new HashSet<Long>();
+
+        return 0;
     }
 
 }

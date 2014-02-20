@@ -6,7 +6,6 @@ import uk.ac.cam.echo.data.User;
 import java.util.List;
 
 /**
- TODO.
  Author: Petar 'PetarV' Veličković
 
  This is the main server Data Analysis module interface.
@@ -90,12 +89,59 @@ public interface ServerDataAnalyst
     public List<User> mostActiveUsers(int n);
 
     /**
-     Displays the amount of activity in the conference.
+     Displays the amount of hail (activity) in the conference.
      It is represented as the amount of messages divided by the interval.
-     @param millis      The size of the interval to consider, in milliseconds.
-     @return            The activity in the conference over the interval.
-    */
-    public int activity(long millis);
 
-    // TODO: Add more methods as necessary.
+     @param millis      The size of the interval to consider, in milliseconds.
+     @return            The hail in the conference over the interval.
+    */
+    public int hail(long millis);
+
+    /**
+     Displays the current M:F ratio in the conference.
+     Users are only considered if they are currently in a conversation.
+
+     @return            The M:F ratio.
+    */
+    public double maleToFemaleRatio();
+
+    /**
+     Returns the amount of messages within a particular Conversation.
+
+     @param convoId     The identifier of the Conversation.
+     @return            The amount of messages within the conversation.
+    */
+    public int messageCount(long convoId);
+
+    /**
+     Returns the total amount of messages within the conference.
+
+     @return            The amount of messages in the conference.
+    */
+    public int messageCount();
+
+    /**
+     Returns the amount of users within a particular Conversation.
+
+     @param convoId     The identifier of the Conversation.
+     @return            The amount of users within the conversation.
+    */
+    public int userCount(long convoId);
+
+    /**
+     Returns the total amount of users within a particular Conference.
+     A user is only considered if he is within a Conversation.
+
+     @return            The amount of users within the conference.
+    */
+    public int userCount();
+
+    /**
+     Returns the total amount of contributing users for a conversation.
+
+     @param convoId     The identifier of the Conversation.
+     @param current     Whether or not to consider only currently active users.
+     @return            The amount of contributing users within the conversation.
+    */
+    public int contributingUsers(long convoId, boolean current);
 }

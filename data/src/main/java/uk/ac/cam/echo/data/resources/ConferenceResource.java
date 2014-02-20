@@ -54,6 +54,30 @@ public interface ConferenceResource extends RestResource<Conference> {
     @GET
     public int activity(@PathParam("conferenceId") long id, @QueryParam("millis") long millis);
 
+    @Path("/{conferenceId}/m-f-ratio")
+    @GET
+    public double maleToFemaleRatio(@PathParam("conferenceId") long id);
+
+    @Path("/{conferenceId}/msg-count")
+    @GET
+    public int messageCount(@PathParam("conferenceId") long id, @QueryParam("conversationId") long convoId);
+
+    @Path("/{conferenceId}/msg-count-total")
+    @GET
+    public int messageCount(@PathParam("conferenceId") long id);
+
+    @Path("/{conferenceId}/user-count")
+    @GET
+    public int userCount(@PathParam("conferenceId") long id, @QueryParam("conversationId") long convoId);
+
+    @Path("/{conferenceId}/user-count-total")
+    @GET
+    public int userCount(@PathParam("conferenceId") long id);
+
+    @Path("/{conferenceId}/contrib-users")
+    @GET
+    public int contributingUsers(@PathParam("conferenceId") long id, @QueryParam("conversationId") long convoId, @QueryParam("current") boolean current);
+
     @GET
     @Path("/{conferenceId}/conversations")
     public List<Conversation> getConversations(@PathParam("conferenceId") long id);

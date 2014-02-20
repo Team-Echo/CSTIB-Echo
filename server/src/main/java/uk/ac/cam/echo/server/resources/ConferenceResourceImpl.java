@@ -72,7 +72,37 @@ public class ConferenceResourceImpl implements ConferenceResource {
 
     @Override
     public int activity(long id, long millis) {
-        return AnalystFactory.get(id).activity(millis);
+        return AnalystFactory.get(id).hail(millis);
+    }
+
+    @Override
+    public double maleToFemaleRatio(long id) {
+        return AnalystFactory.get(id).maleToFemaleRatio();
+    }
+
+    @Override
+    public int messageCount(long id, long convoId) {
+        return AnalystFactory.get(id).messageCount(convoId);
+    }
+
+    @Override
+    public int messageCount(long id) {
+        return AnalystFactory.get(id).messageCount();
+    }
+
+    @Override
+    public int userCount(long id, long convoId) {
+        return AnalystFactory.get(id).userCount(convoId);
+    }
+
+    @Override
+    public int userCount(long id) {
+        return AnalystFactory.get(id).userCount();
+    }
+
+    @Override
+    public int contributingUsers(long id, long convoId, boolean current) {
+        return AnalystFactory.get(id).contributingUsers(convoId, current);
     }
 
     public Conference get(long id) {
