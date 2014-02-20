@@ -85,7 +85,8 @@ public class EchoService extends Service {
                      Intent intent = new Intent(context, ConversationListActivity.class);
                      intent.putExtra("_id", 3/* msg.getConversation().getId()*/);
                      PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, 0);
-                     String user = msg.getSenderName();
+                     //String user = msg.getSenderName();
+                     String user = msg.getSender().getFirstName();
 
                      Notification.Builder notifBuilder = new Notification.Builder(context)
                              .setContentTitle(conversation.getName())

@@ -140,6 +140,9 @@ public class ConversationListActivity extends Activity
 	        case R.id.action_add_conv:
 	        	addConversation();
 	        	return true;
+            case R.id.action_user:
+                openUserSettings();
+                return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
@@ -173,6 +176,11 @@ public class ConversationListActivity extends Activity
     private void openScan() {
         IntentIntegrator scanIntegrator = new IntentIntegrator(this);
         scanIntegrator.initiateScan();
+    }
+
+    private void openUserSettings() {
+        Intent intent = new Intent(this, UserSettingsActivity.class);
+        startActivity(intent);
     }
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {

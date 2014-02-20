@@ -127,7 +127,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 	
 	@Override
 	public int getItemViewType(int position) {
-        return (data.get(position).getSenderName()).equals(user.getDisplayName())? 0 : 1;
+        //return (data.get(position).getSenderName()).equals(user.getDisplayName())? 0 : 1;
+        return ((MessageData)data.get(position)).getSenderId() == user.getId() ? 0 : 1;
 	}
 	
 	@Override

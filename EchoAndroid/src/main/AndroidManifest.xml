@@ -47,6 +47,11 @@
             android:name="uk.ac.cam.echo.activities.RegisterActivity"
             android:label="Join Echo" >
         </activity>
+
+        <activity
+            android:name="uk.ac.cam.echo.activities.UserSettingsActivity"
+            android:label="User Settings" >
+        </activity>
         
         <service
             android:name="uk.ac.cam.echo.services.EchoService" />
