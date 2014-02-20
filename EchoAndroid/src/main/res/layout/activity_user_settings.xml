@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp">
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:id="@+id/avatarImg"
+            android:layout_margin="20dp"
+            android:layout_gravity="center_horizontal"
+            android:padding="3dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/king"
+            android:background="@color/midBlue"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Display name"
+            android:textColor="@color/buttonBackground"
+            android:typeface="sans"
+            android:textAllCaps="true"
+            android:layout_below="@id/avatarImg"
+            android:id="@+id/dispText"
+            android:layout_alignParentLeft="true"/>
+        <View
+            android:id="@+id/line0"
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="@color/midBlue"
+            android:layout_below="@+id/dispText"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:singleLine="true"
+            android:ems="10"
+            android:id="@+id/dispNameInput"
+            android:hint="Display name"
+            android:layout_below="@id/line0" />
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/buttonBackground"
+            android:typeface="sans"
+            android:textAllCaps="true"
+            android:layout_below="@id/dispNameInput"
+            android:id="@+id/emailText"
+            android:layout_alignParentLeft="true"/>
+        <View
+            android:id="@+id/line1"
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="@color/midBlue"
+            android:layout_below="@+id/emailText"/>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:singleLine="true"
+            android:hint="Email"
+            android:ems="10"
+            android:id="@+id/emailInput"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/line1"/>
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Phone number"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/buttonBackground"
+            android:typeface="sans"
+            android:textAllCaps="true"
+            android:layout_below="@id/emailInput"
+            android:id="@+id/phoneText"
+            android:layout_alignParentLeft="true"/>
+        <View
+            android:id="@+id/line2"
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="@color/midBlue"
+            android:layout_below="@+id/phoneText"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:singleLine="true"
+            android:ems="10"
+            android:id="@+id/phoneInput"
+            android:hint="Phone Number"
+            android:layout_below="@id/line2"
+            android:layout_alignLeft="@id/emailInput"
+            android:layout_alignRight="@id/emailInput" />
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Job Title"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/buttonBackground"
+            android:typeface="sans"
+            android:textAllCaps="true"
+            android:layout_below="@id/phoneInput"
+            android:id="@+id/jobText"
+            android:layout_alignParentLeft="true"/>
+        <View
+            android:id="@+id/line3"
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="@color/midBlue"
+            android:layout_below="@+id/jobText"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:singleLine="true"
+            android:ems="10"
+            android:id="@+id/jobInput"
+            android:hint="Job"
+            android:layout_below="@id/line3"
+            android:layout_alignLeft="@id/emailInput"
+            android:layout_alignRight="@id/emailInput" />
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Company"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/buttonBackground"
+            android:typeface="sans"
+            android:textAllCaps="true"
+            android:layout_below="@id/jobInput"
+            android:id="@+id/companyText"
+            android:layout_alignParentLeft="true"/>
+        <View
+            android:id="@+id/line4"
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="@color/midBlue"
+            android:layout_below="@+id/companyText"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:singleLine="true"
+            android:ems="10"
+            android:id="@+id/companyInput"
+            android:hint="Company"
+            android:layout_below="@id/line4"
+            android:layout_alignLeft="@id/emailInput"
+            android:layout_alignRight="@id/emailInput" />
+
+
+        <Button
+            android:id="@+id/updateUserButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/buttonBackground"
+            android:text="@string/update"
+            android:textColor="@color/white"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="5dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
+
+</ScrollView>
