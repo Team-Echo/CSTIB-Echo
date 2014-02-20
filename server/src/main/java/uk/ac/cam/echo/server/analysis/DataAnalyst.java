@@ -137,7 +137,113 @@ public class DataAnalyst implements ServerDataAnalyst
     }
 
     @Override
+    public List<Conversation> onlyKeywordSearch(String keyword, int n)
+    {
+        Conference parentConference = (Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, parentID);
+
+        keyword = keyword.toLowerCase(Locale.ENGLISH);
+        String[] keywords = keyword.split("\\s+");
+
+        List<Conversation> ret = new LinkedList<Conversation>();
+
+        Collection<Conversation> conversations = parentConference.getConversationSet();
+
+        PriorityQueue<DoubleConversationPair> pq = new PriorityQueue<DoubleConversationPair>(11, new ConversationComparatorByMatchFrequency());
+
+        for (Conversation C : conversations)
+        {
+            Collection<Message> messages = C.getMessages();
+            double totalScore = 0.0;
+            for (Message msg : messages)
+            {
+                List<String> baseWords = MessageLexer.lexAnalyse(msg.getContents(), dictionary, affix, stopWords);
+                if (baseWords.isEmpty()) continue;
+                double total = (double)baseWords.size();
+                for (String word : baseWords)
+                {
+                    for (String kwd : keywords)
+                    {
+                        totalScore += StringMatcher.Match(kwd, word) / total;
+                    }
+                }
+            }
+            pq.offer(new DoubleConversationPair(totalScore, C));
+        }
+
+        while (n > 0 && !pq.isEmpty())
+        {
+            ret.add(pq.poll().getConvo());
+            n--;
+        }
+
+        return ret;
+    }
+
+    @Override
     public List<Conversation> onlyTagSearch(String keyword, int n)
+    {
+        Conference parentConference = (Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, parentID);
+
+        keyword = keyword.toLowerCase(Locale.ENGLISH);
+        String[] keywords = keyword.split("\\s+");
+
+        List<Conversation> ret = new LinkedList<Conversation>();
+
+        Collection<Conversation> conversations = parentConference.getConversationSet();
+
+        for (Conversation C : conversations)
+        {
+            boolean foundByTag = false;
+            Collection<Tag> tags = C.getTags();
+            for (Tag t : tags)
+            {
+                for (String kwd : keywords)
+                {
+                    if (t.getName().toLowerCase(Locale.ENGLISH).contains(kwd))
+                    {
+                        ret.add(C);
+                        n--;
+                        foundByTag = true;
+                        break;
+                    }
+                }
+                if (foundByTag) break;
+            }
+            if (n == 0) break;
+        }
+
+        return ret;
+    }
+
+    @Override
+    public List<Conversation> onlyNameSearch(String keyword, int n)
+    {
+        Conference parentConference = (Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, parentID);
+
+        keyword = keyword.toLowerCase(Locale.ENGLISH);
+        String[] keywords = keyword.split("\\s+");
+
+        List<Conversation> ret = new LinkedList<Conversation>();
+        Collection<Conversation> conversations = parentConference.getConversationSet();
+
+        for (Conversation C : conversations)
+        {
+            for (String kwd : keywords)
+            {
+                if (C.getName().toLowerCase(Locale.ENGLISH).contains(kwd))
+                {
+                    ret.add(C);
+                    break;
+                }
+            }
+            if (ret.size() == n) break;
+        }
+
+        return ret;
+    }
+
+    @Override
+    public List<Conversation> nameAndTagSearch(String keyword, int n)
     {
         Conference parentConference = (Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, parentID);
 
@@ -200,34 +306,6 @@ public class DataAnalyst implements ServerDataAnalyst
 
         return ret;
     }
-
-    @Override
-    public List<Conversation> onlyNameSearch(String keyword, int n)
-    {
-        Conference parentConference = (Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, parentID);
-
-        keyword = keyword.toLowerCase(Locale.ENGLISH);
-        String[] keywords = keyword.split("\\s+");
-
-        List<Conversation> ret = new LinkedList<Conversation>();
-        Collection<Conversation> conversations = parentConference.getConversationSet();
-
-        for (Conversation C : conversations)
-        {
-            for (String kwd : keywords)
-            {
-                if (C.getName().toLowerCase(Locale.ENGLISH).contains(kwd))
-                {
-                    ret.add(C);
-                    break;
-                }
-            }
-            if (ret.size() == n) break;
-        }
-
-        return ret;
-    }
-
 
     @Override
     public List<Conversation> mostUsers(int n)

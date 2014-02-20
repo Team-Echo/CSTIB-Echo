@@ -36,6 +36,11 @@ public class ConferenceResourceImpl implements ConferenceResource {
     }
 
     @Override
+    public List<Conversation> onlyKeywordSearch(long id, String keyword, int n) {
+        return AnalystFactory.get(id).onlyKeywordSearch(keyword, n);
+    }
+
+    @Override
     public List<Conversation> onlyTagSearch(long id, String keyword, int n) {
         return AnalystFactory.get(id).onlyTagSearch(keyword, n);
     }
@@ -43,6 +48,11 @@ public class ConferenceResourceImpl implements ConferenceResource {
     @Override
     public List<Conversation> onlyNameSearch(long id, String keyword, int n) {
         return AnalystFactory.get(id).onlyNameSearch(keyword, n);
+    }
+
+    @Override
+    public List<Conversation> nameAndTagSearch(long id, String keyword, int n) {
+        return AnalystFactory.get(id).nameAndTagSearch(keyword, n);
     }
 
     @Override
