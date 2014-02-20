@@ -452,6 +452,7 @@ public class DataAnalyst implements ServerDataAnalyst
             }
         }
 
+        if (femaleCount == 0.0) return Double.POSITIVE_INFINITY;
         return maleCount / femaleCount;
     }
 
