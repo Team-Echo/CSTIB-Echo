@@ -19,7 +19,6 @@
             android:layout_gravity="center_horizontal"
             android:padding="3dp"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/king"
             android:background="@color/midBlue"
             />
 
@@ -43,7 +42,6 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="phone"
             android:singleLine="true"
             android:ems="10"
             android:id="@+id/dispNameInput"
@@ -136,7 +134,6 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="phone"
             android:singleLine="true"
             android:ems="10"
             android:id="@+id/jobInput"
@@ -168,7 +165,6 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="phone"
             android:singleLine="true"
             android:ems="10"
             android:id="@+id/companyInput"
@@ -185,8 +181,8 @@
             android:background="@color/buttonBackground"
             android:text="@string/update"
             android:textColor="@color/white"
-            android:layout_alignParentBottom="true"
             android:layout_margin="5dp"
+            android:layout_below="@id/companyInput"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"/>
 

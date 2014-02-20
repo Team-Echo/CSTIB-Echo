@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -25,6 +26,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import uk.ac.cam.echo.R;
+import uk.ac.cam.echo.Toaster;
 import uk.ac.cam.echo.client.ClientApi;
 import uk.ac.cam.echo.client.data.UserData;
 import uk.ac.cam.echo.data.User;
@@ -38,6 +40,7 @@ public class UserSettingsActivity extends Activity implements View.OnClickListen
             echoService = ((EchoService.LocalBinder)service).getService();
             api = echoService.getApi();
             user = echoService.getUser();
+            Log.d("USER", "user is now " + user.getUsername());
             onServiceReady();
         }
         public void onServiceDisconnected(ComponentName className) {
@@ -47,6 +50,8 @@ public class UserSettingsActivity extends Activity implements View.OnClickListen
 
     ClientApi api;
     User user;
+
+    Bitmap avatarBM;
 
     private ImageView avatar;
     private EditText display;
@@ -77,6 +82,22 @@ public class UserSettingsActivity extends Activity implements View.OnClickListen
         update = (Button)findViewById(R.id.updateUserButton);
 
         update.setOnClickListener(this);
+
+        Log.d("USER", "onCreate");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Intent service = new Intent(this, EchoService.class);
+        Log.d("UserSettingsActivity", "onResume - binding EchoService");
+        bindService(service, connection, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unbindService(connection);
     }
 
     private void onServiceReady() {
@@ -85,10 +106,15 @@ public class UserSettingsActivity extends Activity implements View.OnClickListen
         new AsyncTask<Void,Void,Bitmap>() {
             @Override
             protected Bitmap doInBackground(Void... voids) {
-               if(user.getAvatarLink() != null) {
-                    //Bitmap bimage=  getBitmapFromURL(user.getAvatarLink());
-                    Bitmap bimage=  getBitmapFromURL("http://gravatar.com/avatar/9930c6e29461779a18f78f53ddef28e9?s=200&r=x");
+                displayText = user.getDisplayName();
+                emailText = user.getEmail();
+                phoneText = user.getPhoneNumber();
+                jobText = user.getJobTitle();
+                companyText = user.getCompany();
 
+               if(user.getAvatarLink() != null) {
+                    Bitmap bimage=  getBitmapFromURL(user.getAvatarLink()+"&s=200");
+                    Log.d("BITMAP", (bimage==null) + "");
                     return bimage;
                 } return null;
             }
@@ -96,22 +122,19 @@ public class UserSettingsActivity extends Activity implements View.OnClickListen
             @Override
             protected void onPostExecute(Bitmap bitmap) {
                 super.onPostExecute(bitmap);
-                if(bitmap != null)
-                    avatar.setImageBitmap(bitmap);
+
+                if(!displayText.equals("")) display.setText(displayText);
+                if(!emailText.equals("")) email.setText(emailText);
+                if(!phoneText.equals("")) phone.setText(phoneText);
+                if(!jobText.equals("")) job.setText(jobText);
+                if(!companyText.equals("")) company.setText(companyText);
+
+                avatar.setImageBitmap(bitmap);
+                //avatarBM = bitmap;
             }
         }.execute();
 
-        displayText = user.getDisplayName();
-        emailText = user.getEmail();
-        phoneText = user.getPhoneNumber();
-        jobText = user.getJobTitle();
-        companyText = user.getCompany();
-
-        if(!displayText.equals("")) display.setText(displayText);
-        if(!emailText.equals("")) email.setText(displayText);
-        if(!phoneText.equals("")) phone.setText(displayText);
-        if(!jobText.equals("")) job.setText(displayText);
-        if(!companyText.equals("")) company.setText(displayText);
+        Log.d("USER", "onServerReady");
     }
 
     // Set up action-bar and Search functionality
@@ -139,21 +162,24 @@ public class UserSettingsActivity extends Activity implements View.OnClickListen
     // Update the user account
     @Override
     public void onClick(View view) {
+
         if(view.getId() == R.id.updateUserButton) {
 
-            new AsyncTask<String, Void, Void>() {
+            new AsyncTask<String, Void, Boolean>() {
 
                 @Override
-                protected Void doInBackground(String... args) {
-
+                protected Boolean doInBackground(String... args) {
+                    Log.d("USER", ""+(user == null));
                     if(!args[0].equals(displayText))
                         ((UserData)user).setDisplayName(args[0]);
 
                     if(!args[1].equals(emailText))
                         user.setEmail(args[1]);
 
-                    if(!args[2].equals(phoneText))
+                    if(!args[2].equals(phoneText)) {
                         user.setPhoneNumber(args[2]);
+                        Log.d("USER", "setting phone number " + args[2]);
+                    }
 
                     if(!args[3].equals(jobText))
                         user.setJobTitle(args[3]);
@@ -163,7 +189,13 @@ public class UserSettingsActivity extends Activity implements View.OnClickListen
 
                     user.save();
 
-                    return null;
+                    return true;
+                }
+
+                @Override
+                protected void onPostExecute(Boolean aBoolean) {
+                    super.onPostExecute(aBoolean);
+                    Toaster.displayShort(getApplicationContext(), "User updated!");
                 }
             }.execute(display.getText().toString(),     //args[0]
                       email.getText().toString(),       //args[1]
