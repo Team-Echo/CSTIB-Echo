@@ -2,10 +2,12 @@ package uk.ac.cam.echo.server.resources;
 
 import uk.ac.cam.echo.data.Conference;
 import uk.ac.cam.echo.data.Conversation;
+import uk.ac.cam.echo.data.Message;
 import uk.ac.cam.echo.data.User;
 import uk.ac.cam.echo.data.resources.ConferenceResource;
 import uk.ac.cam.echo.server.HibernateUtil;
 import uk.ac.cam.echo.server.models.ConferenceModel;
+import uk.ac.cam.echo.server.models.UserModel;
 
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
@@ -67,7 +69,14 @@ public class ConferenceResourceImpl implements ConferenceResource {
 
     @Override
     public List<Conversation> recommend(long id, long userID, int n) {
-        throw  new UnsupportedOperationException("Not Implemented yet");
+        User user = (User) HibernateUtil.getTransaction().get(UserModel.class, userID);
+        return AnalystFactory.get(id).recommend(user, n);
+    }
+
+    @Override
+    public Message notify(long id, long userID, long currConversationID, long millis) {
+        User user = (User) HibernateUtil.getTransaction().get(UserModel.class, userID);
+        return AnalystFactory.get(id).notify(user, currConversationID, millis);
     }
 
     @Override
