@@ -129,7 +129,6 @@ public class ConversationDetailActivity extends Activity implements View.OnClick
         protected void onPostExecute(Message newMsg) {
             cf.getListView().setSelection(cf.getAdapter().getCount()-1);
             send.setVisibility(View.VISIBLE);
-            Toaster.displayShort(getApplicationContext(), newMsg.getSenderName());
         }
     }
 }

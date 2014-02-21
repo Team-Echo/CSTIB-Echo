@@ -10,12 +10,19 @@
     <item android:id="@+id/action_add_conv"
         android:title="@string/addConversation"
         android:icon="@drawable/ic_action_add_group"
-        android:showAsAction="ifRoom" />
+        android:showAsAction="never" />
     
     <item android:id="@+id/action_scan"
         android:title="@string/action_scan"
         android:icon="@drawable/ic_action_camera"
-        android:showAsAction="ifRoom"
+        android:showAsAction="never"
         />
+
+    <item android:id="@+id/action_user"
+        android:title="@string/user_settings"
+        android:icon="@drawable/ic_action_camera"
+        android:showAsAction="never"
+        />
+
 
 </menu>

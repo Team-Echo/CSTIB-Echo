@@ -120,18 +120,13 @@ public class ConversationDialog extends DialogFragment implements
         protected Conversation doInBackground(Long... params) {
 
             Conversation conversation = api.conversationResource.get(params[0]);
-            //Collection<User> users = conversation.getUsers();
+            Collection<User> users = conversation.getUsers();
             Collection<Tag> tags = conversation.getTags();
-            tagText = ConversationStringUtil.getTagText(tags);
 
             convName = conversation.getName();
-
-//            StringBuilder userBuilder = new StringBuilder();
-//            for(User u : users ) {
-//                userBuilder.append(u.getUsername() + " ");
-//            }
-            //usersText = userBuilder.toString();
-            //onlineText = users.size() + " users online";
+            onlineText = ConversationStringUtil.getOnlineText(users);
+            usersText = ConversationStringUtil.getUserText(users);
+            tagText = ConversationStringUtil.getTagText(tags);
 
             return conversation;
         }
@@ -144,7 +139,6 @@ public class ConversationDialog extends DialogFragment implements
                 return;
             }
 
-
             progress.setVisibility(View.GONE);
 
             if(getDialog() != null) {
@@ -154,11 +148,9 @@ public class ConversationDialog extends DialogFragment implements
                 title.setText(convName);
             }
 
-            //users.setText(usersText);
-            //tags.setText(tagsText);
-            users.setText("Yojan Alex Petar Mona Philip");
+            users.setText(usersText);
             tags.setText(tagText);
-            online.setText("5 users online");
+            online.setText(onlineText);
         }
     }
 }

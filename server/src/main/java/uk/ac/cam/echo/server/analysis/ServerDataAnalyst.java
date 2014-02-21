@@ -1,6 +1,7 @@
 package uk.ac.cam.echo.server.analysis;
 
 import uk.ac.cam.echo.data.Conversation;
+import uk.ac.cam.echo.data.Message;
 import uk.ac.cam.echo.data.User;
 
 import java.util.List;
@@ -92,6 +93,17 @@ public interface ServerDataAnalyst
      @return            The list of (up to n) conversations that we are suggesting to the user, sorted descending by relevance.
     */
     public List<Conversation> recommend(User user, int n);
+
+    /**
+     Returns the latest message in a Conversation
+     that would most match some User's interests.
+
+     @param user        The User we are querying for.
+     @param currentId   The User's current conversation id (ruled out). Set to -1 to not rule out any conversation.
+     @param millis      The size of the latest message interval to consider, in milliseconds.
+     @return            The Message that the user should be notified about.
+    */
+    public Message notify(User user, long currentId, long millis);
 
     /**
      Displays the most active conversations in terms of total message count.
