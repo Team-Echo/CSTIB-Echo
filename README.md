@@ -1,7 +1,10 @@
 CSTIB-Echo
 ==========
 [![Build Status](https://magnum.travis-ci.com/PetarV-/CSTIB-Echo.png?token=f8DsUwQyGsdjFwJspyzQ&branch=master)](https://magnum.travis-ci.com/PetarV-/CSTIB-Echo)
+
 [![Project Status](http://stillmaintained.com/PetarV-/CSTIB-Echo.png)](http://stillmaintained.com/PetarV-/CSTIB-Echo)
+
+![CC-BY-NC-ND Licence](http://i.creativecommons.org/l/by-nc-nd/3.0/88x31.png)
 
 *Client: Catherine White, [BT](http://www.bt.com)*
 
