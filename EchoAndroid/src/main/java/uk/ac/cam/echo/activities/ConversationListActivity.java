@@ -67,6 +67,9 @@ public class ConversationListActivity extends Activity
 
         clf.setCommunicator(this);
 
+        long id = getIntent().getLongExtra("_id", -1);
+        if(id != -1) respond(id);
+
         handleIntent(getIntent());
     }
 
@@ -96,7 +99,7 @@ public class ConversationListActivity extends Activity
 			ConversationDialog convFrag =
 					(ConversationDialog)manager.findFragmentById(R.id.convFrame);
 			if(convFrag == null || convFrag.getShownIndex() != id) {
-				convFrag = ConversationDialog.newInstance(id, getService().getUser());
+				convFrag = ConversationDialog.newInstance(id, getService());
                 convFrag.setApi(getService().getApi());
 				FragmentTransaction ft = manager.beginTransaction();
 				ft.replace(R.id.convFrame, convFrag);
@@ -105,7 +108,7 @@ public class ConversationListActivity extends Activity
 			}
 		} else {
 	
-			ConversationDialog cd = ConversationDialog.newInstance(id, getService().getUser());
+			ConversationDialog cd = ConversationDialog.newInstance(id, getService());
             cd.setApi(getService().getApi());
 			cd.show(manager, "conversation_info");
 			
