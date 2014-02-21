@@ -15,7 +15,7 @@
     <item android:id="@+id/action_scan"
         android:title="@string/action_scan"
         android:icon="@drawable/ic_action_camera"
-        android:showAsAction="ifRoom"
+        android:showAsAction="never"
         />
 
     <item android:id="@+id/action_user"

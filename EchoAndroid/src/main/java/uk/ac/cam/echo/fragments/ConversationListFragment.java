@@ -68,7 +68,6 @@ public class ConversationListFragment extends Fragment implements
 	public void openConversation(long id) {
         int pos = adapter.getPosition(id);
 
-        Toaster.displayShort(context, pos+"");
 		listView.performItemClick(
 				listView.getAdapter().getView(pos, null, null),
 				pos,
