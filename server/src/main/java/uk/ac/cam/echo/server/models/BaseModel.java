@@ -29,7 +29,18 @@ public class BaseModel {
         }
 
         for (String f: allowed) {
-            sanitizieLong(props, f);
+            try {
+                Class type = PropertyUtils.getPropertyDescriptor(this, f).getPropertyType();
+                if (type.equals(Long.class))
+                    sanitizieLong(props, f);
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                //ignore
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+
             if (!props.containsKey(f))
                 continue;
             try {
