@@ -15,12 +15,9 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.animation.Interpolator;
-import javafx.animation.Timeline;
-import javafx.animation.TranslateTransition;
-import javafx.animation.TranslateTransitionBuilder;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -30,19 +27,24 @@ import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.RotateEvent;
 import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
+import javafx.stage.Stage;
 import uk.ac.cam.echo.TouchClient.ConfrenceStats.Tuple;
 import uk.ac.cam.echo.data.Conversation;
+import uk.ac.cam.echo.data.Message;
 import uk.ac.cam.echo.data.User;
 
 /**
@@ -52,25 +54,25 @@ import uk.ac.cam.echo.data.User;
  */
 public class GUIController implements Initializable {
     
-    private int POLLDELAY = 60000;
+    private final int POLLDELAY = 60000;
     
     //@FXML tag indicates that the veriable has been injected from the FXML code
     
     @FXML
     private ListView conversation1_messages;
-    private ObservableList<String> messages1;
+    private ObservableList<Message> messages1;
     @FXML
     private ListView conversation2_messages;
-    private ObservableList<String> messages2;
+    private ObservableList<Message> messages2;
     @FXML
     private ListView conversation3_messages;
-    private ObservableList<String> messages3;
+    private ObservableList<Message> messages3;
     @FXML
     private ListView conversation4_messages;
-    private ObservableList<String> messages4;
+    private ObservableList<Message> messages4;
     @FXML
     private ListView conversation5_messages;
-    private ObservableList<String> messages5;
+    private ObservableList<Message> messages5;
     
     @FXML
     private ImageView conversation1_QR;
@@ -133,29 +135,98 @@ public class GUIController implements Initializable {
         return (HashMap<Long,Integer>)idtopane.clone();
     }
     
-    private void addMessage1(String mess){
+    private void addMessage1(Message mess){
         messages1.add(mess);
         conversation1_messages.setItems(messages1);
     }
-    private void addMessage2(String mess){
+    private void addMessage2(Message mess){
         messages2.add(mess);
         conversation2_messages.setItems(messages2);
     }
-    private void addMessage3(String mess){
+    private void addMessage3(Message mess){
         messages3.add(mess);
         conversation3_messages.setItems(messages3);
     }   
-    private void addMessage4(String mess){
+    private void addMessage4(Message mess){
         messages4.add(mess);
         conversation4_messages.setItems(messages4);
     }   
-    private void addMessage5(String mess){
+    private void addMessage5(Message mess){
         messages5.add(mess);
         conversation5_messages.setItems(messages5);
     }
     
     @FXML Text pie_chart_lable;
+    @FXML Button return_button;
+    @FXML Button Activity_button;
+    @FXML Button ConversationList_button;
+    @FXML Button messageBreakdown_button;
     private void setupGlobalStats(){
+        return_button.setVisible(false);
+        stats_conversationlist.setVisible(false);
+        global_stats_pie.setVisible(false);
+        global_stats_line.setVisible(false);
+        
+        Activity_button.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent t) {
+                if (Activity_button.visibleProperty().get()){
+                    return_button.setVisible(true);
+                    stats_conversationlist.setVisible(false);
+                    global_stats_pie.setVisible(false);
+                    global_stats_line.setVisible(true);
+                    Activity_button.setVisible(false);
+                    ConversationList_button.setVisible(false);
+                    messageBreakdown_button.setVisible(false);
+                }
+            }
+        });
+        
+        ConversationList_button.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent t) {
+                if (ConversationList_button.visibleProperty().get()){
+                    return_button.setVisible(true);
+                    stats_conversationlist.setVisible(true);
+                    global_stats_pie.setVisible(false);
+                    global_stats_line.setVisible(false);
+                    Activity_button.setVisible(false);
+                    ConversationList_button.setVisible(false);
+                    messageBreakdown_button.setVisible(false);
+                }
+            }
+        });
+        
+        messageBreakdown_button.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent t) {
+                if (messageBreakdown_button.visibleProperty().get()){
+                    return_button.setVisible(true);
+                    stats_conversationlist.setVisible(false);
+                    global_stats_pie.setVisible(true);
+                    global_stats_line.setVisible(false);
+                    Activity_button.setVisible(false);
+                    ConversationList_button.setVisible(false);
+                    messageBreakdown_button.setVisible(false);
+                }
+            }
+        });
+        
+        return_button.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent t) {
+                if (return_button.visibleProperty().get()){
+                    return_button.setVisible(false);
+                    stats_conversationlist.setVisible(false);
+                    global_stats_pie.setVisible(false);
+                    global_stats_line.setVisible(false);
+                    Activity_button.setVisible(true);
+                    ConversationList_button.setVisible(true);
+                    messageBreakdown_button.setVisible(true);
+                }
+            }
+        });
+        
         conversationList = new MessageDisplayList();
         stats_conversationlist.setCellFactory(new ConversationListCellFactory());
         
@@ -177,14 +248,12 @@ public class GUIController implements Initializable {
      * a function to setup all the event handlers for coversation1
      */
     private void setupConversationPane1(){
-      TranslateTransition transTransition = TranslateTransitionBuilder.create()
-        .duration(new Duration(7500))
-        .node(conversation1_name)
-        .toX(-100)
-        .interpolator(Interpolator.LINEAR)
-        .cycleCount(Timeline.INDEFINITE)
-        .build();
-      transTransition.play();
+        for (Node node : conversation1_name.lookupAll(".ScrollBar")) {
+                    if (node instanceof ScrollBar){
+                        node.setVisible(false);
+                    }
+                }
+        
         conversation1_name.setWrapText(true);
         conversation1_messages.setCellFactory(new messageCellFactory());
         final Delta dragDeltaMouse = new Delta();
@@ -192,6 +261,7 @@ public class GUIController implements Initializable {
             @Override 
             public void handle(MouseEvent mouseEvent) {
                 // record a delta distance for the drag and drop operation.
+                conversation1.toFront();
                 dragDeltaMouse.x = conversation1.getLayoutX() - mouseEvent.getSceneX();
                 dragDeltaMouse.y = conversation1.getLayoutY() - mouseEvent.getSceneY();
                 conversation1.setCursor(Cursor.MOVE);
@@ -215,10 +285,11 @@ public class GUIController implements Initializable {
             }
         });
         final Delta dragDeltaTouch = new Delta();
-        conversation1.setOnTouchPressed(new EventHandler<TouchEvent>(){
+        conversation1.setOnTouchStationary(new EventHandler<TouchEvent>(){
            @Override
            public void handle(TouchEvent t) {
                 if (dragDeltaTouch.testAndPress()){
+                    conversation1.toFront();
                     dragDeltaTouch.id = t.getTouchPoint().getId();
                     dragDeltaTouch.x = conversation1.getLayoutX() - t.getTouchPoint().getSceneX();
                     dragDeltaTouch.y = conversation1.getLayoutY() - t.getTouchPoint().getSceneY();
@@ -265,6 +336,7 @@ public class GUIController implements Initializable {
             @Override 
             public void handle(MouseEvent mouseEvent) {
                 // record a delta distance for the drag and drop operation.
+                conversation2.toFront();
                 dragDeltaMouse.x = conversation2.getLayoutX() - mouseEvent.getSceneX();
                 dragDeltaMouse.y = conversation2.getLayoutY() - mouseEvent.getSceneY();
                 conversation2.setCursor(Cursor.MOVE);
@@ -292,6 +364,7 @@ public class GUIController implements Initializable {
            @Override
            public void handle(TouchEvent t) {
                 if (dragDeltaTouch.testAndPress()){
+                    conversation2.toFront();
                     dragDeltaTouch.id = t.getTouchPoint().getId();
                     dragDeltaTouch.x = conversation2.getLayoutX() - t.getTouchPoint().getSceneX();
                     dragDeltaTouch.y = conversation2.getLayoutY() - t.getTouchPoint().getSceneY();
@@ -338,6 +411,7 @@ public class GUIController implements Initializable {
             @Override 
             public void handle(MouseEvent mouseEvent) {
                 // record a delta distance for the drag and drop operation.
+                conversation3.toFront();
                 dragDeltaMouse.x = conversation3.getLayoutX() - mouseEvent.getSceneX();
                 dragDeltaMouse.y = conversation3.getLayoutY() - mouseEvent.getSceneY();
                 conversation3.setCursor(Cursor.MOVE);
@@ -365,6 +439,7 @@ public class GUIController implements Initializable {
            @Override
            public void handle(TouchEvent t) {
                 if (dragDeltaTouch.testAndPress()){
+                    conversation3.toFront();
                     dragDeltaTouch.id = t.getTouchPoint().getId();
                     dragDeltaTouch.x = conversation3.getLayoutX() - t.getTouchPoint().getSceneX();
                     dragDeltaTouch.y = conversation3.getLayoutY() - t.getTouchPoint().getSceneY();
@@ -411,6 +486,7 @@ public class GUIController implements Initializable {
             @Override 
             public void handle(MouseEvent mouseEvent) {
                 // record a delta distance for the drag and drop operation.
+                conversation4.toFront();
                 dragDeltaMouse.x = conversation4.getLayoutX() - mouseEvent.getSceneX();
                 dragDeltaMouse.y = conversation4.getLayoutY() - mouseEvent.getSceneY();
                 conversation4.setCursor(Cursor.MOVE);
@@ -438,6 +514,7 @@ public class GUIController implements Initializable {
            @Override
            public void handle(TouchEvent t) {
                 if (dragDeltaTouch.testAndPress()){
+                    conversation4.toFront();
                     dragDeltaTouch.id = t.getTouchPoint().getId();
                     dragDeltaTouch.x = conversation4.getLayoutX() - t.getTouchPoint().getSceneX();
                     dragDeltaTouch.y = conversation4.getLayoutY() - t.getTouchPoint().getSceneY();
@@ -484,6 +561,7 @@ public class GUIController implements Initializable {
             @Override 
             public void handle(MouseEvent mouseEvent) {
                 // record a delta distance for the drag and drop operation.
+                conversation5.toFront();
                 dragDeltaMouse.x = conversation5.getLayoutX() - mouseEvent.getSceneX();
                 dragDeltaMouse.y = conversation5.getLayoutY() - mouseEvent.getSceneY();
                 conversation5.setCursor(Cursor.MOVE);
@@ -511,6 +589,7 @@ public class GUIController implements Initializable {
            @Override
            public void handle(TouchEvent t) {
                 if (dragDeltaTouch.testAndPress()){
+                    conversation5.toFront();
                     dragDeltaTouch.id = t.getTouchPoint().getId();
                     dragDeltaTouch.x = conversation5.getLayoutX() - t.getTouchPoint().getSceneX();
                     dragDeltaTouch.y = conversation5.getLayoutY() - t.getTouchPoint().getSceneY();
@@ -555,6 +634,7 @@ public class GUIController implements Initializable {
             @Override 
             public void handle(MouseEvent mouseEvent) {
                 // record a delta distance for the drag and drop operation.
+                stats_pane.toFront();
                 dragDeltaMouse.x = stats_pane.getLayoutX() - mouseEvent.getSceneX();
                 dragDeltaMouse.y = stats_pane.getLayoutY() - mouseEvent.getSceneY();
                 stats_pane.setCursor(Cursor.MOVE);
@@ -582,6 +662,7 @@ public class GUIController implements Initializable {
            @Override
            public void handle(TouchEvent t) {
                 if (dragDeltaTouch.testAndPress()){
+                    stats_pane.toFront();
                     dragDeltaTouch.id = t.getTouchPoint().getId();
                     dragDeltaTouch.x = stats_pane.getLayoutX() - t.getTouchPoint().getSceneX();
                     dragDeltaTouch.y = stats_pane.getLayoutY() - t.getTouchPoint().getSceneY();
@@ -812,6 +893,14 @@ public class GUIController implements Initializable {
                 mTC = er.getTouchClient();
             }else {System.err.println("the wrong resource type has been provided to the confrenceloadscreencontroller class a resource of type ECHOResource must be provided");System.exit(1);}
             init();
+            conversation1.getParent().setOnKeyPressed(new EventHandler<KeyEvent>(){
+                @Override
+                public void handle(KeyEvent t) {
+                    if (t.getCode().equals(KeyCode.F11)){
+                        ((Stage)conversation1.getScene().getWindow()).setFullScreen(true);
+                    }
+                }
+            });
     }    
     
     /**
@@ -819,18 +908,18 @@ public class GUIController implements Initializable {
     * @param ConversationID the id of the conversation the message is from
     * @exception NoMessageListException happens if pane is not a number between 1 and 5
     */
-    public void displayMessage(String s,long ConversationID) throws NoMessageListException{
+    public void displayMessage(Message m,long ConversationID) throws NoMessageListException{
         int pane = 10;
         try{//this NullPointerException ocurs if the item requested is not in the map
             pane = idtopane.get(ConversationID).intValue();
         } catch(NullPointerException e) {throw new NoMessageListException();}
         synchronized (idtopane){
             switch (pane){
-                case 1: addMessage1(s);break;
-                case 2: addMessage2(s);break;
-                case 3: addMessage3(s);break;
-                case 4: addMessage4(s);break;
-                case 5: addMessage5(s);break;
+                case 1: addMessage1(m);break;
+                case 2: addMessage2(m);break;
+                case 3: addMessage3(m);break;
+                case 4: addMessage4(m);break;
+                case 5: addMessage5(m);break;
                 default: break;
             }
         }

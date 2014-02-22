@@ -192,16 +192,14 @@ public class ServerConnection implements Runnable{
         displayPreviousMessages(c);
         Handler<Message> handler = new Handler<Message>(){
             @Override
-            public void handle(Message t) {
-                final String sender = t.getSender() == null ? "Anonymous" :t.getSender().getDisplayName();
-                final String message = (sender+" : "+t.getContents());
+            public void handle(final Message t) {
                 final long id = c.getId();
                 synchronized (mConversations){
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
                             try{
-                                mGUI.displayMessage(message, id);
+                                mGUI.displayMessage(t, id);
                                 mGUI.scrollToEnd(id);
                             } catch (NoMessageListException ex) {
                                 System.err.println(id);
@@ -233,7 +231,40 @@ public class ServerConnection implements Runnable{
                     @Override
                     public void run() {
                         try {
-                            mGUI.displayMessage("you have connected to "+c.getName(), c.getId());
+                            mGUI.displayMessage(new Message() {
+                                @Override
+                                public long getId() {return -1;}
+                                @Override
+                                public long getTimeStamp() {return System.currentTimeMillis();}
+                                @Override
+                                public User getSender() {return null;}
+                                @Override
+                                public String getSenderName() {return "local";}
+                                @Override
+                                public void setSenderName(String senderName) {return;}
+                                @Override
+                                public void setSender(User user) {return;}
+                                @Override
+                                public Conversation getConversation() {return c;}
+                                @Override
+                                public void setConversation(Conversation conversation) {}
+                                @Override
+                                public String getContents() {
+                                    return "you have connected to "+c.getName();
+                                }
+                                @Override
+                                public void setContents(String contents) {
+                                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                }
+                                @Override
+                                public void delete() {
+                                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                }
+                                @Override
+                                public void save() {
+                                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                }
+                            }, c.getId());
                         } catch (NoMessageListException ex) {
                             Logger.getGlobal().log(Level.SEVERE, null, ex);
                         }
@@ -242,14 +273,12 @@ public class ServerConnection implements Runnable{
             }
         }
         
-        for (Message msg: list){
-            String sender = msg.getSender() == null ? "Anonymous" : msg.getSender().getUsername();
-            final String message = sender.concat(" : ".concat(msg.getContents()));
+        for (final Message msg: list){
             Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
                         try{
-                            mGUI.displayMessage(message, c.getId());
+                            mGUI.displayMessage(msg, c.getId());
                         } catch (NoMessageListException ex) {
                             Logger.getGlobal().log (Level.SEVERE, "message from conversation "+c.getId()+" could not be displayed the map contains " +mGUI.getMap().toString(), ex);
                         }
