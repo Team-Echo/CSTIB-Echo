@@ -1,8 +1,16 @@
 package uk.ac.cam.echo.TouchClient;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ListResourceBundle;
+import java.util.logging.Handler;
 import java.util.logging.Level;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
@@ -38,6 +46,49 @@ public class TouchClient extends Application {
      */
     @Override
     public void start(final Stage primaryStage) throws IOException {
+        System.setProperty("java.util.logging.config.file", "logging.properties");
+        Logger.getGlobal().addHandler(new Handler(){
+            private final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+            private final File f = new File(Paths.get("").toAbsolutePath().toString()+"/TouchClientLog"+format.format(new Date(System.currentTimeMillis()))+".log" );
+            private final BufferedWriter write = new BufferedWriter(new FileWriter(f));
+            
+            @Override
+            public void publish(LogRecord record) {
+                try {
+                    write.append("["+record.getLevel().toString()+"] "+record.getMessage() );
+                    write.newLine();
+                    if(record.getThrown()!=null){
+                        for (StackTraceElement l: record.getThrown().getStackTrace()){
+                            write.append(l.toString());
+                            write.newLine();
+                        }
+                    }
+                    write.newLine();
+                    write.newLine();
+                    write.flush();
+                } catch (IOException ex) {
+                    System.err.println("there has been a problem writeing to files");
+                }
+            }
+
+            @Override
+            public void flush() {
+                try {
+                    write.flush();
+                } catch (IOException ex) {
+                    System.err.println("there has been a problem flushing files");
+                }
+            }
+
+            @Override
+            public void close() throws SecurityException {
+                try {
+                    write.close();
+                } catch (IOException ex) {
+                    System.err.println("there has been a problem colsing files");
+                }
+            }
+        });
         ECHOResource echoresource = new ECHOResource(this); 
         Parent root = FXMLLoader.load(getClass().getResource("ConfrenceLoadScreen.fxml"),echoresource);
         
@@ -164,7 +215,7 @@ public class TouchClient extends Application {
                 try {
                     root = FXMLLoader.load(getClass().getResource("ErrorMessagePopup.fxml"),errorRB);
                 } catch (IOException ex) {
-                    Logger.getLogger(TouchClient.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getGlobal().log(Level.SEVERE, null, ex);
                 }
         
                 Scene scene = new Scene(root);

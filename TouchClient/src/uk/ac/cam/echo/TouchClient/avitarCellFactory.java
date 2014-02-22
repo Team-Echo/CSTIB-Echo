@@ -34,14 +34,17 @@ class avitarCellFactory implements Callback<ListView<User>, ListCell<String>> {
                 @Override
                 public void updateItem(Object item, boolean empty) {
                     super.updateItem(item, empty);
-                    if (!isEmpty()) {         
+                    if (!isEmpty()) {
+                        cellContents = new GridPane();
                         User user = (User)item;
                         
                         name = (user.getUsername()==null?new Text("Anonymous"):new Text(user.getUsername()));
                         
                         avitar = new ImageView();
-                        avitar.setImage(true? new Image("http://www.able-removals.co.uk/wp-content/uploads/2013/10/avatar-male-silhouette-hi.png"):
-                                                new Image("http://www.able-removals.co.uk/wp-content/uploads/2013/10/avatar-male-silhouette-hi.png"));
+                        avitar.setFitHeight(50);
+                        avitar.setFitWidth(50);
+                        avitar.setImage(user.getAvatarLink()==null? new Image("http://www.gravatar.com/avatar/"):
+                                                new Image(user.getAvatarLink()));
                         
                         cellContents.add(avitar, 0, 0);
                         cellContents.add(name, 0, 1);

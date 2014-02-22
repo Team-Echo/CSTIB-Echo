@@ -64,8 +64,10 @@ public class EchoService extends Service {
 
     @Override
     public void onDestroy() {
-        getUser().setCurrentConversation(null);
-        getUser().save();
+        if(getUser() != null) {
+            getUser().setCurrentConversation(null);
+            getUser().save();
+        }
         super.onDestroy();
 
     }
@@ -85,7 +87,7 @@ public class EchoService extends Service {
                      Log.d("NOTIFY",""+ conversation.getId());
                      Context context = getApplicationContext();
                      Intent intent = new Intent(context, ConversationListActivity.class);
-                     intent.putExtra("_id", 3/* msg.getConversation().getId()*/);
+                     intent.putExtra("_id", 3/*msg.getSender().getCurrentConversation().getId()*/);
                      PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
                      String user = msg.getSender().getFirstName();
@@ -100,7 +102,8 @@ public class EchoService extends Service {
                              .setLargeIcon(avatar)
                              //.addAction(R.drawable.admin, "See", pIntent)
                              .setAutoCancel(true)
-                             .setContentText(user + ": " + msg.getContents());
+                             .setContentText(user + ": " + msg.getContents())
+                             .setTicker(user + ": " + msg.getContents());
 
                      return notifBuilder;
                  }
@@ -113,6 +116,44 @@ public class EchoService extends Service {
              }.execute(message);
          }
     }
+
+    public void notifyUpdate(Message message) {
+        if(message == null) return;
+        Log.d("NOTIF", "notify update called ");
+        new AsyncTask<Message, Void, Notification.Builder>(){
+            @Override
+            protected Notification.Builder doInBackground(Message... args) {
+                Message msg = args[0];
+                Context context = getApplicationContext();
+                Intent intent = new Intent(context, ConversationListActivity.class);
+                intent.putExtra("_id", 3/* msg.getSender().getCurrentConversation().getId()*/);
+                PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, 0);
+                Log.d("NOTIFY", msg == null ? "null" : "not null");
+                String user = msg.getSender().getFirstName();
+
+                Bitmap avatar = BitmapUtil.getBitmapFromURL(msg.getSender().getAvatarLink()+"&s=200");
+
+
+                Notification.Builder notifBuilder = new Notification.Builder(context)
+                        .setTicker("Overheard " /*+ msg.getConversation().getName()*/)
+                        .setContentTitle("Overheard " + msg.getSender().getDisplayName())
+                        .setContentIntent(pIntent)
+                        .setSmallIcon(android.R.drawable.ic_dialog_info)
+                        .setLargeIcon(avatar)
+                        .setAutoCancel(true)
+                        .setContentText(user + ": " + msg.getContents());
+
+                return notifBuilder;
+            }
+
+            @Override
+            protected void onPostExecute(Notification.Builder nb) {
+                super.onPostExecute(nb);
+                notificationManager.notify(1, nb.build());
+            }
+        }.execute(message);
+     }
+
 
    public void setNotifEnabled(boolean enabled) {
        Log.d("NOTIF", "notifications are now " + enabled);
