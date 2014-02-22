@@ -2,6 +2,7 @@ package uk.ac.cam.echo.data.resources;
 
 import uk.ac.cam.echo.data.Conference;
 import uk.ac.cam.echo.data.Conversation;
+import uk.ac.cam.echo.data.Message;
 import uk.ac.cam.echo.data.User;
 
 import javax.ws.rs.*;
@@ -48,7 +49,11 @@ public interface ConferenceResource extends RestResource<Conference> {
 
     @Path("/{conferenceId}/recommend")
     @GET
-    public List<Conversation> recommend(@PathParam("conferenceId") long id, @QueryParam("uid") long userID, @QueryParam("num") int n);
+    public List<Conversation> recommend(@PathParam("conferenceId") long id, @QueryParam("userId") long userID, @QueryParam("num") int n);
+
+    @Path("/{conferenceId}/notify")
+    @GET
+    public Message notify(@PathParam("conferenceId") long id, @QueryParam("userId") long userID, @QueryParam("currConversationId") long currConversationId, @QueryParam("millis") long millis);
 
     @Path("/{conferenceId}/most-messages")
     @GET

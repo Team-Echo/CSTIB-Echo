@@ -68,7 +68,6 @@ public class ConversationListFragment extends Fragment implements
 	public void openConversation(long id) {
         int pos = adapter.getPosition(id);
 
-        Toaster.displayShort(context, pos+"");
 		listView.performItemClick(
 				listView.getAdapter().getView(pos, null, null),
 				pos,
@@ -115,8 +114,9 @@ public class ConversationListFragment extends Fragment implements
 			super.onPostExecute(result);
 
 			if(adapter == null) {
-				adapter = new ConversationAdapter(context, R.layout.conv_list_row, result);
-                adapter.setApi(api);
+				//adapter = new ConversationAdapter(context, R.layout.conv_list_row, result);
+                adapter = ConversationAdapter.newInstance(context, R.layout.conv_list_row, result, api);
+
 				listView.setAdapter(adapter);
                 adapter.setListViewListener((ConversationListActivity)getActivity());
 				listView.setOnItemClickListener(ConversationListFragment.this);

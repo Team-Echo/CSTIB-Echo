@@ -26,6 +26,7 @@ import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.Message;
 import uk.ac.cam.echo.data.Tag;
 import uk.ac.cam.echo.data.User;
+import uk.ac.cam.echo.services.EchoService;
 
 public class ConversationDialog extends DialogFragment implements
 									OnClickListener{
@@ -39,7 +40,8 @@ public class ConversationDialog extends DialogFragment implements
 	private ProgressBar progress;
 
     private static ClientApi api;
-
+    private static User user;
+    private static EchoService echoService;
     private ConversationFragment cf;
 	private long id;
 	
@@ -60,7 +62,7 @@ public class ConversationDialog extends DialogFragment implements
 
 		join.setOnClickListener(this);
 
-        cf = ConversationFragment.newInstance(id, true);
+        cf = ConversationFragment.newInstance(id, true, echoService);
         cf.setApi(api);
         FragmentManager manager = getChildFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
@@ -78,11 +80,13 @@ public class ConversationDialog extends DialogFragment implements
 	}
 
 	// Factory to create dialog based on id
-	public static ConversationDialog newInstance(long id) {
+	public static ConversationDialog newInstance(long id, EchoService service) {
 		ConversationDialog cd = new ConversationDialog();
 		Bundle args = new Bundle();
 		args.putLong("_id", id);
 		cd.setArguments(args);
+        cd.setService(service);
+        user = service.getUser();
 		return cd;
 	}
 
@@ -93,15 +97,20 @@ public class ConversationDialog extends DialogFragment implements
 	@Override
 	public void onClick(View v) {
 		if(v.getId() == R.id.convJoinDialog) {
+            ConversationListActivity cla = (ConversationListActivity)getActivity();
+            if(id != cla.getService().getConversationId()) {
+                    cla.getService().listenToConversation(id);
+            }
+
 			Intent intent = new Intent(getActivity(), ConversationDetailActivity.class);
 			intent.putExtra("_id", id);
 			startActivity(intent);
-            ConversationListActivity cla = (ConversationListActivity)getActivity();
-            cla.getService().listenToConversation(id);
+
 		}
 	}
 
     public void setApi(ClientApi clientApi) { api = clientApi; }
+    public void setService(EchoService service) { echoService = service; }
 
     private class GetConversation extends AsyncTask<Long, Void, Conversation> {
 
@@ -114,18 +123,13 @@ public class ConversationDialog extends DialogFragment implements
         protected Conversation doInBackground(Long... params) {
 
             Conversation conversation = api.conversationResource.get(params[0]);
-            //Collection<User> users = conversation.getUsers();
+            Collection<User> users = conversation.getUsers();
             Collection<Tag> tags = conversation.getTags();
-            tagText = ConversationStringUtil.getTagText(tags);
 
             convName = conversation.getName();
-
-//            StringBuilder userBuilder = new StringBuilder();
-//            for(User u : users ) {
-//                userBuilder.append(u.getUsername() + " ");
-//            }
-            //usersText = userBuilder.toString();
-            //onlineText = users.size() + " users online";
+            onlineText = ConversationStringUtil.getOnlineText(users);
+            usersText = ConversationStringUtil.getUserText(users);
+            tagText = ConversationStringUtil.getTagText(tags);
 
             return conversation;
         }
@@ -138,7 +142,6 @@ public class ConversationDialog extends DialogFragment implements
                 return;
             }
 
-
             progress.setVisibility(View.GONE);
 
             if(getDialog() != null) {
@@ -148,11 +151,9 @@ public class ConversationDialog extends DialogFragment implements
                 title.setText(convName);
             }
 
-            //users.setText(usersText);
-            //tags.setText(tagsText);
-            users.setText("Yojan Alex Petar Mona Philip");
+            users.setText(usersText);
             tags.setText(tagText);
-            online.setText("5 users online");
+            online.setText(onlineText);
         }
     }
 }

@@ -13,7 +13,7 @@ public class ConversationStringUtil {
         if(users.size() > 0) {
             StringBuffer userString = new StringBuffer();
             for(User u : users)
-                userString.append(u.getUsername() +"; ");
+                userString.append(u.getUsername() +" ");
             return userString.toString();
         } else {
             return "No active users.";

@@ -21,5 +21,7 @@
     <string name="convTagsInput">Tags</string>
     <string name="addConversation">Add conversation</string>
     <string name="search_hint">Search conversations ...</string>
+    <string name="user_settings">User Profile</string>
+    <string name="update">Update</string>
 
 </resources>

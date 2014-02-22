@@ -18,17 +18,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Name"
+            android:textColor="@color/buttonBackground"
             android:typeface="sans"
+            android:textAllCaps="true"
             android:id="@+id/textView0"
             android:layout_alignParentLeft="true"/>
+        <View
+            android:id="@+id/line1"
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="@color/midBlue"
+            android:layout_below="@+id/textView0"/>
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/firstName"
             android:hint="First name"
+            android:layout_marginTop="5dp"
+            android:singleLine="true"
             android:imeOptions="actionNext"
-            android:layout_below="@+id/textView0"
+            android:layout_below="@+id/line1"
             android:layout_alignParentLeft="true"/>
 
         <EditText
@@ -36,6 +46,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/lastName"
             android:hint="Last name"
+            android:singleLine="true"
             android:imeOptions="actionNext"
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/firstName"
@@ -44,20 +55,30 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/buttonBackground"
             android:text="Username"
-            android:layout_marginTop="10dp"
+            android:textAllCaps="true"
+            android:layout_marginTop="15dp"
             android:typeface="sans"
             android:id="@+id/textView"
             android:layout_below="@+id/firstName"
             android:layout_alignParentLeft="true"/>
+        <View
+            android:id="@+id/line2"
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="@color/midBlue"
+            android:layout_below="@+id/textView"/>
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/usernameInput"
             android:hint="@string/username"
+            android:layout_marginTop="5dp"
+            android:singleLine="true"
             android:imeOptions="actionNext"
-            android:layout_below="@+id/textView"
+            android:layout_below="@+id/line2"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true" />
 
@@ -65,12 +86,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Password"
-            android:imeOptions="actionNext"
+            android:textColor="@color/buttonBackground"
+            android:textAllCaps="true"
             android:typeface="sans"
             android:id="@+id/textView1"
-            android:layout_marginTop="10dp"
-            android:layout_below="@+id/usernameInput"
-            android:layout_alignRight="@+id/textView" />
+            android:layout_marginTop="15dp"
+            android:layout_below="@+id/usernameInput" />
+
+        <View
+            android:id="@+id/line3"
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="@color/midBlue"
+            android:layout_below="@+id/textView1"/>
 
         <EditText
             android:layout_width="wrap_content"
@@ -78,9 +106,11 @@
             android:inputType="textPassword"
             android:ems="10"
             android:imeOptions="actionNext"
+            android:singleLine="true"
             android:id="@+id/passwordInput1"
             android:hint="@string/password"
-            android:layout_below="@+id/textView1"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/line3"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true" />
 
@@ -90,6 +120,8 @@
             android:inputType="textPassword"
             android:ems="10"
             android:id="@+id/passwordInput2"
+            android:layout_marginTop="2dp"
+            android:singleLine="true"
             android:layout_below="@+id/passwordInput1"
             android:layout_alignParentLeft="true"
             android:hint="@string/passwordVerify"

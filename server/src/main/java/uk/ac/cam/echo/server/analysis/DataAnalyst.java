@@ -13,7 +13,6 @@ import uk.ac.cam.echo.server.models.UserModel;
 import java.util.*;
 
 /**
- TODO.
  Author: Petar 'PetarV' Veličković
 
  An implementation of the ServerDataAnalyst interface.
@@ -362,7 +361,95 @@ public class DataAnalyst implements ServerDataAnalyst
     @Override
     public List<Conversation> recommend(User user, int n)
     {
-        return null;
+        Conference parentConference = (Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, parentID);
+
+        Map<String, Integer> keywords = UserKeyworder.extractKeywords(user);
+        if (keywords.isEmpty()) return null; // NO DATA TO QUERY UPON; should not happen!
+
+        Collection<Conversation> conversations = parentConference.getConversationSet();
+
+        PriorityQueue<DoubleConversationPair> pq = new PriorityQueue<DoubleConversationPair>(11, new ConversationComparatorByMatchFrequency());
+
+        List<Conversation> ret = new LinkedList<Conversation>();
+
+        for (Conversation C : conversations)
+        {
+            String normalisedName = C.getName().toLowerCase(Locale.ENGLISH).replaceAll("[^a-zA-Z ]"," ");
+            List<String> normalisedTags = new LinkedList<String>();
+            Collection<Tag> tags = C.getTags();
+            for (Tag T : tags)
+            {
+                normalisedTags.add(T.getName().toLowerCase(Locale.ENGLISH).replaceAll("[^a-zA-Z ]"," "));
+            }
+            double currScore = 0.0;
+            double total = (double)normalisedTags.size();
+            for (String kwd : keywords.keySet())
+            {
+                currScore += StringMatcher.Match(kwd, normalisedName) * (double)keywords.get(kwd);
+                if (normalisedTags.isEmpty()) continue;
+                for (String ntg : normalisedTags)
+                {
+                    currScore += StringMatcher.Match(kwd, ntg) * (double)keywords.get(kwd) / total;
+                }
+            }
+            pq.offer(new DoubleConversationPair(currScore, C));
+        }
+
+        while (n > 0 && !pq.isEmpty())
+        {
+            ret.add(pq.poll().getConvo());
+            n--;
+        }
+
+        return ret;
+    }
+
+    @Override
+    public Message notify(User user, long currentId, long millis)
+    {
+        Conference parentConference = (Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, parentID);
+
+        Map<String, Integer> keywords = UserKeyworder.extractKeywords(user);
+        if (keywords.isEmpty()) return null; // NO DATA TO QUERY UPON; should not happen!
+
+        Collection<Conversation> conversations = parentConference.getConversationSet();
+
+        long now = new Date().getTime();
+
+        Message ret = null;
+        double maxScore = -1.0;
+
+        for (Conversation C : conversations)
+        {
+            if (C.getId() == currentId) continue;
+
+            List<Message> mostRecent = ((List<Message>)C.getMessages(1));
+
+            if (mostRecent.isEmpty()) continue;
+
+            Message latest = mostRecent.get(0);
+            if (now - millis > latest.getTimeStamp()) continue;
+
+            List<String> baseWords = MessageLexer.lexAnalyse(latest.getContents(), dictionary, affix, stopWords);
+            if (baseWords.isEmpty()) continue;
+
+            double currScore = 0.0;
+            double total = (double)baseWords.size();
+            for (String word : baseWords)
+            {
+                for (String kwd : keywords.keySet())
+                {
+                    currScore += StringMatcher.Match(kwd, word) * ((double)keywords.get(kwd)) / total;
+                }
+            }
+            if (currScore > maxScore)
+            {
+                maxScore = currScore;
+                ret = latest;
+            }
+        }
+
+        return ret;
     }
 
     @Override
@@ -396,7 +483,7 @@ public class DataAnalyst implements ServerDataAnalyst
         for (User U : users)
         {
             int msgCnt = HibernateUtil.getTransaction().createCriteria(MessageModel.class)
-                    .add(Restrictions.eq("senderId", U.getId())).list().size();
+                    .add(Restrictions.eq("sender", U)).list().size();
             pq.offer(new IntegerUserPair(msgCnt, U));
         }
 
@@ -447,11 +534,14 @@ public class DataAnalyst implements ServerDataAnalyst
             Collection<User> users = C.getUsers();
             for (User U : users)
             {
+                if (U.getGender() == null) continue;
+
                 if (U.getGender().equals("M") || U.getGender().equals("Male")) maleCount++;
                 if (U.getGender().equals("F") || U.getGender().equals("Female")) femaleCount++;
             }
         }
 
+        if (femaleCount == 0.0) return Double.POSITIVE_INFINITY;
         return maleCount / femaleCount;
     }
 

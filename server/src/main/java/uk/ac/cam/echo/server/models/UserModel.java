@@ -48,7 +48,7 @@ public class UserModel extends BaseModel implements User {
             "firstName",
             "lastName",
             "phoneNumber",
-            "avatarLink",
+            //"avatarLink",
             "email",
             "jobTitle",
             "company",

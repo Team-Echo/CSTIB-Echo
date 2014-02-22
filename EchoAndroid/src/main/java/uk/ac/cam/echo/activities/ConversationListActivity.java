@@ -67,6 +67,9 @@ public class ConversationListActivity extends Activity
 
         clf.setCommunicator(this);
 
+        long id = getIntent().getLongExtra("_id", -1);
+        if(id != -1) respond(id);
+
         handleIntent(getIntent());
     }
 
@@ -96,7 +99,7 @@ public class ConversationListActivity extends Activity
 			ConversationDialog convFrag =
 					(ConversationDialog)manager.findFragmentById(R.id.convFrame);
 			if(convFrag == null || convFrag.getShownIndex() != id) {
-				convFrag = ConversationDialog.newInstance(id);
+				convFrag = ConversationDialog.newInstance(id, getService());
                 convFrag.setApi(getService().getApi());
 				FragmentTransaction ft = manager.beginTransaction();
 				ft.replace(R.id.convFrame, convFrag);
@@ -105,7 +108,7 @@ public class ConversationListActivity extends Activity
 			}
 		} else {
 	
-			ConversationDialog cd = ConversationDialog.newInstance(id);
+			ConversationDialog cd = ConversationDialog.newInstance(id, getService());
             cd.setApi(getService().getApi());
 			cd.show(manager, "conversation_info");
 			
@@ -140,6 +143,9 @@ public class ConversationListActivity extends Activity
 	        case R.id.action_add_conv:
 	        	addConversation();
 	        	return true;
+            case R.id.action_user:
+                openUserSettings();
+                return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
@@ -174,6 +180,11 @@ public class ConversationListActivity extends Activity
         IntentIntegrator scanIntegrator = new IntentIntegrator(this);
         scanIntegrator.initiateScan();
     }
+
+    private void openUserSettings() {
+        Intent intent = new Intent(this, UserSettingsActivity.class);
+        startActivity(intent);
+    }
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		//retrieve scan result
@@ -199,6 +210,6 @@ public class ConversationListActivity extends Activity
     // Callback method when ListView has fully rendered
     @Override
     public void onRendered() {
-        Toaster.displayLong(this, "toggleeee");
+
     }
 }
