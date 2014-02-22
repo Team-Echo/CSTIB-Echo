@@ -6,9 +6,10 @@ CSTIB-Echo
 ![CC-BY-NC-ND Licence](http://i.creativecommons.org/l/by-nc-nd/3.0/88x31.png)
 
 **Echo Conference** is a system designed for setting up virtual conferences and enhancing physical ones; users may use either an Android smartphone/tablet, a multi-touch screen running Windows 8, or a Windows/Linux/Mac computer to connect to a conference.
+
 It has been developed as mandatory University of Cambridge group project work during Lent term for Part IB of the Computer Science Tripos.
 
-*Client: Catherine White, [BT](http://www.bt.com)*
+**Client:** *Catherine White, [BT](http://www.bt.com)*
 
 Design brief
 ----------------
