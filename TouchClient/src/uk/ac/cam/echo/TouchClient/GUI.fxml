@@ -29,8 +29,8 @@
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                       <children>
                         <ListView fx:id="conversation1_messages" cache="true" cacheHint="ROTATE" prefHeight="317.0" prefWidth="258.0" styleClass="messageListClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
-                        <Label fx:id="conversation1_name" cache="true" cacheHint="ROTATE" layoutX="6.0" layoutY="6.0" maxWidth="200.0" prefWidth="200.0" styleClass="nameLabelClass" text="conversation name" />
-                        <ImageView fx:id="conversation1_QR" cache="true" cacheHint="ROTATE" fitHeight="50.0" fitWidth="50.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="206.0" AnchorPane.rightAnchor="0.0" />
+                        <Label fx:id="conversation1_name" cache="true" cacheHint="ROTATE" layoutX="6.0" layoutY="6.0" maxWidth="-1.0" prefWidth="200.0" styleClass="nameLabelClass" text="conversation name" />
+                        <ImageView fx:id="conversation1_QR" cache="true" cacheHint="ROTATE" fitHeight="50.0" fitWidth="50.0" layoutY="0.0" opacity="0.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="206.0" AnchorPane.rightAnchor="0.0" />
                       </children>
                     </AnchorPane>
                   </items>
@@ -82,7 +82,7 @@
                       <children>
                         <ListView fx:id="conversation2_messages" prefHeight="317.0" prefWidth="258.0" styleClass="messageListClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
                         <Label fx:id="conversation2_name" layoutX="14.0" layoutY="6.0" maxWidth="200.0" styleClass="nameLabelClass" text="conversation name" />
-                        <ImageView fx:id="conversation2_QR" fitHeight="50.0" fitWidth="50.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0" />
+                        <ImageView fx:id="conversation2_QR" fitHeight="50.0" fitWidth="50.0" layoutY="0.0" opacity="0.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0" />
                       </children>
                     </AnchorPane>
                   </items>
@@ -138,7 +138,7 @@
                       <children>
                         <ListView fx:id="conversation3_messages" prefHeight="317.0" prefWidth="258.0" styleClass="messageListClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
                         <Label fx:id="conversation3_name" layoutX="14.0" layoutY="6.0" maxWidth="200.0" styleClass="nameLabelClass" text="conversation name" />
-                        <ImageView fx:id="conversation3_QR" fitHeight="50.0" fitWidth="50.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0" />
+                        <ImageView fx:id="conversation3_QR" fitHeight="50.0" fitWidth="50.0" layoutY="0.0" opacity="0.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0" />
                       </children>
                     </AnchorPane>
                   </items>
@@ -194,7 +194,7 @@
                       <children>
                         <ListView fx:id="conversation4_messages" prefHeight="317.0" prefWidth="258.0" styleClass="messageListClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
                         <Label fx:id="conversation4_name" layoutX="14.0" layoutY="6.0" maxWidth="200.0" styleClass="nameLabelClass" text="conversation name" />
-                        <ImageView fx:id="conversation4_QR" fitHeight="50.0" fitWidth="50.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0" />
+                        <ImageView fx:id="conversation4_QR" fitHeight="50.0" fitWidth="50.0" layoutY="0.0" opacity="0.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0" />
                       </children>
                     </AnchorPane>
                   </items>
@@ -250,7 +250,7 @@
                       <children>
                         <ListView fx:id="conversation5_messages" prefHeight="317.0" prefWidth="258.0" styleClass="messageListClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
                         <Label fx:id="conversation5_name" layoutX="14.0" layoutY="6.0" maxWidth="200.0" styleClass="nameLabelClass" text="conversation name" />
-                        <ImageView fx:id="conversation5_QR" fitHeight="50.0" fitWidth="50.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0" />
+                        <ImageView fx:id="conversation5_QR" fitHeight="50.0" fitWidth="50.0" layoutY="0.0" opacity="0.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0" />
                       </children>
                     </AnchorPane>
                   </items>

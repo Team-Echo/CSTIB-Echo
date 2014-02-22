@@ -146,7 +146,7 @@ public class ConfrenceLoadScreenController implements Initializable {
                 try {
                     root = FXMLLoader.load(getClass().getResource("GUI.fxml"),er);
                 } catch (IOException ex) {
-                    Logger.getLogger(ConfrenceLoadScreenController.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getGlobal().log(Level.SEVERE, null, ex);
                 }
         
                 Scene scene = new Scene(root);

@@ -15,6 +15,10 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.Interpolator;
+import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
+import javafx.animation.TranslateTransitionBuilder;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -36,6 +40,7 @@ import javafx.scene.input.RotateEvent;
 import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import uk.ac.cam.echo.TouchClient.ConfrenceStats.Tuple;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.User;
@@ -46,6 +51,8 @@ import uk.ac.cam.echo.data.User;
  * @author Philip
  */
 public class GUIController implements Initializable {
+    
+    private int POLLDELAY = 60000;
     
     //@FXML tag indicates that the veriable has been injected from the FXML code
     
@@ -157,12 +164,12 @@ public class GUIController implements Initializable {
         global_stats_pie.setLabelLineLength(5);
         global_stats_pie.setLegendVisible(true);
         
-        System.out.println(global_stats_pie.getLabelsVisible());
         global_stats_pie.setLabelsVisible(true);
 
         global_line = new XYChart.Series();
         global_line.setName("Activity");
         global_stats_line.getData().add(global_line);
+        global_stats_line.setLegendVisible(false);
         
     }
     
@@ -170,6 +177,14 @@ public class GUIController implements Initializable {
      * a function to setup all the event handlers for coversation1
      */
     private void setupConversationPane1(){
+      TranslateTransition transTransition = TranslateTransitionBuilder.create()
+        .duration(new Duration(7500))
+        .node(conversation1_name)
+        .toX(-100)
+        .interpolator(Interpolator.LINEAR)
+        .cycleCount(Timeline.INDEFINITE)
+        .build();
+      transTransition.play();
         conversation1_name.setWrapText(true);
         conversation1_messages.setCellFactory(new messageCellFactory());
         final Delta dragDeltaMouse = new Delta();
@@ -777,7 +792,7 @@ public class GUIController implements Initializable {
             
             MatrixToImageWriter.writeToStream(bitMatrix, "png", image);
         } catch (IOException | WriterException ex) {
-            Logger.getLogger(GUIController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getGlobal().log(Level.SEVERE, null, ex);
         }
         
         return new Image(new ByteArrayInputStream(image.toByteArray()));
@@ -950,6 +965,7 @@ public class GUIController implements Initializable {
     @FXML Label mCaption;
     
     private void setStatsGlobal(final ConfrenceStats s, final long val){
+        if (s==null){return;}
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
@@ -963,7 +979,6 @@ public class GUIController implements Initializable {
                         for (PieChart.Data data : global_pie){ 
                             if (data.getName().equals(((Text) node).getText())){
                                 final String name = data.getName();
-                                System.out.println(name);
                                 ((Text) node).setText(String.format("%s", name));
                             }
                         }
@@ -992,9 +1007,9 @@ public class GUIController implements Initializable {
                     
                     val++;
                     try {
-                        Thread.sleep(1000*60);
+                        Thread.sleep(POLLDELAY);
                     } catch (InterruptedException ex) {
-                        Logger.getLogger(GUIController.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getGlobal().log(Level.SEVERE, null, ex);
                     }
                 }
             }
@@ -1037,9 +1052,29 @@ public class GUIController implements Initializable {
                     refreshAvitars4(findId(4));
                     refreshAvitars5(findId(5));
                     try {
-                        Thread.sleep(1000*60);
+                        Thread.sleep(POLLDELAY);
                     } catch (InterruptedException ex) {
-                        Logger.getLogger(GUIController.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getGlobal().log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        })).start();
+    }
+    
+    private void pollConvStats(){
+        (new Thread(new Runnable(){
+            @Override
+            public void run() {
+                while (true){
+                    setStatsConv1(mTC.getServerConnection().getStats(findId(1)));
+                    setStatsConv1(mTC.getServerConnection().getStats(findId(2)));
+                    setStatsConv1(mTC.getServerConnection().getStats(findId(3)));
+                    setStatsConv1(mTC.getServerConnection().getStats(findId(4)));
+                    setStatsConv1(mTC.getServerConnection().getStats(findId(5)));
+                    try {
+                        Thread.sleep(POLLDELAY);
+                    } catch (InterruptedException ex) {
+                        Logger.getGlobal().log(Level.SEVERE, null, ex);
                     }
                 }
             }
