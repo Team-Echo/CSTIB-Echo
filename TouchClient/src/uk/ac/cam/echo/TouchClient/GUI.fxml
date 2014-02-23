@@ -303,10 +303,10 @@
           </yAxis>
         </LineChart>
         <Text fx:id="pie_chart_lable" layoutX="447.0" layoutY="255.0" scaleX="14.229751191106406" scaleY="1.5012236906510035" strokeType="OUTSIDE" strokeWidth="0.0" text="" />
-        <Button fx:id="return_button" layoutX="272.0" layoutY="547.0" mnemonicParsing="false" text="return" />
-        <Button fx:id="Activity_button" layoutX="134.0" layoutY="200.0" mnemonicParsing="false" text="Activity" />
-        <Button fx:id="ConversationList_button" layoutX="358.0" layoutY="200.0" mnemonicParsing="false" text="Conversation List" />
-        <Button fx:id="messageBreakdown_button" layoutX="236.0" layoutY="299.0" mnemonicParsing="false" text="Message Breakdown" />
+        <Button fx:id="return_button" layoutX="260.0" layoutY="537.0" mnemonicParsing="false" text="return" />
+        <Button fx:id="Activity_button" layoutX="134.0" layoutY="150.0" mnemonicParsing="false" text="Activity" />
+        <Button fx:id="ConversationList_button" layoutX="358.0" layoutY="150.0" mnemonicParsing="false" text="Conversation List" />
+        <Button fx:id="messageBreakdown_button" layoutX="134.0" layoutY="350.0" mnemonicParsing="false" text="Message Breakdown" />
       </children>
     </Pane>
   </children>

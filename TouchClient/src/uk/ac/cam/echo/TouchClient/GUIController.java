@@ -5,9 +5,14 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -166,6 +171,41 @@ public class GUIController implements Initializable {
         stats_conversationlist.setVisible(false);
         global_stats_pie.setVisible(false);
         global_stats_line.setVisible(false);
+        try {
+            ImageView rbi = (new ImageView());
+            rbi.setImage(new Image(new FileInputStream(new File("./res/drawable/menusmall.png"))));
+            return_button.setGraphic(rbi);
+            return_button.setText("");
+        } catch (FileNotFoundException ex) {
+            Logger.getGlobal().log(Level.SEVERE, null, ex);
+        }
+        
+        try {
+            ImageView abi = (new ImageView());
+            abi.setImage(new Image(new FileInputStream(new File("./res/drawable/linegraphsmall.png"))));
+            Activity_button.setGraphic(abi);
+            Activity_button.setText("");
+        } catch (FileNotFoundException ex) {
+            Logger.getGlobal().log(Level.SEVERE, null, ex);
+        }
+        
+        try {
+            ImageView mlbi = (new ImageView());
+            mlbi.setImage(new Image(new FileInputStream(new File("./res/drawable/listsmall.png"))));
+            ConversationList_button.setGraphic(mlbi);
+            ConversationList_button.setText("");
+        } catch (FileNotFoundException ex) {
+            Logger.getGlobal().log(Level.SEVERE, null, ex);
+        }
+        
+        try {
+            ImageView mbbi = (new ImageView());
+            mbbi.setImage(new Image(new FileInputStream(new File("./res/drawable/piechartsmall.png"))));
+            messageBreakdown_button.setGraphic(mbbi);
+            messageBreakdown_button.setText("");
+        } catch (FileNotFoundException ex) {
+            Logger.getGlobal().log(Level.SEVERE, null, ex);
+        }
         
         Activity_button.setOnAction(new EventHandler<ActionEvent>(){
             @Override
@@ -233,7 +273,7 @@ public class GUIController implements Initializable {
         global_pie = new MessageDisplayList();
         global_stats_pie.setLegendSide(Side.LEFT);
         global_stats_pie.setLabelLineLength(5);
-        global_stats_pie.setLegendVisible(true);
+        global_stats_pie.setLegendVisible(false);
         
         global_stats_pie.setLabelsVisible(true);
 
