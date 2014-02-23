@@ -53,6 +53,7 @@ public class Main {
                 .addAbstractTypeMapping(Conversation.class, ConversationModel.class)
                 .addAbstractTypeMapping(Message.class, MessageModel.class)
                 .addAbstractTypeMapping(Tag.class, TagModel.class)
+                .addAbstractTypeMapping(Interest.class, InterestModel.class)
                 .addAbstractTypeMapping(User.class, UserModel.class);
 
 

@@ -5,6 +5,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import uk.ac.cam.echo.data.Conversation;
+import uk.ac.cam.echo.data.Interest;
 import uk.ac.cam.echo.data.User;
 import uk.ac.cam.echo.server.GravatarUtil;
 import uk.ac.cam.echo.server.HibernateUtil;
@@ -13,6 +14,8 @@ import javax.persistence.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
+import java.util.Set;
+
 @JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 @Entity
 @Table(name="UserTable")
@@ -78,6 +81,9 @@ public class UserModel extends BaseModel implements User {
     private String company;
     private String gender;
 
+    @OneToMany(targetEntity = InterestModel.class, mappedBy = "user")
+    private Set<Interest> interests;
+
 
     @Transient
     public String getDisplayName() {
@@ -108,8 +114,13 @@ public class UserModel extends BaseModel implements User {
         this.username = username;
     }
 
+    @JsonIgnore
     public Conversation getCurrentConversation() {
         return currentConversation;
+    }
+
+    public Long getCurrentConversationId() {
+        return getCurrentConversation() == null ? null : getCurrentConversation().getId();
     }
 
     public void setCurrentConversation(Conversation currentConversation) {
@@ -195,5 +206,13 @@ public class UserModel extends BaseModel implements User {
     @JsonProperty
     public void setPassword(String password) {
         setHashedPassword(hashPassword(password));
+    }
+
+    public Set<Interest> getInterests() {
+        return interests;
+    }
+
+    public void setInterests(Set<Interest> interests) {
+        this.interests = interests;
     }
 }

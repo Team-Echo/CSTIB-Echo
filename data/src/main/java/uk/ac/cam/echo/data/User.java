@@ -1,5 +1,7 @@
 package uk.ac.cam.echo.data;
 
+import java.util.Collection;
+
 public interface User extends Base {
     public long getId();
     public String getUsername();
@@ -11,7 +13,7 @@ public interface User extends Base {
     public String getAvatarLink();
     public String getEmail();
     // public Location getCurrentLocation();
-    // public List<Interest> getInterests();
+    public Collection<Interest> getInterests();
     public String getJobTitle();
     public String getCompany();
     public String getGender();

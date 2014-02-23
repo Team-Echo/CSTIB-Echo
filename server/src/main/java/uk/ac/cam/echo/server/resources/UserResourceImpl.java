@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.User;
+import uk.ac.cam.echo.data.resources.InterestResource;
 import uk.ac.cam.echo.data.resources.UserResource;
 import uk.ac.cam.echo.server.HibernateUtil;
 import uk.ac.cam.echo.server.models.ConversationModel;
@@ -19,6 +20,10 @@ public class UserResourceImpl implements UserResource {
 
     public User get(long id) {
         return (User) HibernateUtil.getTransaction().get(UserModel.class, id);
+    }
+
+    public InterestResource getInterestResource(long id) {
+        return new InterestResourceImpl(get(id));
     }
 
     public User create(String username, Long conversationId) {

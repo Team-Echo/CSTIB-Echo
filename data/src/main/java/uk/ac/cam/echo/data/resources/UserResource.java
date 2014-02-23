@@ -20,6 +20,9 @@ public interface UserResource extends RestResource<User>{
     @Path("/{id}")
     public User get(@PathParam("id") long id);
 
+    @Path("/{id}/interests")
+    public InterestResource getInterestResource(@PathParam("id") long id);
+
     @PUT
     @Consumes("application/json")
     public Response update(User item);
@@ -27,5 +30,7 @@ public interface UserResource extends RestResource<User>{
     @POST
     @Consumes("application/json")
     public User create (User data);
+
+
 
 }
