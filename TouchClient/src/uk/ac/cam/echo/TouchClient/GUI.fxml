@@ -30,7 +30,7 @@
                       <children>
                         <ListView fx:id="conversation1_messages" cache="true" cacheHint="ROTATE" prefHeight="317.0" prefWidth="258.0" styleClass="messageListClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
                         <Label fx:id="conversation1_name" cache="true" cacheHint="ROTATE" layoutX="6.0" layoutY="6.0" maxWidth="200.0" prefWidth="200.0" styleClass="nameLabelClass" text="conversation name" />
-                        <ImageView fx:id="conversation1_QR" cache="true" cacheHint="ROTATE" fitHeight="50.0" fitWidth="50.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="206.0" AnchorPane.rightAnchor="0.0" />
+                        <ImageView fx:id="conversation1_QR" cache="true" cacheHint="ROTATE" fitHeight="50.0" fitWidth="50.0" layoutY="0.0" opacity="0.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="206.0" AnchorPane.rightAnchor="0.0" />
                       </children>
                     </AnchorPane>
                   </items>
@@ -82,7 +82,7 @@
                       <children>
                         <ListView fx:id="conversation2_messages" prefHeight="317.0" prefWidth="258.0" styleClass="messageListClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
                         <Label fx:id="conversation2_name" layoutX="14.0" layoutY="6.0" maxWidth="200.0" styleClass="nameLabelClass" text="conversation name" />
-                        <ImageView fx:id="conversation2_QR" fitHeight="50.0" fitWidth="50.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0" />
+                        <ImageView fx:id="conversation2_QR" fitHeight="50.0" fitWidth="50.0" layoutY="0.0" opacity="0.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0" />
                       </children>
                     </AnchorPane>
                   </items>
@@ -138,7 +138,7 @@
                       <children>
                         <ListView fx:id="conversation3_messages" prefHeight="317.0" prefWidth="258.0" styleClass="messageListClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
                         <Label fx:id="conversation3_name" layoutX="14.0" layoutY="6.0" maxWidth="200.0" styleClass="nameLabelClass" text="conversation name" />
-                        <ImageView fx:id="conversation3_QR" fitHeight="50.0" fitWidth="50.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0" />
+                        <ImageView fx:id="conversation3_QR" fitHeight="50.0" fitWidth="50.0" layoutY="0.0" opacity="0.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0" />
                       </children>
                     </AnchorPane>
                   </items>
@@ -194,7 +194,7 @@
                       <children>
                         <ListView fx:id="conversation4_messages" prefHeight="317.0" prefWidth="258.0" styleClass="messageListClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
                         <Label fx:id="conversation4_name" layoutX="14.0" layoutY="6.0" maxWidth="200.0" styleClass="nameLabelClass" text="conversation name" />
-                        <ImageView fx:id="conversation4_QR" fitHeight="50.0" fitWidth="50.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0" />
+                        <ImageView fx:id="conversation4_QR" fitHeight="50.0" fitWidth="50.0" layoutY="0.0" opacity="0.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0" />
                       </children>
                     </AnchorPane>
                   </items>
@@ -250,7 +250,7 @@
                       <children>
                         <ListView fx:id="conversation5_messages" prefHeight="317.0" prefWidth="258.0" styleClass="messageListClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
                         <Label fx:id="conversation5_name" layoutX="14.0" layoutY="6.0" maxWidth="200.0" styleClass="nameLabelClass" text="conversation name" />
-                        <ImageView fx:id="conversation5_QR" fitHeight="50.0" fitWidth="50.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0" />
+                        <ImageView fx:id="conversation5_QR" fitHeight="50.0" fitWidth="50.0" layoutY="0.0" opacity="0.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0" />
                       </children>
                     </AnchorPane>
                   </items>
@@ -289,12 +289,12 @@
         </Tab>
       </tabs>
     </TabPane>
-    <Pane fx:id="stats_pane" cache="true" cacheHint="ROTATE" layoutX="410.0" layoutY="14.0" prefHeight="600.0" prefWidth="900.0">
+    <Pane fx:id="stats_pane" cache="true" cacheHint="ROTATE" layoutX="559.0" layoutY="14.0" prefHeight="600.0" prefWidth="600.0">
       <children>
-        <Ellipse fill="DODGERBLUE" layoutX="450.0" layoutY="301.0" radiusX="450.0" radiusY="300.00000762939453" stroke="BLACK" strokeType="INSIDE" styleClass="elipsClass" />
-        <ListView id="message_list" fx:id="stats_conversationlist" layoutX="652.0" layoutY="169.0" prefHeight="264.0" prefWidth="200.0" styleClass="statsMessageListClass" />
-        <PieChart id="PieChart" fx:id="global_stats_pie" layoutX="261.0" layoutY="24.0" legendSide="RIGHT" prefHeight="238.00009999999747" prefWidth="383.0" title="Number of Messages" />
-        <LineChart fx:id="global_stats_line" layoutX="231.0" layoutY="262.0" prefHeight="289.0" prefWidth="413.0">
+        <Ellipse fill="DODGERBLUE" layoutX="300.0" layoutY="301.0" radiusX="300.0" radiusY="300.0" stroke="BLACK" strokeType="INSIDE" styleClass="elipsClass" />
+        <ListView id="message_list" fx:id="stats_conversationlist" layoutX="134.0" layoutY="55.0" prefHeight="491.0" prefWidth="335.0" styleClass="statsMessageListClass" />
+        <PieChart id="PieChart" fx:id="global_stats_pie" layoutX="79.0" layoutY="100.0" legendSide="RIGHT" prefHeight="379.999977929685" prefWidth="445.0" title="Number of Messages" />
+        <LineChart fx:id="global_stats_line" layoutX="65.0" layoutY="117.0" prefHeight="363.0" prefWidth="473.0">
           <xAxis>
             <NumberAxis label="Time" side="BOTTOM" />
           </xAxis>
@@ -303,6 +303,10 @@
           </yAxis>
         </LineChart>
         <Text fx:id="pie_chart_lable" layoutX="447.0" layoutY="255.0" scaleX="14.229751191106406" scaleY="1.5012236906510035" strokeType="OUTSIDE" strokeWidth="0.0" text="" />
+        <Button fx:id="return_button" layoutX="260.0" layoutY="537.0" mnemonicParsing="false" text="return" />
+        <Button fx:id="Activity_button" layoutX="134.0" layoutY="150.0" mnemonicParsing="false" text="Activity" />
+        <Button fx:id="ConversationList_button" layoutX="358.0" layoutY="150.0" mnemonicParsing="false" text="Conversation List" />
+        <Button fx:id="messageBreakdown_button" layoutX="134.0" layoutY="350.0" mnemonicParsing="false" text="Message Breakdown" />
       </children>
     </Pane>
   </children>

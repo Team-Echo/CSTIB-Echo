@@ -33,6 +33,7 @@ public class ConversationDetailActivity extends Activity implements View.OnClick
             echoService.setNotifEnabled(true);
             api = echoService.getApi();
             cf.setApi(api);
+            cf.setService(echoService);
             cf.setUser(echoService.getUser());
         }
         public void onServiceDisconnected(ComponentName className) {

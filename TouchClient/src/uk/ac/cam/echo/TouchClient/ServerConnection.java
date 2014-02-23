@@ -29,6 +29,7 @@ import uk.ac.cam.echo.data.async.Subscription;
  */
 public class ServerConnection implements Runnable{
     
+    private int CONVREPLACEDELAY = 60000;
     private final TouchClient mTC;
     private GUIController mGUI;
     private ClientApi mAPI;
@@ -74,7 +75,9 @@ public class ServerConnection implements Runnable{
         }
         
         //the connection to the server
-        mAPI = new ClientApi(url);
+        try{
+            mAPI = new ClientApi(url);
+        }catch (Exception e){log(e);}
         
         retry = true;
         while(retry){
@@ -89,7 +92,10 @@ public class ServerConnection implements Runnable{
            retry=false;
         }
         
-        Collection<Conversation> conversations = mAPI.conversationResource.getAll();
+        Collection<Conversation> conversations = null;
+        try{
+            conversations = mAPI.conferenceResource.mostActiveRecently(mConfrence.getId(), 600000, 5);
+        }catch (Exception e){log(e);}
         
         final Conversation conversation1;
         final Conversation conversation2;
@@ -148,7 +154,7 @@ public class ServerConnection implements Runnable{
         
         while (mGUI.getMap().isEmpty()){}
         
-        Logger.getLogger(ServerConnection.class.getName()).log(Level.INFO, mGUI.getMap().toString());
+        Logger.getGlobal().log(Level.INFO, mGUI.getMap().toString());
         
         synchronized (mConversations){
             synchronized (mSub){
@@ -165,7 +171,7 @@ public class ServerConnection implements Runnable{
         }
         
         replaceConversations();
-        Logger.getLogger(ServerConnection.class.getName()).log(Level.INFO, "the server ("+url+") is connected");
+        Logger.getGlobal().log(Level.INFO, "the server ("+url+") is connected");
     }
 
     private Conference configureConference() throws NotInstantiatedYetException, ConfrenceNotFoundException {
@@ -186,28 +192,29 @@ public class ServerConnection implements Runnable{
         displayPreviousMessages(c);
         Handler<Message> handler = new Handler<Message>(){
             @Override
-            public void handle(Message t) {
-                final String sender = t.getSender() == null ? "Anonymous" :t.getSender().getUsername();
-                final String message = (sender+" : "+t.getContents());
+            public void handle(final Message t) {
                 final long id = c.getId();
                 synchronized (mConversations){
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
                             try{
-                                mGUI.displayMessage(message, id);
+                                mGUI.displayMessage(t, id);
                                 mGUI.scrollToEnd(id);
                             } catch (NoMessageListException ex) {
                                 System.err.println(id);
                                 System.err.println(mGUI.getMap());
-                                Logger.getLogger(ServerConnection.class.getName()).log (Level.SEVERE, "message from conversation "+id+" could not be displayed ", ex);
+                                Logger.getGlobal().log (Level.SEVERE, "message from conversation "+id+" could not be displayed ", ex);
                             }
                         }
                     });
                 }
             }
         };
-        return mAPI.conversationResource.listenToMessages(c.getId()).subscribe(handler);
+        try{
+            return mAPI.conversationResource.listenToMessages(c.getId()).subscribe(handler);
+        } catch (Exception e){log(e);}
+        return null;
     }
 
     void kill() {
@@ -224,25 +231,56 @@ public class ServerConnection implements Runnable{
                     @Override
                     public void run() {
                         try {
-                            mGUI.displayMessage("you have connected to "+c.getName(), c.getId());
+                            mGUI.displayMessage(new Message() {
+                                @Override
+                                public long getId() {return -1;}
+                                @Override
+                                public long getTimeStamp() {return System.currentTimeMillis();}
+                                @Override
+                                public User getSender() {return null;}
+                                @Override
+                                public String getSenderName() {return "local";}
+                                @Override
+                                public void setSenderName(String senderName) {return;}
+                                @Override
+                                public void setSender(User user) {return;}
+                                @Override
+                                public Conversation getConversation() {return c;}
+                                @Override
+                                public void setConversation(Conversation conversation) {}
+                                @Override
+                                public String getContents() {
+                                    return "you have connected to "+c.getName();
+                                }
+                                @Override
+                                public void setContents(String contents) {
+                                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                }
+                                @Override
+                                public void delete() {
+                                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                }
+                                @Override
+                                public void save() {
+                                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                }
+                            }, c.getId());
                         } catch (NoMessageListException ex) {
-                            Logger.getLogger(ServerConnection.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getGlobal().log(Level.SEVERE, null, ex);
                         }
                     }
                 });
             }
         }
         
-        for (Message msg: list){
-            String sender = msg.getSender() == null ? "Anonymous" : msg.getSender().getUsername();
-            final String message = sender.concat(" : ".concat(msg.getContents()));
+        for (final Message msg: list){
             Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
                         try{
-                            mGUI.displayMessage(message, c.getId());
+                            mGUI.displayMessage(msg, c.getId());
                         } catch (NoMessageListException ex) {
-                            Logger.getLogger(ServerConnection.class.getName()).log (Level.SEVERE, "message from conversation "+c.getId()+" could not be displayed the map contains " +mGUI.getMap().toString(), ex);
+                            Logger.getGlobal().log (Level.SEVERE, "message from conversation "+c.getId()+" could not be displayed the map contains " +mGUI.getMap().toString(), ex);
                         }
                     mGUI.scrollToEnd(c.getId());
                     }
@@ -257,72 +295,68 @@ public class ServerConnection implements Runnable{
             public void run() {
                 while (true){
                     try {
-                        Thread.sleep(1000*60);
+                        Thread.sleep(CONVREPLACEDELAY);
                     } catch (InterruptedException ex) {
-                        Logger.getLogger(ServerConnection.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getGlobal().log(Level.SEVERE, null, ex);
                     }
                     List<Conversation> conv = null;
                     try {
                         conv = mAPI.conferenceResource.mostUsers(mTC.getConfrenceID(), 10);
-                    } catch (NotInstantiatedYetException ex) {//should never happen
-                        Logger.getLogger(ServerConnection.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (Exception ex) {
+                        log(ex);
                     }
-                    /*synchronized (mConversations){
-                        synchronized (mSub){*/
-                            for (int c = 0; c<mConversations.size(); c++){
-                                if (!isContainedIn(conv,mConversations.get(c))){
-                                    for (int c2 = 0; c2<conv.size(); c2++){
-                                        //the conversation to be replaced
-                                        Conversation currentConversation = mConversations.get(c);
+                   for (int c = 0; c<mConversations.size(); c++){
+                        if (!isContainedIn(conv,mConversations.get(c))){
+                            for (int c2 = 0; c2<conv.size(); c2++){
+                                //the conversation to be replaced
+                                Conversation currentConversation = mConversations.get(c);
                                         
-                                        //the conversation to replace
-                                        Conversation newConversation = conv.get(c2);
+                                //the conversation to replace
+                                Conversation newConversation = conv.get(c2);
                                         
-                                        //new lists
-                                        List<Conversation> newmConversations = new ArrayList();
-                                        List<Subscription> newmSub = new ArrayList();
+                                //new lists
+                                List<Conversation> newmConversations = new ArrayList();
+                                List<Subscription> newmSub = new ArrayList();
                                         
-                                        //unsubscribe to old subscription
-                                        mSub.get(c).unsubscribe();
+                                //unsubscribe to old subscription
+                                mSub.get(c).unsubscribe();
                                         
-                                        //replace conversation in mConversations
-                                        for (int i = 0; i < c; i++){newmConversations.add(mConversations.get(i));}
-                                        newmConversations.add(newConversation);
-                                        for (int i = c+1;i<mConversations.size();i++){newmConversations.add(mConversations.get(i));}
+                                //replace conversation in mConversations
+                                for (int i = 0; i < c; i++){newmConversations.add(mConversations.get(i));}
+                                newmConversations.add(newConversation);
+                                for (int i = c+1;i<mConversations.size();i++){newmConversations.add(mConversations.get(i));}
                                         
-                                        //map the conversation to the correct GUI pane
-                                        try{
-                                            mGUI.replaceConversation(currentConversation.getId(), newConversation.getName(), newConversation.getId());
-                                        } catch (NoMessageListException ex) {
-                                            Logger.getLogger(ServerConnection.class.getName()).log(Level.SEVERE, "there has been an issue while replacing conversation "+mConversations.get(c).getName(), ex);
-                                        } catch (NotCurrentConversationException ex) {
-                                            Logger.getLogger(ServerConnection.class.getName()).log(Level.SEVERE, null, ex); break;
-                                        } catch (ConversationAlredyDisplayedException ex) {
-                                            continue;//this ocurs if the replacement conversation is alredy on screen
-                                        }
-                                        
-                                        
-                                        //replace subscription in mSub
-                                        for (int i = 0; i < c; i++){newmSub.add(mSub.get(i));}
-                                        newmSub.add(listenToConversation(newConversation));
-                                        for (int i = c+1;i<mSub.size();i++){newmSub.add(mSub.get(i));}
-                                        
-                                        //set mSub and mConversation
-                                        synchronized (mConversations){
-                                            synchronized (mSub){
-                                                mSub.clear();
-                                                mConversations.clear();
-                                                mSub.addAll(newmSub);
-                                                mConversations.addAll(newmConversations);
-                                            }
-                                        }
-                                        
-                                        break;
-                                    }  
+                                //map the conversation to the correct GUI pane
+                                try{
+                                    mGUI.replaceConversation(currentConversation.getId(), newConversation.getName(), newConversation.getId());
+                                } catch (NoMessageListException ex) {
+                                    Logger.getGlobal().log(Level.SEVERE, "there has been an issue while replacing conversation "+mConversations.get(c).getName(), ex);
+                                } catch (NotCurrentConversationException ex) {
+                                    Logger.getGlobal().log(Level.SEVERE, null, ex); break;
+                                } catch (ConversationAlredyDisplayedException ex) {
+                                    continue;//this ocurs if the replacement conversation is alredy on screen
                                 }
-                            }
-                       /* }
-                    }*/
+                                        
+                                        
+                                //replace subscription in mSub
+                                for (int i = 0; i < c; i++){newmSub.add(mSub.get(i));}
+                                newmSub.add(listenToConversation(newConversation));
+                                for (int i = c+1;i<mSub.size();i++){newmSub.add(mSub.get(i));}
+                                        
+                                //set mSub and mConversation
+                                synchronized (mConversations){
+                                    synchronized (mSub){
+                                        mSub.clear();
+                                        mConversations.clear();
+                                        mSub.addAll(newmSub);
+                                        mConversations.addAll(newmConversations);
+                                    }
+                                }
+                                        
+                                break;
+                            }  
+                        }
+                    }
                 }
             }
 
@@ -338,32 +372,53 @@ public class ServerConnection implements Runnable{
 
     public ConvStats getStats(long conversationID) {
         if (conversationID<0){return new ConvStats(0,0,0,0.5);}
-        Conversation c = mAPI.conversationResource.get(conversationID);
-        return new ConvStats(c.getUsers().size(),0,c.getMessages().size(),0.5);
+        try{
+            Conversation c = mAPI.conversationResource.get(conversationID);
+            return new ConvStats(mAPI.conferenceResource.userCount(mConfrence.getId(), conversationID),
+                    mAPI.conferenceResource.contributingUsers(mConfrence.getId(), conversationID, false),
+                    mAPI.conferenceResource.messageCount(mConfrence.getId(), conversationID),
+                    mAPI.conferenceResource.maleToFemaleRatio(mConfrence.getId()));
+       } catch (Exception e){log(e);}
+       return new ConvStats(0,0,0,0.5);
     }
 
     public ConfrenceStats getGlobalStats() {
-        return new ConfrenceStats(mAPI.conferenceResource.getConversations(mConfrence.getId())); 
+        try{
+            return new ConfrenceStats(mAPI.conferenceResource.getConversations(mConfrence.getId()));
+        }catch (Exception e){log(e);}
+        return null;
     }
 
     double getNumberOfMessages(Long val2) {
-        for (Conversation c:mAPI.conferenceResource.getConversations(mConfrence.getId())){
-            if (c.getId()==val2){
-                return c.getMessages().size();
+        try{
+            for (Conversation c:mAPI.conferenceResource.getConversations(mConfrence.getId())){
+                if (c.getId()==val2){
+                    return c.getMessages().size();
+                }
             }
-        }
+        }catch (Exception e){log(e);}
         return 0;
     }
 
     Number getActivity() {
-        return mAPI.conferenceResource.activity(mConfrence.getId(), (1000*60*5));
+        try{
+            return mAPI.conferenceResource.activity(mConfrence.getId(), (1000*60*5));
+        }catch (Exception e){log(e);}
+        return Integer.valueOf(0);
     }
 
     List<User> getUsers(long id) {
-        for (Conversation c: mAPI.conferenceResource.getConversations(mConfrence.getId())){
-            if (c.getId()==id){return (List<User>)c.getUsers();}
-        }
+        try{
+            for (Conversation c: mAPI.conferenceResource.getConversations(mConfrence.getId())){
+                if (c.getId()==id){return (List<User>)c.getUsers();}
+            }
+        }catch (Exception e){log(e);}
         return new ArrayList<User>();
+    }
+
+    private void log(Exception e) {
+        Logger.getGlobal().log(Level.SEVERE, "There has been an issue with the server", e);
+        mTC.exit(5, "The connection to the server has failed");
     }
     
 }

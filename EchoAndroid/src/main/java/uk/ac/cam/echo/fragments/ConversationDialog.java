@@ -26,6 +26,7 @@ import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.Message;
 import uk.ac.cam.echo.data.Tag;
 import uk.ac.cam.echo.data.User;
+import uk.ac.cam.echo.services.EchoService;
 
 public class ConversationDialog extends DialogFragment implements
 									OnClickListener{
@@ -40,7 +41,7 @@ public class ConversationDialog extends DialogFragment implements
 
     private static ClientApi api;
     private static User user;
-
+    private static EchoService echoService;
     private ConversationFragment cf;
 	private long id;
 	
@@ -61,7 +62,7 @@ public class ConversationDialog extends DialogFragment implements
 
 		join.setOnClickListener(this);
 
-        cf = ConversationFragment.newInstance(id, true, user);
+        cf = ConversationFragment.newInstance(id, true, echoService);
         cf.setApi(api);
         FragmentManager manager = getChildFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
@@ -79,12 +80,13 @@ public class ConversationDialog extends DialogFragment implements
 	}
 
 	// Factory to create dialog based on id
-	public static ConversationDialog newInstance(long id, User u) {
+	public static ConversationDialog newInstance(long id, EchoService service) {
 		ConversationDialog cd = new ConversationDialog();
 		Bundle args = new Bundle();
 		args.putLong("_id", id);
 		cd.setArguments(args);
-        user = u;
+        cd.setService(service);
+        user = service.getUser();
 		return cd;
 	}
 
@@ -108,6 +110,7 @@ public class ConversationDialog extends DialogFragment implements
 	}
 
     public void setApi(ClientApi clientApi) { api = clientApi; }
+    public void setService(EchoService service) { echoService = service; }
 
     private class GetConversation extends AsyncTask<Long, Void, Conversation> {
 
