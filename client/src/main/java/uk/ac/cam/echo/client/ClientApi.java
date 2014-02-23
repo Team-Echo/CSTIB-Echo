@@ -81,6 +81,13 @@ public class ClientApi {
         return tag;
     }
 
+    public Interest newInterest() {
+        InterestData interest = new InterestData();
+        interest.setApi(this);
+
+        return interest;
+    }
+
     public User newUser() {
         UserData res = new UserData();
         res.setApi(this);
