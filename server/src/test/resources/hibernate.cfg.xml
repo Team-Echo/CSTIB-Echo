@@ -52,6 +52,7 @@
         <mapping class="uk.ac.cam.echo.server.models.ConversationModel"/>
         <mapping class="uk.ac.cam.echo.server.models.MessageModel"/>
         <mapping class="uk.ac.cam.echo.server.models.TagModel"/>
+        <mapping class="uk.ac.cam.echo.server.models.InterestModel"/>
 
 
     </session-factory>
