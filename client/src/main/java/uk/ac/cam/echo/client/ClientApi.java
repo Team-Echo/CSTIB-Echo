@@ -24,6 +24,7 @@ public class ClientApi {
                 .addAbstractTypeMapping(Conversation.class, ConversationData.class)
                 .addAbstractTypeMapping(Message.class, MessageData.class)
                 .addAbstractTypeMapping(User.class, UserData.class)
+                .addAbstractTypeMapping(Interest.class, InterestData.class)
                 .addAbstractTypeMapping(Tag.class, TagData.class);
 
         mapper.registerModule(testModule);

@@ -5,8 +5,11 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import uk.ac.cam.echo.client.ClientApi;
 import uk.ac.cam.echo.client.ProxyResource;
 import uk.ac.cam.echo.data.Conversation;
+import uk.ac.cam.echo.data.Interest;
 import uk.ac.cam.echo.data.User;
 import uk.ac.cam.echo.data.resources.ConversationResource;
+
+import java.util.Collection;
 
 public class UserData extends BaseData implements User{
     private String username;
@@ -144,5 +147,10 @@ public class UserData extends BaseData implements User{
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    @JsonIgnore
+    public Collection<Interest> getInterests() {
+        return getApi().userResource.getInterestResource(getId()).getAll();
     }
 }

@@ -6,7 +6,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.Collection;
 
-@Produces("appliction/json")
+@Produces("application/json")
 public interface InterestResource extends RestResource<Interest>{
 
     @GET

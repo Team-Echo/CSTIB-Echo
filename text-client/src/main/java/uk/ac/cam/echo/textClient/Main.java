@@ -2,8 +2,6 @@ package uk.ac.cam.echo.textClient;
 
 
 import uk.ac.cam.echo.client.ClientApi;
-import uk.ac.cam.echo.client.data.MessageData;
-import uk.ac.cam.echo.client.data.UserData;
 import uk.ac.cam.echo.data.*;
 import uk.ac.cam.echo.data.async.Handler;
 import uk.ac.cam.echo.data.async.Subscription;
@@ -163,6 +161,12 @@ public class Main {
             ret.setLastName("Velickovic");
             ret.save();
         }
+
+        System.out.print("Your Interests: ");
+        for (Interest i: ret.getInterests()) {
+            System.out.print(i.getName() + " ");
+        }
+        System.out.println();
 
         return ret;
     }
