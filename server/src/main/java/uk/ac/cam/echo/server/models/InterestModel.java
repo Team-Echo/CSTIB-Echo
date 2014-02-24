@@ -6,11 +6,12 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import uk.ac.cam.echo.data.Interest;
 import uk.ac.cam.echo.data.User;
 import uk.ac.cam.echo.server.HibernateUtil;
+import uk.ac.cam.echo.server.serializers.InterestSerializer;
 
 import javax.persistence.*;
 import java.util.Map;
 
-@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
+@JsonSerialize(using=InterestSerializer.class)
 @Entity
 @Table(name="Interests")
 public class InterestModel extends BaseModel implements Interest {

@@ -11,7 +11,7 @@ import java.io.IOException;
 /**
  Author: Petar 'PetarV' Veličković
 */
-public class InterestSerializer implements JsonSerializer<Interest>
+public class InterestSerializer extends JsonSerializer<Interest>
 {
     public InterestSerializer() { }
 
