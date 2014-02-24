@@ -1,12 +1,12 @@
 package uk.ac.cam.echo.server.analysis.internal;
 
+import uk.ac.cam.echo.data.Interest;
 import uk.ac.cam.echo.data.Tag;
 import uk.ac.cam.echo.data.User;
 
 import java.util.*;
 
 /**
- TODO.
  Author: Petar 'PetarV' Veličković
 
  This class analyses a User object, returning all
@@ -30,7 +30,6 @@ public class UserKeyworder
     */
     public static Map<String, Integer> extractKeywords(User user)
     {
-        //TODO: Refactor after interests are implemented.
         Map<String, Integer> ret = new HashMap<String, Integer>();
 
         if (user.getFirstName() != null)
@@ -127,7 +126,24 @@ public class UserKeyworder
             }
         }
 
-        // TODO INTERESTS
+        Collection<Interest> interests = user.getInterests();
+        if (interests != null)
+        {
+            for (Interest I : interests)
+            {
+                String interestKwd = I.getName().toLowerCase(Locale.ENGLISH).replaceAll("[^a-zA-Z ]", " ");
+                String[] ikwds = interestKwd.split("\\s+");
+                for (String kwd : ikwds)
+                {
+                    if (!ret.containsKey(kwd)) ret.put(kwd, 4);
+                    else
+                    {
+                        int oldValue = ret.get(kwd);
+                        ret.put(kwd, oldValue + 4);
+                    }
+                }
+            }
+        }
 
         return ret;
     }
