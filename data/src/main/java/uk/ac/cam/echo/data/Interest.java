@@ -2,6 +2,7 @@ package uk.ac.cam.echo.data;
 
 public interface Interest extends Base{
 
+    public long getId();
     public String getName();
     public User getUser();
 
