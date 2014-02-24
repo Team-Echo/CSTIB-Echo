@@ -81,9 +81,10 @@ public class ClientApi {
         return tag;
     }
 
-    public Interest newInterest() {
+    public Interest newInterest(User user) {
         InterestData interest = new InterestData();
         interest.setApi(this);
+        interest.configureResource(user.getId());
 
         return interest;
     }

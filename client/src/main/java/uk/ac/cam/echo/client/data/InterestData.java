@@ -20,7 +20,11 @@ public class InterestData extends BaseData implements Interest {
 
     @Override
     protected void configureResource() {
-        setResource(getApi().userResource.getInterestResource(userProxy.getId()));
+
+    }
+
+    public void configureResource(long userId) {
+        setResource(getApi().userResource.getInterestResource(userId));
     }
 
     public String getName() {
