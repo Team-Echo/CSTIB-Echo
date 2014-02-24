@@ -5,14 +5,12 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
-import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +33,6 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -288,12 +285,6 @@ public class GUIController implements Initializable {
      * a function to setup all the event handlers for coversation1
      */
     private void setupConversationPane1(){
-        for (Node node : conversation1_name.lookupAll(".ScrollBar")) {
-                    if (node instanceof ScrollBar){
-                        node.setVisible(false);
-                    }
-                }
-        
         conversation1_name.setWrapText(true);
         conversation1_messages.setCellFactory(new messageCellFactory());
         final Delta dragDeltaMouse = new Delta();
@@ -325,10 +316,11 @@ public class GUIController implements Initializable {
             }
         });
         final Delta dragDeltaTouch = new Delta();
-        conversation1.setOnTouchStationary(new EventHandler<TouchEvent>(){
+        conversation1.setOnTouchPressed(new EventHandler<TouchEvent>(){
            @Override
            public void handle(TouchEvent t) {
                 if (dragDeltaTouch.testAndPress()){
+                    dragDeltaTouch.time = System.currentTimeMillis();
                     conversation1.toFront();
                     dragDeltaTouch.id = t.getTouchPoint().getId();
                     dragDeltaTouch.x = conversation1.getLayoutX() - t.getTouchPoint().getSceneX();
@@ -340,7 +332,8 @@ public class GUIController implements Initializable {
         conversation1.setOnTouchMoved(new EventHandler<TouchEvent>(){
            @Override
            public void handle(TouchEvent t) {
-                if (dragDeltaTouch.isPressed() && (dragDeltaTouch.id==t.getTouchPoint().getId())){
+                if (dragDeltaTouch.isPressed() && (dragDeltaTouch.id==t.getTouchPoint().getId())
+                        && ((dragDeltaTouch.time-System.currentTimeMillis())>2000)){
                     conversation1.setLayoutX(t.getTouchPoint().getSceneX() + dragDeltaTouch.x);
                     conversation1.setLayoutY(t.getTouchPoint().getSceneY() + dragDeltaTouch.y);
                 }
@@ -404,6 +397,7 @@ public class GUIController implements Initializable {
            @Override
            public void handle(TouchEvent t) {
                 if (dragDeltaTouch.testAndPress()){
+                    dragDeltaTouch.time = System.currentTimeMillis();
                     conversation2.toFront();
                     dragDeltaTouch.id = t.getTouchPoint().getId();
                     dragDeltaTouch.x = conversation2.getLayoutX() - t.getTouchPoint().getSceneX();
@@ -415,7 +409,8 @@ public class GUIController implements Initializable {
         conversation2.setOnTouchMoved(new EventHandler<TouchEvent>(){
            @Override
            public void handle(TouchEvent t) {
-                if (dragDeltaTouch.isPressed() && (dragDeltaTouch.id==t.getTouchPoint().getId())){
+                if (dragDeltaTouch.isPressed() && (dragDeltaTouch.id==t.getTouchPoint().getId())
+                         && ((dragDeltaTouch.time-System.currentTimeMillis())>2000)){
                     conversation2.setLayoutX(t.getTouchPoint().getSceneX() + dragDeltaTouch.x);
                     conversation2.setLayoutY(t.getTouchPoint().getSceneY() + dragDeltaTouch.y);
                 }
@@ -479,6 +474,7 @@ public class GUIController implements Initializable {
            @Override
            public void handle(TouchEvent t) {
                 if (dragDeltaTouch.testAndPress()){
+                    dragDeltaTouch.time = System.currentTimeMillis();
                     conversation3.toFront();
                     dragDeltaTouch.id = t.getTouchPoint().getId();
                     dragDeltaTouch.x = conversation3.getLayoutX() - t.getTouchPoint().getSceneX();
@@ -490,7 +486,8 @@ public class GUIController implements Initializable {
         conversation3.setOnTouchMoved(new EventHandler<TouchEvent>(){
            @Override
            public void handle(TouchEvent t) {
-                if (dragDeltaTouch.isPressed() && (dragDeltaTouch.id==t.getTouchPoint().getId())){
+                if (dragDeltaTouch.isPressed() && (dragDeltaTouch.id==t.getTouchPoint().getId())
+                         && ((dragDeltaTouch.time-System.currentTimeMillis())>2000)){
                     conversation3.setLayoutX(t.getTouchPoint().getSceneX() + dragDeltaTouch.x);
                     conversation3.setLayoutY(t.getTouchPoint().getSceneY() + dragDeltaTouch.y);
                 }
@@ -554,6 +551,7 @@ public class GUIController implements Initializable {
            @Override
            public void handle(TouchEvent t) {
                 if (dragDeltaTouch.testAndPress()){
+                    dragDeltaTouch.time = System.currentTimeMillis();
                     conversation4.toFront();
                     dragDeltaTouch.id = t.getTouchPoint().getId();
                     dragDeltaTouch.x = conversation4.getLayoutX() - t.getTouchPoint().getSceneX();
@@ -565,7 +563,8 @@ public class GUIController implements Initializable {
         conversation4.setOnTouchMoved(new EventHandler<TouchEvent>(){
            @Override
            public void handle(TouchEvent t) {
-                if (dragDeltaTouch.isPressed() && (dragDeltaTouch.id==t.getTouchPoint().getId())){
+                if (dragDeltaTouch.isPressed() && (dragDeltaTouch.id==t.getTouchPoint().getId())
+                         && ((dragDeltaTouch.time-System.currentTimeMillis())>2000)){
                     conversation4.setLayoutX(t.getTouchPoint().getSceneX() + dragDeltaTouch.x);
                     conversation4.setLayoutY(t.getTouchPoint().getSceneY() + dragDeltaTouch.y);
                 }
@@ -629,6 +628,7 @@ public class GUIController implements Initializable {
            @Override
            public void handle(TouchEvent t) {
                 if (dragDeltaTouch.testAndPress()){
+                    dragDeltaTouch.time = System.currentTimeMillis();
                     conversation5.toFront();
                     dragDeltaTouch.id = t.getTouchPoint().getId();
                     dragDeltaTouch.x = conversation5.getLayoutX() - t.getTouchPoint().getSceneX();
@@ -640,7 +640,8 @@ public class GUIController implements Initializable {
         conversation5.setOnTouchMoved(new EventHandler<TouchEvent>(){
            @Override
            public void handle(TouchEvent t) {
-                if (dragDeltaTouch.isPressed() && (dragDeltaTouch.id==t.getTouchPoint().getId())){
+                if (dragDeltaTouch.isPressed() && (dragDeltaTouch.id==t.getTouchPoint().getId())
+                         && ((dragDeltaTouch.time-System.currentTimeMillis())>2000)){
                     conversation5.setLayoutX(t.getTouchPoint().getSceneX() + dragDeltaTouch.x);
                     conversation5.setLayoutY(t.getTouchPoint().getSceneY() + dragDeltaTouch.y);
                 }
@@ -702,6 +703,7 @@ public class GUIController implements Initializable {
            @Override
            public void handle(TouchEvent t) {
                 if (dragDeltaTouch.testAndPress()){
+                    dragDeltaTouch.time = System.currentTimeMillis();
                     stats_pane.toFront();
                     dragDeltaTouch.id = t.getTouchPoint().getId();
                     dragDeltaTouch.x = stats_pane.getLayoutX() - t.getTouchPoint().getSceneX();
@@ -713,7 +715,8 @@ public class GUIController implements Initializable {
         stats_pane.setOnTouchMoved(new EventHandler<TouchEvent>(){
            @Override
            public void handle(TouchEvent t) {
-                if (dragDeltaTouch.isPressed() && (dragDeltaTouch.id==t.getTouchPoint().getId())){
+                if (dragDeltaTouch.isPressed() && (dragDeltaTouch.id==t.getTouchPoint().getId())
+                         && ((dragDeltaTouch.time-System.currentTimeMillis())>2000)){
                     stats_pane.setLayoutX(t.getTouchPoint().getSceneX() + dragDeltaTouch.x);
                     stats_pane.setLayoutY(t.getTouchPoint().getSceneY() + dragDeltaTouch.y);
                 }
