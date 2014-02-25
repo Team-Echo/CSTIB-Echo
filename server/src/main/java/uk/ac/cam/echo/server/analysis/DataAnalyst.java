@@ -367,6 +367,7 @@ public class DataAnalyst implements ServerDataAnalyst
         if (keywords.isEmpty()) return null; // NO DATA TO QUERY UPON; should not happen!
 
         Collection<Conversation> conversations = parentConference.getConversationSet();
+        long now = new Date().getTime();
 
         PriorityQueue<DoubleConversationPair> pq = new PriorityQueue<DoubleConversationPair>(11, new ConversationComparatorByMatchFrequency());
 
@@ -392,6 +393,11 @@ public class DataAnalyst implements ServerDataAnalyst
                     currScore += StringMatcher.Match(kwd, ntg) * (double)keywords.get(kwd) / total;
                 }
             }
+
+            // get the amount of minutes since conversation was last active
+            double time = (double)(now - ((List<Message>)C.getMessages(1)).get(0).getTimeStamp()) / 60000.0;
+            if (time == 0.0) time = 0.0000000001;
+            currScore /= time;
             pq.offer(new DoubleConversationPair(currScore, C));
         }
 
