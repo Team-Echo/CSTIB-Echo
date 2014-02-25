@@ -30,7 +30,7 @@ public class ConversationDetailActivity extends Activity implements View.OnClick
     private ServiceConnection connection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
             echoService = ((EchoService.LocalBinder)service).getService();
-            echoService.setNotifEnabled(true);
+            echoService.setNotifEnabled(false);
             api = echoService.getApi();
             cf.setApi(api);
             cf.setService(echoService);

@@ -62,7 +62,7 @@ public class ConversationFragment extends Fragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		listView = (ListView)view.findViewById(R.id.messageListView);
-
+        Log.d("LISTEN",(api==null) ? "api is null" : "Not null");
         if(api != null){
             getAndListen();
             callAsynchronousTask(timer);
@@ -120,6 +120,7 @@ public class ConversationFragment extends Fragment {
         TimerTask doAsynchronousTask = new TimerTask() {
             @Override
             public void run() {
+                Log.d("NOTIF", "asyncupdate called");
                 Message update = api.conferenceResource.notify(1, user.getId(), user.getCurrentConversation().getId(), 300000);
                 echoService.notifyUpdate(update);
             }
@@ -141,12 +142,12 @@ public class ConversationFragment extends Fragment {
             Handler<Message> handler = new Handler<Message>() {
                 @Override
                 public void handle(Message message) {
-                publishProgress(message);
-                Log.d("LISTEN", "message received");
+                    publishProgress(message);
+                    Log.d("LISTEN", "message received");
                 }
             };
 
-            //api.conversationResource.listenToMessages(id).subscribe(handler);
+            api.conversationResource.listenToMessages(id).subscribe(handler);
             return null;
         }
 
@@ -155,7 +156,6 @@ public class ConversationFragment extends Fragment {
             super.onProgressUpdate(values);
             adapter.updateMessage(values[0]);
         }
-
     }
 
     // Getting previous messages
@@ -191,7 +191,7 @@ public class ConversationFragment extends Fragment {
                 ActionBar ab = getActivity().getActionBar();
                 ab.setTitle(title);
                 ab.setSubtitle(users);
-            } catch(NullPointerException e) { Log.e("ConversationFrag", e.getMessage()); }
+            } catch(NullPointerException e) { Log.e("ConversationFrag","frag"); }
             messageList = msgList;
             adapter = MessageAdapter.newInstance(context, R.layout.message_row_remote, messageList, api, user);
             adapter.setListView(listView);

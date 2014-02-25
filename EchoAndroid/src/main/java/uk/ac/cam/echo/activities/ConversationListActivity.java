@@ -67,8 +67,7 @@ public class ConversationListActivity extends Activity
 
         clf.setCommunicator(this);
 
-        long id = getIntent().getLongExtra("_id", -1);
-        if(id != -1) respond(id);
+
 
         handleIntent(getIntent());
     }
@@ -79,6 +78,14 @@ public class ConversationListActivity extends Activity
         Intent service = new Intent(this, EchoService.class);
         Log.d("ConversationListActivity", "onResume - binding EchoService");
         bindService(service, connection, Context.BIND_AUTO_CREATE);
+
+        long id = getIntent().getLongExtra("_id", -1L);
+        if(id != -1){
+            Log.d("RESPOND", "responding to " +id);
+            ConversationDialog cd = ConversationDialog.newInstance(id, getService());
+            cd.setApi(getService().getApi());
+            cd.show(manager, "conversation_info");
+        }
     }
 
     @Override

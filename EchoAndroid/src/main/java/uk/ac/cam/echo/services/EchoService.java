@@ -84,10 +84,9 @@ public class EchoService extends Service {
                  @Override
                  protected Notification.Builder doInBackground(Message... args) {
                      Message msg = args[0];
-                     Log.d("NOTIFY",""+ conversation.getId());
                      Context context = getApplicationContext();
                      Intent intent = new Intent(context, ConversationListActivity.class);
-                     intent.putExtra("_id", 3/*msg.getSender().getCurrentConversation().getId()*/);
+                     intent.putExtra("_id", msg.getConversation().getId());
                      PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
                      String user = msg.getSender().getFirstName();
@@ -118,15 +117,19 @@ public class EchoService extends Service {
     }
 
     public void notifyUpdate(Message message) {
+        Log.d("NOTIF", "notifyUpdate");
         if(message == null) return;
-        Log.d("NOTIF", "notify update called ");
+
         new AsyncTask<Message, Void, Notification.Builder>(){
             @Override
             protected Notification.Builder doInBackground(Message... args) {
                 Message msg = args[0];
                 Context context = getApplicationContext();
+                Conversation msgConv = msg.getConversation();
+
                 Intent intent = new Intent(context, ConversationListActivity.class);
-                intent.putExtra("_id", 3/* msg.getSender().getCurrentConversation().getId()*/);
+                intent.putExtra("_id", msgConv.getId());
+                Log.d("LISTEN",""+msgConv.getId());
                 PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, 0);
                 Log.d("NOTIFY", msg == null ? "null" : "not null");
                 String user = msg.getSender().getFirstName();
@@ -135,8 +138,8 @@ public class EchoService extends Service {
 
 
                 Notification.Builder notifBuilder = new Notification.Builder(context)
-                        .setTicker("Overheard " /*+ msg.getConversation().getName()*/)
-                        .setContentTitle("Overheard " + msg.getSender().getDisplayName())
+                        .setTicker("Overheard " + msg.getSender().getDisplayName() + " in " + msgConv.getName())
+                        .setContentTitle("Overheard " + msgConv.getName())
                         .setContentIntent(pIntent)
                         .setSmallIcon(android.R.drawable.ic_dialog_info)
                         .setLargeIcon(avatar)
