@@ -420,5 +420,9 @@ public class ServerConnection implements Runnable{
         Logger.getGlobal().log(Level.SEVERE, "There has been an issue with the server", e);
         mTC.exit(5, "The connection to the server has failed");
     }
+
+    public String getConfrenceName() {
+        return mConfrence.getName();
+    }
     
 }

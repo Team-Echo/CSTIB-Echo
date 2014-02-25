@@ -42,6 +42,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.RotateEvent;
 import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import uk.ac.cam.echo.TouchClient.ConfrenceStats.Tuple;
@@ -163,11 +164,35 @@ public class GUIController implements Initializable {
     @FXML Button Activity_button;
     @FXML Button ConversationList_button;
     @FXML Button messageBreakdown_button;
+    @FXML Text ECHO;
+    @FXML Text Confrence_Name;
     private void setupGlobalStats(){
         return_button.setVisible(false);
         stats_conversationlist.setVisible(false);
         global_stats_pie.setVisible(false);
-        global_stats_line.setVisible(false);
+        global_stats_line.setVisible(false); 
+        try {
+            Font roboto = Font.loadFont(new File("./fonts/roboto_light_italic.ttl").toURI().toURL().toString(), 1.0);
+            ECHO.setFont(roboto);
+        } catch (Exception ex) {
+            Logger.getGlobal().log(Level.SEVERE, "the font has failed to load", ex);
+        }
+        (new Thread(new Runnable(){
+            @Override
+            public void run() {
+                boolean notfound = true;
+                while(notfound){
+                    try{
+                    Confrence_Name.setText(mTC.getServerConnection().getConfrenceName());
+                    ((Stage)Confrence_Name.getScene().getWindow()).setTitle(mTC.getServerConnection().getConfrenceName());
+                    }catch (NullPointerException e){
+                        continue;
+                    }
+                    notfound = false;
+                }
+            }
+        })).start();
+        
         try {
             ImageView rbi = (new ImageView());
             rbi.setImage(new Image(new FileInputStream(new File("./res/drawable/menusmall.png"))));
@@ -215,6 +240,8 @@ public class GUIController implements Initializable {
                     Activity_button.setVisible(false);
                     ConversationList_button.setVisible(false);
                     messageBreakdown_button.setVisible(false);
+                    ECHO.setVisible(false);
+                    Confrence_Name.setVisible(false);
                 }
             }
         });
@@ -230,6 +257,8 @@ public class GUIController implements Initializable {
                     Activity_button.setVisible(false);
                     ConversationList_button.setVisible(false);
                     messageBreakdown_button.setVisible(false);
+                    ECHO.setVisible(false);
+                    Confrence_Name.setVisible(false);
                 }
             }
         });
@@ -245,6 +274,8 @@ public class GUIController implements Initializable {
                     Activity_button.setVisible(false);
                     ConversationList_button.setVisible(false);
                     messageBreakdown_button.setVisible(false);
+                    ECHO.setVisible(false);
+                    Confrence_Name.setVisible(false);
                 }
             }
         });
@@ -260,6 +291,8 @@ public class GUIController implements Initializable {
                     Activity_button.setVisible(true);
                     ConversationList_button.setVisible(true);
                     messageBreakdown_button.setVisible(true);
+                    ECHO.setVisible(true);
+                    Confrence_Name.setVisible(true);
                 }
             }
         });
@@ -278,7 +311,6 @@ public class GUIController implements Initializable {
         global_line.setName("Activity");
         global_stats_line.getData().add(global_line);
         global_stats_line.setLegendVisible(false);
-        
     }
     
     /**
@@ -332,8 +364,7 @@ public class GUIController implements Initializable {
         conversation1.setOnTouchMoved(new EventHandler<TouchEvent>(){
            @Override
            public void handle(TouchEvent t) {
-                if (dragDeltaTouch.isPressed() && (dragDeltaTouch.id==t.getTouchPoint().getId())
-                        && ((dragDeltaTouch.time-System.currentTimeMillis())>2000)){
+                if (dragDeltaTouch.isPressed() && (dragDeltaTouch.id==t.getTouchPoint().getId())){
                     conversation1.setLayoutX(t.getTouchPoint().getSceneX() + dragDeltaTouch.x);
                     conversation1.setLayoutY(t.getTouchPoint().getSceneY() + dragDeltaTouch.y);
                 }
@@ -409,8 +440,7 @@ public class GUIController implements Initializable {
         conversation2.setOnTouchMoved(new EventHandler<TouchEvent>(){
            @Override
            public void handle(TouchEvent t) {
-                if (dragDeltaTouch.isPressed() && (dragDeltaTouch.id==t.getTouchPoint().getId())
-                         && ((dragDeltaTouch.time-System.currentTimeMillis())>2000)){
+                if (dragDeltaTouch.isPressed() && (dragDeltaTouch.id==t.getTouchPoint().getId())){
                     conversation2.setLayoutX(t.getTouchPoint().getSceneX() + dragDeltaTouch.x);
                     conversation2.setLayoutY(t.getTouchPoint().getSceneY() + dragDeltaTouch.y);
                 }
@@ -486,8 +516,7 @@ public class GUIController implements Initializable {
         conversation3.setOnTouchMoved(new EventHandler<TouchEvent>(){
            @Override
            public void handle(TouchEvent t) {
-                if (dragDeltaTouch.isPressed() && (dragDeltaTouch.id==t.getTouchPoint().getId())
-                         && ((dragDeltaTouch.time-System.currentTimeMillis())>2000)){
+                if (dragDeltaTouch.isPressed() && (dragDeltaTouch.id==t.getTouchPoint().getId())){
                     conversation3.setLayoutX(t.getTouchPoint().getSceneX() + dragDeltaTouch.x);
                     conversation3.setLayoutY(t.getTouchPoint().getSceneY() + dragDeltaTouch.y);
                 }
@@ -563,8 +592,7 @@ public class GUIController implements Initializable {
         conversation4.setOnTouchMoved(new EventHandler<TouchEvent>(){
            @Override
            public void handle(TouchEvent t) {
-                if (dragDeltaTouch.isPressed() && (dragDeltaTouch.id==t.getTouchPoint().getId())
-                         && ((dragDeltaTouch.time-System.currentTimeMillis())>2000)){
+                if (dragDeltaTouch.isPressed() && (dragDeltaTouch.id==t.getTouchPoint().getId())){
                     conversation4.setLayoutX(t.getTouchPoint().getSceneX() + dragDeltaTouch.x);
                     conversation4.setLayoutY(t.getTouchPoint().getSceneY() + dragDeltaTouch.y);
                 }
@@ -640,8 +668,7 @@ public class GUIController implements Initializable {
         conversation5.setOnTouchMoved(new EventHandler<TouchEvent>(){
            @Override
            public void handle(TouchEvent t) {
-                if (dragDeltaTouch.isPressed() && (dragDeltaTouch.id==t.getTouchPoint().getId())
-                         && ((dragDeltaTouch.time-System.currentTimeMillis())>2000)){
+                if (dragDeltaTouch.isPressed() && (dragDeltaTouch.id==t.getTouchPoint().getId())){
                     conversation5.setLayoutX(t.getTouchPoint().getSceneX() + dragDeltaTouch.x);
                     conversation5.setLayoutY(t.getTouchPoint().getSceneY() + dragDeltaTouch.y);
                 }
@@ -715,8 +742,7 @@ public class GUIController implements Initializable {
         stats_pane.setOnTouchMoved(new EventHandler<TouchEvent>(){
            @Override
            public void handle(TouchEvent t) {
-                if (dragDeltaTouch.isPressed() && (dragDeltaTouch.id==t.getTouchPoint().getId())
-                         && ((dragDeltaTouch.time-System.currentTimeMillis())>2000)){
+                if (dragDeltaTouch.isPressed() && (dragDeltaTouch.id==t.getTouchPoint().getId())){
                     stats_pane.setLayoutX(t.getTouchPoint().getSceneX() + dragDeltaTouch.x);
                     stats_pane.setLayoutY(t.getTouchPoint().getSceneY() + dragDeltaTouch.y);
                 }
@@ -864,6 +890,7 @@ public class GUIController implements Initializable {
             addConversation5(name5,conversationID5);
         }
         pollStats();
+        pollConvStats();
         setupUserLists();
         return true;
     }
@@ -1198,16 +1225,16 @@ public class GUIController implements Initializable {
             @Override
             public void run() {
                 while (true){
-                    setStatsConv1(mTC.getServerConnection().getStats(findId(1)));
-                    setStatsConv1(mTC.getServerConnection().getStats(findId(2)));
-                    setStatsConv1(mTC.getServerConnection().getStats(findId(3)));
-                    setStatsConv1(mTC.getServerConnection().getStats(findId(4)));
-                    setStatsConv1(mTC.getServerConnection().getStats(findId(5)));
                     try {
                         Thread.sleep(POLLDELAY);
                     } catch (InterruptedException ex) {
                         Logger.getGlobal().log(Level.SEVERE, null, ex);
                     }
+                    setStatsConv1(mTC.getServerConnection().getStats(findId(1)));
+                    setStatsConv2(mTC.getServerConnection().getStats(findId(2)));
+                    setStatsConv3(mTC.getServerConnection().getStats(findId(3)));
+                    setStatsConv4(mTC.getServerConnection().getStats(findId(4)));
+                    setStatsConv5(mTC.getServerConnection().getStats(findId(5)));
                 }
             }
         })).start();
