@@ -375,7 +375,7 @@
             <Font name="Roboto Thin Italic" size="12.0" />
           </font>
         </Text>
-        <Rectangle arcHeight="18.0" arcWidth="18.0" fill="#7ee8ff" height="37.0" layoutX="159.0" layoutY="244.0" stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="INSIDE" strokeWidth="0.0" width="308.0">
+        <Rectangle fx:id="Confrence_Name_background" arcHeight="18.0" arcWidth="18.0" fill="#7ee8ff" height="37.0" layoutX="159.0" layoutY="244.0" stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="INSIDE" strokeWidth="0.0" width="308.0">
           <effect>
             <Glow />
           </effect>

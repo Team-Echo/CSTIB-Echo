@@ -42,6 +42,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.RotateEvent;
 import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -166,6 +167,7 @@ public class GUIController implements Initializable {
     @FXML Button messageBreakdown_button;
     @FXML Text ECHO;
     @FXML Text Confrence_Name;
+    @FXML Rectangle Confrence_Name_background;
     private void setupGlobalStats(){
         return_button.setVisible(false);
         stats_conversationlist.setVisible(false);
@@ -242,6 +244,7 @@ public class GUIController implements Initializable {
                     messageBreakdown_button.setVisible(false);
                     ECHO.setVisible(false);
                     Confrence_Name.setVisible(false);
+                    Confrence_Name_background.setVisible(false);
                 }
             }
         });
@@ -259,6 +262,7 @@ public class GUIController implements Initializable {
                     messageBreakdown_button.setVisible(false);
                     ECHO.setVisible(false);
                     Confrence_Name.setVisible(false);
+                    Confrence_Name_background.setVisible(false);
                 }
             }
         });
@@ -276,6 +280,7 @@ public class GUIController implements Initializable {
                     messageBreakdown_button.setVisible(false);
                     ECHO.setVisible(false);
                     Confrence_Name.setVisible(false);
+                    Confrence_Name_background.setVisible(false);
                 }
             }
         });
@@ -293,6 +298,7 @@ public class GUIController implements Initializable {
                     messageBreakdown_button.setVisible(true);
                     ECHO.setVisible(true);
                     Confrence_Name.setVisible(true);
+                    Confrence_Name_background.setVisible(true);
                 }
             }
         });
