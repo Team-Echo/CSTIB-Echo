@@ -34,13 +34,69 @@ public class DataAnalyst implements ServerDataAnalyst
     @Override
     public Map<String, Long> getKeywords(Conversation conversation, long lastTimeStamp)
     {
-        return null;
+        List<Message> msgs = (List<Message>)conversation.getSortedMessages();
+        Collections.reverse(msgs); // because the query returns them in the opposite order
+
+        Map<String, Long> ret = new HashMap<String, Long>();
+
+        long lastTS = lastTimeStamp;
+        for (Message M : msgs)
+        {
+            long TS = M.getTimeStamp();
+            if (TS < lastTimeStamp) break;
+            if (TS > lastTS) lastTS = TS;
+            List<String> kwds = MessageLexer.lexAnalyse(M.getContents(), dictionary, affix, stopWords);
+            for (String kwd : kwds)
+            {
+                if (!ret.containsKey(kwd)) ret.put(kwd, 1L);
+                else
+                {
+                    long prevValue = ret.get(kwd);
+                    ret.put(kwd, prevValue+1);
+                }
+            }
+        }
+
+        ret.put("TS", lastTS);
+
+        return ret;
     }
 
     @Override
     public Map<String, Long> getKeywords(long lastTimeStamp)
     {
-        return null;
+        Conference parentConference = (Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, parentID);
+        Collection<Conversation> conversations = parentConference.getConversationSet();
+
+        Map<String, Long> ret = new HashMap<String, Long>();
+
+        long lastTS = lastTimeStamp;
+
+        for (Conversation C : conversations)
+        {
+            List<Message> msgs = (List<Message>)C.getSortedMessages();
+            Collections.reverse(msgs); // because the query returns them in the opposite order
+            for (Message M : msgs)
+            {
+                long TS = M.getTimeStamp();
+                if (TS < lastTimeStamp) break;
+                if (TS > lastTS) lastTS = TS;
+                List<String> kwds = MessageLexer.lexAnalyse(M.getContents(), dictionary, affix, stopWords);
+                for (String kwd : kwds)
+                {
+                    if (!ret.containsKey(kwd)) ret.put(kwd, 1L);
+                    else
+                    {
+                        long prevValue = ret.get(kwd);
+                        ret.put(kwd, prevValue+1);
+                    }
+                }
+            }
+        }
+
+        ret.put("TS", lastTS);
+
+        return ret;
     }
 
     @Override
