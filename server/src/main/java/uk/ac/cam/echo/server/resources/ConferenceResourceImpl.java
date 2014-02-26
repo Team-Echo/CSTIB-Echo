@@ -7,6 +7,7 @@ import uk.ac.cam.echo.data.User;
 import uk.ac.cam.echo.data.resources.ConferenceResource;
 import uk.ac.cam.echo.server.HibernateUtil;
 import uk.ac.cam.echo.server.models.ConferenceModel;
+import uk.ac.cam.echo.server.models.ConversationModel;
 import uk.ac.cam.echo.server.models.UserModel;
 
 import javax.ws.rs.core.Response;
@@ -28,15 +29,14 @@ public class ConferenceResourceImpl implements ConferenceResource {
     }
 
     @Override
-    public Map<String, Long> getKeywords(long id, long conversationId, long lastTS)
-    {
-        throw  new UnsupportedOperationException("not implemented yet");
+    public Map<String, Long> getKeywords(long id, long conversationId, long lastTS) {
+        Conversation conversation = (Conversation) HibernateUtil.getTransaction().get(ConversationModel.class, conversationId);
+        return AnalystFactory.get(id).getKeywords(conversation, lastTS);
     }
 
     @Override
-    public Map<String, Long> getKeywords(long id, long lastTS)
-    {
-        throw  new UnsupportedOperationException("not implemented yet");
+    public Map<String, Long> getKeywords(long id, long lastTS) {
+        return AnalystFactory.get(id).getKeywords(lastTS);
     }
 
     @Override
