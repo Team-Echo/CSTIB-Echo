@@ -5,6 +5,7 @@ import uk.ac.cam.echo.data.Message;
 import uk.ac.cam.echo.data.User;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  Author: Petar 'PetarV' Veličković
@@ -16,6 +17,25 @@ import java.util.List;
 
 public interface ServerDataAnalyst
 {
+    /**
+     Extracts keywords from messages within a conversation.
+     Also returns a special keyword, "TS", which is mapped to the last timestamp processed.
+
+     @param conversation    The Conversation object within which to extract keywords.
+     @param lastTimeStamp   The latest message timestamp to look for.
+     @return                A mapping of each keyword to its frequency, including a special keyword "TS" as described above.
+    */
+    public Map<String, Long> getKeywords(Conversation conversation, long lastTimeStamp);
+
+    /**
+     Extracts keywords from messages globally.
+     Also returns a special keyword, "TS", which is mapped to the last timestamp processed.
+
+     @param lastTimeStamp   The latest message timestamp to look for.
+     @return                A mapping of each keyword to its frequency, including a special keyword "TS" as described above.
+    */
+    public Map<String, Long> getKeywords(long lastTimeStamp);
+
     /**
      Searches the conversations within the conference, with respect to the given keyword string.
      It searches by names, tags and by extracted keywords, giving priority to names, then tags.

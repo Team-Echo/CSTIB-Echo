@@ -12,6 +12,7 @@ import uk.ac.cam.echo.server.models.UserModel;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ConferenceResourceImpl implements ConferenceResource {
 
@@ -24,6 +25,18 @@ public class ConferenceResourceImpl implements ConferenceResource {
 
     public List<Conference> getAll() {
         return HibernateUtil.getTransaction().createCriteria(ConferenceModel.class).list();
+    }
+
+    @Override
+    public Map<String, Long> getKeywords(long id, long conversationId, long lastTS)
+    {
+        throw  new UnsupportedOperationException("not implemented yet");
+    }
+
+    @Override
+    public Map<String, Long> getKeywords(long id, long lastTS)
+    {
+        throw  new UnsupportedOperationException("not implemented yet");
     }
 
     @Override

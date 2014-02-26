@@ -8,6 +8,7 @@ import uk.ac.cam.echo.data.User;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.Map;
 
 @Path("/conferences")
 @Produces("application/json")
@@ -18,6 +19,14 @@ public interface ConferenceResource extends RestResource<Conference> {
     @GET
     @Path("/{id}")
     public Conference get(@PathParam("id") long id);
+
+    @Path("/{conferenceId}/c-keywords")
+    @GET
+    public Map<String, Long> getKeywords(@PathParam("conferenceId") long id, @QueryParam("conversationId") long conversationId, @QueryParam("lastTS") long lastTimeStamp);
+
+    @Path("/{conferenceId}/keywords")
+    @GET
+    public Map<String, Long> getKeywords(@PathParam("conferenceId") long id, @QueryParam("lastTS") long lastTimeStamp);
 
     @Path("/{conferenceId}/search")
     @GET

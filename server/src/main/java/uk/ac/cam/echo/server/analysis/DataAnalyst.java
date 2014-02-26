@@ -32,6 +32,18 @@ public class DataAnalyst implements ServerDataAnalyst
     }
 
     @Override
+    public Map<String, Long> getKeywords(Conversation conversation, long lastTimeStamp)
+    {
+        return null;
+    }
+
+    @Override
+    public Map<String, Long> getKeywords(long lastTimeStamp)
+    {
+        return null;
+    }
+
+    @Override
     public List<Conversation> search(String keyword, int n)
     {
         Conference parentConference = (Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, parentID);
