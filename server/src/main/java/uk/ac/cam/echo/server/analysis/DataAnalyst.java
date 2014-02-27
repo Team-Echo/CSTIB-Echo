@@ -105,11 +105,15 @@ public class DataAnalyst implements ServerDataAnalyst
         Conference parentConference = (Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, parentID);
         Collection<Conversation> conversations = parentConference.getConversationSet();
 
+        long nextLastTS = GraphUtil.lastTS;
+
         for (Conversation C : conversations)
         {
-            Collection<Message> msgs = C.getMessages();
+            Collection<Message> msgs = C.getSortedMessages();
             for (Message M : msgs)
             {
+                if (M.getTimeStamp() > nextLastTS) nextLastTS = M.getTimeStamp();
+                if (M.getTimeStamp() <= GraphUtil.lastTS) break;
                 List<String> keywords = MessageLexer.lexAnalyse(M.getContents(), dictionary, affix, stopWords);
                 ListIterator<String> it1 = keywords.listIterator();
                 while (it1.hasNext())
@@ -126,6 +130,8 @@ public class DataAnalyst implements ServerDataAnalyst
                 }
             }
         }
+
+        GraphUtil.lastTS = nextLastTS;
     }
 
     @Override
