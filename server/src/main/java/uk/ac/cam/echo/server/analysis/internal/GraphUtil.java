@@ -54,11 +54,13 @@ public class GraphUtil
     public static String getJSONGraph()
     {
         StringBuilder jsonGraph = new StringBuilder();
-
+        boolean headStart = false;
         jsonGraph.append("[\n");
         List<NodeModel> V = getAll();
         for (NodeModel N : V)
         {
+            if (headStart) jsonGraph.append(",\n");
+            else jsonGraph.append("\n");
             jsonGraph.append('{');
             jsonGraph.append("\"name\":\"").append(N.getName()).append("\",");
             jsonGraph.append("\"size\":").append(N.getId()).append(",");
@@ -72,9 +74,10 @@ public class GraphUtil
                 jsonGraph.append("\"").append(M.getName()).append("\"");
                 start = true;
             }
-            jsonGraph.append("]},\n");
+            jsonGraph.append("]}");
+            headStart = true;
         }
-        jsonGraph.append("]\n");
+        jsonGraph.append("\n]\n");
 
         return jsonGraph.toString();
     }
