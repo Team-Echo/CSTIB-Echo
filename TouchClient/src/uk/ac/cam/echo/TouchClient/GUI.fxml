@@ -12,6 +12,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.scene.web.*?>
 
 <AnchorPane id="AnchorPane" prefHeight="1080.0" prefWidth="1920.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="uk.ac.cam.echo.TouchClient.GUIController">
   <children>
@@ -364,20 +365,18 @@
         </LineChart>
         <Text fx:id="pie_chart_lable" layoutX="447.0" layoutY="255.0" scaleX="14.229751191106406" scaleY="1.5012236906510035" strokeType="OUTSIDE" strokeWidth="0.0" text="">
           <font>
-            <Font name="Roboto Light" size="12.0" fx:id="x2" />
+            <Font size="12.0" fx:id="x2" />
           </font>
         </Text>
+        <WebView styleClass="webviewclass" fx:id="htmlviewer" layoutX="100.0" layoutY="117.0" prefHeight="400.0" prefWidth="400.0" />
         <Button fx:id="return_button" layoutX="260.0" layoutY="537.0" mnemonicParsing="false" styleClass="statbuttonClass" text="return" />
         <Button fx:id="Activity_button" layoutX="105.0" layoutY="388.0" mnemonicParsing="false" styleClass="statbuttonClass" text="Activity" />
         <Button fx:id="ConversationList_button" layoutX="378.0" layoutY="388.0" mnemonicParsing="false" styleClass="statbuttonClass" text="Conversation List" />
         <Button fx:id="messageBreakdown_button" layoutX="240.0" layoutY="388.0" mnemonicParsing="false" styleClass="statbuttonClass" text="Message Breakdown" />
-        <Text fx:id="ECHO" layoutX="290.0" layoutY="150.0" scaleX="12.106549705821257" scaleY="10.223579190357567" strokeType="OUTSIDE" strokeWidth="0.0" text="echo">
+        <Text fx:id="ECHO" font="$x2" layoutX="290.0" layoutY="150.0" scaleX="12.106549705821257" scaleY="10.223579190357567" strokeType="OUTSIDE" strokeWidth="0.0" text="echo">
           <fill>
             <Color blue="0.882" green="0.694" red="0.173" fx:id="x3" />
           </fill>
-          <font>
-            <Font name="Roboto Thin Italic" size="12.0" />
-          </font>
         </Text>
         <Rectangle fx:id="Confrence_Name_background" arcHeight="18.0" arcWidth="18.0" fill="$x3" height="37.0" layoutX="159.0" layoutY="244.0" stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="INSIDE" strokeWidth="0.0" width="308.0">
           <effect>

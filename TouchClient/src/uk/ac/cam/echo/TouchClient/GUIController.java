@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -44,6 +45,7 @@ import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import uk.ac.cam.echo.TouchClient.ConfrenceStats.Tuple;
 import uk.ac.cam.echo.data.Conversation;
@@ -167,12 +169,14 @@ public class GUIController implements Initializable {
     @FXML Text ECHO;
     @FXML Text Confrence_Name;
     @FXML Rectangle Confrence_Name_background;
+    @FXML WebView htmlviewer;
     private void setupGlobalStats(){
         return_button.setVisible(false);
         stats_conversationlist.setVisible(false);
         global_stats_pie.setVisible(false);
         global_stats_line.setVisible(false);
         Confrence_Name_background.setVisible(false);
+        htmlviewer.setVisible(false);
         (new Thread(new Runnable(){
             @Override
             public void run() {
@@ -239,6 +243,7 @@ public class GUIController implements Initializable {
                     ECHO.setVisible(false);
                     Confrence_Name.setVisible(false);
                     Confrence_Name_background.setVisible(false);
+                    htmlviewer.setVisible(false);
                 }
             }
         });
@@ -248,7 +253,7 @@ public class GUIController implements Initializable {
             public void handle(ActionEvent t) {
                 if (ConversationList_button.visibleProperty().get()){
                     return_button.setVisible(true);
-                    stats_conversationlist.setVisible(true);
+                    stats_conversationlist.setVisible(false);
                     global_stats_pie.setVisible(false);
                     global_stats_line.setVisible(false);
                     Activity_button.setVisible(false);
@@ -257,6 +262,7 @@ public class GUIController implements Initializable {
                     ECHO.setVisible(false);
                     Confrence_Name.setVisible(false);
                     Confrence_Name_background.setVisible(false);
+                    htmlviewer.setVisible(true);
                 }
             }
         });
@@ -275,6 +281,7 @@ public class GUIController implements Initializable {
                     ECHO.setVisible(false);
                     Confrence_Name.setVisible(false);
                     Confrence_Name_background.setVisible(false);
+                    htmlviewer.setVisible(false);
                 }
             }
         });
@@ -293,6 +300,7 @@ public class GUIController implements Initializable {
                     ECHO.setVisible(true);
                     Confrence_Name.setVisible(true);
                     Confrence_Name_background.setVisible(false);
+                    htmlviewer.setVisible(false);
                 }
             }
         });
@@ -311,6 +319,11 @@ public class GUIController implements Initializable {
         global_line.setName("Activity");
         global_stats_line.getData().add(global_line);
         global_stats_line.setLegendVisible(false);
+        try {
+            htmlviewer.getEngine().load(new File("./res/tags/index.html").toURI().toURL().toString());
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(GUIController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     /**
@@ -1169,10 +1182,18 @@ public class GUIController implements Initializable {
                     } catch (InterruptedException ex) {
                         Logger.getGlobal().log(Level.SEVERE, null, ex);
                     }
+                    Platform.runLater(new Runnable(){
+                        @Override
+                        public void run() {
+                            updateWebView();
+                            htmlviewer.getEngine().reload();
+                        }
+                    });
                 }
             }
         })).start();
     }
+    public void updateWebView(){}
     
     @FXML private ListView conversation1_avitars;
     private ObservableList<User> avitars1;

@@ -122,3 +122,7 @@
 .statbuttonClass {
     -fx-background-color: #2cb1e1;
 }
+
+.webviewclass {
+    -fx-background-color: #696969;
+}

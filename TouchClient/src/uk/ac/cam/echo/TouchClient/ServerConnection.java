@@ -153,8 +153,7 @@ public class ServerConnection implements Runnable{
             }
         });
         
-        while (mGUI.getIsMapEmpty()){System.out.println("bad code");}
-        System.out.println("finshed");
+        while (mGUI.getIsMapEmpty()){}
         
         Logger.getGlobal().log(Level.INFO, new Boolean(mGUI.getIsMapEmpty()).toString());
         
