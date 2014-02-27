@@ -19,17 +19,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import uk.ac.cam.echo.BitmapUtil;
 import uk.ac.cam.echo.R;
 import uk.ac.cam.echo.Toaster;
 import uk.ac.cam.echo.client.ClientApi;
 import uk.ac.cam.echo.client.data.UserData;
+import uk.ac.cam.echo.data.Interest;
 import uk.ac.cam.echo.data.User;
 import uk.ac.cam.echo.services.EchoService;
 
@@ -54,10 +60,13 @@ public class UserSettingsActivity extends Activity implements View.OnClickListen
 
     Bitmap avatarBM;
 
+    private List<EditText> editTextList = new ArrayList<EditText>();
+
     private ImageView avatar;
     private EditText display;
     private EditText email;
     private EditText phone;
+    private EditText interest;
     private EditText job;
     private EditText company;
     private Button update;
@@ -66,6 +75,7 @@ public class UserSettingsActivity extends Activity implements View.OnClickListen
     private String displayText;
     private String emailText;
     private String phoneText;
+    private String interestText;
     private String jobText;
     private String companyText;
 
@@ -78,6 +88,7 @@ public class UserSettingsActivity extends Activity implements View.OnClickListen
         display = (EditText)findViewById(R.id.dispNameInput);
         email = (EditText)findViewById(R.id.emailInput);
         phone = (EditText)findViewById(R.id.phoneInput);
+        interest = (EditText)findViewById(R.id.interestInput);
         job = (EditText)findViewById(R.id.jobInput);
         company = (EditText)findViewById(R.id.companyInput);
         update = (Button)findViewById(R.id.updateUserButton);
@@ -113,11 +124,18 @@ public class UserSettingsActivity extends Activity implements View.OnClickListen
                 jobText = user.getJobTitle();
                 companyText = user.getCompany();
 
+                StringBuilder interestBuilder = new StringBuilder();
+                List<Interest> interests = (List<Interest>) user.getInterests();
+                for(Interest interest : interests) {
+                    interestBuilder.append(interest.getName() + " ");
+                }
+                interestText = interestBuilder.toString();
+
                if(user.getAvatarLink() != null) {
                     Bitmap bimage =  BitmapUtil.getBitmapFromURL(user.getAvatarLink() + "&s=200");
                     Log.d("BITMAP", (bimage==null) + "");
                     return bimage;
-                } return null;
+               } return null;
             }
 
             @Override
@@ -129,9 +147,9 @@ public class UserSettingsActivity extends Activity implements View.OnClickListen
                 if(!phoneText.equals("")) phone.setText(phoneText);
                 if(!jobText.equals("")) job.setText(jobText);
                 if(!companyText.equals("")) company.setText(companyText);
+                if(!interestText.equals("")) interest.setText(interestText);
 
                 avatar.setImageBitmap(bitmap);
-                //avatarBM = bitmap;
             }
         }.execute();
 
@@ -177,16 +195,30 @@ public class UserSettingsActivity extends Activity implements View.OnClickListen
                     if(!args[1].equals(emailText))
                         user.setEmail(args[1]);
 
-                    if(!args[2].equals(phoneText)) {
+                    if(!args[2].equals(phoneText))
                         user.setPhoneNumber(args[2]);
-                        Log.d("USER", "setting phone number " + args[2]);
-                    }
 
                     if(!args[3].equals(jobText))
                         user.setJobTitle(args[3]);
 
                     if(!args[4].equals(companyText))
                         user.setCompany(args[4]);
+
+                    if(!args[5].equals(interestText)) {
+
+                        List<Interest> ints = (List<Interest>) user.getInterests();
+                        for(Interest i : ints) {
+                            Log.d("Interest", " deleting " + i.getName());
+                            i.delete();
+                        }
+                        String[] interests = args[5].split(" ");
+
+                        for(String interestName : interests) {
+                            Interest i = api.newInterest(user);
+                            i.setName(interestName);
+                            i.save();
+                        }
+                    }
 
                     user.save();
 
@@ -202,11 +234,8 @@ public class UserSettingsActivity extends Activity implements View.OnClickListen
                       email.getText().toString(),       //args[1]
                       phone.getText().toString(),       //args[2]
                       job.getText().toString(),         //args[3]
-                      company.getText().toString());    //args[4]
+                      company.getText().toString(),     //args[4]
+                      interest.getText().toString());   //args[5]
         }
     }
-
-
-
-
 }
