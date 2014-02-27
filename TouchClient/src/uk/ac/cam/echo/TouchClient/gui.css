@@ -2,7 +2,7 @@
  * 778899- light slate gray (line separator in global and conversation panels)
  * 272822- sundried clay (main background)
  * 696969- dim gray (conversation background)
- * 7AE1F7- echo blue (on highlighted tab)
+ * 2cb1e1- echo blue (on highlighted tab)
  */
 
 .mainFxmlClass {
@@ -66,10 +66,12 @@
 
 .tabClass .tab{
     -fx-background-color: #696969;
+    -fx-text-fill: #BABAB8;
 }
 
 .tabClass .tab:selected{
-    -fx-background-color: #7AE1F7;
+    -fx-background-color: #0099CC;
+    -fx-text-fill: #ffffff;
 }
 
 .tabClass .tab-content-area{
@@ -86,8 +88,8 @@
 }
 
 .elipsClass {
-    -fx-background-color: #BABAB8;
-    -fx-fill: #BABAB8;
+    -fx-background-color: #EAEAEA;
+    -fx-fill: #EAEAEA;
 }
 
 .statsText {
@@ -103,12 +105,20 @@
 
 .statsMessageListClass .list-cell{
     -fx-background-color: #BABAB8;
-    -fx-text-fill: #ffffff;
+    -fx-text-fill: #D4F5FA; 
     -fx-border-color: #778899;
     -fx-border-width: 0.08;
 }
 
 .statsMessageListClass .list-cell:focused {
-    -fx-background-color: #ffffff;
+    -fx-background-color: #D4F5FA;
     -fx-text-fill: #000000;
+}
+
+.statespaneClass {
+    -fx-background-color:#000000;
+}
+
+.statbuttonClass {
+    -fx-background-color: #2cb1e1;
 }

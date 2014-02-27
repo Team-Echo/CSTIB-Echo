@@ -9,6 +9,7 @@
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
@@ -26,7 +27,7 @@
         </Lighting>
       </effect>
       <tabs>
-        <Tab text="conversation">
+        <Tab text="Conversation">
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
@@ -54,9 +55,9 @@
             </AnchorPane>
           </content>
         </Tab>
-        <Tab text="stats">
+        <Tab text="Stats">
           <content>
-            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="statespaneClass">
               <children>
                 <Label layoutX="14.0" layoutY="14.0" text="Current number of Users:" />
                 <Label layoutX="14.0" layoutY="36.0" text="Number of contributing Users:" />
@@ -92,7 +93,7 @@
         </Lighting>
       </effect>
       <tabs>
-        <Tab text="conversation">
+        <Tab text="Conversation">
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
@@ -106,7 +107,7 @@
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                       <children>
                         <ListView fx:id="conversation2_messages" prefHeight="317.0" prefWidth="258.0" styleClass="messageListClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
-                        <Label fx:id="conversation2_name" font="$x1" layoutX="14.0" layoutY="6.0" maxWidth="200.0" styleClass="nameLabelClass" text="conversation name" />
+                        <Label fx:id="conversation2_name" font="$x1" layoutX="14.0" layoutY="6.0" maxWidth="200.0" prefWidth="200.0" styleClass="nameLabelClass" text="conversation name" />
                         <ImageView fx:id="conversation2_QR" fitHeight="50.0" fitWidth="50.0" layoutY="0.0" opacity="0.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0" />
                       </children>
                     </AnchorPane>
@@ -116,11 +117,11 @@
             </AnchorPane>
           </content>
         </Tab>
-        <Tab text="stats">
+        <Tab text="Stats">
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
-                <AnchorPane id="Content" layoutX="0.0" layoutY="0.0" minHeight="0.0" minWidth="0.0" prefHeight="369.0" prefWidth="350.0">
+                <AnchorPane id="Content" layoutX="0.0" layoutY="0.0" minHeight="0.0" minWidth="0.0" prefHeight="369.0" prefWidth="350.0" styleClass="statespaneClass">
                   <children>
                     <Label layoutX="14.0" layoutY="14.0" text="Current number of Users:" />
                     <Label layoutX="14.0" layoutY="36.0" text="Number of contributing Users:" />
@@ -158,7 +159,7 @@
         </Lighting>
       </effect>
       <tabs>
-        <Tab text="conversation">
+        <Tab text="Conversation">
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
@@ -172,7 +173,7 @@
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                       <children>
                         <ListView fx:id="conversation3_messages" prefHeight="317.0" prefWidth="258.0" styleClass="messageListClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
-                        <Label fx:id="conversation3_name" font="$x1" layoutX="14.0" layoutY="6.0" maxWidth="200.0" styleClass="nameLabelClass" text="conversation name" />
+                        <Label fx:id="conversation3_name" font="$x1" layoutX="14.0" layoutY="6.0" maxWidth="200.0" prefWidth="200.0" styleClass="nameLabelClass" text="conversation name" />
                         <ImageView fx:id="conversation3_QR" fitHeight="50.0" fitWidth="50.0" layoutY="0.0" opacity="0.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0" />
                       </children>
                     </AnchorPane>
@@ -182,9 +183,9 @@
             </AnchorPane>
           </content>
         </Tab>
-        <Tab text="stats">
+        <Tab text="Stats">
           <content>
-            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="statespaneClass">
               <children>
                 <AnchorPane id="Content" layoutX="0.0" layoutY="0.0" minHeight="0.0" minWidth="0.0" prefHeight="369.0" prefWidth="350.0">
                   <children>
@@ -224,7 +225,7 @@
         </Lighting>
       </effect>
       <tabs>
-        <Tab text="conversation">
+        <Tab text="Conversation">
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
@@ -238,7 +239,7 @@
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                       <children>
                         <ListView fx:id="conversation4_messages" prefHeight="317.0" prefWidth="258.0" styleClass="messageListClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
-                        <Label fx:id="conversation4_name" font="$x1" layoutX="14.0" layoutY="6.0" maxWidth="200.0" styleClass="nameLabelClass" text="conversation name" />
+                        <Label fx:id="conversation4_name" font="$x1" layoutX="14.0" layoutY="6.0" maxWidth="200.0" prefWidth="200.0" styleClass="nameLabelClass" text="conversation name" />
                         <ImageView fx:id="conversation4_QR" fitHeight="50.0" fitWidth="50.0" layoutY="0.0" opacity="0.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0" />
                       </children>
                     </AnchorPane>
@@ -248,9 +249,9 @@
             </AnchorPane>
           </content>
         </Tab>
-        <Tab text="stats">
+        <Tab text="Stats">
           <content>
-            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="statespaneClass">
               <children>
                 <AnchorPane id="Content" layoutX="0.0" layoutY="0.0" minHeight="0.0" minWidth="0.0" prefHeight="369.0" prefWidth="350.0">
                   <children>
@@ -290,7 +291,7 @@
         </Lighting>
       </effect>
       <tabs>
-        <Tab text="conversation">
+        <Tab text="Conversation">
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
@@ -304,7 +305,7 @@
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                       <children>
                         <ListView fx:id="conversation5_messages" prefHeight="317.0" prefWidth="258.0" styleClass="messageListClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
-                        <Label fx:id="conversation5_name" font="$x1" layoutX="14.0" layoutY="6.0" maxWidth="200.0" styleClass="nameLabelClass" text="conversation name" />
+                        <Label fx:id="conversation5_name" font="$x1" layoutX="14.0" layoutY="6.0" maxWidth="200.0" prefWidth="200.0" styleClass="nameLabelClass" text="conversation name" />
                         <ImageView fx:id="conversation5_QR" fitHeight="50.0" fitWidth="50.0" layoutY="0.0" opacity="0.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0" />
                       </children>
                     </AnchorPane>
@@ -314,9 +315,9 @@
             </AnchorPane>
           </content>
         </Tab>
-        <Tab text="stats">
+        <Tab text="Stats">
           <content>
-            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="statespaneClass">
               <children>
                 <AnchorPane id="Content" layoutX="0.0" layoutY="0.0" minHeight="0.0" minWidth="0.0" prefHeight="369.0" prefWidth="350.0">
                   <children>
@@ -366,21 +367,24 @@
             <Font name="Roboto Light" size="12.0" fx:id="x2" />
           </font>
         </Text>
-        <Button fx:id="return_button" layoutX="260.0" layoutY="537.0" mnemonicParsing="false" text="return" />
-        <Button fx:id="Activity_button" layoutX="105.0" layoutY="388.0" mnemonicParsing="false" text="Activity" />
-        <Button fx:id="ConversationList_button" layoutX="378.0" layoutY="388.0" mnemonicParsing="false" text="Conversation List" />
-        <Button fx:id="messageBreakdown_button" layoutX="240.0" layoutY="388.0" mnemonicParsing="false" text="Message Breakdown" />
-        <Text fx:id="ECHO" fill="#7ae1f7" layoutX="300.0" layoutY="176.0" scaleX="12.106549705821257" scaleY="10.223579190357567" strokeType="OUTSIDE" strokeWidth="0.0" text="echo">
+        <Button fx:id="return_button" layoutX="260.0" layoutY="537.0" mnemonicParsing="false" styleClass="statbuttonClass" text="return" />
+        <Button fx:id="Activity_button" layoutX="105.0" layoutY="388.0" mnemonicParsing="false" styleClass="statbuttonClass" text="Activity" />
+        <Button fx:id="ConversationList_button" layoutX="378.0" layoutY="388.0" mnemonicParsing="false" styleClass="statbuttonClass" text="Conversation List" />
+        <Button fx:id="messageBreakdown_button" layoutX="240.0" layoutY="388.0" mnemonicParsing="false" styleClass="statbuttonClass" text="Message Breakdown" />
+        <Text fx:id="ECHO" layoutX="290.0" layoutY="150.0" scaleX="12.106549705821257" scaleY="10.223579190357567" strokeType="OUTSIDE" strokeWidth="0.0" text="echo">
+          <fill>
+            <Color blue="0.882" green="0.694" red="0.173" fx:id="x3" />
+          </fill>
           <font>
             <Font name="Roboto Thin Italic" size="12.0" />
           </font>
         </Text>
-        <Rectangle fx:id="Confrence_Name_background" arcHeight="18.0" arcWidth="18.0" fill="#7ee8ff" height="37.0" layoutX="159.0" layoutY="244.0" stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="INSIDE" strokeWidth="0.0" width="308.0">
+        <Rectangle fx:id="Confrence_Name_background" arcHeight="18.0" arcWidth="18.0" fill="$x3" height="37.0" layoutX="159.0" layoutY="244.0" stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="INSIDE" strokeWidth="0.0" width="308.0">
           <effect>
             <Glow />
           </effect>
         </Rectangle>
-        <Text fx:id="Confrence_Name" disable="false" fill="#404040" font="$x2" layoutX="237.0" layoutY="267.0" scaleX="1.5" scaleY="1.5" stroke="BLACK" strokeMiterLimit="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Confrence name" textAlignment="CENTER" wrappingWidth="150.0" />
+        <Text fx:id="Confrence_Name" disable="false" fill="#2cb1e1" font="$x2" layoutX="230.0" layoutY="220.0" scaleX="1.5" scaleY="1.5" stroke="BLACK" strokeMiterLimit="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="confrencenameClass" text="Confrence name" textAlignment="CENTER" wrappingWidth="150.0" />
       </children>
     </Pane>
   </children>

@@ -144,6 +144,7 @@ public class ServerConnection implements Runnable{
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
+                
                 mGUI.initConversations(conversation1.getName(), conversation1.getId(),
                                        conversation2.getName(), conversation2.getId(),
                                        conversation3.getName(), conversation3.getId(),
@@ -152,9 +153,10 @@ public class ServerConnection implements Runnable{
             }
         });
         
-        while (mGUI.getMap().isEmpty()){}
+        while (mGUI.getIsMapEmpty()){System.out.println("bad code");}
+        System.out.println("finshed");
         
-        Logger.getGlobal().log(Level.INFO, mGUI.getMap().toString());
+        Logger.getGlobal().log(Level.INFO, new Boolean(mGUI.getIsMapEmpty()).toString());
         
         synchronized (mConversations){
             synchronized (mSub){
@@ -165,7 +167,16 @@ public class ServerConnection implements Runnable{
                 mConversations.add(conversation5);
         
                 for (Conversation c: mConversations){
-                    mSub.add(listenToConversation(c));
+                    if (c.getId()>=0){
+                        mSub.add(listenToConversation(c));
+                    }else{
+                        mSub.add(new Subscription() {
+                            @Override
+                            public void unsubscribe() {
+                                return;
+                            }
+                        });
+                    }
                 }
             }
         }
@@ -377,7 +388,7 @@ public class ServerConnection implements Runnable{
             return new ConvStats(mAPI.conferenceResource.userCount(mConfrence.getId(), conversationID),
                     mAPI.conferenceResource.contributingUsers(mConfrence.getId(), conversationID, false),
                     mAPI.conferenceResource.messageCount(mConfrence.getId(), conversationID),
-                    mAPI.conferenceResource.maleToFemaleRatio(mConfrence.getId()));
+                    mAPI.conferenceResource.maleToFemaleRatio(mConfrence.getId(),conversationID));
        } catch (Exception e){log(e);}
        return new ConvStats(0,0,0,0.5);
     }

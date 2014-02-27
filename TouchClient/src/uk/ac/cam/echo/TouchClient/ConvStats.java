@@ -27,5 +27,18 @@ class ConvStats {
     public String getCurrentUsers(){return mCurrentUsers;}
     public String getContributingUsers(){return mContributingUsers;}
     public String getNumberOfMessages(){return mNumberOfMessages;}
-    public double getMaleRatio(){return mMaleRatio;}
+    public double getMaleRatio(){
+        if (mMaleRatio == Double.POSITIVE_INFINITY){
+            return 1;
+        }else{
+            return mMaleRatio;
+        }
+    }
+    public double getFemaleRatio(){
+        if (mMaleRatio == Double.POSITIVE_INFINITY){
+            return 0;
+        }else{
+            return 1;
+        }
+    }
 }

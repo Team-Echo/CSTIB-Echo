@@ -30,7 +30,12 @@ public class messageCellFactory implements Callback<ListView<String>, ListCell<S
                     super.updateItem(item, empty);
                     if (!isEmpty()) {
                         Message msg = (Message)item;
-                        String sender = (msg.getSender() == null ? "Anonymous" : msg.getSender().getUsername()).concat(" : ");
+                        String sender;
+                        if (msg.getSender() == null) sender = "Anonymous";
+                        else if (msg.getSender().getDisplayName() != null) sender = msg.getSender().getDisplayName();
+                        else sender = msg.getSender().getUsername();
+                        sender = sender.concat(" : ");
+                        //String sender = (msg.getSender() == null ? "Anonymous" : msg.getSender().getDisplayName()).concat(" : ");
                         String message = "   ".concat(msg.getContents());
                         cellContents = new GridPane();
                         name = new Text(sender);
