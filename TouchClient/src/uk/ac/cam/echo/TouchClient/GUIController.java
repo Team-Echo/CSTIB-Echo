@@ -137,7 +137,11 @@ public class GUIController implements Initializable {
     private HashMap<Long,Integer> idtopane = new HashMap();
     
     public boolean getIsMapEmpty(){
-        return idtopane.isEmpty();
+        boolean out;
+        synchronized (idtopane){
+            out = idtopane.isEmpty();
+        }
+        return out;
     }
     
     private void addMessage1(Message mess){
@@ -319,6 +323,7 @@ public class GUIController implements Initializable {
         global_line.setName("Activity");
         global_stats_line.getData().add(global_line);
         global_stats_line.setLegendVisible(false);
+        
         try {
             htmlviewer.getEngine().load(new File("./res/tags/index.html").toURI().toURL().toString());
         } catch (MalformedURLException ex) {
@@ -1182,18 +1187,11 @@ public class GUIController implements Initializable {
                     } catch (InterruptedException ex) {
                         Logger.getGlobal().log(Level.SEVERE, null, ex);
                     }
-                    Platform.runLater(new Runnable(){
-                        @Override
-                        public void run() {
-                            updateWebView();
-                            htmlviewer.getEngine().reload();
-                        }
-                    });
                 }
             }
         })).start();
     }
-    public void updateWebView(){}
+
     
     @FXML private ListView conversation1_avitars;
     private ObservableList<User> avitars1;
