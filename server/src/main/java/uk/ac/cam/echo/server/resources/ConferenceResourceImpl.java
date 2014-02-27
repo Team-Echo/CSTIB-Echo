@@ -6,6 +6,7 @@ import uk.ac.cam.echo.data.Message;
 import uk.ac.cam.echo.data.User;
 import uk.ac.cam.echo.data.resources.ConferenceResource;
 import uk.ac.cam.echo.server.HibernateUtil;
+import uk.ac.cam.echo.server.analysis.internal.GraphUtil;
 import uk.ac.cam.echo.server.models.ConferenceModel;
 import uk.ac.cam.echo.server.models.ConversationModel;
 import uk.ac.cam.echo.server.models.UserModel;
@@ -37,6 +38,12 @@ public class ConferenceResourceImpl implements ConferenceResource {
     @Override
     public Map<String, Long> getKeywords(long id, long lastTS) {
         return AnalystFactory.get(id).getKeywords(lastTS);
+    }
+
+    @Override
+    public String getKeywordGraph(long id) {
+        AnalystFactory.get(id).updateGraph();
+        return GraphUtil.getJSONGraph();
     }
 
     @Override

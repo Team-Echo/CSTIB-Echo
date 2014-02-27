@@ -38,7 +38,12 @@ class avitarCellFactory implements Callback<ListView<User>, ListCell<String>> {
                         cellContents = new GridPane();
                         User user = (User)item;
                         
-                        name = (user.getUsername()==null?new Text("Anonymous"):new Text(user.getUsername()));
+                        String dispName;
+                        if (user.getUsername() == null) dispName = "Anonymous";
+                        else if (user.getDisplayName() != null) dispName = user.getDisplayName();
+                        else dispName = user.getUsername();
+                        name = new Text(dispName);
+                        name.setWrappingWidth(50);
                         
                         avitar = new ImageView();
                         avitar.setFitHeight(50);

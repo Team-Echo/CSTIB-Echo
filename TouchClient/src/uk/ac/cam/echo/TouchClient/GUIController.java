@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -43,8 +44,8 @@ import javafx.scene.input.RotateEvent;
 import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import uk.ac.cam.echo.TouchClient.ConfrenceStats.Tuple;
 import uk.ac.cam.echo.data.Conversation;
@@ -133,10 +134,10 @@ public class GUIController implements Initializable {
     private TouchClient mTC;
     
     //a hash map from the conversation id to the pane that it is displaed in
-    private HashMap<Long,Integer> idtopane;
+    private HashMap<Long,Integer> idtopane = new HashMap();
     
-    public HashMap<Long,Integer> getMap(){
-        return (HashMap<Long,Integer>)idtopane.clone();
+    public boolean getIsMapEmpty(){
+        return idtopane.isEmpty();
     }
     
     private void addMessage1(Message mess){
@@ -168,17 +169,14 @@ public class GUIController implements Initializable {
     @FXML Text ECHO;
     @FXML Text Confrence_Name;
     @FXML Rectangle Confrence_Name_background;
+    @FXML WebView htmlviewer;
     private void setupGlobalStats(){
         return_button.setVisible(false);
         stats_conversationlist.setVisible(false);
         global_stats_pie.setVisible(false);
-        global_stats_line.setVisible(false); 
-        try {
-            Font roboto = Font.loadFont(new File("./fonts/roboto_light_italic.ttl").toURI().toURL().toString(), 1.0);
-            ECHO.setFont(roboto);
-        } catch (Exception ex) {
-            Logger.getGlobal().log(Level.SEVERE, "the font has failed to load", ex);
-        }
+        global_stats_line.setVisible(false);
+        Confrence_Name_background.setVisible(false);
+        htmlviewer.setVisible(false);
         (new Thread(new Runnable(){
             @Override
             public void run() {
@@ -245,6 +243,7 @@ public class GUIController implements Initializable {
                     ECHO.setVisible(false);
                     Confrence_Name.setVisible(false);
                     Confrence_Name_background.setVisible(false);
+                    htmlviewer.setVisible(false);
                 }
             }
         });
@@ -254,7 +253,7 @@ public class GUIController implements Initializable {
             public void handle(ActionEvent t) {
                 if (ConversationList_button.visibleProperty().get()){
                     return_button.setVisible(true);
-                    stats_conversationlist.setVisible(true);
+                    stats_conversationlist.setVisible(false);
                     global_stats_pie.setVisible(false);
                     global_stats_line.setVisible(false);
                     Activity_button.setVisible(false);
@@ -263,6 +262,7 @@ public class GUIController implements Initializable {
                     ECHO.setVisible(false);
                     Confrence_Name.setVisible(false);
                     Confrence_Name_background.setVisible(false);
+                    htmlviewer.setVisible(true);
                 }
             }
         });
@@ -281,6 +281,7 @@ public class GUIController implements Initializable {
                     ECHO.setVisible(false);
                     Confrence_Name.setVisible(false);
                     Confrence_Name_background.setVisible(false);
+                    htmlviewer.setVisible(false);
                 }
             }
         });
@@ -298,7 +299,8 @@ public class GUIController implements Initializable {
                     messageBreakdown_button.setVisible(true);
                     ECHO.setVisible(true);
                     Confrence_Name.setVisible(true);
-                    Confrence_Name_background.setVisible(true);
+                    Confrence_Name_background.setVisible(false);
+                    htmlviewer.setVisible(false);
                 }
             }
         });
@@ -317,6 +319,11 @@ public class GUIController implements Initializable {
         global_line.setName("Activity");
         global_stats_line.getData().add(global_line);
         global_stats_line.setLegendVisible(false);
+        try {
+            htmlviewer.getEngine().load(new File("./res/tags/index.html").toURI().toURL().toString());
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(GUIController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     /**
@@ -782,7 +789,6 @@ public class GUIController implements Initializable {
        messages3 = new MessageDisplayList();
        messages4 = new MessageDisplayList();
        messages5 = new MessageDisplayList();
-       idtopane = new HashMap();
        
        setupConversationPane1();
        setupConversationPane2();
@@ -1042,8 +1048,8 @@ public class GUIController implements Initializable {
                 conversation1_stat_2.setText(s.getContributingUsers());
                 conversation1_stat_3.setText(s.getNumberOfMessages());
                 ObservableList<PieChart.Data> pieData = new MessageDisplayList();
-                pieData.add(new PieChart.Data("Male",(int)(s.getMaleRatio()*100)));
-                pieData.add(new PieChart.Data("Female",100-(int)(s.getMaleRatio()*100)));
+                pieData.add(new PieChart.Data("Male",s.getMaleRatio()));
+                pieData.add(new PieChart.Data("Female",s.getFemaleRatio()));
                 conversation1_stat_4.setData(pieData);
             }
         });
@@ -1062,8 +1068,8 @@ public class GUIController implements Initializable {
                 conversation2_stat_2.setText(s.getContributingUsers());
                 conversation2_stat_3.setText(s.getNumberOfMessages());
                 ObservableList<PieChart.Data> pieData = new MessageDisplayList();
-                pieData.add(new PieChart.Data("Male",(int)(s.getMaleRatio()*100)));
-                pieData.add(new PieChart.Data("Female",100-(int)(s.getMaleRatio()*100)));
+                pieData.add(new PieChart.Data("Male",s.getMaleRatio()));
+                pieData.add(new PieChart.Data("Female",s.getFemaleRatio()));
                 conversation2_stat_4.setData(pieData);            }
         });
     }
@@ -1081,8 +1087,8 @@ public class GUIController implements Initializable {
                 conversation3_stat_2.setText(s.getContributingUsers());
                 conversation3_stat_3.setText(s.getNumberOfMessages());
                 ObservableList<PieChart.Data> pieData = new MessageDisplayList();
-                pieData.add(new PieChart.Data("Male",(int)(s.getMaleRatio()*100)));
-                pieData.add(new PieChart.Data("Female",100-(int)(s.getMaleRatio()*100)));
+                pieData.add(new PieChart.Data("Male",s.getMaleRatio()));
+                pieData.add(new PieChart.Data("Female",s.getFemaleRatio()));
                 conversation3_stat_4.setData(pieData);            }
         });
     }
@@ -1100,8 +1106,8 @@ public class GUIController implements Initializable {
                 conversation4_stat_2.setText(s.getContributingUsers());
                 conversation4_stat_3.setText(s.getNumberOfMessages());
                 ObservableList<PieChart.Data> pieData = new MessageDisplayList();
-                pieData.add(new PieChart.Data("Male",(int)(s.getMaleRatio()*100)));
-                pieData.add(new PieChart.Data("Female",100-(int)(s.getMaleRatio()*100)));
+                pieData.add(new PieChart.Data("Male",s.getMaleRatio()));
+                pieData.add(new PieChart.Data("Female",s.getFemaleRatio()));
                 conversation4_stat_4.setData(pieData);
             }
         });
@@ -1121,8 +1127,8 @@ public class GUIController implements Initializable {
                 conversation5_stat_2.setText(s.getContributingUsers());
                 conversation5_stat_3.setText(s.getNumberOfMessages());
                 ObservableList<PieChart.Data> pieData = new MessageDisplayList();
-                pieData.add(new PieChart.Data("Male",(int)(s.getMaleRatio()*100)));
-                pieData.add(new PieChart.Data("Female",100-(int)(s.getMaleRatio()*100)));
+                pieData.add(new PieChart.Data("Male",s.getMaleRatio()));
+                pieData.add(new PieChart.Data("Female",s.getFemaleRatio()));
                 conversation5_stat_4.setData(pieData);            }
         });
     }
@@ -1176,10 +1182,18 @@ public class GUIController implements Initializable {
                     } catch (InterruptedException ex) {
                         Logger.getGlobal().log(Level.SEVERE, null, ex);
                     }
+                    Platform.runLater(new Runnable(){
+                        @Override
+                        public void run() {
+                            updateWebView();
+                            htmlviewer.getEngine().reload();
+                        }
+                    });
                 }
             }
         })).start();
     }
+    public void updateWebView(){}
     
     @FXML private ListView conversation1_avitars;
     private ObservableList<User> avitars1;
@@ -1260,6 +1274,7 @@ public class GUIController implements Initializable {
             @Override
             public void run() {
                 if (users!=null){
+                    System.out.println();
                     if (!avitars1.isEmpty()){avitars1.clear();}
                     avitars1.addAll(users);
                     conversation1_avitars.setItems(avitars1);
@@ -1322,6 +1337,10 @@ public class GUIController implements Initializable {
                 }
             }
         });
+    }
+
+    public HashMap<Long,Integer> getMap() {
+        return (HashMap<Long,Integer>)idtopane.clone();
     }
     
 }

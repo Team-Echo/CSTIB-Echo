@@ -1,0 +1,5 @@
+[
+{"name":"class1.node1","size":5,"imports":["class2.node2"]},
+{"name":"class1.node3","size":6,"imports":["class1.node1"]},
+{"name":"class2.node2","size":500,"imports":[]}
+]

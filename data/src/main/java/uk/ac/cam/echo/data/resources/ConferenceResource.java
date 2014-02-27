@@ -28,6 +28,10 @@ public interface ConferenceResource extends RestResource<Conference> {
     @GET
     public Map<String, Long> getKeywords(@PathParam("conferenceId") long id, @QueryParam("lastTS") long lastTimeStamp);
 
+    @Path("/{conferenceId}/kwd-graph")
+    @GET
+    public String getKeywordGraph(@PathParam("conferenceId") long id);
+
     @Path("/{conferenceId}/search")
     @GET
     public List<Conversation> search(@PathParam("conferenceId") long id, @QueryParam("keyword") String keyword, @QueryParam("num") int n);
