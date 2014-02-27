@@ -4,6 +4,7 @@ import org.hibernate.criterion.Restrictions;
 import uk.ac.cam.echo.server.HibernateUtil;
 import uk.ac.cam.echo.server.models.NodeModel;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -24,6 +25,7 @@ public class GraphUtil
     {
         NodeModel model = new NodeModel();
         model.setName(val);
+        model.setAdjacent(new HashSet<NodeModel>());
         model.save();
         return model;
     }
