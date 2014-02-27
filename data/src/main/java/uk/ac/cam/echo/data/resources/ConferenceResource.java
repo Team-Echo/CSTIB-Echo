@@ -80,6 +80,10 @@ public interface ConferenceResource extends RestResource<Conference> {
     @GET
     public double maleToFemaleRatio(@PathParam("conferenceId") long id);
 
+    @Path("/{conferenceId}/c-m-f-ratio")
+    @GET
+    public double maleToFemaleRatio(@PathParam("conferenceId") long id, @QueryParam("conversationId") long conversationId);
+
     @Path("/{conferenceId}/msg-count")
     @GET
     public int messageCount(@PathParam("conferenceId") long id, @QueryParam("conversationId") long convoId);

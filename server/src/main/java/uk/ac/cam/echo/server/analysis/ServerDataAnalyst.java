@@ -158,6 +158,14 @@ public interface ServerDataAnalyst
     public double maleToFemaleRatio();
 
     /**
+     Displays the current M:F ratio in a given conversation.
+
+     @param cnv         The Conversation object in which to calculate the ratio.
+     @return            The M:F ratio within the conversation.
+    */
+    public double maleToFemaleRatio(Conversation cnv);
+
+    /**
      Returns the amount of messages within a particular Conversation.
 
      @param convoId     The identifier of the Conversation.

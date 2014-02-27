@@ -113,6 +113,12 @@ public class ConferenceResourceImpl implements ConferenceResource {
     }
 
     @Override
+    public double maleToFemaleRatio(long id, long conversationId) {
+        Conversation conversation = (Conversation) HibernateUtil.getTransaction().get(ConversationModel.class, conversationId);
+        return AnalystFactory.get(id).maleToFemaleRatio(conversation);
+    }
+
+    @Override
     public int messageCount(long id, long convoId) {
         return AnalystFactory.get(id).messageCount(convoId);
     }

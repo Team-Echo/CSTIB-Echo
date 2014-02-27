@@ -620,6 +620,24 @@ public class DataAnalyst implements ServerDataAnalyst
     }
 
     @Override
+    public double maleToFemaleRatio(Conversation conversation)
+    {
+        double maleCount = 0, femaleCount=0;
+        Collection<User> users = conversation.getUsers();
+
+        for (User U : users)
+        {
+            if (U.getGender() == null) continue;
+
+            if (U.getGender().equals("M") || U.getGender().equals("Male")) maleCount++;
+            if (U.getGender().equals("F") || U.getGender().equals("Female")) femaleCount++;
+        }
+
+        if (femaleCount == 0.0) return Double.POSITIVE_INFINITY;
+        return maleCount / femaleCount;
+    }
+
+    @Override
     public int messageCount(long convoId)
     {
         Conversation convo = (Conversation) HibernateUtil.getTransaction().get(ConversationModel.class, convoId);
