@@ -175,7 +175,7 @@ public class EchoService extends Service {
                    return null;
                }
            }.execute(id);
-           conversation = getUser().getCurrentConversation();
+           //conversation = getUser().getCurrentConversation();
            conversationId = id;
            Handler<Message> handler = new Handler<Message>() {
                @Override
