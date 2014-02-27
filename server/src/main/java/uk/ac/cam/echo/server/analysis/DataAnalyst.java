@@ -100,6 +100,35 @@ public class DataAnalyst implements ServerDataAnalyst
     }
 
     @Override
+    public void updateGraph()
+    {
+        Conference parentConference = (Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, parentID);
+        Collection<Conversation> conversations = parentConference.getConversationSet();
+
+        for (Conversation C : conversations)
+        {
+            Collection<Message> msgs = C.getMessages();
+            for (Message M : msgs)
+            {
+                List<String> keywords = MessageLexer.lexAnalyse(M.getContents(), dictionary, affix, stopWords);
+                ListIterator<String> it1 = keywords.listIterator();
+                while (it1.hasNext())
+                {
+                    String u = it1.next();
+                    String U = u.substring(0, 1).concat(".").concat(u);
+                    ListIterator<String> it2 = keywords.listIterator(it1.nextIndex());
+                    while (it2.hasNext())
+                    {
+                        String v = it2.next();
+                        String V = v.substring(0, 1).concat(".").concat(v);
+                        GraphUtil.addEdge(U, V);
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
     public List<Conversation> search(String keyword, int n)
     {
         Conference parentConference = (Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, parentID);

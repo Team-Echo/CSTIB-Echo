@@ -37,6 +37,11 @@ public interface ServerDataAnalyst
     public Map<String, Long> getKeywords(long lastTimeStamp);
 
     /**
+     Updates the keyword graph.
+    */
+    public void updateGraph();
+
+    /**
      Searches the conversations within the conference, with respect to the given keyword string.
      It searches by names, tags and by extracted keywords, giving priority to names, then tags.
 
