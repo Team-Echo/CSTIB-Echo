@@ -217,7 +217,7 @@ public class GUIController implements Initializable {
         
         try {
             ImageView mlbi = (new ImageView());
-            mlbi.setImage(new Image(new FileInputStream(new File("./res/drawable/listsmall.png"))));
+            mlbi.setImage(new Image(new FileInputStream(new File("./res/drawable/edgebundlesmall.png"))));
             ConversationList_button.setGraphic(mlbi);
             ConversationList_button.setText("");
         } catch (FileNotFoundException ex) {
