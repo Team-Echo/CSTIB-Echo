@@ -15,7 +15,7 @@ import java.util.Set;
 */
 @JsonSerialize(using=ForceNodeSerializer.class)
 @Entity
-@Table(name="FNode")
+@Table(name="FNodes")
 public class ForceNodeModel extends BaseModel
 {
     public ForceNodeModel() { }
