@@ -368,7 +368,7 @@
             <Font size="12.0" fx:id="x2" />
           </font>
         </Text>
-        <WebView styleClass="webviewclass" fx:id="htmlviewer" layoutX="100.0" layoutY="117.0" prefHeight="400.0" prefWidth="400.0" />
+        <WebView fx:id="htmlviewer" layoutX="95.0" layoutY="107.0" prefHeight="410.0" prefWidth="410.0" styleClass="null" />
         <Button fx:id="return_button" layoutX="260.0" layoutY="537.0" mnemonicParsing="false" styleClass="statbuttonClass" text="return" />
         <Button fx:id="Activity_button" layoutX="105.0" layoutY="388.0" mnemonicParsing="false" styleClass="statbuttonClass" text="Activity" />
         <Button fx:id="ConversationList_button" layoutX="378.0" layoutY="388.0" mnemonicParsing="false" styleClass="statbuttonClass" text="Conversation List" />
