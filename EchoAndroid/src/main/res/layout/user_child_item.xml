@@ -77,14 +77,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/phoneUser"
-        android:onClick="phoneUser"
         android:layout_alignBottom="@+id/avatar"
         android:layout_alignParentRight="true"
         android:padding="5dp"
+        android:visibility="visible"
         android:layout_marginRight="5dp"
         android:layout_marginBottom="5dp"
         android:background="@color/buttonBackground"
         android:src="@drawable/ic_action_call"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/emailUser"
+        android:layout_alignBottom="@+id/avatar"
+        android:layout_toLeftOf="@+id/phoneUser"
+        android:padding="5dp"
+        android:visibility="visible"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/buttonBackground"
+        android:src="@drawable/ic_action_mail"/>
+
+
 
 
 </RelativeLayout>

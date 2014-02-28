@@ -1187,6 +1187,12 @@ public class GUIController implements Initializable {
                     } catch (InterruptedException ex) {
                         Logger.getGlobal().log(Level.SEVERE, null, ex);
                     }
+                    Platform.runLater(new Runnable(){
+                        @Override
+                        public void run() {
+                            htmlviewer.getEngine().reload();
+                        }
+                    });
                 }
             }
         })).start();

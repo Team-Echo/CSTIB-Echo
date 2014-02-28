@@ -54,6 +54,7 @@ class avitarCellFactory implements Callback<ListView<User>, ListCell<String>> {
                         cellContents.add(avitar, 0, 0);
                         cellContents.add(name, 0, 1);
                         setGraphic(cellContents);
+                        this.setDisable(true);
                     }
                 }
          };
