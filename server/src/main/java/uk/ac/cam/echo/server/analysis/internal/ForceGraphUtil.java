@@ -56,11 +56,9 @@ public class ForceGraphUtil
         u.save();
     }
 
-    public static int flush()
+    private static void flush()
     {
-        String hql = "DELETE FROM FNode";
-        Query query = HibernateUtil.getSession().createQuery(hql);
-        return query.executeUpdate();
+        // NOP
     }
 
     public static String getJSONFGraph()

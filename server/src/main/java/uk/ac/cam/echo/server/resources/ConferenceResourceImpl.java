@@ -49,9 +49,13 @@ public class ConferenceResourceImpl implements ConferenceResource {
 
     @Override
     public String getForceGraph(long id) {
-        ForceGraphUtil.flush();
         AnalystFactory.get(id).updateFGraph();
         return ForceGraphUtil.getJSONFGraph();
+    }
+
+    @Override
+    public List<Object> getForceNodes(long id) {
+        return new ArrayList<Object>(ForceGraphUtil.getAll());
     }
 
     @Override

@@ -36,6 +36,10 @@ public interface ConferenceResource extends RestResource<Conference> {
     @GET
     public String getForceGraph(@PathParam("conferenceId") long id);
 
+    @Path("/{conferenceId}/force-nodes")
+    @GET
+    public List<Object> getForceNodes(@PathParam("conferenceId") long id);
+
     @Path("/{conferenceId}/search")
     @GET
     public List<Conversation> search(@PathParam("conferenceId") long id, @QueryParam("keyword") String keyword, @QueryParam("num") int n);
