@@ -3,7 +3,9 @@ package uk.ac.cam.echo;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.CalendarContract;
 import android.util.Log;
@@ -11,7 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.ExpandableListAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -76,6 +80,7 @@ public class UserAdapter extends BaseExpandableListAdapter {
             holder.interests = (TextView)row.findViewById(R.id.interests);
             holder.phone = (TextView)row.findViewById(R.id.phone);
             holder.email = (TextView)row.findViewById(R.id.email);
+            holder.phoneButton = (ImageButton)row.findViewById(R.id.phoneUser);
 
             row.setTag(holder);
         } else {
@@ -85,16 +90,27 @@ public class UserAdapter extends BaseExpandableListAdapter {
         User user = data.get(groupPosition);
 
         if(userMap.get(user.getId()).hasAttributes()) {
-            UserCache userCache = userMap.get(user.getId());
+            final UserCache userCache = userMap.get(user.getId());
             holder.avatar.setImageBitmap(userCache.avatar);
             holder.user.setText(userCache.user);
             holder.jobAndCompany.setText(userCache.jobAndCompany);
             holder.interests.setText(userCache.interests);
             holder.phone.setText(userCache.phone);
             holder.email.setText(userCache.email);
+
+            holder.phoneButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String uri = "tel:" + userCache.phone.trim();
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    intent.setData(Uri.parse(uri));
+                    context.startActivity(intent);
+                }
+            });
+
         } else {
             new AsyncAdapter().execute(user, holder.avatar, holder.user, holder.jobAndCompany,
-                    holder.interests, holder.phone, holder.email);
+                    holder.interests, holder.phone, holder.email, holder.phoneButton);
         }
         return row;
     }
@@ -170,9 +186,6 @@ public class UserAdapter extends BaseExpandableListAdapter {
                 }
             }.execute(user, lastSeen);
         }
-
-
-        Log.d("USERADAPTER", "creating new view " + groupPosition);
         return row;
     }
 
@@ -225,43 +238,8 @@ public class UserAdapter extends BaseExpandableListAdapter {
         TextView interests;
         TextView phone;
         TextView email;
+        ImageButton phoneButton;
     }
-
-    static class UserCache {
-        Bitmap avatar;
-        String user;
-        String jobAndCompany;
-        String interests;
-        String phone;
-        String email;
-        String lastActive;
-        int colour;
-        boolean hasAttributes;
-
-        public UserCache(String s, int col) {
-            lastActive = s;
-            colour = col;
-        }
-
-        public UserCache setAttributes(Bitmap avatar, String user, String jobAndCompany,
-                                  String interests, String phone, String email) {
-            hasAttributes = true;
-
-            this.avatar = avatar;
-            this.user = user;
-            this.jobAndCompany = jobAndCompany;
-            this.interests = interests;
-            this.phone = phone;
-            this.email = email;
-
-            return this;
-        }
-
-        public boolean hasAttributes() {
-            return hasAttributes;
-        }
-    }
-
 
     private class AsyncAdapter extends AsyncTask<Object, Void, String> {
         User user;
@@ -273,6 +251,8 @@ public class UserAdapter extends BaseExpandableListAdapter {
         TextView phone;
         TextView email;
         Bitmap avatar;
+
+        ImageButton phoneButton;
 
         String usernameText;
         String jobAndCompanyText;
@@ -290,6 +270,7 @@ public class UserAdapter extends BaseExpandableListAdapter {
             interests = (TextView)params[4];
             phone = (TextView)params[5];
             email = (TextView)params[6];
+            phoneButton = (ImageButton)params[7];
 
             usernameText = user.getUsername();
             Collection<Interest> interests = user.getInterests();
@@ -315,6 +296,18 @@ public class UserAdapter extends BaseExpandableListAdapter {
             email.setText(emailText);
 
             imgView.setImageBitmap(avatar);
+
+            phoneButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String uri = "tel:" + phoneText.trim();
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    intent.setData(Uri.parse(uri));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                }
+            });
+
             userMap.put(user.getId(), userMap.get(user.getId()).setAttributes(avatar, usernameText, jobAndCompanyText,
                     interestsText, phoneText, emailText));
 
