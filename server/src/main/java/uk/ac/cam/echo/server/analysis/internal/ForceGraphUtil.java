@@ -1,5 +1,6 @@
 package uk.ac.cam.echo.server.analysis.internal;
 
+import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 import uk.ac.cam.echo.server.HibernateUtil;
 import uk.ac.cam.echo.server.models.ForceNodeModel;
@@ -55,9 +56,11 @@ public class ForceGraphUtil
         u.save();
     }
 
-    private static void flush()
+    public static int flush()
     {
-        // kill the database. NOP for now.
+        String hql = "DELETE FROM FNode";
+        Query query = HibernateUtil.getSession().createQuery(hql);
+        return query.executeUpdate();
     }
 
     public static String getJSONFGraph()

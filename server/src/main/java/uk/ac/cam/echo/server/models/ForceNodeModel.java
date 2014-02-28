@@ -20,7 +20,7 @@ public class ForceNodeModel extends BaseModel
 {
     public ForceNodeModel() { }
 
-    private static String allowed[] = {"name", "type"};
+    private static String allowed[] = {"name", "type", "internalId"};
     @JsonCreator
     public ForceNodeModel(Map<String, Object> props)
     {
