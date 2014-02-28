@@ -13,5 +13,7 @@
     <color name="darkRed">#cc0000</color>
     <color name="lightGrey">#eaeaea</color>
     <color name="darkGrey">#3e3e3e</color>
+    <color name="midGrey">#6e6e6e</color>
+
     
 </resources>

@@ -23,5 +23,6 @@
     <string name="search_hint">Search conversations ...</string>
     <string name="user_settings">User Profile</string>
     <string name="update">Update</string>
+    <string name="seeUsers">Attendees</string>
 
 </resources>
