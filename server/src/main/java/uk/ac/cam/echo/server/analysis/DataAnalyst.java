@@ -1,5 +1,6 @@
 package uk.ac.cam.echo.server.analysis;
 
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import uk.ac.cam.echo.data.*;
 import uk.ac.cam.echo.server.HibernateUtil;
@@ -736,6 +737,17 @@ public class DataAnalyst implements ServerDataAnalyst
         }
 
         return ret.size();
+    }
+
+    @Override
+    public long lastTimeActive(User user)
+    {
+        List<Message> sols = HibernateUtil.getTransaction().createCriteria(MessageModel.class)
+                .add(Restrictions.eq("sender", user)).addOrder(Order.desc("timeStamp")).list();
+        long now = new Date().getTime();
+        if (sols == null) return now;
+        if (sols.size() == 0) return now;
+        return now - sols.get(0).getTimeStamp();
     }
 
 }

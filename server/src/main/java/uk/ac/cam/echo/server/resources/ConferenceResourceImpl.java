@@ -150,6 +150,12 @@ public class ConferenceResourceImpl implements ConferenceResource {
         return AnalystFactory.get(id).contributingUsers(convoId, current);
     }
 
+    @Override
+    public long lastTimeActive(long id, long userId) {
+        User user = (User) HibernateUtil.getTransaction().get(UserModel.class, userId);
+        return AnalystFactory.get(id).lastTimeActive(user);
+    }
+
     public Conference get(long id) {
         return (Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, id);
     }

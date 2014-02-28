@@ -108,6 +108,10 @@ public interface ConferenceResource extends RestResource<Conference> {
     @GET
     public int contributingUsers(@PathParam("conferenceId") long id, @QueryParam("conversationId") long convoId, @QueryParam("current") boolean current);
 
+    @Path("/{conferenceId}/last-active")
+    @GET
+    public long lastTimeActive(@PathParam("conferenceId") long id, @QueryParam("userId") long userId);
+
     @GET
     @Path("/{conferenceId}/conversations")
     public List<Conversation> getConversations(@PathParam("conferenceId") long id);
