@@ -98,7 +98,7 @@ public class ForceGraphUtil
                 linkBuilder.append("\"source\":").append(mst.get(FN.getId())).append(',');
                 linkBuilder.append("\"target\":").append(mst.get(FM.getId())).append(',');
                 linkBuilder.append("\"value\":").append(1);
-                linkBuilder.append(']');
+                linkBuilder.append('}');
                 linkStart = true;
             }
         }
