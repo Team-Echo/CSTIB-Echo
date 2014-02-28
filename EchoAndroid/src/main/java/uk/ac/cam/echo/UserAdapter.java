@@ -81,13 +81,14 @@ public class UserAdapter extends BaseExpandableListAdapter {
             holder.phone = (TextView)row.findViewById(R.id.phone);
             holder.email = (TextView)row.findViewById(R.id.email);
             holder.phoneButton = (ImageButton)row.findViewById(R.id.phoneUser);
+            holder.emailButton = (ImageButton)row.findViewById(R.id.emailUser);
 
             row.setTag(holder);
         } else {
             holder = (UserHolder)row.getTag();
         }
 
-        User user = data.get(groupPosition);
+        final User user = data.get(groupPosition);
 
         if(userMap.get(user.getId()).hasAttributes()) {
             final UserCache userCache = userMap.get(user.getId());
@@ -108,9 +109,22 @@ public class UserAdapter extends BaseExpandableListAdapter {
                 }
             });
 
+            holder.emailButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                            "mailto", userCache.email, null));
+                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, user.getCurrentConversation().getName());
+                    emailIntent.setType("plain/text");
+                    emailIntent.putExtra(Intent.EXTRA_TEXT, "Dear " + user.getDisplayName() +",\n\n" );
+                    emailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(Intent.createChooser(emailIntent, "Send Email using: "));
+                }
+            });
+
         } else {
             new AsyncAdapter().execute(user, holder.avatar, holder.user, holder.jobAndCompany,
-                    holder.interests, holder.phone, holder.email, holder.phoneButton);
+                    holder.interests, holder.phone, holder.email, holder.phoneButton, holder.emailButton);
         }
         return row;
     }
@@ -239,6 +253,7 @@ public class UserAdapter extends BaseExpandableListAdapter {
         TextView phone;
         TextView email;
         ImageButton phoneButton;
+        ImageButton emailButton;
     }
 
     private class AsyncAdapter extends AsyncTask<Object, Void, String> {
@@ -253,6 +268,7 @@ public class UserAdapter extends BaseExpandableListAdapter {
         Bitmap avatar;
 
         ImageButton phoneButton;
+        ImageButton emailButton;
 
         String usernameText;
         String jobAndCompanyText;
@@ -271,6 +287,7 @@ public class UserAdapter extends BaseExpandableListAdapter {
             phone = (TextView)params[5];
             email = (TextView)params[6];
             phoneButton = (ImageButton)params[7];
+            emailButton = (ImageButton)params[8];
 
             usernameText = user.getUsername();
             Collection<Interest> interests = user.getInterests();
@@ -294,19 +311,36 @@ public class UserAdapter extends BaseExpandableListAdapter {
 
             phone.setText(phoneText);
             email.setText(emailText);
-
             imgView.setImageBitmap(avatar);
 
-            phoneButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String uri = "tel:" + phoneText.trim();
-                    Intent intent = new Intent(Intent.ACTION_DIAL);
-                    intent.setData(Uri.parse(uri));
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(intent);
-                }
-            });
+            if(phoneText!=null && !phoneText.equals("")){
+                phoneButton.setVisibility(View.VISIBLE);
+                phoneButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String uri = "tel:" + phoneText.trim();
+                        Intent intent = new Intent(Intent.ACTION_DIAL);
+                        intent.setData(Uri.parse(uri));
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                    }
+                });
+            }
+
+            if(emailText!=null && !emailText.equals("")){
+             emailButton.setOnClickListener(new View.OnClickListener() {
+                 @Override
+                 public void onClick(View view) {
+                     Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                             "mailto", emailText, null));
+                     //emailIntent.putExtra(Intent.EXTRA_SUBJECT, user.getCurrentConversation().getName());
+                     emailIntent.setType("plain/text");
+                     //emailIntent.putExtra(Intent.EXTRA_TEXT, "Dear " + user.getDisplayName() +",\n\n" );
+                     emailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                     context.startActivity(Intent.createChooser(emailIntent, "Send Email using: "));
+                 }
+             });
+            }
 
             userMap.put(user.getId(), userMap.get(user.getId()).setAttributes(avatar, usernameText, jobAndCompanyText,
                     interestsText, phoneText, emailText));
