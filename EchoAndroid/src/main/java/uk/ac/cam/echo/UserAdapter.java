@@ -27,6 +27,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
+import uk.ac.cam.echo.activities.UserListActivity;
 import uk.ac.cam.echo.client.ClientApi;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.Interest;
@@ -36,26 +37,27 @@ import uk.ac.cam.echo.data.User;
 public class UserAdapter extends BaseExpandableListAdapter {
 
     private int layoutResourceId;
+    private Activity activity;
     private HashMap<Long, UserCache> userMap;
     private Context context;
     private ClientApi api;
     private List<User> data;
 
+    private static String conversationName, loggedInUserName;
+
     public UserAdapter(Context context, int layoutResourceId,
                                List<User> data) {
 
-        //super(context, layoutResourceId, data);
         this.context = context;
         userMap = new HashMap<Long, UserCache>();
-
         this.layoutResourceId = layoutResourceId;
         this.data = data;
     }
 
-    public static UserAdapter newInstance(Context context, int layoutResourceId,
+    public static UserAdapter newInstance(Activity activity, int layoutResourceId,
                                                   List<User> data, ClientApi api) {
-
-        UserAdapter adapter = new UserAdapter(context, layoutResourceId, data);
+        UserAdapter adapter = new UserAdapter(activity.getBaseContext(), layoutResourceId, data);
+        adapter.setActivity(activity);
         adapter.setApi(api);
         return adapter;
     }
@@ -172,9 +174,6 @@ public class UserAdapter extends BaseExpandableListAdapter {
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(new Date(timestamp));
 
-                    Log.d("DATE", user.getId() + " : " +  calendar.get(Calendar.MONTH) + " - " + calendar.get(Calendar.DAY_OF_YEAR) + " - " + calendar.get(Calendar.HOUR_OF_DAY) + " - " + calendar.get(Calendar.MINUTE));
-
-
                     if(calendar.get(Calendar.MONTH) > 1)
                         return calendar.get(Calendar.MONTH) + " months";
                     else if(calendar.get(Calendar.DAY_OF_YEAR)-1 > 1) {
@@ -204,6 +203,7 @@ public class UserAdapter extends BaseExpandableListAdapter {
     }
 
     public void setApi(ClientApi clientApi) { api = clientApi; }
+    public void setActivity(Activity activity) {this.activity = activity;}
 
     public void updateList(List<User> newData) {
         data = newData;
@@ -258,6 +258,7 @@ public class UserAdapter extends BaseExpandableListAdapter {
 
     private class AsyncAdapter extends AsyncTask<Object, Void, String> {
         User user;
+        String userDisplay;
 
         ImageView imgView;
         TextView username;
@@ -288,6 +289,14 @@ public class UserAdapter extends BaseExpandableListAdapter {
             email = (TextView)params[6];
             phoneButton = (ImageButton)params[7];
             emailButton = (ImageButton)params[8];
+
+            if(conversationName == null || conversationName.equals(""))
+                conversationName = user.getCurrentConversation().getName();
+
+            if(loggedInUserName == null || loggedInUserName.equals(""))
+                loggedInUserName = ((UserListActivity)activity).getService().getUser().getDisplayName();
+
+            userDisplay = user.getDisplayName();
 
             usernameText = user.getUsername();
             Collection<Interest> interests = user.getInterests();
@@ -322,7 +331,7 @@ public class UserAdapter extends BaseExpandableListAdapter {
                         Intent intent = new Intent(Intent.ACTION_DIAL);
                         intent.setData(Uri.parse(uri));
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(intent);
+                        activity.startActivity(intent);
                     }
                 });
             }
@@ -331,13 +340,14 @@ public class UserAdapter extends BaseExpandableListAdapter {
              emailButton.setOnClickListener(new View.OnClickListener() {
                  @Override
                  public void onClick(View view) {
-                     Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                             "mailto", emailText, null));
-                     //emailIntent.putExtra(Intent.EXTRA_SUBJECT, user.getCurrentConversation().getName());
-                     emailIntent.setType("plain/text");
-                     //emailIntent.putExtra(Intent.EXTRA_TEXT, "Dear " + user.getDisplayName() +",\n\n" );
+                     Intent emailIntent = new Intent(Intent.ACTION_SEND);
                      emailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                     context.startActivity(Intent.createChooser(emailIntent, "Send Email using: "));
+                     emailIntent.setType("message/rfc822");
+                     emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{emailText});
+
+                     emailIntent.putExtra(Intent.EXTRA_SUBJECT, conversationName + " - a personal message from " + loggedInUserName);
+                     emailIntent.putExtra(Intent.EXTRA_TEXT, "Dear " + userDisplay + ",\n\n\n" + loggedInUserName);
+                     activity.startActivity(Intent.createChooser(emailIntent, "Choose an email client: "));
                  }
              });
             }
