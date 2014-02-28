@@ -1,5 +1,6 @@
 package uk.ac.cam.echo.server.analysis;
 
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import uk.ac.cam.echo.data.*;
 import uk.ac.cam.echo.server.HibernateUtil;
@@ -105,11 +106,16 @@ public class DataAnalyst implements ServerDataAnalyst
         Conference parentConference = (Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, parentID);
         Collection<Conversation> conversations = parentConference.getConversationSet();
 
+        long nextLastTS = GraphUtil.lastTS;
+
         for (Conversation C : conversations)
         {
-            Collection<Message> msgs = C.getMessages();
+            List<Message> msgs = (List<Message>)C.getSortedMessages();
+            Collections.reverse(msgs); // because the query returns them in the opposite order
             for (Message M : msgs)
             {
+                if (M.getTimeStamp() > nextLastTS) nextLastTS = M.getTimeStamp();
+                if (M.getTimeStamp() <= GraphUtil.lastTS) break;
                 List<String> keywords = MessageLexer.lexAnalyse(M.getContents(), dictionary, affix, stopWords);
                 ListIterator<String> it1 = keywords.listIterator();
                 while (it1.hasNext())
@@ -126,6 +132,8 @@ public class DataAnalyst implements ServerDataAnalyst
                 }
             }
         }
+
+        GraphUtil.lastTS = nextLastTS;
     }
 
     @Override
@@ -729,6 +737,17 @@ public class DataAnalyst implements ServerDataAnalyst
         }
 
         return ret.size();
+    }
+
+    @Override
+    public long lastTimeActive(User user)
+    {
+        List<Message> sols = HibernateUtil.getTransaction().createCriteria(MessageModel.class)
+                .add(Restrictions.eq("sender", user)).addOrder(Order.desc("timeStamp")).list();
+        long now = new Date().getTime();
+        if (sols == null) return now;
+        if (sols.size() == 0) return now;
+        return now - sols.get(0).getTimeStamp();
     }
 
 }

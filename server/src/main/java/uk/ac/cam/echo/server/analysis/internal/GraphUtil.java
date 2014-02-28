@@ -16,6 +16,8 @@ import java.util.Set;
 */
 public class GraphUtil
 {
+    public static long lastTS = 0L;
+
     public static List<NodeModel> getAll()
     {
         return HibernateUtil.getTransaction().createCriteria(NodeModel.class).list();
@@ -55,7 +57,7 @@ public class GraphUtil
     {
         StringBuilder jsonGraph = new StringBuilder();
         boolean headStart = false;
-        jsonGraph.append("[\n");
+        jsonGraph.append('[');
         List<NodeModel> V = getAll();
         for (NodeModel N : V)
         {

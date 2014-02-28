@@ -3,21 +3,8 @@
 <style>
  
 .node {
-  font: 300 11px roboto, Helvetica, Arial, sans-serif;
+  font: 300 11px "Helvetica Neue", Helvetica, Arial, sans-serif;
   fill: #bbb;
-}
-
-@font-face
-{
-font-family: roboto;
-src: url(file:///C:/Users/Philip/Documents/NetBeansProjects/CSTIB-Echo/TouchClient/fonts/roboto_light_italic.ttl);
-}
-
-@font-face
-{
-font-family: roboto;
-src: url(file:///C:/Users/Philip/Documents/NetBeansProjects/CSTIB-Echo/TouchClient/fonts/RobotoCondensed-BoldItalic.ttl);
-font-weight: bold;
 }
  
 .node:hover {
@@ -64,7 +51,7 @@ font-weight: bold;
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script>
  
-var diameter = 350,
+var diameter = 390,
     radius = diameter / 2,
     innerRadius = radius - 120;
  
@@ -90,7 +77,7 @@ var svg = d3.select("body").append("svg")
 var link = svg.append("g").selectAll(".link"),
     node = svg.append("g").selectAll(".node");
  
-d3.json("readme-flare-imports.json", function(error, classes) {
+d3.json("http://echoconf.herokuapp.com/conferences/1/kwd-graph", function(error, classes) {
   var nodes = cluster.nodes(packageHierarchy(classes)),
       links = packageImports(nodes);
  
