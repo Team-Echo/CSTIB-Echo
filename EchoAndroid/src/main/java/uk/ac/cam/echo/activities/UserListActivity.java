@@ -70,7 +70,7 @@ public class UserListActivity extends Activity {
         new GetUsers().execute();
     }
 
-
+    public EchoService getService() { return echoService; }
 
     private class GetUsers extends AsyncTask<String, Void, List<User>> {
 
@@ -95,7 +95,7 @@ public class UserListActivity extends Activity {
             if(adapter == null) {
                 getActionBar().setTitle(conversationName);
                 getActionBar().setSubtitle("Active users ");
-                adapter = UserAdapter.newInstance(getApplicationContext(), R.layout.user_group_item, result, api);
+                adapter = UserAdapter.newInstance(UserListActivity.this, R.layout.user_group_item, result, api);
                 listView.setAdapter(adapter);
                 //listView.setOnItemClickListener(ConversationListFragment.this);
                 listView.setVisibility(View.VISIBLE);
