@@ -14,6 +14,7 @@
     <color name="lightGrey">#eaeaea</color>
     <color name="darkGrey">#3e3e3e</color>
     <color name="midGrey">#6e6e6e</color>
+    <color name="midOrange">#ffcd6800</color>
 
     
 </resources>
