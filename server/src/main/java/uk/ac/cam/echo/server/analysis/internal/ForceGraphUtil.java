@@ -53,7 +53,7 @@ public class ForceGraphUtil
         ForceNodeModel u = getFNode(uName, uType, uIid);
         ForceNodeModel v = getFNode(vName, vType, vIid);
         u.addAdjacentNode(v);
-        u.save();
+        HibernateUtil.getTransaction().update(u);
     }
 
     private static void flush()

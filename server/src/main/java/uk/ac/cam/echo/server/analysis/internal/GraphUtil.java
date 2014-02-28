@@ -45,7 +45,7 @@ public class GraphUtil
         NodeModel u = getNode(from);
         NodeModel v = getNode(to);
         u.addAdjacentNode(v);
-        u.save();
+        HibernateUtil.getTransaction().update(u);
     }
 
     private static void flush()
