@@ -34,6 +34,7 @@ import uk.ac.cam.echo.BitmapUtil;
 import uk.ac.cam.echo.R;
 import uk.ac.cam.echo.Toaster;
 import uk.ac.cam.echo.client.ClientApi;
+import uk.ac.cam.echo.client.data.InterestData;
 import uk.ac.cam.echo.client.data.UserData;
 import uk.ac.cam.echo.data.Interest;
 import uk.ac.cam.echo.data.User;
@@ -208,7 +209,7 @@ public class UserSettingsActivity extends Activity implements View.OnClickListen
 
                         List<Interest> ints = (List<Interest>) user.getInterests();
                         for(Interest i : ints) {
-                            Log.d("Interest", " deleting " + i.getName());
+                            Log.d("Interest", " deleting " + ((((InterestData)i).getResource()==null)?"null":"not null"));
                             i.delete();
                         }
                         String[] interests = args[5].split(" ");

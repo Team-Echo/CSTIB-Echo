@@ -179,6 +179,8 @@ public class ConversationListActivity extends Activity
 		AddConversationDialog addDialog = AddConversationDialog.newInstance();
         addDialog.setApi(getService().getApi());
 		addDialog.show(manager, "add_conv");
+
+
 	}
 
 

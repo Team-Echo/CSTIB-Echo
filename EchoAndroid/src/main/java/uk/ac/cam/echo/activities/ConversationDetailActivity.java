@@ -3,6 +3,7 @@ package uk.ac.cam.echo.activities;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -12,9 +13,11 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SearchView;
 
 import uk.ac.cam.echo.R;
 import uk.ac.cam.echo.Toaster;
@@ -85,12 +88,12 @@ public class ConversationDetailActivity extends Activity implements View.OnClick
         unbindService(connection);
     }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.conversation_detail, menu);
-		return true;
-	}
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        getMenuInflater().inflate(R.menu.user_list, menu);
+        return true;
+    }
 
 
     @Override
@@ -107,6 +110,29 @@ public class ConversationDetailActivity extends Activity implements View.OnClick
     }
 
     public EchoService getService() { return echoService; }
+
+
+
+
+    // Attaching functionality to menu-items
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.action_see_users:
+                seeUsers();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void seeUsers() {
+        Intent i = new Intent(this, UserListActivity.class);
+        i.putExtra("_id", id);
+        i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(i);
+    }
 
     private class SendMessage extends AsyncTask<String, Void, Message> {
 

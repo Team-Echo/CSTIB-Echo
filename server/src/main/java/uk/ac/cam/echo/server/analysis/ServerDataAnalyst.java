@@ -209,4 +209,11 @@ public interface ServerDataAnalyst
      @return            The amount of contributing users within the conversation.
     */
     public int contributingUsers(long convoId, boolean current);
+
+    /**
+     Returns the difference between the current time and the last time the given User was active.
+     @param user        The User we are querying for.
+     @return            The desired time difference.
+     */
+    public long lastTimeActive(User user);
 }

@@ -28,27 +28,29 @@
             android:text="Display name"
             android:textColor="@color/buttonBackground"
             android:typeface="sans"
+            android:layout_marginLeft="5dp"
             android:textAllCaps="true"
             android:layout_below="@id/avatarImg"
             android:id="@+id/dispText"
             android:layout_alignParentLeft="true"/>
         <View
             android:id="@+id/line0"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="1dip"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:background="@color/midBlue"
             android:layout_below="@+id/dispText"/>
 
         <EditText
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:ems="10"
             android:id="@+id/dispNameInput"
             android:hint="Display name"
+            android:layout_alignParentLeft="true"
             android:layout_below="@id/line0" />
-
-
 
         <TextView
             android:layout_width="wrap_content"
@@ -57,6 +59,7 @@
             android:layout_marginTop="8dp"
             android:textColor="@color/buttonBackground"
             android:typeface="sans"
+            android:layout_marginLeft="5dp"
             android:textAllCaps="true"
             android:layout_below="@id/dispNameInput"
             android:id="@+id/emailText"
@@ -66,6 +69,8 @@
             android:layout_width="fill_parent"
             android:layout_height="1dip"
             android:background="@color/midBlue"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_below="@+id/emailText"/>
         <EditText
             android:layout_width="wrap_content"
@@ -85,6 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Phone number"
+            android:layout_marginLeft="5dp"
             android:layout_marginTop="8dp"
             android:textColor="@color/buttonBackground"
             android:typeface="sans"
@@ -97,6 +103,8 @@
             android:layout_width="fill_parent"
             android:layout_height="1dip"
             android:background="@color/midBlue"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_below="@+id/phoneText"/>
 
         <EditText
@@ -111,6 +119,38 @@
             android:layout_alignLeft="@id/emailInput"
             android:layout_alignRight="@id/emailInput" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Interests"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/buttonBackground"
+            android:typeface="sans"
+            android:textAllCaps="true"
+            android:layout_below="@id/phoneInput"
+            android:id="@+id/interestText"
+            android:layout_alignParentLeft="true"/>
+        <View
+            android:id="@+id/line5"
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="@color/midBlue"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_below="@+id/interestText"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:ems="10"
+            android:id="@+id/interestInput"
+            android:hint="Interests"
+            android:layout_below="@id/line5"
+            android:layout_alignLeft="@id/emailInput"
+            android:layout_alignRight="@id/emailInput" />
+
 
 
         <TextView
@@ -118,10 +158,11 @@
             android:layout_height="wrap_content"
             android:text="Job Title"
             android:layout_marginTop="8dp"
+            android:layout_marginLeft="5dp"
             android:textColor="@color/buttonBackground"
             android:typeface="sans"
             android:textAllCaps="true"
-            android:layout_below="@id/phoneInput"
+            android:layout_below="@id/interestInput"
             android:id="@+id/jobText"
             android:layout_alignParentLeft="true"/>
         <View
@@ -129,6 +170,8 @@
             android:layout_width="fill_parent"
             android:layout_height="1dip"
             android:background="@color/midBlue"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_below="@+id/jobText"/>
 
         <EditText
@@ -151,6 +194,7 @@
             android:layout_marginTop="8dp"
             android:textColor="@color/buttonBackground"
             android:typeface="sans"
+            android:layout_marginLeft="5dp"
             android:textAllCaps="true"
             android:layout_below="@id/jobInput"
             android:id="@+id/companyText"
@@ -160,6 +204,8 @@
             android:layout_width="fill_parent"
             android:layout_height="1dip"
             android:background="@color/midBlue"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_below="@+id/companyText"/>
 
         <EditText
