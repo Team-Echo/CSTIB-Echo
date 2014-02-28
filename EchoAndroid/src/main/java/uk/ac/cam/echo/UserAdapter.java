@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,8 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -81,7 +84,7 @@ public class UserAdapter extends BaseExpandableListAdapter {
 
         User user = data.get(groupPosition);
 
-        if(userMap.containsKey(user.getId())) {
+        if(userMap.get(user.getId()).hasAttributes()) {
             UserCache userCache = userMap.get(user.getId());
             holder.avatar.setImageBitmap(userCache.avatar);
             holder.user.setText(userCache.user);
@@ -116,6 +119,59 @@ public class UserAdapter extends BaseExpandableListAdapter {
 
         TextView userDisplay = (TextView) row.findViewById(R.id.userFullName);
         userDisplay.setText(user.getDisplayName());
+        TextView lastSeen = (TextView)row.findViewById(R.id.lastSeenText);
+        if(userMap.containsKey(user.getId())) {
+            lastSeen.setText(userMap.get(user.getId()).lastActive);
+            lastSeen.setTextColor(context.getResources().getColor(userMap.get(user.getId()).colour));
+        } else {
+            new AsyncTask<Object, Void, String>() {
+                User user;
+                TextView lastSeen;
+                int colour;
+
+                @Override
+                protected String doInBackground(Object... args) {
+
+                    user = (User)args[0];
+                    lastSeen = (TextView)args[1];
+
+                    long timestamp = api.conferenceResource.lastTimeActive(1, user.getId());
+                    colour = R.color.darkRed;
+
+
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(new Date(timestamp));
+
+                    Log.d("DATE", user.getId() + " : " +  calendar.get(Calendar.MONTH) + " - " + calendar.get(Calendar.DAY_OF_YEAR) + " - " + calendar.get(Calendar.HOUR_OF_DAY) + " - " + calendar.get(Calendar.MINUTE));
+
+
+                    if(calendar.get(Calendar.MONTH) > 1)
+                        return calendar.get(Calendar.MONTH) + " months";
+                    else if(calendar.get(Calendar.DAY_OF_YEAR)-1 > 1) {
+                        colour = R.color.midOrange;
+                        return calendar.get(Calendar.DAY_OF_YEAR)-1 + " days";
+                    }
+                    else if(calendar.get(Calendar.HOUR_OF_DAY) > 1){
+                        colour = R.color.darkGreen;
+                        return calendar.get(Calendar.HOUR_OF_DAY)-1 + " hours";
+                    }
+                    else {
+                        colour = R.color.green;
+                        return calendar.get(Calendar.MINUTE)-1 + " mins";
+                    }
+                }
+
+                @Override
+                protected void onPostExecute(String s) {
+                    super.onPostExecute(s);
+                    lastSeen.setText(s);
+                    userMap.put(user.getId(), new UserCache(s,colour));
+                    lastSeen.setTextColor(context.getResources().getColor(colour));
+                }
+            }.execute(user, lastSeen);
+        }
+
+
         Log.d("USERADAPTER", "creating new view " + groupPosition);
         return row;
     }
@@ -178,15 +234,31 @@ public class UserAdapter extends BaseExpandableListAdapter {
         String interests;
         String phone;
         String email;
+        String lastActive;
+        int colour;
+        boolean hasAttributes;
 
-        public UserCache(Bitmap avatar, String user, String jobAndCompany,
-                         String interests, String phone, String email) {
+        public UserCache(String s, int col) {
+            lastActive = s;
+            colour = col;
+        }
+
+        public UserCache setAttributes(Bitmap avatar, String user, String jobAndCompany,
+                                  String interests, String phone, String email) {
+            hasAttributes = true;
+
             this.avatar = avatar;
             this.user = user;
             this.jobAndCompany = jobAndCompany;
             this.interests = interests;
             this.phone = phone;
             this.email = email;
+
+            return this;
+        }
+
+        public boolean hasAttributes() {
+            return hasAttributes;
         }
     }
 
@@ -243,8 +315,9 @@ public class UserAdapter extends BaseExpandableListAdapter {
             email.setText(emailText);
 
             imgView.setImageBitmap(avatar);
-            userMap.put(user.getId(), new UserCache(avatar, usernameText, jobAndCompanyText,
-                    interestsText, phoneText, emailText ));
+            userMap.put(user.getId(), userMap.get(user.getId()).setAttributes(avatar, usernameText, jobAndCompanyText,
+                    interestsText, phoneText, emailText));
+
         }
     }
 }
