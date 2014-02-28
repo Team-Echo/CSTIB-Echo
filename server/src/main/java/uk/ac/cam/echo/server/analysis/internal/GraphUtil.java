@@ -62,10 +62,10 @@ public class GraphUtil
         for (NodeModel N : V)
         {
             if (headStart) jsonGraph.append(",\n");
-            else jsonGraph.append("\n");
+            else jsonGraph.append('\n');
             jsonGraph.append('{');
             jsonGraph.append("\"name\":\"").append(N.getName()).append("\",");
-            jsonGraph.append("\"size\":").append(N.getId()).append(",");
+            jsonGraph.append("\"size\":").append(N.getId()).append(',');
             jsonGraph.append("\"imports\":");
             jsonGraph.append('[');
             Set<NodeModel> adj = N.getAdjacent();
@@ -73,7 +73,7 @@ public class GraphUtil
             for (NodeModel M : adj)
             {
                 if (start) jsonGraph.append(',');
-                jsonGraph.append("\"").append(M.getName()).append("\"");
+                jsonGraph.append('\"').append(M.getName()).append('\"');
                 start = true;
             }
             jsonGraph.append("]}");

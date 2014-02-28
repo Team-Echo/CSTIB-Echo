@@ -137,6 +137,108 @@ public class DataAnalyst implements ServerDataAnalyst
     }
 
     @Override
+    public void updateFGraph()
+    {
+        /*
+         Multi-pass method.
+         1. Get Conference (type 0).
+         2. For each Conversation (type 1):
+           3. Connect to Conference.
+           4. Connect to Tags (type 4).
+           5. For each Message (type 2) (**incrementally**):
+             6. Connect to Conversation.
+             7. Connect to User (type 3).
+         8. For each User:
+           9. Connect to Conversation.
+           10. Connect to Interests (type 5).
+        */
+
+        Conference parentConference = (Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, parentID);
+        Collection<Conversation> conversations = parentConference.getConversationSet();
+        List<User> users = HibernateUtil.getTransaction().createCriteria(UserModel.class).list();
+
+        long nextLastTS = ForceGraphUtil.lastTS;
+
+        String confName = parentConference.getName();
+        long confIid = parentConference.getId();
+
+        ForceGraphUtil.addNode(confName, 0, confIid);
+        for (Conversation C : conversations)
+        {
+            String convName = C.getName();
+            long convIid = C.getId();
+
+            ForceGraphUtil.addEdge(confName, 0, confIid, convName, 1, convIid);
+
+            Collection<Tag> tags = C.getTags();
+            if (tags != null)
+            {
+                for (Tag T : tags)
+                {
+                    String tagName = T.getName();
+                    long tagIid = T.getId();
+
+                    ForceGraphUtil.addEdge(convName, 1, convIid, tagName, 4, tagIid);
+                }
+            }
+
+            List<Message> messages = (List<Message>)C.getSortedMessages();
+            Collections.reverse(messages); // because query outputs them in reverse order
+            for (Message M : messages)
+            {
+                if (M.getTimeStamp() > nextLastTS) nextLastTS = M.getTimeStamp();
+                if (M.getTimeStamp() <= GraphUtil.lastTS) break;
+
+                String msgFullContents = M.getContents();
+                String msgName = msgFullContents.substring(0, Math.min(10, msgFullContents.length())).concat("...");
+                long msgIid = M.getId();
+
+                ForceGraphUtil.addEdge(convName, 1, convIid, msgName, 2, msgIid);
+
+                User sender = M.getSender();
+                if (sender != null)
+                {
+                    String senderName = sender.getUsername();
+                    long senderIid = sender.getId();
+
+                    ForceGraphUtil.addEdge(msgName, 2, msgIid, senderName, 3, senderIid);
+                }
+            }
+        }
+
+        for (User U : users)
+        {
+            String userName = U.getUsername();
+            long userIid = U.getId();
+
+            ForceGraphUtil.addNode(userName, 3, userIid);
+
+            Conversation convo = U.getCurrentConversation();
+            if (convo != null)
+            {
+                String convoName = convo.getName();
+                long convoIid = convo.getId();
+
+                ForceGraphUtil.addEdge(userName, 3, userIid, convoName, 1, convoIid);
+            }
+
+            Collection<Interest> interests = U.getInterests();
+            if (interests != null)
+            {
+                for (Interest I : interests)
+                {
+                    String interestName = I.getName();
+                    long interestIid = I.getId();
+
+                    ForceGraphUtil.addEdge(userName, 3, userIid, interestName, 5, interestIid);
+                }
+            }
+        }
+
+        ForceGraphUtil.lastTS = nextLastTS;
+    }
+
+    @Override
     public List<Conversation> search(String keyword, int n)
     {
         Conference parentConference = (Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, parentID);

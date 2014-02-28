@@ -42,6 +42,11 @@ public interface ServerDataAnalyst
     public void updateGraph();
 
     /**
+     Updates the force graph.
+    */
+    public void updateFGraph();
+
+    /**
      Searches the conversations within the conference, with respect to the given keyword string.
      It searches by names, tags and by extracted keywords, giving priority to names, then tags.
 
