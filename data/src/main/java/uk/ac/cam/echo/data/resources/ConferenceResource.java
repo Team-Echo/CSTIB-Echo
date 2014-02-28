@@ -40,6 +40,10 @@ public interface ConferenceResource extends RestResource<Conference> {
     @GET
     public List<Object> getForceNodes(@PathParam("conferenceId") long id);
 
+    @Path("/{conferenceId}/find-force-node")
+    @GET
+    public List<Object> findForceNode(@PathParam("conferenceId") long id, @QueryParam("type") long type, @QueryParam("iid") long iid);
+
     @Path("/{conferenceId}/search")
     @GET
     public List<Conversation> search(@PathParam("conferenceId") long id, @QueryParam("keyword") String keyword, @QueryParam("num") int n);
