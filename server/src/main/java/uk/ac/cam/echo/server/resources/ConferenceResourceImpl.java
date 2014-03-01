@@ -52,6 +52,7 @@ public class ConferenceResourceImpl implements ConferenceResource {
 
     @Override
     public String getForceGraph(long id) {
+        NPForceGraph.flush();
         AnalystFactory.get(id).updateFGraph();
         return NPForceGraph.getJSONFGraph();
     }

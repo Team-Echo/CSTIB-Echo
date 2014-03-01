@@ -53,9 +53,11 @@ public class NPForceGraph
         G.get(u).add(v);
     }
 
-    private static void flush()
+    public static void flush()
     {
-        // NOP
+        T.clear();
+        G.clear();
+        lastTS = 0L;
     }
 
     public static String getJSONFGraph()
