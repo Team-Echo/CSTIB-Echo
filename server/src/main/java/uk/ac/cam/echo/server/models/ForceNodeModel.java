@@ -15,7 +15,7 @@ import java.util.Set;
 */
 @JsonSerialize(using=ForceNodeSerializer.class)
 @Entity
-@Table(name="FNodes")
+@Table(name="FFNodes")
 public class ForceNodeModel extends BaseModel
 {
     public ForceNodeModel() { }
@@ -36,7 +36,7 @@ public class ForceNodeModel extends BaseModel
     private long type;
     private long internalId;
 
-    @ManyToMany(targetEntity = ForceNodeModel.class)
+    @OneToMany(targetEntity = ForceNodeModel.class, mappedBy = "id")
     private Set<ForceNodeModel> adjNodes;
 
     public long getId() { return id; }

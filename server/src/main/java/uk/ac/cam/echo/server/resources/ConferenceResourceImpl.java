@@ -61,6 +61,11 @@ public class ConferenceResourceImpl implements ConferenceResource {
     }
 
     @Override
+    public List<Object> getGraphNodes(long id) {
+        return new ArrayList<Object>(GraphUtil.getAll());
+    }
+
+    @Override
     public List<Object> findForceNode(long id, long type, long iid) {
         return new ArrayList<Object>(HibernateUtil.getTransaction().createCriteria(ForceNodeModel.class)
                 .add(Restrictions.eq("type", type))
