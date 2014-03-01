@@ -181,13 +181,13 @@ public class DataAnalyst implements ServerDataAnalyst
                     NPForceGraph.addEdge(convName, 1, convIid, tagName, 4, tagIid);
                 }
             }
-
+            /*
             List<Message> messages = (List<Message>)C.getSortedMessages();
             Collections.reverse(messages); // because query outputs them in reverse order
             for (Message M : messages)
             {
-                if (M.getTimeStamp() > nextLastTS) nextLastTS = M.getTimeStamp();
-                if (M.getTimeStamp() <= GraphUtil.lastTS) break;
+                //if (M.getTimeStamp() > nextLastTS) nextLastTS = M.getTimeStamp();
+                //if (M.getTimeStamp() <= GraphUtil.lastTS) break;
 
                 String msgFullContents = M.getContents();
                 String msgName = msgFullContents.substring(0, Math.min(10, msgFullContents.length())).concat("...");
@@ -203,7 +203,7 @@ public class DataAnalyst implements ServerDataAnalyst
 
                     NPForceGraph.addEdge(msgName, 2, msgIid, senderName, 3, senderIid);
                 }
-            }
+            }*/
         }
 
         for (User U : users)
