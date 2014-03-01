@@ -9,6 +9,7 @@ import uk.ac.cam.echo.data.resources.ConferenceResource;
 import uk.ac.cam.echo.server.HibernateUtil;
 import uk.ac.cam.echo.server.analysis.internal.ForceGraphUtil;
 import uk.ac.cam.echo.server.analysis.internal.GraphUtil;
+import uk.ac.cam.echo.server.analysis.internal.NPForceGraph;
 import uk.ac.cam.echo.server.models.ConferenceModel;
 import uk.ac.cam.echo.server.models.ConversationModel;
 import uk.ac.cam.echo.server.models.ForceNodeModel;
@@ -52,7 +53,7 @@ public class ConferenceResourceImpl implements ConferenceResource {
     @Override
     public String getForceGraph(long id) {
         AnalystFactory.get(id).updateFGraph();
-        return ForceGraphUtil.getJSONFGraph();
+        return NPForceGraph.getJSONFGraph();
     }
 
     @Override
