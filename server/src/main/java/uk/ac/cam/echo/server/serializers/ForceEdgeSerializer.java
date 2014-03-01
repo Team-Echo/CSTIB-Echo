@@ -20,7 +20,7 @@ public class ForceEdgeSerializer extends JsonSerializer<ForceEdgeModel>
     {
         jsonGenerator.writeStartObject();
         jsonGenerator.writeNumberField("sourceId", fedge.getSource().getId());
-        jsonGenerator.writeNumberField("destinationId", fedge.getDestination().getId());
+        jsonGenerator.writeNumberField("destinationId", fedge.getDestinationId());
         jsonGenerator.writeEndObject();
     }
 }

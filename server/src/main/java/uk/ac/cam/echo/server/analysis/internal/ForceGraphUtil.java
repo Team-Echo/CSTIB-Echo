@@ -52,7 +52,7 @@ public class ForceGraphUtil
     {
         ForceEdgeModel model = new ForceEdgeModel();
         model.setSource(from);
-        model.setDestination(to);
+        model.setDestinationId(to.getId());
         model.save();
         return model;
     }
@@ -61,7 +61,7 @@ public class ForceGraphUtil
     {
         List<ForceEdgeModel> res = HibernateUtil.getTransaction().createCriteria(ForceEdgeModel.class)
                 .add(Restrictions.eq("source", from))
-                .add(Restrictions.eq("destination", to)).list();
+                .add(Restrictions.eq("destinationId", to.getId())).list();
         if (res == null) return createFEdge(from, to);
         if (res.isEmpty()) return createFEdge(from, to);
         return res.get(0);
@@ -120,7 +120,7 @@ public class ForceGraphUtil
             else linkBuilder.append('\n');
             linkBuilder.append('{');
             linkBuilder.append("\"source\":").append(mst.get(FE.getSource().getId())).append(',');
-            linkBuilder.append("\"target\":").append(mst.get(FE.getDestination().getId())).append(',');
+            linkBuilder.append("\"target\":").append(mst.get(FE.getDestinationId())).append(',');
             linkBuilder.append("\"value\":").append(1);
             linkBuilder.append('}');
             linkStart = true;

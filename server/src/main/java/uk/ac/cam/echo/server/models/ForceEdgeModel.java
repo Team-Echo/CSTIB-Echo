@@ -3,7 +3,6 @@ package uk.ac.cam.echo.server.models;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import uk.ac.cam.echo.server.serializers.ForceEdgeSerializer;
-import uk.ac.cam.echo.server.serializers.ForceNodeSerializer;
 
 import javax.persistence.*;
 import java.util.Map;
@@ -20,7 +19,7 @@ public class ForceEdgeModel extends BaseModel
 {
     public ForceEdgeModel() { }
 
-    private static String[] allowed = {"source", "destination"};
+    private static String[] allowed = {"source", "destinationId"};
     @JsonCreator
     public ForceEdgeModel(Map<String, Object> props)
     {
@@ -34,7 +33,7 @@ public class ForceEdgeModel extends BaseModel
 
     @ManyToOne(targetEntity = ForceNodeModel.class)
     private ForceNodeModel source;
-    private ForceNodeModel destination;
+    private long destinationId;
 
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
@@ -42,6 +41,6 @@ public class ForceEdgeModel extends BaseModel
     public ForceNodeModel getSource() { return source; }
     public void setSource(ForceNodeModel src) { this.source = src; }
 
-    public ForceNodeModel getDestination() { return destination; }
-    public void setDestination(ForceNodeModel dst) { this.destination = dst; }
+    public long getDestinationId() { return destinationId; }
+    public void setDestinationId(long dstId) { this.destinationId = dstId; }
 }
