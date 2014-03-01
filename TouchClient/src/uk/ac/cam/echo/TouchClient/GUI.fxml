@@ -368,21 +368,18 @@
             <Font size="12.0" fx:id="x2" />
           </font>
         </Text>
+        <WebView fx:id="webviewtwo" layoutX="95.0" layoutY="107.0" prefHeight="410.0" prefWidth="410.0" styleClass="null" />
         <WebView fx:id="htmlviewer" layoutX="95.0" layoutY="107.0" prefHeight="410.0" prefWidth="410.0" styleClass="null" />
         <Button fx:id="return_button" layoutX="260.0" layoutY="537.0" mnemonicParsing="false" styleClass="statbuttonClass" text="return" />
-        <Button fx:id="Activity_button" layoutX="105.0" layoutY="388.0" mnemonicParsing="false" styleClass="statbuttonClass" text="Activity" />
-        <Button fx:id="ConversationList_button" layoutX="378.0" layoutY="388.0" mnemonicParsing="false" styleClass="statbuttonClass" text="Conversation List" />
-        <Button fx:id="messageBreakdown_button" layoutX="240.0" layoutY="388.0" mnemonicParsing="false" styleClass="statbuttonClass" text="Message Breakdown" />
+        <Button fx:id="Activity_button" layoutX="167.0" layoutY="386.0" mnemonicParsing="false" styleClass="statbuttonClass" text="Activity" />
+        <Button fx:id="ConversationList_button" layoutX="303.0" layoutY="263.0" mnemonicParsing="false" styleClass="statbuttonClass" text="tag view" />
+        <Button fx:id="messageBreakdown_button" layoutX="303.0" layoutY="386.0" mnemonicParsing="false" styleClass="statbuttonClass" text="Message Breakdown" />
+        <Button fx:id="webview_button" layoutX="167.0" layoutY="263.0" mnemonicParsing="false" styleClass="statbuttonClass" text="confrence view" />
         <Text fx:id="ECHO" font="$x2" layoutX="290.0" layoutY="150.0" scaleX="12.106549705821257" scaleY="10.223579190357567" strokeType="OUTSIDE" strokeWidth="0.0" text="echo">
           <fill>
             <Color blue="0.882" green="0.694" red="0.173" fx:id="x3" />
           </fill>
         </Text>
-        <Rectangle fx:id="Confrence_Name_background" arcHeight="18.0" arcWidth="18.0" fill="$x3" height="37.0" layoutX="159.0" layoutY="244.0" stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="INSIDE" strokeWidth="0.0" width="308.0">
-          <effect>
-            <Glow />
-          </effect>
-        </Rectangle>
         <Text fx:id="Confrence_Name" disable="false" fill="#2cb1e1" font="$x2" layoutX="230.0" layoutY="220.0" scaleX="1.5" scaleY="1.5" stroke="BLACK" strokeMiterLimit="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="confrencenameClass" text="Confrence name" textAlignment="CENTER" wrappingWidth="150.0" />
       </children>
     </Pane>
