@@ -172,15 +172,16 @@ public class GUIController implements Initializable {
     @FXML Button messageBreakdown_button;
     @FXML Text ECHO;
     @FXML Text Confrence_Name;
-    @FXML Rectangle Confrence_Name_background;
     @FXML WebView htmlviewer;
+    @FXML WebView webviewtwo;
+    @FXML Button webview_button;
     private void setupGlobalStats(){
         return_button.setVisible(false);
         stats_conversationlist.setVisible(false);
         global_stats_pie.setVisible(false);
         global_stats_line.setVisible(false);
-        Confrence_Name_background.setVisible(false);
         htmlviewer.setVisible(false);
+        webviewtwo.setVisible(false);
         (new Thread(new Runnable(){
             @Override
             public void run() {
@@ -233,6 +234,15 @@ public class GUIController implements Initializable {
             Logger.getGlobal().log(Level.SEVERE, null, ex);
         }
         
+        try {
+            ImageView mbbi = (new ImageView());
+            mbbi.setImage(new Image(new FileInputStream(new File("./res/drawable/connectionssmall.png"))));
+            webview_button.setGraphic(mbbi);
+            webview_button.setText("");
+        } catch (FileNotFoundException ex) {
+            Logger.getGlobal().log(Level.SEVERE, null, ex);
+        }
+        
         Activity_button.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent t) {
@@ -246,8 +256,9 @@ public class GUIController implements Initializable {
                     messageBreakdown_button.setVisible(false);
                     ECHO.setVisible(false);
                     Confrence_Name.setVisible(false);
-                    Confrence_Name_background.setVisible(false);
                     htmlviewer.setVisible(false);
+                    webviewtwo.setVisible(false);
+                    webview_button.setVisible(false);
                 }
             }
         });
@@ -265,8 +276,9 @@ public class GUIController implements Initializable {
                     messageBreakdown_button.setVisible(false);
                     ECHO.setVisible(false);
                     Confrence_Name.setVisible(false);
-                    Confrence_Name_background.setVisible(false);
                     htmlviewer.setVisible(true);
+                    webviewtwo.setVisible(false);
+                    webview_button.setVisible(false);
                 }
             }
         });
@@ -284,8 +296,9 @@ public class GUIController implements Initializable {
                     messageBreakdown_button.setVisible(false);
                     ECHO.setVisible(false);
                     Confrence_Name.setVisible(false);
-                    Confrence_Name_background.setVisible(false);
                     htmlviewer.setVisible(false);
+                    webviewtwo.setVisible(false);
+                    webview_button.setVisible(false);
                 }
             }
         });
@@ -303,11 +316,33 @@ public class GUIController implements Initializable {
                     messageBreakdown_button.setVisible(true);
                     ECHO.setVisible(true);
                     Confrence_Name.setVisible(true);
-                    Confrence_Name_background.setVisible(false);
                     htmlviewer.setVisible(false);
+                    webviewtwo.setVisible(false);
+                    webview_button.setVisible(true);
                 }
             }
         });
+        
+        webview_button.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent t) {
+                if (webview_button.visibleProperty().get()){
+                    return_button.setVisible(true);
+                    stats_conversationlist.setVisible(false);
+                    global_stats_pie.setVisible(false);
+                    global_stats_line.setVisible(false);
+                    Activity_button.setVisible(false);
+                    ConversationList_button.setVisible(false);
+                    messageBreakdown_button.setVisible(false);
+                    ECHO.setVisible(false);
+                    Confrence_Name.setVisible(false);
+                    htmlviewer.setVisible(false);
+                    webviewtwo.setVisible(true);
+                    webview_button.setVisible(false);
+                }
+            }
+        });
+        
         
         conversationList = new MessageDisplayList();
         stats_conversationlist.setCellFactory(new ConversationListCellFactory());
@@ -326,6 +361,12 @@ public class GUIController implements Initializable {
         
         try {
             htmlviewer.getEngine().load(new File("./res/tags/index.html").toURI().toURL().toString());
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(GUIController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        try {
+            webviewtwo.getEngine().load(new File("./res/overview/index.html").toURI().toURL().toString());
         } catch (MalformedURLException ex) {
             Logger.getLogger(GUIController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1191,6 +1232,7 @@ public class GUIController implements Initializable {
                         @Override
                         public void run() {
                             htmlviewer.getEngine().reload();
+                            webviewtwo.getEngine().reload();
                         }
                     });
                 }
