@@ -1,8 +1,8 @@
 package uk.ac.cam.echo.server.analysis.internal;
 
-import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 import uk.ac.cam.echo.server.HibernateUtil;
+import uk.ac.cam.echo.server.models.ForceEdgeModel;
 import uk.ac.cam.echo.server.models.ForceNodeModel;
 
 import java.util.*;
@@ -22,13 +22,18 @@ public class ForceGraphUtil
         return HibernateUtil.getTransaction().createCriteria(ForceNodeModel.class).list();
     }
 
+    public static List<ForceEdgeModel> getAllEdges()
+    {
+        return HibernateUtil.getTransaction().createCriteria(ForceEdgeModel.class).list();
+    }
+
     private static ForceNodeModel createFNode(String val, long type, long iid)
     {
         ForceNodeModel model = new ForceNodeModel();
         model.setName(val);
         model.setType(type);
         model.setInternalId(iid);
-        model.setAdjacent(new HashSet<ForceNodeModel>());
+        model.setAdjacent(new HashSet<ForceEdgeModel>());
         model.save();
         return model;
     }
@@ -43,6 +48,25 @@ public class ForceGraphUtil
         return res.get(0);
     }
 
+    public static ForceEdgeModel createFEdge(ForceNodeModel from, ForceNodeModel to)
+    {
+        ForceEdgeModel model = new ForceEdgeModel();
+        model.setSource(from);
+        model.setDestination(to);
+        model.save();
+        return model;
+    }
+
+    public static ForceEdgeModel getFEdge(ForceNodeModel from, ForceNodeModel to)
+    {
+        List<ForceEdgeModel> res = HibernateUtil.getTransaction().createCriteria(ForceEdgeModel.class)
+                .add(Restrictions.eq("source", from))
+                .add(Restrictions.eq("destination", to)).list();
+        if (res == null) return createFEdge(from, to);
+        if (res.isEmpty()) return createFEdge(from, to);
+        return res.get(0);
+    }
+
     public static void addNode(String name, long type, long iid)
     {
         getFNode(name, type, iid);
@@ -52,8 +76,7 @@ public class ForceGraphUtil
     {
         ForceNodeModel u = getFNode(uName, uType, uIid);
         ForceNodeModel v = getFNode(vName, vType, vIid);
-        u.addAdjacentNode(v);
-        HibernateUtil.getTransaction().update(u);
+        getFEdge(u, v);
     }
 
     private static void flush()
@@ -71,6 +94,7 @@ public class ForceGraphUtil
         long seqId = 0;
 
         List<ForceNodeModel> V = getAll();
+        List<ForceEdgeModel> E = getAllEdges();
         nodeBuilder.append('[');
         boolean nodeStart = false;
         for (ForceNodeModel FN : V)
@@ -88,20 +112,18 @@ public class ForceGraphUtil
 
         linkBuilder.append('[');
         boolean linkStart = false;
-        for (ForceNodeModel FN : V)
+
+        for (ForceEdgeModel FE : E)
         {
-            Set<ForceNodeModel> adj = FN.getAdjacent();
-            for (ForceNodeModel FM : adj)
-            {
-                if (linkStart) linkBuilder.append(",\n");
-                else linkBuilder.append('\n');
-                linkBuilder.append('{');
-                linkBuilder.append("\"source\":").append(mst.get(FN.getId())).append(',');
-                linkBuilder.append("\"target\":").append(mst.get(FM.getId())).append(',');
-                linkBuilder.append("\"value\":").append(1);
-                linkBuilder.append('}');
-                linkStart = true;
-            }
+
+            if (linkStart) linkBuilder.append(",\n");
+            else linkBuilder.append('\n');
+            linkBuilder.append('{');
+            linkBuilder.append("\"source\":").append(mst.get(FE.getSource().getId())).append(',');
+            linkBuilder.append("\"target\":").append(mst.get(FE.getDestination().getId())).append(',');
+            linkBuilder.append("\"value\":").append(1);
+            linkBuilder.append('}');
+            linkStart = true;
         }
         linkBuilder.append("\n]");
 

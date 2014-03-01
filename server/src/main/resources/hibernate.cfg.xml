@@ -55,6 +55,7 @@
         <mapping class="uk.ac.cam.echo.server.models.InterestModel"/>
         <mapping class="uk.ac.cam.echo.server.models.NodeModel"/>
         <mapping class="uk.ac.cam.echo.server.models.ForceNodeModel"/>
+        <mapping class="uk.ac.cam.echo.server.models.ForceEdgeModel"/>
 
 
     </session-factory>
