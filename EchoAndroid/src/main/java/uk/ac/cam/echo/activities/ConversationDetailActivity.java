@@ -1,5 +1,6 @@
 package uk.ac.cam.echo.activities;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -19,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SearchView;
 
+import uk.ac.cam.echo.ConversationStringUtil;
 import uk.ac.cam.echo.R;
 import uk.ac.cam.echo.Toaster;
 import uk.ac.cam.echo.client.ClientApi;
@@ -71,6 +73,7 @@ public class ConversationDetailActivity extends Activity implements View.OnClick
 		FragmentTransaction transaction = manager.beginTransaction();
 		transaction.replace(R.id.messageFrame, cf);
 		transaction.commit();
+
 	}
 
     @Override
@@ -95,6 +98,12 @@ public class ConversationDetailActivity extends Activity implements View.OnClick
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(this, ConversationListActivity.class);
+        startActivity(i);
+        super.onBackPressed();
+    }
 
     @Override
     public void onClick(View view) {
@@ -156,6 +165,30 @@ public class ConversationDetailActivity extends Activity implements View.OnClick
         protected void onPostExecute(Message newMsg) {
             cf.getListView().setSelection(cf.getAdapter().getCount()-1);
             send.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private class UpdateActionBar extends AsyncTask<Long,Void,Void> {
+
+        String title;
+        String users;
+
+        @Override
+        protected Void doInBackground(Long[] args) {
+            Conversation conversation = api.conversationResource.get(args[0]);
+            title = conversation.getName();
+            users = ConversationStringUtil.getUserText(conversation.getUsers());
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            ActionBar ab = getActionBar();
+            if (ab != null)
+                ab.setTitle(title);
+            if (ab != null)
+                ab.setSubtitle(users);
         }
     }
 }

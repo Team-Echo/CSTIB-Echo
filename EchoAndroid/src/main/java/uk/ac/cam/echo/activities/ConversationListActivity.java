@@ -40,6 +40,7 @@ public class ConversationListActivity extends Activity
             api = echoService.getApi();
             clf.setApi(api);
             clf.getAllConversations();
+            openDialog();
         }
 
         public void onServiceDisconnected(ComponentName className) {
@@ -78,7 +79,9 @@ public class ConversationListActivity extends Activity
         Intent service = new Intent(this, EchoService.class);
         Log.d("ConversationListActivity", "onResume - binding EchoService");
         bindService(service, connection, Context.BIND_AUTO_CREATE);
+    }
 
+    private void openDialog() {
         long id = getIntent().getLongExtra("_id", -1L);
         if(id != -1){
             Log.d("RESPOND", "responding to " +id);

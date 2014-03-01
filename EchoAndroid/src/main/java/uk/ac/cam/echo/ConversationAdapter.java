@@ -17,7 +17,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import uk.ac.cam.echo.client.ClientApi;
+import uk.ac.cam.echo.client.data.ConversationData;
 import uk.ac.cam.echo.data.Conversation;
+import uk.ac.cam.echo.data.Message;
 import uk.ac.cam.echo.data.Tag;
 import uk.ac.cam.echo.data.User;
 
@@ -34,6 +36,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
     private HashMap<Long, String> onlineMap;
     private HashMap<Long, String> tagMap;
     private HashMap<Long, Bitmap> avatarMap;
+    private HashMap<Long, String> messageMap;
 
     private ClientApi api;
 
@@ -49,6 +52,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
         avatarMap = new HashMap<Long, Bitmap>();
         userMap = new HashMap<Long, String>();
         onlineMap = new HashMap<Long, String>();
+        messageMap = new HashMap<Long, String>();
 
 		this.context = context;
 		this.layoutResourceId = layoutResourceId;
@@ -81,6 +85,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 			holder.users = (TextView)row.findViewById(R.id.convUsersRow);
 			holder.tags = (TextView)row.findViewById(R.id.convTagsRow);
 			holder.totalOnline = (TextView)row.findViewById(R.id.convOnlineRow);
+            holder.lastMessage = (TextView)row.findViewById(R.id.lastMessage);
 			
 			row.setTag(holder);
 
@@ -101,8 +106,9 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
             holder.users.setText(userMap.get(id));
             holder.totalOnline.setText(onlineMap.get(id));
             holder.imgIcon.setImageBitmap(avatarMap.get(id));
+            holder.lastMessage.setText(messageMap.get(id));
         } else {
-            new AsyncAdapter().execute(conversation, holder.tags, holder.imgIcon, holder.users, holder.totalOnline);
+            new AsyncAdapter().execute(conversation, holder.tags, holder.imgIcon, holder.users, holder.totalOnline, holder.lastMessage);
         }
 
         if(position == getCount() - 1) {
@@ -144,6 +150,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 		TextView users;
 		TextView tags;
 		TextView totalOnline;
+        TextView lastMessage;
 	}
 
     private class AsyncAdapter extends AsyncTask<Object, Void, String> {
@@ -153,11 +160,13 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
         TextView tagView;
         TextView userView;
         TextView onlineView;
+        TextView lastMessage;
         ImageView imgView;
         Bitmap avatar;
 
         String onlineText;
         String userText;
+        String lastMessageText;
 
         @Override
         protected String doInBackground(Object... params) {
@@ -166,9 +175,13 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
             imgView = (ImageView)params[2];
             userView = (TextView)params[3];
             onlineView = (TextView)params[4];
+            lastMessage = (TextView)params[5];
 
             Collection<Tag> tags = conversation.getTags();
             String tagText = ConversationStringUtil.getTagText(tags);
+
+            Message last = api.conversationResource.getMessageResource(conversation.getId()).getRecent(1).get(0);
+            lastMessageText = last.getSender().getDisplayName() + ": " + last.getContents();
 
             Collection<User> users = conversation.getUsers();
             onlineText = ConversationStringUtil.getOnlineText(users);
@@ -194,7 +207,10 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
             userMap.put(id, userText);
             userView.setText(userText);
 
-            avatarMap.put(conversation.getId(), avatar);
+            messageMap.put(id, lastMessageText);
+            lastMessage.setText(lastMessageText);
+
+            avatarMap.put(id, avatar);
             imgView.setImageBitmap(avatar);
         }
     }
