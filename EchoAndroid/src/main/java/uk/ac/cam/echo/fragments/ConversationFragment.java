@@ -121,6 +121,9 @@ public class ConversationFragment extends Fragment {
             @Override
             public void run() {
                 Log.d("NOTIF", "asyncupdate called");
+
+                if(user.getCurrentConversation() == null) return;
+
                 Message update = api.conferenceResource.notify(1, user.getId(), user.getCurrentConversation().getId(), 300000);
                 echoService.notifyUpdate(update);
             }

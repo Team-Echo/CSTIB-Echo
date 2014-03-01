@@ -95,6 +95,12 @@ public class ConversationDetailActivity extends Activity implements View.OnClick
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(this, ConversationListActivity.class);
+        startActivity(i);
+        super.onBackPressed();
+    }
 
     @Override
     public void onClick(View view) {

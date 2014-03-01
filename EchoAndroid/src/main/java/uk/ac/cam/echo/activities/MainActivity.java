@@ -11,10 +11,12 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -34,11 +36,15 @@ public class MainActivity extends Activity
         public void onServiceConnected(ComponentName className, IBinder service) {
             echoService = ((EchoService.LocalBinder)service).getService();
             api = echoService.getApi();
+            onServiceReady();
+
         }
         public void onServiceDisconnected(ComponentName className) {
             echoService = null;
         }
     };
+
+    public static final String LOGGED_IN = "uk.ac.cam.echo.loggedIn";
 
     ClientApi api;
 
@@ -48,12 +54,17 @@ public class MainActivity extends Activity
     TextView registerScreen;
 	Button login;
 	ProgressBar progress;
+
+    SharedPreferences prefs;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        startService(new Intent(this, EchoService.class));
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
         setContentView(R.layout.activity_main);
-        
+
         title = (TextView)findViewById(R.id.titleLogin);
         username = (EditText)findViewById(R.id.usernameLogin);
         password = (EditText)findViewById(R.id.passwordLogin);
@@ -65,7 +76,7 @@ public class MainActivity extends Activity
         Typeface flex = Typeface.createFromAsset(getAssets(), "fonts/roboto_light_italic.ttf");
         title.setTypeface(flex);
 
-        startService(new Intent(this, EchoService.class));
+
     }
 
     @Override
@@ -89,7 +100,14 @@ public class MainActivity extends Activity
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-    
+
+    private void onServiceReady() {
+        if(echoService.getUser()!=null && prefs.getBoolean(LOGGED_IN, false)) {
+            Intent intent = new Intent(this, ConversationListActivity.class);
+            startActivity(intent);
+        }
+    }
+
     public void loginUser(View v) {
     	String user = username.getText().toString();
     	String pass = password.getText().toString();
@@ -114,6 +132,9 @@ public class MainActivity extends Activity
                         toggleButton();
                     } else {
                         echoService.setUser(user);
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putBoolean(LOGGED_IN, true);
+                        editor.commit();
                         Intent i = new Intent(MainActivity.this, ConversationListActivity.class);
                         startActivity(i);
                     }

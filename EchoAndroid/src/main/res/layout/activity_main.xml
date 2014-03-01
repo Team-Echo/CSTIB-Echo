@@ -32,7 +32,7 @@
 	        android:layout_alignParentLeft="true"
 	        android:layout_alignParentRight="true"
 	        android:layout_below="@+id/logoLogin"
-	        android:layout_marginTop="20dp"
+	        android:layout_marginTop="10dp"
 	        android:layout_marginLeft="20dp"
 	        android:layout_marginRight="20dp"
 	        android:ems="10"
