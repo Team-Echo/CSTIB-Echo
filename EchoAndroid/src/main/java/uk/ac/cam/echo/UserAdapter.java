@@ -332,6 +332,7 @@ public class UserAdapter extends BaseExpandableListAdapter {
                         intent.setData(Uri.parse(uri));
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         activity.startActivity(intent);
+
                     }
                 });
             }

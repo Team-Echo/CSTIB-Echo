@@ -157,18 +157,18 @@ public class DataAnalyst implements ServerDataAnalyst
         Collection<Conversation> conversations = parentConference.getConversationSet();
         List<User> users = HibernateUtil.getTransaction().createCriteria(UserModel.class).list();
 
-        long nextLastTS = ForceGraphUtil.lastTS;
+        long nextLastTS = NPForceGraph.lastTS;
 
         String confName = parentConference.getName();
         long confIid = parentConference.getId();
 
-        ForceGraphUtil.addNode(confName, 0, confIid);
+        NPForceGraph.addNode(confName, 0, confIid);
         for (Conversation C : conversations)
         {
             String convName = C.getName();
             long convIid = C.getId();
 
-            ForceGraphUtil.addEdge(confName, 0, confIid, convName, 1, convIid);
+            NPForceGraph.addEdge(confName, 0, confIid, convName, 1, convIid);
 
             Collection<Tag> tags = C.getTags();
             if (tags != null)
@@ -178,7 +178,7 @@ public class DataAnalyst implements ServerDataAnalyst
                     String tagName = T.getName();
                     long tagIid = T.getId();
 
-                    ForceGraphUtil.addEdge(convName, 1, convIid, tagName, 4, tagIid);
+                    NPForceGraph.addEdge(convName, 1, convIid, tagName, 4, tagIid);
                 }
             }
 
@@ -193,7 +193,7 @@ public class DataAnalyst implements ServerDataAnalyst
                 String msgName = msgFullContents.substring(0, Math.min(10, msgFullContents.length())).concat("...");
                 long msgIid = M.getId();
 
-                ForceGraphUtil.addEdge(convName, 1, convIid, msgName, 2, msgIid);
+                NPForceGraph.addEdge(convName, 1, convIid, msgName, 2, msgIid);
 
                 User sender = M.getSender();
                 if (sender != null)
@@ -201,7 +201,7 @@ public class DataAnalyst implements ServerDataAnalyst
                     String senderName = sender.getUsername();
                     long senderIid = sender.getId();
 
-                    ForceGraphUtil.addEdge(msgName, 2, msgIid, senderName, 3, senderIid);
+                    NPForceGraph.addEdge(msgName, 2, msgIid, senderName, 3, senderIid);
                 }
             }
         }
@@ -211,7 +211,7 @@ public class DataAnalyst implements ServerDataAnalyst
             String userName = U.getUsername();
             long userIid = U.getId();
 
-            ForceGraphUtil.addNode(userName, 3, userIid);
+            NPForceGraph.addNode(userName, 3, userIid);
 
             Conversation convo = U.getCurrentConversation();
             if (convo != null)
@@ -219,7 +219,7 @@ public class DataAnalyst implements ServerDataAnalyst
                 String convoName = convo.getName();
                 long convoIid = convo.getId();
 
-                ForceGraphUtil.addEdge(userName, 3, userIid, convoName, 1, convoIid);
+                NPForceGraph.addEdge(userName, 3, userIid, convoName, 1, convoIid);
             }
 
             Collection<Interest> interests = U.getInterests();
@@ -230,12 +230,12 @@ public class DataAnalyst implements ServerDataAnalyst
                     String interestName = I.getName();
                     long interestIid = I.getId();
 
-                    ForceGraphUtil.addEdge(userName, 3, userIid, interestName, 5, interestIid);
+                    NPForceGraph.addEdge(userName, 3, userIid, interestName, 5, interestIid);
                 }
             }
         }
 
-        ForceGraphUtil.lastTS = nextLastTS;
+        NPForceGraph.lastTS = nextLastTS;
     }
 
     @Override

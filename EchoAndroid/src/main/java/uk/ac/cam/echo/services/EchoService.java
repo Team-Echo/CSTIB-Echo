@@ -6,6 +6,7 @@ import uk.ac.cam.echo.BitmapUtil;
 import uk.ac.cam.echo.R;
 import uk.ac.cam.echo.activities.ConversationDetailActivity;
 import uk.ac.cam.echo.activities.ConversationListActivity;
+import uk.ac.cam.echo.activities.MainActivity;
 import uk.ac.cam.echo.client.ClientApi;
 import uk.ac.cam.echo.data.Conference;
 import uk.ac.cam.echo.data.Conversation;
@@ -18,10 +19,12 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class EchoService extends Service {
@@ -62,12 +65,19 @@ public class EchoService extends Service {
         return binder;
     }
 
+
+
+
     @Override
     public void onDestroy() {
+        Log.d("SERVICE", "onDestroy()");
         if(getUser() != null) {
             getUser().setCurrentConversation(null);
             getUser().save();
         }
+
+
+
         super.onDestroy();
 
     }
@@ -92,6 +102,11 @@ public class EchoService extends Service {
                      String user = msg.getSender().getFirstName();
 
                      Bitmap avatar = BitmapUtil.getBitmapFromURL(msg.getSender().getAvatarLink()+"&s=200");
+
+
+                     Log.d("Notif", context == null ? "context is null" : "context not null");
+                     Log.d("Notif", conversation == null ? "conversation is null" : "conversation not null");
+                     Log.d("Notif", user == null ? "user is null" : "user not null");
 
 
                      Notification.Builder notifBuilder = new Notification.Builder(context)
@@ -167,15 +182,23 @@ public class EchoService extends Service {
 
        if(conversationId != id) {
 
-           new AsyncTask<Long, Void, Void>() {
+           new AsyncTask<Long, Void, Conversation>() {
+
                @Override
-               protected Void doInBackground(Long... args) {
-                   getUser().setCurrentConversation(api.conversationResource.get(args[0]));
+               protected Conversation doInBackground(Long... args) {
+                   Conversation c = api.conversationResource.get(args[0]);
+                   getUser().setCurrentConversation(c);
                    getUser().save();
-                   return null;
+                   return c;
+               }
+
+               @Override
+               protected void onPostExecute(Conversation conversation) {
+                   super.onPostExecute(conversation);
+                   setCurrentConversation(conversation);
                }
            }.execute(id);
-           //conversation = getUser().getCurrentConversation();
+           Log.d("Notif", conversation == null ? " conv is null " : "conv is not null");
            conversationId = id;
            Handler<Message> handler = new Handler<Message>() {
                @Override
@@ -188,6 +211,8 @@ public class EchoService extends Service {
            api.conversationResource.listenToMessages(id).subscribe(handler);
        }
    }
+
+    public void setCurrentConversation(Conversation newConv) {conversation = newConv; }
 
 	public long getConversationId() {
         return conversationId;

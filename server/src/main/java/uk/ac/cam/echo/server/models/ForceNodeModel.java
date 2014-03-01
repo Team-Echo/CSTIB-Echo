@@ -15,7 +15,7 @@ import java.util.Set;
 */
 @JsonSerialize(using=ForceNodeSerializer.class)
 @Entity
-@Table(name="FNodes")
+@Table(name="FNodesF")
 public class ForceNodeModel extends BaseModel
 {
     public ForceNodeModel() { }
@@ -36,8 +36,8 @@ public class ForceNodeModel extends BaseModel
     private long type;
     private long internalId;
 
-    @ManyToMany(targetEntity = ForceNodeModel.class)
-    private Set<ForceNodeModel> adjNodes;
+    @OneToMany(targetEntity = ForceEdgeModel.class, mappedBy = "source")
+    private Set<ForceEdgeModel> adjNodes;
 
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
@@ -57,10 +57,10 @@ public class ForceNodeModel extends BaseModel
     public long getInternalId() { return internalId; }
     public void setInternalId(long iid) { this.internalId = iid; }
 
-    public Set<ForceNodeModel> getAdjacent() { return adjNodes; }
-    public void setAdjacent(Set<ForceNodeModel> adj) { this.adjNodes = adj; }
+    public Set<ForceEdgeModel> getAdjacent() { return adjNodes; }
+    public void setAdjacent(Set<ForceEdgeModel> adj) { this.adjNodes = adj; }
 
-    public void addAdjacentNode(ForceNodeModel v)
+    public void addAdjacentNode(ForceEdgeModel v)
     {
         if (!adjNodes.contains(v))
         {
