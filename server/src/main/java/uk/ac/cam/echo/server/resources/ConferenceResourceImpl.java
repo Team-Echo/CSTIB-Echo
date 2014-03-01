@@ -1,5 +1,6 @@
 package uk.ac.cam.echo.server.resources;
 
+import org.hibernate.criterion.Restrictions;
 import uk.ac.cam.echo.data.Conference;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.Message;
@@ -10,6 +11,7 @@ import uk.ac.cam.echo.server.analysis.internal.ForceGraphUtil;
 import uk.ac.cam.echo.server.analysis.internal.GraphUtil;
 import uk.ac.cam.echo.server.models.ConferenceModel;
 import uk.ac.cam.echo.server.models.ConversationModel;
+import uk.ac.cam.echo.server.models.ForceNodeModel;
 import uk.ac.cam.echo.server.models.UserModel;
 
 import javax.ws.rs.core.Response;
@@ -56,6 +58,13 @@ public class ConferenceResourceImpl implements ConferenceResource {
     @Override
     public List<Object> getForceNodes(long id) {
         return new ArrayList<Object>(ForceGraphUtil.getAll());
+    }
+
+    @Override
+    public List<Object> findForceNode(long id, long type, long iid) {
+        return new ArrayList<Object>(HibernateUtil.getTransaction().createCriteria(ForceNodeModel.class)
+                .add(Restrictions.eq("type", type))
+                .add(Restrictions.eq("internalId", iid)).list());
     }
 
     @Override
