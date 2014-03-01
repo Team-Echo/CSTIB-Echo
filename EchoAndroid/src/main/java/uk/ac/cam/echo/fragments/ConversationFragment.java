@@ -190,11 +190,7 @@ public class ConversationFragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<Message> result) {
-            try {
-                ActionBar ab = getActivity().getActionBar();
-                ab.setTitle(title);
-                ab.setSubtitle(users);
-            } catch(NullPointerException e) { Log.e("ConversationFrag","frag"); }
+
             messageList = msgList;
             adapter = MessageAdapter.newInstance(context, R.layout.message_row_remote, messageList, api, user);
             adapter.setListView(listView);

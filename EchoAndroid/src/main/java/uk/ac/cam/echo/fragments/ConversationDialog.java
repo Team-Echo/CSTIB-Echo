@@ -104,8 +104,6 @@ public class ConversationDialog extends DialogFragment implements
 
 			Intent intent = new Intent(getActivity(), ConversationDetailActivity.class);
 			intent.putExtra("_id", id);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 
 		}

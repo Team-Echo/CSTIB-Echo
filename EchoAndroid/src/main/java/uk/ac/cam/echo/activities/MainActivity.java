@@ -104,6 +104,7 @@ public class MainActivity extends Activity
     private void onServiceReady() {
         if(echoService.getUser()!=null && prefs.getBoolean(LOGGED_IN, false)) {
             Intent intent = new Intent(this, ConversationListActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
         }
     }
@@ -136,6 +137,7 @@ public class MainActivity extends Activity
                         editor.putBoolean(LOGGED_IN, true);
                         editor.commit();
                         Intent i = new Intent(MainActivity.this, ConversationListActivity.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                         startActivity(i);
                     }
                 }
