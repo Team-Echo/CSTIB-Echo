@@ -25,9 +25,7 @@ public class NPForceGraph
     }
 
     private static Map<String, Node> T = new HashMap<String, Node>();
-    private static Map<Node, Long> V = new HashMap<Node, Long>();
     private static Map<Node, Set<Node>> G = new HashMap<Node, Set<Node>>();
-    private static long idd = 0L;
     public static long lastTS = 0L;
 
     private static Node getFNode(String val, long type, long iid)
