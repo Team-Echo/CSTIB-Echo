@@ -24,29 +24,23 @@ public class NPForceGraph
         public void setIid(long iId) { this.internalId = iId; }
     }
 
+    private static Map<String, Node> T = new HashMap<String, Node>();
     private static Map<Node, Long> V = new HashMap<Node, Long>();
     private static Map<Node, Set<Node>> G = new HashMap<Node, Set<Node>>();
     private static long idd = 0L;
     public static long lastTS = 0L;
 
-    private static Node createFNode(String val, long type, long iid)
+    private static Node getFNode(String val, long type, long iid)
     {
+        String tString = type + "|!@()#$||" + iid;
+        if (T.containsKey(tString)) return T.get(tString);
         Node model = new Node();
         model.setName(val);
         model.setType(type);
         model.setIid(iid);
+        T.put(tString, model);
+        G.put(model, new HashSet<Node>());
         return model;
-    }
-
-    public static Node getFNode(String val, long type, long iid)
-    {
-        Node v = createFNode(val, type, iid);
-        if (!G.containsKey(v))
-        {
-            G.put(v, new HashSet<Node>());
-            V.put(v, idd++);
-        }
-        return v;
     }
 
     public static void addNode(String name, long type, long iid)
