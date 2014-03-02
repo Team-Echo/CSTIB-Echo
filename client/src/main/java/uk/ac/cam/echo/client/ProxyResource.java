@@ -3,7 +3,6 @@ package uk.ac.cam.echo.client;
 import uk.ac.cam.echo.client.data.BaseData;
 import uk.ac.cam.echo.data.resources.RestResource;
 
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
@@ -55,6 +54,8 @@ public class ProxyResource<T, R extends RestResource<T>> {
     }
 
     public void setData(T data) {
+        if (data == null)
+            this.id = null;
         this.data = data;
     }
 }
