@@ -4,6 +4,7 @@ import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hibernate.annotations.*;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.Interest;
 import uk.ac.cam.echo.data.User;
@@ -11,6 +12,8 @@ import uk.ac.cam.echo.server.GravatarUtil;
 import uk.ac.cam.echo.server.HibernateUtil;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
@@ -71,6 +74,7 @@ public class UserModel extends BaseModel implements User {
     private String hashedPassword;
 
     @ManyToOne(targetEntity = ConversationModel.class)
+    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
     private Conversation currentConversation;
     private String firstName;
     private String lastName;

@@ -2,6 +2,7 @@ package uk.ac.cam.echo.server.models;
 
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import uk.ac.cam.echo.data.*;
@@ -48,6 +49,7 @@ public class ConversationModel extends BaseModel implements Conversation {
     private List<Message> messages;
 
     @OneToMany(targetEntity = UserModel.class, mappedBy = "currentConversation")
+    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
     private Set<User> users;
 
     public long getId() {
