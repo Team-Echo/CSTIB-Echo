@@ -24,6 +24,7 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -32,6 +33,8 @@ public class EchoService extends Service {
     // This is the object that receives interactions from clients.  See
     // RemoteService for a more complete example.
     private final IBinder binder = new LocalBinder();
+
+    private static Vibrator v;
 
 	private long conferenceId;
 	private long conversationId;
@@ -53,6 +56,7 @@ public class EchoService extends Service {
         super.onCreate();
         api = new ClientApi("http://echoconf.herokuapp.com/");
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        v = (Vibrator)getSystemService(VIBRATOR_SERVICE);
     }
 
     @Override
@@ -107,7 +111,7 @@ public class EchoService extends Service {
                      Log.d("Notif", context == null ? "context is null" : "context not null");
                      Log.d("Notif", conversation == null ? "conversation is null" : "conversation not null");
                      Log.d("Notif", user == null ? "user is null" : "user not null");
-
+                     long[] vibratePattern = {500,500,500};
 
                      Notification.Builder notifBuilder = new Notification.Builder(context)
                              .setContentTitle(conversation.getName())
@@ -117,6 +121,7 @@ public class EchoService extends Service {
                              //.addAction(R.drawable.admin, "See", pIntent)
                              .setAutoCancel(true)
                              .setContentText(user + ": " + msg.getContents())
+                             .setVibrate(vibratePattern)
                              .setTicker(user + ": " + msg.getContents());
 
                      return notifBuilder;
@@ -151,13 +156,14 @@ public class EchoService extends Service {
 
                 Bitmap avatar = BitmapUtil.getBitmapFromURL(msg.getSender().getAvatarLink()+"&s=200");
 
-
+                long[] vibratePattern = {250,500,250};
                 Notification.Builder notifBuilder = new Notification.Builder(context)
                         .setTicker("Overheard " + msg.getSender().getDisplayName() + " in " + msgConv.getName())
                         .setContentTitle("Overheard " + msgConv.getName())
                         .setContentIntent(pIntent)
                         .setSmallIcon(android.R.drawable.ic_dialog_info)
                         .setLargeIcon(avatar)
+                        .setVibrate(vibratePattern)
                         .setAutoCancel(true)
                         .setContentText(user + ": " + msg.getContents());
 
@@ -167,7 +173,9 @@ public class EchoService extends Service {
             @Override
             protected void onPostExecute(Notification.Builder nb) {
                 super.onPostExecute(nb);
-                notificationManager.notify(1, nb.build());
+                //v.vibrate(500);
+                Notification n = nb.build();
+                notificationManager.notify(1, n);
             }
         }.execute(message);
      }

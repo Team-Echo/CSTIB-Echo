@@ -101,6 +101,7 @@ public class ConversationDetailActivity extends Activity implements View.OnClick
     @Override
     public void onBackPressed() {
         Intent i = new Intent(this, ConversationListActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(i);
         super.onBackPressed();
     }
