@@ -128,7 +128,10 @@ public class UserModel extends BaseModel implements User {
     }
 
     public void setCurrentConversationId(Long id) {
-        setCurrentConversation((Conversation) HibernateUtil.getSession().load(ConversationModel.class, id));
+        if (id == null)
+            setCurrentConversation(null);
+        else
+            setCurrentConversation((Conversation) HibernateUtil.getSession().load(ConversationModel.class, id));
     }
 
     public String getFirstName() {
