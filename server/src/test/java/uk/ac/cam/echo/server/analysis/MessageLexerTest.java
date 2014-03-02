@@ -1,4 +1,4 @@
-package uk.ac.cam.echo.test.analysis;
+package uk.ac.cam.echo.server.analysis;
 
 import org.junit.After;
 import org.junit.Before;
