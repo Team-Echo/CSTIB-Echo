@@ -5,6 +5,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.Interest;
 import uk.ac.cam.echo.data.User;
@@ -74,7 +75,7 @@ public class UserModel extends BaseModel implements User {
     private String hashedPassword;
 
     @ManyToOne(targetEntity = ConversationModel.class)
-    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private Conversation currentConversation;
     private String firstName;
     private String lastName;

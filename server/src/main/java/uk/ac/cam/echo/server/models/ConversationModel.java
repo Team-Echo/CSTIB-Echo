@@ -49,7 +49,7 @@ public class ConversationModel extends BaseModel implements Conversation {
     private List<Message> messages;
 
     @OneToMany(targetEntity = UserModel.class, mappedBy = "currentConversation")
-    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private Set<User> users;
 
     public long getId() {
