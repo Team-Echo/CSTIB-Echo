@@ -1,0 +1,11 @@
+Risk Assessment 1
+
+Group Echo - Multi-touch Conference
+
+Risks:
+
+Browser extension not powerful enough, gesture recognition problems, extracting relevant keywords, database analysis.
+
+Potential solutions:
+
+Not use browser extension if granted client permission, use pre-made libraries for touch functionality, experiement with various algorithms for data analysis.
