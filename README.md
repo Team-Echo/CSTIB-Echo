@@ -1,8 +1,8 @@
 CSTIB-Echo
 ==========
 ![Team Echo Logo](https://dl.dropboxusercontent.com/u/94754009/ic_launcher.png)
-[![Build Status](https://travis-ci.org/PetarV-/CSTIB-Echo.png?branch=master)](https://travis-ci.org/PetarV-/CSTIB-Echo)
-[![Project Status](http://stillmaintained.com/PetarV-/CSTIB-Echo.png)](http://stillmaintained.com/PetarV-/CSTIB-Echo)
+[![Build Status](https://travis-ci.org/Team-Echo/CSTIB-Echo.png?branch=master)](https://travis-ci.org/Team-Echo/CSTIB-Echo)
+[![Project Status](http://stillmaintained.com/Team-Echo/CSTIB-Echo.png)](http://stillmaintained.com/Team-Echo/CSTIB-Echo)
 
 ![CC-BY-NC-ND Licence](http://i.creativecommons.org/l/by-nc-nd/3.0/88x31.png)
 
