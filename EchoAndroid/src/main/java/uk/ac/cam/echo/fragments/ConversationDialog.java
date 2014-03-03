@@ -69,6 +69,10 @@ public class ConversationDialog extends DialogFragment implements
         transaction.replace(R.id.previewFrame, cf);
         transaction.commit();
 
+        try {
+            getDialog().getWindow().setBackgroundDrawableResource(R.color.background);
+        } catch(NullPointerException) { Log.e("Dialog", "No associated window");
+
 		return view;
 	}
 

@@ -186,7 +186,7 @@ public class UserAdapter extends BaseExpandableListAdapter {
                     }
                     else {
                         colour = R.color.green;
-                        return calendar.get(Calendar.MINUTE)-1 + " mins";
+                        return calendar.get(Calendar.MINUTE) + " mins";
                     }
                 }
 
@@ -335,9 +335,12 @@ public class UserAdapter extends BaseExpandableListAdapter {
 
                     }
                 });
+            } else {
+                phoneButton.setVisibility(View.INVISIBLE);
             }
 
             if(emailText!=null && !emailText.equals("")){
+             emailButton.setVisibility(View.VISIBLE);
              emailButton.setOnClickListener(new View.OnClickListener() {
                  @Override
                  public void onClick(View view) {
@@ -351,8 +354,9 @@ public class UserAdapter extends BaseExpandableListAdapter {
                      activity.startActivity(Intent.createChooser(emailIntent, "Choose an email client: "));
                  }
              });
+            }else {
+                emailButton.setVisibility(View.INVISIBLE);
             }
-
             userMap.put(user.getId(), userMap.get(user.getId()).setAttributes(avatar, usernameText, jobAndCompanyText,
                     interestsText, phoneText, emailText));
 
