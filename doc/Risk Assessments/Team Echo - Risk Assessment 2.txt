@@ -1,0 +1,11 @@
+Risk Assessment 2
+
+Group Echo - Multi-touch Conference
+
+Risks:
+
+Request to not use browser extension denied, multi-touch handling complications, final UI not up to standard, software integration problems.
+
+Potential Solutions:
+
+Produce Gantt chart tracking goals and progress - complications in the project, especially occurring near deadline, explicitly allowed for.

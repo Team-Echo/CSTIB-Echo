@@ -387,7 +387,10 @@ public class ServerConnection implements Runnable{
             return new ConvStats(mAPI.conferenceResource.userCount(mConfrence.getId(), conversationID),
                     mAPI.conferenceResource.contributingUsers(mConfrence.getId(), conversationID, false),
                     mAPI.conferenceResource.messageCount(mConfrence.getId(), conversationID),
-                    mAPI.conferenceResource.maleToFemaleRatio(mConfrence.getId(),conversationID));
+                    //removed conversation ID as second arguemnt for now, 
+                    // compilation error states maleToFemaleRatio takes only one argument.
+                    mAPI.conferenceResource.maleToFemaleRatio(mConfrence.getId()));
+            
        } catch (Exception e){log(e);}
        return new ConvStats(0,0,0,0.5);
     }

@@ -1,0 +1,421 @@
+\documentclass[12p, a4paper, onecolumn]{report} 
+\usepackage[utf8x]{inputenc} 
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel} % replace with serbian later
+\usepackage[vmargin=20mm, hmargin=25mm]{geometry}
+\usepackage[ampersand]{easylist}
+\usepackage[PetersLenny]{fncychap} % Sonny, Lenny, Glenn, Conny, Rejne, Bjarne, PetersLenny, Bjornstrup
+\usepackage[colorlinks=true, linkcolor=black, citecolor=green, filecolor=magenta, urlcolor=cyan]{hyperref}
+
+\usepackage{algorithm}
+%\usepackage[lined,boxed,commentsnumbered]{algorithm2e}
+\usepackage{algpseudocode}
+\usepackage{amsbsy}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{appendix}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{color} 
+\usepackage{courier}
+\usepackage{empheq}
+\usepackage{etoolbox}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{latexsym}
+\usepackage{leftidx}
+\usepackage{lipsum}
+\usepackage{listings}
+\usepackage{lmodern}
+\usepackage{mathtools}
+\usepackage{multicol}
+\usepackage{newlfont}
+\usepackage{slantsc}
+\usepackage{tikz}
+\usepackage{titlesec}
+
+\usetikzlibrary{arrows,decorations.pathmorphing,backgrounds,positioning,fit,petri}
+\usetikzlibrary{shapes.geometric}
+
+\tikzset{
+    triangle/.style={
+        draw,
+        shape border rotate=0,
+        regular polygon,
+        regular polygon sides=3,
+        fill=white,
+        node distance=2cm,
+        minimum height=4em,
+        minimum size=4mm,
+        inner sep=0pt
+    }
+}
+
+%\renewcommand*{\algorithmcfname}{\cyb Algoritam}% Algorithm name
+
+%XKCD font
+\newcommand\customfont[1]{{\usefont{T1}{custom}{m}{n} #1 }}
+
+% C++ Code
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ %
+  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+  basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  deletekeywords={...},            % if you want to delete keywords from the given language
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  frame=false,                    % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+  language=Java,                 % the language of the code
+  morekeywords={*,...},            % if you want to add more keywords to the set
+  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{mymauve},     % string literal style
+  tabsize=2,                       % sets default tabsize to 2 spaces
+  title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+\lstset{basicstyle=\footnotesize\ttfamily,breaklines=true}
+
+% Cyrillic font
+
+% dj, zh, lj, nj, c1, ch, d2, sh
+% \/ (backslash-forwardslash) to split
+
+\font \cyrtitle=wncyr10 at 18pt
+\font \cyrsubtitle=wncyr10 at 12pt
+\font \cyrsection=wncyb10 at 13pt
+\font \cyr=wncyr10 at 11pt
+\font \cyi=wncyi10 at 11pt
+\font \cyb=wncyb10 at 11pt
+
+\captionsetup[algorithm]{name={\textbf{Algorithm}}}
+
+\newcolumntype{L}{>{\centering\arraybackslash}m{8.5cm}}
+\newcolumntype{F}{>{\centering\arraybackslash}m{6.5cm}}
+
+\makeatletter
+\titleformat{\chapter}[frame]
+  {\normalfont}{\filright\enspace \@chapapp~\thechapter\enspace}
+  {8pt}{\LARGE\bfseries\filcenter}
+\titlespacing*{\chapter}
+  {0pt}{0pt}{20pt}
+
+\makeatother
+
+\definecolor{gray75}{gray}{0.75}
+\newcommand{\hsp}{\hspace{20pt}}
+\titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
+
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\lhead{\textsl{\textsc{Group Project Team Echo}}}
+\rhead{\textsl{\textsc{Multi-touch Conference}}}
+
+\fancypagestyle{plain}{ % remove everything
+  \renewcommand{\headrulewidth}{0pt} % remove lines as well
+  \renewcommand{\footrulewidth}{0pt}}
+
+\begin{document}
+
+\begin{titlepage}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
+\clearpage
+\vspace*{\fill}
+\center % Center everything on the page
+ 
+%----------------------------------------------------------------------------------------
+%	HEADING SECTIONS
+%----------------------------------------------------------------------------------------
+
+\textsc{\LARGE University of Cambridge}\\[1.5cm] % Name of your university/college
+\textsc{\Large Computer Science Tripos, Part IB}\\[0.5cm] % Major heading such as course name
+\textsc{\large Group Project Team Echo}\\[0.5cm] % Minor heading such as course title
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\HRule \\[0.4cm]
+{ \huge \bfseries Multi-touch Conference}\\[0.4cm]
+{ \huge \bfseries Final group report}\\[0.1cm] % Title of your document
+\HRule \\[1.5cm]
+ 
+%----------------------------------------------------------------------------------------
+%	AUTHOR SECTION
+%----------------------------------------------------------------------------------------
+
+\begin{minipage}{0.4\textwidth}
+\begin{flushleft} \large
+\emph{Authors:}\\
+Mona Niknafs (\texttt{mn407})\\
+Yojan Patel (\texttt{yp242})\\
+Alexandru Tache (\texttt{at628})\\
+Philip Thomson (\texttt{prt28})\\
+Petar Veli\v{c}kovi\'{c} (\texttt{pv273})\\
+\end{flushleft}
+\end{minipage}
+~
+\begin{minipage}{0.4\textwidth}
+\begin{flushright} \large
+\emph{Client:} \\
+Catherine White, BT\\ 
+\hfill \\
+\hfill \\
+\hfill \\
+\hfill \\
+\end{flushright}
+\end{minipage}\\[4cm]
+
+%----------------------------------------------------------------------------------------
+%	DATE SECTION
+%----------------------------------------------------------------------------------------
+
+{\large 27 February 2014}\\[3cm] % Date, change the \today to a set date if you want to be precise
+
+%----------------------------------------------------------------------------------------
+%	LOGO SECTION
+%----------------------------------------------------------------------------------------
+
+\includegraphics{logo.png}\\[1cm] % Include a department/university logo - this will require the graphicx package
+ 
+%----------------------------------------------------------------------------------------
+
+\vfill % Fill the rest of the page with whitespace
+
+\end{titlepage}
+
+\setcounter{page}{1}
+\pagenumbering{roman}
+
+\tableofcontents
+
+\newpage
+
+\setcounter{page}{1}
+\pagenumbering{arabic}
+
+\chapter{Introduction}
+
+\section{Purpose}
+
+This main purpose of this document is to present the final version (release 1.0) of the Multi-touch Conference group project undertaken by Team Echo. This is accomplished by largely building upon the \emph{Progress report} document that was made on 12 January 2014. The document is structured as follows:
+\begin{itemize}
+	\item The \textbf{introduction} section consists of notes from the second client meeting on 13 January 2014, and a summary of the deliverables reached since then;
+	\item The \textbf{module integration and testing notes} section consists of descriptions of various new features that have been successfully implemented since the previous report;
+	\item The \textbf{undertaken work summary} section consists of brief summaries of each team member's contribution for completing the system (the contributions will be elaborated in more detail in each member's \emph{personal report});
+	\item The \textbf{further work} section consists of proposed further work that will be implemented, should this project remain maintained in the future.
+\end{itemize}
+The project's source code stored on GitHub is now public and may be accessed on \url{https://github.com/PetarV-/CSTIB-Echo}. The project has been attributed with a CC-BY-NC-ND 3.0 license (Creative Commons Attribution-NonCommercial-NoDerivs).
+
+\section{Second client meeting notes}
+
+The second client meeting was held on 13 February 2014, with client Catherine White from BT. The focus of the meeting was discussion on ways in which the system's functionalities can be extended. Each module of the system was discussed, with accompanying presentation of both the Android and Touch client applications. The discussions made on each of the components are summarised below in turn.
+
+\paragraph{$\sim$ Data Analysis}
+Regarding this subsystem, it was pointed out that the searching mechanism will not function as desired if different users use \emph{synonyms}; different words to mean the same term. The system could be extended to use an alternative mechanism for keyword searching -- \emph{Marvin Minsky} approach.
+
+\paragraph{$\sim$ Server}
+One possible extension to the system was identified, in particular to use a \emph{graph database} as storage instead of a conventional relational one. There exist both advantages and disadvantages with such an implementation; of course adding new classes will be easier upon extending the server under a graph database.
+
+\paragraph{$\sim$ Android}
+It was noted that \emph{bookmarks} would be useful for users to keep track of important conversations, especially when the number of conversations in a conference becomes very large.
+
+\paragraph{$\sim$ Android Client Viewing}
+\emph{Tag clouds} were mentioned as a more interesting feature for to highlight conversation keywords and their corresponding ‘weights’. The positioning of \emph{user avatars} was discussed, with regards to the chat window.
+
+\paragraph{$\sim$ Touchscreen}
+Some useful features of the current touchscreen were pointed out. Users with incompatible portable client systems can still be involved in a conference, via the main display; additionally, information relevant to a conference or conversation can be interactively shared on the display -- for example \emph{business cards}. This is similar the the \emph{MIT Glass Infrastructure} project, extended to an interactive display environment. Potential extensions of this subsystem included: \emph{clustering} related conversations on the screen, \emph{facial recognition} of which Android users are around, and assigning each Touch Client its own \emph{profile}.
+
+\paragraph{$\sim$ Touch Client Viewing}
+To further develop the user interface of the touch client, it was recommended to draw an \emph{animation sequence} of user interaction events with the screen. This would give a clearer picture of what to code towards. The QR code provided on the top right corner of the chat window became hard to scan when a chat window is \emph{rotated} by certain angles, a solution proposed was adding a function to \emph{increase} its size for a few seconds. The \emph{global statistics} to be provided on the touchscreen were discussed. A \emph{dynamic map} of active users could be used to display locations of active users in a conference. The number of \emph{users logged on} was recommended as another possible display attribute, along with number of \emph{active users} and \emph{posts per day}.
+
+\section{Deliverables reached}
+
+Prototypes $'\delta’$ and $'\lambda’$, as stated in the \emph{Progress report}, have already been achieved. \\ \\
+Our final desired prototype, $'\xi'$, has been achieved through the integration of all the system modules and the development of the touchscreen client, Android application, data analysis and client to give a useful and intuitive system for the targeted user group. \\ \\
+In reaching the final prototype, the acceptance criteria of the system as outlined in the \emph{Functional specification} document have been achieved and therefore the system is \textbf{completely ready} for the release. \\ \\
+To further extend the system, further application layer functions would be implemented, to make the best use of the features provided by the data analysis section. (tag clouds\dots)
+
+\chapter[Module integration and testing notes]{Module integration \\ and testing notes\footnote{\textbf{Note:} This section only focuses on newly developed system features and as such does not cover the material already described in the \emph{Progress report} document.}}
+
+\section{Server}
+
+\subsection{Core server API}
+
+\subsubsection{Integration notes}
+
+The additional work on the \textbf{server API} consisted of adding support for \textbf{avatars}, enhancing the \textbf{user model} in the database in order to store more information, and implementing \textbf{user authentication}.
+
+\paragraph{$\sim$ Avatars}
+
+For the avatars we have decided to use \emph{Gravatar}, a service that allows users to register, for free, an avatar using their email addresses. The avatars are not stored on our server; we only generate links to the appropriate avatars hosted on Gravatar by hashing the user's email address. \\ \\
+This approach has also allowed us to take advantage of  Gravatar’s \emph{“identicons”} (randomly generated avatars) for users without an email or a registered avatar.
+
+\paragraph{$\sim$ Additional user information}
+
+In order to store all the data needed by the analysis module we have added the following fields to the \texttt{User} model: first name, last name, display name, phone number, email, job title, company and gender. \\ \\
+We have also added a new model called \textbf{Interest} that is in a many to one relation with the user model. The new model is the equivalent of tags, but for the user, and its main purpose is to make personalised queries more relevant.
+
+\paragraph{$\sim$ Authentication}
+
+We added the ability for the users to authenticate using their username and password. In order to achieve this we have stored the \emph{SHA-512} hash of their password in the database. 
+
+\subsubsection{Testing notes}
+
+The testing methods are the same as the ones described in the \emph{Progress report}:
+\begin{enumerate} 
+	\item We organize and run our tests with JUnit, a general purpose Java testing framework. 
+	\item For each test we set up a in memory database populated with  predefined data, using Hibernate’s support for fixtures.
+	\item We use the Jersey testing framework that allows us to simulate http request to the server. 
+	\item We then inspect the output of the server and the consistency of the database after the requests.
+\end{enumerate}
+
+\subsubsection{Issues}
+
+Even though we have added authentication using hashed passwords stored in the database, we still have a security vulnerability that user should be aware of. Since our server hasn’t yet been configured to run on SSL, while authenticating or setting a password, the password is sent in plain text.
+
+\subsection{Data analyst}
+
+\subsubsection{Integration notes}
+
+The bulk of the additional work done on the \textbf{data analysis} module consisted of implementing additional analysis methods, most of which have become implementable only after the fully implemented \texttt{User} class had been made. The summary of the undertaken work is given in bullet point form:
+\begin{itemize}
+	\item \textbf{conversation searching} has been made completely \emph{granular}; clients are now able to choose which \texttt{Conversation} parameters (names, tags, keywords) they want to query over, depending on the type of results/efficiency desired;
+	\item \textbf{personalised queries} have been implemented; these methods represent one of the key selling points of the product, and involve recommending new conversations to a \texttt{User} upon leaving a conversation, as well as periodically notifying him/her of the interesting conversations occurring elsewhere, to emulate the concept of \emph{overhearing} which is common for physical conferences;
+	\item \textbf{additional methods} have been added by request of team members working on the other client implementations, and they are as follows:
+		\begin{itemize}
+			\item \textbf{activity} metric for a conference, representing a number closely related to the message throughput through the conference in a given interval;
+			\item \textbf{M:F ratio} of users in the conference;
+			\item \textbf{message count} within a single conversation and within the entire conference (mostly implemented to relieve the clients of performing this computation);
+			\item \textbf{user count} within a conversation and within the conference (similar as previous point);
+			\item \textbf{contributing user count} within a single conversation (can be restricted to only currently active users).
+		\end{itemize}
+\end{itemize}
+
+\subsubsection{Testing notes}
+
+The testing procedures for this module that have been outlined in the \emph{Progress report} document have remained in use throughout this project development phase as well; the methods were tested by a combination of HTTP requests and client communication to the server hosted on Heroku. In addition, the new personalised methods resulted in creating a new static class to deal with extracting keywords from a \texttt{User} object. This has been tested locally using JUnit on users with varying levels of personal detail before being deployed. The test results were excellent with respect to both efficiency and quality.
+
+\subsubsection{Issues}
+
+Nothing of significance to report in terms of encountered issues.
+
+\section{Client}
+
+\subsubsection{Integration notes}
+
+The additional work done on the \textbf{Client API} consisted of adding support for the new features that were added to the server: \textbf{additional fields} for the user model, user \textbf{interests}, user \textbf{authentication}, and new \textbf{statistics} from the data analysis module.
+
+\subsubsection{Testing notes} 
+
+Testing was done as described in the \emph{Progress report}.
+
+\subsubsection{Issues}
+
+We have encountered a multitude of issues while making the client library integrate fully with Android; unfortunately, our library depends on features of Java SE 6 that are only partially implemented by the Android development library. Hence, we had to include jars with the missing Java library classes in order for everything to work as intended. This successfully solved the problem, and the Android client now functions as any other client implementation.
+
+\subsection{Touchscreen client}
+
+\subsubsection{Integration notes}
+
+All of the concurrency issues mentioned in the \textit{Progress report} document have been resolved using \textbf{locks}, which have been made fine grained to improve the efficiency of the program. The \textbf{touchscreen client} has had the \textbf{global statistics panel} and the individual \textbf{conversation stats} added. These additions have brought lots of new difficulties to the server connection, residing with the need for the client to poll the server. Among other questions this brings up, is clearly: How often should the client poll the server for statistics? \\ \\
+The design of the global stats panel has also been updated and changed to display different \textbf{views}. This maximises the size of each of the statistics/charts. Also the panel has had the shape change from an ellipse to a \textbf{circle}; this change makes it easier for the global statistics panel to be viewed from all sides as rotation causes less disturbance to other panels.
+
+\subsection{Android client}
+
+\subsubsection{Integration notes}
+
+The additional work carried out on the \textbf{Android client} was a major refactoring of the original prototype. Initially, a new connection to the server was made on every request (every message send, receive, load view etc.) in order to get an idea of how the Android client will interact with the other components of the system. The refactoring carried out has been to use an \textbf{Android Service} that outlives the actual application with the single instance of the connection. This has sped up network calls greatly and the app runs more smoothly.  \\ \\
+\textbf{User authentication} has been implemented on the server allowing the dummy login screen to be replaced with the actual user authentication with personalised data along with \textbf{avatars} to be displayed alongside each conversation. An activity where the user can modify their \textbf{profile} (display name, email, phone number, interests etc.) has also been added. The addition of the Service has also enabled \textbf{system notifications} to notify the user of any activity when not in the application. The ability for the users to register interests and other information has also resulted in the system including an original feature called \emph{\textbf{“Overhearing”}} which periodically notifies the user of other conversations the user may want to join in the future to encourage the user to always participate in the conversation most relevant to their interests.  \\ \\
+Additionally, the conversations have an additional view where one can see all active users and view their profiles and \textbf{call} if the other user has entered a phone number.
+
+\subsubsection{Testing notes}
+
+The app was given to various people both of a technical background and without to offer feedback on the user interface, functionality and the system as a whole. The general opinions were very favourable and any subtle hints I felt were justified have been implemented.\\ \\
+Technical testing also took place in various forms by overloading the app with several dummy conversations (testing the list views), many messages at once (testing the notifications) and using the messaging system to communicate with other members of the group on a few occasions to discuss various topics.
+
+\subsubsection{Issues}
+
+The main issue has been the introduction of many useful features being introduced in a very recent Android API (nested fragments) which has constrained the compatible devices more than expected. However, given more time this can easily be rectified by using the Support Android library. Additionally, dedicated landscape layouts were not created as it essentially doubles the amount of development time which would have limited the the functionality given the timing constraints.
+
+\subsection{Computer client}
+
+Additional work on the text-based \textbf{computer client} revolved largely around implementing support for the newly-implemented \texttt{User} class (particularly handling secure authentication), so that this could then be easily replicated in the other client implementations. \\ \\
+It remained a command-line tool throughout this phase of the project, and it likely will maintain this form in possible future iterations.
+
+\chapter{Summary of undertaken work}
+
+\section{M. Niknafs (\texttt{mn407})}
+
+During the project I took on a more managerial role which involved some \textbf{administration} work, such as taking minutes at the regular project meetings and client meetings. I worked in the \textbf{design process} of the \textbf{touchscreen client} user interface through modelling animation sequences of user interaction and implementing this on the screen. I am currently working towards implementing \textbf{tag clouds} to be displayed in the local and global panels on the Touch client. I have learnt that \emph{constant group communication} is key to a successful project and system; thankfully, in our group this was present from the outset.
+
+\section{Y. Patel (\texttt{yp242})}
+
+In the system, my main role was to design and develop the \textbf{Android application} that acts as the main point of user interaction. As such, a lot of time was spent making the UI as intuitive as possible. To achieve this, I have created various Android \textbf{activities}, \textbf{fragments} and \textbf{services} to carry out the front-end handling of input as well as \textbf{adapters} and the use of the Client API to interact with the server. I also developed all the \textbf{layout} files (*.xml) as well as the non-standard \textbf{graphics} used in the app. The app also provides various external functionality such as QR code scanning to join a conversation as well as dialling a phone number. My contribution to the system as a whole was consistent input along with the rest of the team on the direction the product would take, functionality it should and should not support as well as various design ideas on the touchscreen client. I was also working closely with the API developers to ensure they understood the methods that had to be implemented for the Android app to work as intended.
+
+\section{A. Tache (\texttt{at628})}
+
+I have primarily been responsible for implementing the \textbf{server} (excluding the data analysis module) and the base \textbf{client} library that communicates with it. My main contributions to the project can be summarised as follows:
+\begin{itemize} 
+	\item Creating a REST based \textbf{HTTP Server} which provides data as JSON;
+	\item Storing and retrieving the data from an SQL \textbf{database};
+	\item Providing efficient message updates using \textbf{HTTP Streaming};
+	\item Creating a \textbf{client library} to communicate to the server that works both on a desktop computer and on the Android OS.
+\end{itemize}
+
+\section{P. R. Thomson (\texttt{prt28})}
+
+I have primarily been responsible for the implementation and testing of the \textbf{touchscreen client}, which has had many successes, mainly the fact that several components of the system are fully functional, including: 
+\begin{itemize}
+	\item touch movements;
+	\item touch gestures;
+	\item server connection;
+	\item message display;
+	\item statistics display. 
+\end{itemize}
+The touchscreen client has one primary failure in that you cannot dynamically add or remove conversation panes, which has taught me a lesson that the conversation panes should have been made as separate components, which would have allowed for greater flexibility in the design.
+
+\section{P. Veli\v{c}kovi\'{c} (\texttt{pv273})}
+
+At the start of the project I have decided to take up implementation and testing of the \textbf{data analysis} module of the server. My responsibility for this module remained until the end of the project, however my final contribution list spans a much wider range of areas. A summary of that list is given below:
+\begin{itemize}
+	\item several contributing \textbf{ideas} during meetings, out of which the most important one is the initial proposition for what ended up being the final \textbf{multi-touch screen user interface layout};
+	\item complete implementation and testing of the \textbf{data analysis} server module - this involved devising the \textbf{natural language processing algorithms} described in the \textit{Progress report} document;
+	\item several \textbf{bug fixes} as well as a few \textbf{additional classes} in the core server API;
+	\item \textbf{typesetting} all of the formal report documents and presentation slides in \LaTeX.
+\end{itemize}
+
+\chapter{Further work}
+
+Most of the further work that we propose for the project, should it continue to be maintained past the code deadline, revolve around what was already proposed in the functional specification document; several ideas given to us by the client have also made it on this list due to time constraints. A brief summary of them, for future reference, is as follows:
+\begin{itemize}
+	\item Further improving the \textbf{metrics} and \textbf{quality} of the data analysis module; this would require, among other things, implementing support for handling \textbf{synonyms} with respect to keyword extraction, considering the tradeoffs with using a \textbf{lemmatizer} instead of a stemmer to reduce a word to its base form (perhaps allowing the client to choose), etc.
+	\item Consider the different available \textbf{database models} for the server as an alternative to the relational model, and their relative merits.
+	\item Expand the \textbf{abilities} of the \textbf{multi-touch screen}, allowing users to be able to use one of them to integrate with a conference, in the absence of an Android application for input; with virtual/remote keyboards for instance. This would likely require a much larger screen.
+	\item As an addition to the previous point, users could be allowed to have a \textbf{personalised section} of the screen, which they can lock in their absence and use to access conversation/stats/files relevant to them. This concept was heavily proposed in the planning stage but ended up being discarded for a more global approach; however with a larger screen and less time constraints this would definitely be a useful extension.
+	\item Integrating \textbf{voice messaging} (resembling phone conversations) where each attendee would be wearing a headset associated to the conversation they are currently partaking in, and augmenting the data analysis module with sound processing. 
+	\begin{itemize}
+		\item We got a partial implementation of voice communication already by enabling users to call each other from the Android app (provided the callee has supplied his phone number), and further development would go along this direction of allowing "sound messages" to be broadcast within a conversation.
+	\end{itemize}
+	\item Integrating \textbf{remote sharing} and \textbf{annotation} of various files such as spreadsheets, PowerPoint presentations, source code, PDFs etc. is something that would be extremely valuable to have in an office conference environment, and as such is highly ranked on this list.
+	\item Expanding our platform base, in particular, by implementing an \textbf{iOS client application} similar to the Android one. This is something that should be left for a time when we're confident that we'd like to ship this product to a wider user base, as successfully developing for iOS and being able to publish to the iTunes Store requires an Apple Developer account, which is not free of charge.
+\end{itemize}
+\end{document}

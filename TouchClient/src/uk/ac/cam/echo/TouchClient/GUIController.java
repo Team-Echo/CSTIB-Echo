@@ -42,8 +42,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.RotateEvent;
 import javafx.scene.input.TouchEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
@@ -99,6 +100,27 @@ public class GUIController implements Initializable {
     private ImageView conversation5_QR;
     @FXML
     private ImageView conversation5_code_large;
+    
+    @FXML
+    private AnchorPane conversation_1_cloud;
+    @FXML
+    private StackPane conversation_1_cloud_stack;
+    @FXML
+    private AnchorPane conversation_2_cloud;
+    @FXML
+    private StackPane conversation_2_cloud_stack;
+    @FXML
+    private AnchorPane conversation_3_cloud;
+    @FXML
+    private StackPane conversation_3_cloud_stack;
+    @FXML
+    private AnchorPane conversation_4_cloud;
+    @FXML
+    private StackPane conversation_4_cloud_stack;
+    @FXML
+    private AnchorPane conversation_5_cloud;
+    @FXML
+    private StackPane conversation_5_cloud_stack;
     
     @FXML
     private Label conversation1_name;
@@ -373,7 +395,7 @@ public class GUIController implements Initializable {
     }
     
     /**
-     * a function to setup all the event handlers for coversation1
+     * a function to setup all the event handlers for conversation1
      */
     private void setupConversationPane1(){
         conversation1_name.setWrapText(true);
@@ -449,7 +471,7 @@ public class GUIController implements Initializable {
     }
     
     /**
-     * a function to setup all the event handlers for coversation2
+     * a function to setup all the event handlers for conversation2
      */
     private void setupConversationPane2(){
         conversation2_name.setWrapText(true);
@@ -525,7 +547,7 @@ public class GUIController implements Initializable {
     }
     
     /**
-     * a function to setup all the event handlers for coversation3
+     * a function to setup all the event handlers for conversation3
      */
     private void setupConversationPane3(){
         conversation3_name.setWrapText(true);
@@ -601,7 +623,7 @@ public class GUIController implements Initializable {
     }
     
     /**
-     * a function to setup all the event handlers for coversation4
+     * a function to setup all the event handlers for conversation4
      */
     private void setupConversationPane4(){
         conversation4_name.setWrapText(true);
@@ -677,7 +699,7 @@ public class GUIController implements Initializable {
     }
     
     /**
-     * a function to setup all the event handlers for coversation5
+     * a function to setup all the event handlers for conversation5
      */
     private void setupConversationPane5(){
         conversation5_name.setWrapText(true);
@@ -827,7 +849,7 @@ public class GUIController implements Initializable {
     }
     
     /**
-     * a function to initialize the controller and all the event handlers ect...
+     * a function to initialize the controller and all the event handlers etc...
      */
     private void init(){
        messages1 = new MessageDisplayList();
@@ -1032,7 +1054,7 @@ public class GUIController implements Initializable {
     }    
     
     /**
-    *@param s String to display in final formated form 
+    * @param s String to display in final formated form 
     * @param ConversationID the id of the conversation the message is from
     * @exception NoMessageListException happens if pane is not a number between 1 and 5
     */
