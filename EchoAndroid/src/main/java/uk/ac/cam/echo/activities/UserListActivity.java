@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -70,6 +71,22 @@ public class UserListActivity extends Activity {
         new GetUsers().execute();
     }
 
+    public void phoneUser(String phoneNumber) {
+        String uri = "tel:" + phoneNumber.trim();
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse(uri));
+        startActivity(intent);
+    }
+
+    public void emailUser(String emailAddress, String conversationName, String loggedInUserName, String userDisplay) {
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        emailIntent.setType("message/rfc822");
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{emailAddress});
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, conversationName + " - a personal message from " + loggedInUserName);
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "Dear " + userDisplay + ",\n\n\n" + loggedInUserName);
+        startActivity(Intent.createChooser(emailIntent, "Choose an email client: "));
+    }
+
     public EchoService getService() { return echoService; }
 
     private class GetUsers extends AsyncTask<String, Void, List<User>> {
@@ -97,9 +114,7 @@ public class UserListActivity extends Activity {
                 getActionBar().setSubtitle("Active users ");
                 adapter = UserAdapter.newInstance(UserListActivity.this, R.layout.user_group_item, result, api);
                 listView.setAdapter(adapter);
-                //listView.setOnItemClickListener(ConversationListFragment.this);
                 listView.setVisibility(View.VISIBLE);
-                //listProgress.setVisibility(View.GONE);
                 Log.d("USERADAPTER", "createdListView PerformSearch");
             } else {
                 Log.d("USERADAPTER", "updatedListView PerformSearch");

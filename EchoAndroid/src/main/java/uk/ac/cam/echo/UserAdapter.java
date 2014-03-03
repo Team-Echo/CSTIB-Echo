@@ -327,12 +327,7 @@ public class UserAdapter extends BaseExpandableListAdapter {
                 phoneButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String uri = "tel:" + phoneText.trim();
-                        Intent intent = new Intent(Intent.ACTION_DIAL);
-                        intent.setData(Uri.parse(uri));
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        activity.startActivity(intent);
-
+                        ((UserListActivity)activity).phoneUser(phoneText);
                     }
                 });
             } else {
@@ -344,14 +339,7 @@ public class UserAdapter extends BaseExpandableListAdapter {
              emailButton.setOnClickListener(new View.OnClickListener() {
                  @Override
                  public void onClick(View view) {
-                     Intent emailIntent = new Intent(Intent.ACTION_SEND);
-                     emailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                     emailIntent.setType("message/rfc822");
-                     emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{emailText});
-
-                     emailIntent.putExtra(Intent.EXTRA_SUBJECT, conversationName + " - a personal message from " + loggedInUserName);
-                     emailIntent.putExtra(Intent.EXTRA_TEXT, "Dear " + userDisplay + ",\n\n\n" + loggedInUserName);
-                     activity.startActivity(Intent.createChooser(emailIntent, "Choose an email client: "));
+                     ((UserListActivity)activity).emailUser(emailText, conversationName, loggedInUserName, userDisplay);
                  }
              });
             }else {

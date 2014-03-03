@@ -54,7 +54,6 @@ public class ConversationFragment extends Fragment {
 		context = getActivity();
 		View view = inflater.inflate(R.layout.message_listview_layout, container, false);
 		id = getArguments().getLong(ID);
-        timer = new Timer();
 		return view;
 	}
 	
@@ -73,6 +72,7 @@ public class ConversationFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        timer = new Timer();
         if(api!=null) callAsynchronousTask(timer);
     }
 

@@ -43,11 +43,15 @@ public class AddConversationDialog extends DialogFragment implements
         add.setOnClickListener(this);
         tags.setOnEditorActionListener(this);
 
-        // show soft-keyboard when dialog visible
-        getDialog().getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        try {
+            Window window = getDialog().getWindow();
+            window.setBackgroundDrawableResource(R.color.background);
+            // show soft-keyboard when dialog visible
+            window.setSoftInputMode(
+                    WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        } catch(NullPointerException e) { Log.e("Dialog", "No associated window"); }
 
-        return view;
+            return view;
     }
 
 

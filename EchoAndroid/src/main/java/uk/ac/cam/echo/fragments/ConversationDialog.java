@@ -71,7 +71,7 @@ public class ConversationDialog extends DialogFragment implements
 
         try {
             getDialog().getWindow().setBackgroundDrawableResource(R.color.background);
-        } catch(NullPointerException) { Log.e("Dialog", "No associated window");
+        } catch(NullPointerException e) { Log.e("Dialog", "No associated window"); }
 
 		return view;
 	}
