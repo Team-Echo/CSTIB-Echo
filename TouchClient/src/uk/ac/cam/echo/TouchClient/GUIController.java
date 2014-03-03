@@ -14,7 +14,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.logging.Level;
@@ -25,8 +27,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
 import javafx.geometry.Side;
 import javafx.scene.Cursor;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
@@ -45,6 +49,9 @@ import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
@@ -52,6 +59,7 @@ import uk.ac.cam.echo.TouchClient.ConfrenceStats.Tuple;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.Message;
 import uk.ac.cam.echo.data.User;
+import uk.ac.cam.echo.client.ClientApi;
 
 /**
  * FXML Controller class
@@ -154,6 +162,7 @@ public class GUIController implements Initializable {
     private ObservableList<Conversation> conversationList;
     
     private TouchClient mTC;
+    private static ClientApi api = new ClientApi("http://echoconf.herokuapp.com");
     
     //a hash map from the conversation id to the pane that it is displaed in
     private HashMap<Long,Integer> idtopane = new HashMap();
@@ -865,11 +874,12 @@ public class GUIController implements Initializable {
        setupConversationPane5();
        setupStatsPane();
        setupGlobalStats();
-
     }
     
+    //TODO: in these methods make them work with timestamps for the keyword finding.
     private void addConversation1(final String name,final long conversationID){
         setStatsConv1(mTC.getServerConnection().getStats(conversationID));
+        setTagCloudConv1(findId(1),0L);
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
@@ -886,6 +896,7 @@ public class GUIController implements Initializable {
     }
     private void addConversation2(final String name,final long conversationID){
         setStatsConv2(mTC.getServerConnection().getStats(conversationID));
+        setTagCloudConv2(findId(2),0L);
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
@@ -901,6 +912,7 @@ public class GUIController implements Initializable {
     }
     private void addConversation3(final String name,final long conversationID){
         setStatsConv3(mTC.getServerConnection().getStats(conversationID));
+        setTagCloudConv3(findId(3),0L);
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
@@ -916,6 +928,7 @@ public class GUIController implements Initializable {
     }
     private void addConversation4(final String name,final long conversationID){
         setStatsConv4(mTC.getServerConnection().getStats(conversationID));
+        setTagCloudConv4(findId(4),0L);
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
@@ -931,6 +944,7 @@ public class GUIController implements Initializable {
     }
     private void addConversation5(final String name,final long conversationID){
         setStatsConv5(mTC.getServerConnection().getStats(conversationID));
+        setTagCloudConv5(findId(5),0L);
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
@@ -971,6 +985,13 @@ public class GUIController implements Initializable {
         }
         pollStats();
         pollConvStats();
+        conversation_1_cloud.setVisible(true);
+        System.out.println(conversation_1_cloud.visibleProperty().get());
+        conversation_2_cloud.setVisible(true);
+        conversation_3_cloud.setVisible(true);
+        conversation_4_cloud.setVisible(true);
+        conversation_5_cloud.setVisible(true);
+        pollTagCloudStats();
         setupUserLists();
         return true;
     }
@@ -1201,6 +1222,86 @@ public class GUIController implements Initializable {
         });
     }
     
+    /**
+     * Set Tag Cloud methods
+     */
+    
+    private void setTagCloudConv1(final long conferenceID, final long timeStamp)
+    {
+        Platform.runLater(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                //TODO: work with the timestamping
+                conversation_1_cloud_stack.getChildren().add(getTagGroup(
+                        api.conferenceResource.getKeywords(conferenceID, findId(1), timeStamp), 
+                        conversation_1_cloud_stack.getPrefWidth(), 
+                        conversation_1_cloud_stack.getPrefHeight()));
+            }
+        });
+    }
+    
+    private void setTagCloudConv2(final long conferenceID, final long timeStamp)
+    {
+        Platform.runLater(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                conversation_2_cloud_stack.getChildren().add(getTagGroup(
+                        api.conferenceResource.getKeywords(conferenceID, findId(2), timeStamp), 
+                        conversation_2_cloud_stack.getPrefWidth(), 
+                        conversation_2_cloud_stack.getPrefHeight()));
+            }
+        });
+    }
+    
+    private void setTagCloudConv3(final long conferenceID, final long timeStamp)
+    {
+        Platform.runLater(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                conversation_3_cloud_stack.getChildren().add(getTagGroup(
+                        api.conferenceResource.getKeywords(conferenceID, findId(3), timeStamp), 
+                        conversation_3_cloud_stack.getPrefWidth(), 
+                        conversation_3_cloud_stack.getPrefHeight()));
+            }
+        });
+    }
+    
+    private void setTagCloudConv4(final long conferenceID, final long timeStamp)
+    {
+        Platform.runLater(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                conversation_4_cloud_stack.getChildren().add(getTagGroup(
+                        api.conferenceResource.getKeywords(conferenceID, findId(4), timeStamp), 
+                        conversation_4_cloud_stack.getPrefWidth(), 
+                        conversation_4_cloud_stack.getPrefHeight()));
+            }
+        });
+    }
+    
+    private void setTagCloudConv5(final long conferenceID, final long timeStamp)
+    {
+        Platform.runLater(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                conversation_5_cloud_stack.getChildren().add(getTagGroup(
+                        api.conferenceResource.getKeywords(conferenceID, findId(5), timeStamp), 
+                        conversation_5_cloud_stack.getPrefWidth(), 
+                        conversation_5_cloud_stack.getPrefHeight()));
+            }
+        });
+    }
+    
     @FXML Label mCaption;
     
     private void setStatsGlobal(final ConfrenceStats s, final long val){
@@ -1261,7 +1362,6 @@ public class GUIController implements Initializable {
             }
         })).start();
     }
-
     
     @FXML private ListView conversation1_avitars;
     private ObservableList<User> avitars1;
@@ -1327,7 +1427,28 @@ public class GUIController implements Initializable {
             }
         })).start();
     }
-    
+
+    private void pollTagCloudStats(){
+    (new Thread(new Runnable(){
+        @Override
+        public void run() {
+            while (true){
+                try {
+                    Thread.sleep(POLLDELAY);
+                } catch (InterruptedException ex) {
+                    Logger.getGlobal().log(Level.SEVERE, null, ex);
+                }
+                setTagCloudConv1(findId(1),0L);
+                System.out.println(conversation_1_cloud.visibleProperty().get());
+                setTagCloudConv2(findId(2),0L);
+                setTagCloudConv3(findId(3),0L);
+                setTagCloudConv4(findId(4),0L);
+                setTagCloudConv5(findId(5),0L);
+            }
+        }
+    })).start();
+}
+
     private long findId(int pane){
         Set<Long> ids = idtopane.keySet();
         for(Long l: ids){
@@ -1411,4 +1532,138 @@ public class GUIController implements Initializable {
         return (HashMap<Long,Integer>)idtopane.clone();
     }
     
+    /**
+     * Methods for Tag Cloud generation
+     */
+    
+    private Group getTagGroup(Map map, double height, double width)
+    {
+        System.out.println("TagCloud Method Called");
+        System.out.println("Size of map: "+map.size());
+        System.out.println("Stackpane dimensions: width = "+width+", height = "+height);
+        Group g = new Group();
+
+        if (map.entrySet().isEmpty()) 
+        {
+            // behaviour for empty tag map, display blank screen
+            return g;
+        } else
+        {
+            double minweight = Double.POSITIVE_INFINITY;
+            double maxweight = 0;
+            Iterator it1 = map.entrySet().iterator();
+            while( it1.hasNext() )
+            {
+                Map.Entry pair = (Map.Entry)it1.next();
+                long weight = (Long)pair.getValue();
+                String word = (String)pair.getKey();
+                if (word.equals("TS")) { map.remove("TS"); }
+                double w = (double)weight;
+                if ( w > maxweight)
+                {
+                    maxweight = w;
+                }
+                if ( w < minweight)
+                {
+                    minweight = w;
+                }
+            }
+
+            System.out.println("checkpoint3");
+            Iterator it2 = map.entrySet().iterator();
+            double x_coord = 0;
+            double y_coord = 0;
+            // max_height defines max height of any font on a line, 
+            // used to leave an appropriate distance between lines.
+            double max_height = 0;
+
+            long min_value = Integer.MAX_VALUE;
+
+            Text text;
+            String word;
+            
+            while(y_coord < height)
+            {
+                System.out.println("checkpoint");
+                while(x_coord < width && it2.hasNext())
+                {
+                    Map.Entry pair = (Map.Entry)it2.next();
+                    long value = (Long)pair.getValue();
+                    if (value < min_value) { min_value = value; }
+                    double weight = (double)value;
+                    word = (String)pair.getKey();
+                    System.out.println("New word: "+word);
+                    text = new Text(x_coord,y_coord,word);
+
+                    double min_size = 8;
+                    double max_size = 48;
+                    double size =  (max_size - min_size)*(weight - minweight)/(maxweight - minweight) + min_size;
+                    Font font = new Font(size);
+                    text.setFont(font);
+
+                     /**
+                     * Text colour calculation.
+                     * calculated by first transforming elements in
+                     * the range [minweight,maxweight] to elements in the range
+                     * [0,9], then each this range is split into sub-bands which each 
+                     * represent an different colour.
+                     */
+                    double colour_double =  (9)*(weight - minweight)/(maxweight - minweight);
+                    int colour_index = (new Double(colour_double)).intValue();
+                    String c = "#2CB1E1"; // default tag colour is echo blue
+                    switch (colour_index) 
+                    {
+                        case 9: 
+                            c = "#1A6A87";
+                            break;
+                        case 8: 
+                            c = "#1F7C9E";
+                            break;
+                        case 7: 
+                            c = "#238EB4";
+                            break;
+                        case 6: 
+                            c = "#289FCA";
+                            break;
+                        case 5: 
+                            c = "#2CB1E1"; // echo blue
+                            break;
+                        case 4: 
+                            c = "#41B9E4";
+                            break;
+                        case 3: 
+                            c = "#56C1E7";
+                            break;
+                        case 2: 
+                            c = "#6BC8EA";
+                            break;
+                        case 1: 
+                            c = "#80D0ED";
+                            break;
+                        case 0: 
+                            c = "#96D8F0";
+                            break;
+                    }
+                    Paint p = Color.web(c);
+                    text.setFill(p);
+
+                    g.getChildren().add(text);
+
+                    // subject to change
+                    Bounds bounds = text.getLayoutBounds();
+                    System.out.println("x coord: "+bounds.getWidth()+", "+"y coord: "+bounds.getHeight());
+                    x_coord += bounds.getWidth() + 10;
+                    double h = bounds.getHeight() / 2; // maybe divide this by two
+                    if ( h > max_height ) { max_height = h; }
+                }
+                // re-zero x_coord,for the beginning of a new line
+                x_coord = 0;
+                //set to 50 pixels between lines for now, subject to change
+                y_coord += (max_height + 10);
+                // re-zero max_height,for the beginning of a new line
+                max_height = 0;
+            }
+           return g;
+        }
+    }
 }
