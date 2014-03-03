@@ -44,7 +44,7 @@
                         <ListView fx:id="conversation1_messages" cache="true" cacheHint="ROTATE" prefHeight="317.0" prefWidth="258.0" styleClass="messageListClass" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
                         <Label fx:id="conversation1_name" cache="true" cacheHint="ROTATE" layoutX="6.0" layoutY="6.0" maxWidth="200.0" prefWidth="200.0" styleClass="nameLabelClass" text="conversation name">
                           <font>
-                            <Font name="Calibri" size="14.0" fx:id="x1" />
+                            <Font size="14.0" fx:id="x1" />
                           </font>
                         </Label>
                         <ImageView fx:id="conversation1_QR" cache="true" cacheHint="ROTATE" fitHeight="50.0" fitWidth="50.0" layoutY="0.0" opacity="0.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="206.0" AnchorPane.rightAnchor="0.0" />
@@ -67,6 +67,15 @@
                 <Label fx:id="conversation1_stat_1" layoutX="250.0" layoutY="11.0" text="Label" />
                 <Label fx:id="conversation1_stat_2" layoutX="250.0" layoutY="39.0" text="Label" />
                 <Label fx:id="conversation1_stat_3" layoutX="250.0" layoutY="63.0" text="Label" />
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+        <Tab text="Tag Cloud">
+          <content>
+            <AnchorPane id="Content" fx:id="conversation_1_cloud" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <StackPane id="conversation_1_cloud_stack" fx:id="conversation_2_cloud_stack" prefHeight="364.0" prefWidth="350.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
               </children>
             </AnchorPane>
           </content>
@@ -137,6 +146,15 @@
             </AnchorPane>
           </content>
         </Tab>
+        <Tab text="Tag Cloud">
+          <content>
+            <AnchorPane id="Content" fx:id="conversation_2_cloud" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <StackPane fx:id="conversation_1_cloud_stack" prefHeight="364.0" prefWidth="350.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
         <Tab text="QR Code">
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -199,6 +217,15 @@
                     <Label fx:id="conversation3_stat_3" layoutX="250.0" layoutY="63.0" text="Label" />
                   </children>
                 </AnchorPane>
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+        <Tab text="Tag Cloud">
+          <content>
+            <AnchorPane id="Content" fx:id="conversation_3_cloud" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <StackPane fx:id="conversation_3_cloud_stack" prefHeight="364.0" prefWidth="350.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
               </children>
             </AnchorPane>
           </content>
@@ -269,6 +296,15 @@
             </AnchorPane>
           </content>
         </Tab>
+        <Tab text="Tag Cloud">
+          <content>
+            <AnchorPane id="Content" fx:id="conversation_4_cloud" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <StackPane fx:id="conversation_4_cloud_stack" prefHeight="364.0" prefWidth="350.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
         <Tab text="QR Code">
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -335,6 +371,15 @@
             </AnchorPane>
           </content>
         </Tab>
+        <Tab text="Tag Cloud">
+          <content>
+            <AnchorPane id="Content" fx:id="conversation_5_cloud" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <StackPane fx:id="conversation_5_cloud_stack" prefHeight="364.0" prefWidth="350.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
         <Tab text="QR Code">
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -375,12 +420,19 @@
         <Button fx:id="ConversationList_button" layoutX="303.0" layoutY="263.0" mnemonicParsing="false" styleClass="statbuttonClass" text="tag view" />
         <Button fx:id="messageBreakdown_button" layoutX="303.0" layoutY="386.0" mnemonicParsing="false" styleClass="statbuttonClass" text="Message Breakdown" />
         <Button fx:id="webview_button" layoutX="167.0" layoutY="263.0" mnemonicParsing="false" styleClass="statbuttonClass" text="confrence view" />
-        <Text fx:id="ECHO" font="$x2" layoutX="290.0" layoutY="150.0" scaleX="12.106549705821257" scaleY="10.223579190357567" strokeType="OUTSIDE" strokeWidth="0.0" text="echo">
+        <Text fx:id="ECHO" layoutX="290.0" layoutY="150.0" scaleX="12.106549705821257" scaleY="10.223579190357567" strokeType="OUTSIDE" strokeWidth="0.0" text="echo">
           <fill>
             <Color blue="0.882" green="0.694" red="0.173" fx:id="x3" />
           </fill>
+          <font>
+            <Font name="Roboto Thin Italic" size="13.0" />
+          </font>
         </Text>
-        <Text fx:id="Confrence_Name" disable="false" fill="#2cb1e1" font="$x2" layoutX="230.0" layoutY="220.0" scaleX="1.5" scaleY="1.5" stroke="BLACK" strokeMiterLimit="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="confrencenameClass" text="Confrence name" textAlignment="CENTER" wrappingWidth="150.0" />
+        <Text fx:id="Confrence_Name" disable="false" fill="#2cb1e1" layoutX="230.0" layoutY="220.0" scaleX="1.5" scaleY="1.5" stroke="BLACK" strokeMiterLimit="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="confrencenameClass" text="Confrence name" textAlignment="CENTER" wrappingWidth="150.0">
+          <font>
+            <Font name="Roboto Light" size="13.0" />
+          </font>
+        </Text>
       </children>
     </Pane>
   </children>
