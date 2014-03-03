@@ -1,5 +1,6 @@
 CSTIB-Echo
 ==========
+![Team Echo Logo](https://dl.dropboxusercontent.com/u/94754009/ic_launcher.png)
 [![Build Status](https://travis-ci.org/PetarV-/CSTIB-Echo.png?branch=master)](https://travis-ci.org/PetarV-/CSTIB-Echo)
 [![Project Status](http://stillmaintained.com/PetarV-/CSTIB-Echo.png)](http://stillmaintained.com/PetarV-/CSTIB-Echo)
 
