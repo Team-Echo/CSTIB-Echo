@@ -11,9 +11,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.scene.Node;
 import uk.ac.cam.echo.client.ClientApi;
 import uk.ac.cam.echo.data.Conference;
 import uk.ac.cam.echo.data.Conversation;
@@ -387,9 +389,7 @@ public class ServerConnection implements Runnable{
             return new ConvStats(mAPI.conferenceResource.userCount(mConfrence.getId(), conversationID),
                     mAPI.conferenceResource.contributingUsers(mConfrence.getId(), conversationID, false),
                     mAPI.conferenceResource.messageCount(mConfrence.getId(), conversationID),
-                    //removed conversation ID as second arguemnt for now, 
-                    // compilation error states maleToFemaleRatio takes only one argument.
-                    mAPI.conferenceResource.maleToFemaleRatio(mConfrence.getId()));
+                    mAPI.conferenceResource.maleToFemaleRatio(mConfrence.getId(),conversationID));
             
        } catch (Exception e){log(e);}
        return new ConvStats(0,0,0,0.5);
@@ -436,6 +436,30 @@ public class ServerConnection implements Runnable{
 
     public String getConfrenceName() {
         return mConfrence.getName();
+    }
+
+    
+    /**
+     * 
+     * @param conversationID the id of the conversation
+     * @param timeStamp the last timestamp to check from
+     * @return a List of the tags
+     */
+    public Map<String,Long> getTags(long conversationID, long timeStamp) {
+        while (mAPI==null){}
+        System.err.println("here 1");
+        if (conversationID < 0){
+            System.err.println(conversationID);
+            return null;
+        }
+        System.err.println("here 2");
+        try{
+            System.err.println(mAPI.conferenceResource.getKeywords(mConfrence.getId(), conversationID, timeStamp)==null ? "is null":"not null");
+            return mAPI.conferenceResource.getKeywords(mConfrence.getId(), conversationID, timeStamp);
+        } catch (Exception e){
+            Logger.getGlobal().log(Level.SEVERE, "faild to get the tags for the conversation tag clouds", e);
+        }
+        return null;
     }
     
 }

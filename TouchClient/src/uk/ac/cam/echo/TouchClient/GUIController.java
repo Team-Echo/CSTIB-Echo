@@ -162,7 +162,6 @@ public class GUIController implements Initializable {
     private ObservableList<Conversation> conversationList;
     
     private TouchClient mTC;
-    private static ClientApi api = new ClientApi("http://echoconf.herokuapp.com");
     
     //a hash map from the conversation id to the pane that it is displaed in
     private HashMap<Long,Integer> idtopane = new HashMap();
@@ -879,7 +878,7 @@ public class GUIController implements Initializable {
     //TODO: in these methods make them work with timestamps for the keyword finding.
     private void addConversation1(final String name,final long conversationID){
         setStatsConv1(mTC.getServerConnection().getStats(conversationID));
-        setTagCloudConv1(findId(1),0L);
+        setTagCloudConv1(0L);
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
@@ -896,7 +895,7 @@ public class GUIController implements Initializable {
     }
     private void addConversation2(final String name,final long conversationID){
         setStatsConv2(mTC.getServerConnection().getStats(conversationID));
-        setTagCloudConv2(findId(2),0L);
+        setTagCloudConv2(0L);
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
@@ -912,7 +911,7 @@ public class GUIController implements Initializable {
     }
     private void addConversation3(final String name,final long conversationID){
         setStatsConv3(mTC.getServerConnection().getStats(conversationID));
-        setTagCloudConv3(findId(3),0L);
+        setTagCloudConv3(0L);
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
@@ -928,7 +927,7 @@ public class GUIController implements Initializable {
     }
     private void addConversation4(final String name,final long conversationID){
         setStatsConv4(mTC.getServerConnection().getStats(conversationID));
-        setTagCloudConv4(findId(4),0L);
+        setTagCloudConv4(0L);
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
@@ -944,7 +943,7 @@ public class GUIController implements Initializable {
     }
     private void addConversation5(final String name,final long conversationID){
         setStatsConv5(mTC.getServerConnection().getStats(conversationID));
-        setTagCloudConv5(findId(5),0L);
+        setTagCloudConv5(0L);
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
@@ -1226,78 +1225,88 @@ public class GUIController implements Initializable {
      * Set Tag Cloud methods
      */
     
-    private void setTagCloudConv1(final long conferenceID, final long timeStamp)
+    private void setTagCloudConv1(final long timeStamp)
     {
+        final Map<String,Long> toadd;
+        synchronized (idtopane){   
+            toadd = mTC.getServerConnection().getTags(findId(1),timeStamp);
+        }
+        if (toadd==null){return;}
         Platform.runLater(new Runnable()
         {
             @Override
             public void run()
             {
                 //TODO: work with the timestamping
-                conversation_1_cloud_stack.getChildren().add(getTagGroup(
-                        api.conferenceResource.getKeywords(conferenceID, findId(1), timeStamp), 
-                        conversation_1_cloud_stack.getPrefWidth(), 
-                        conversation_1_cloud_stack.getPrefHeight()));
+                conversation_1_cloud_stack.getChildren().add(getTagGroup(toadd,conversation_1_cloud_stack.getPrefWidth(),conversation_1_cloud_stack.getPrefHeight()));
             }
         });
     }
     
-    private void setTagCloudConv2(final long conferenceID, final long timeStamp)
+    private void setTagCloudConv2(final long timeStamp)
     {
+        final Map<String,Long> toadd;
+        synchronized (idtopane){   
+            toadd = mTC.getServerConnection().getTags(findId(2),timeStamp);
+        }
+        if (toadd==null){return;}
         Platform.runLater(new Runnable()
         {
             @Override
             public void run()
             {
-                conversation_2_cloud_stack.getChildren().add(getTagGroup(
-                        api.conferenceResource.getKeywords(conferenceID, findId(2), timeStamp), 
-                        conversation_2_cloud_stack.getPrefWidth(), 
-                        conversation_2_cloud_stack.getPrefHeight()));
+                conversation_2_cloud_stack.getChildren().add(getTagGroup(toadd,conversation_2_cloud_stack.getPrefWidth(),conversation_2_cloud_stack.getPrefHeight()));
             }
         });
     }
     
-    private void setTagCloudConv3(final long conferenceID, final long timeStamp)
+    private void setTagCloudConv3(final long timeStamp)
     {
+        final Map<String,Long> toadd;
+        synchronized (idtopane){   
+            toadd = mTC.getServerConnection().getTags(findId(3),timeStamp);
+        }
+        if (toadd==null){return;}
         Platform.runLater(new Runnable()
         {
             @Override
             public void run()
             {
-                conversation_3_cloud_stack.getChildren().add(getTagGroup(
-                        api.conferenceResource.getKeywords(conferenceID, findId(3), timeStamp), 
-                        conversation_3_cloud_stack.getPrefWidth(), 
-                        conversation_3_cloud_stack.getPrefHeight()));
+                conversation_3_cloud_stack.getChildren().add(getTagGroup(toadd,conversation_3_cloud_stack.getPrefWidth(),conversation_3_cloud_stack.getPrefHeight()));
             }
         });
     }
     
-    private void setTagCloudConv4(final long conferenceID, final long timeStamp)
+    private void setTagCloudConv4(final long timeStamp)
     {
+        final Map<String,Long> toadd;
+        synchronized (idtopane){   
+            toadd = mTC.getServerConnection().getTags(findId(4),timeStamp);
+        }
+        if (toadd==null){return;}
         Platform.runLater(new Runnable()
         {
             @Override
             public void run()
             {
-                conversation_4_cloud_stack.getChildren().add(getTagGroup(
-                        api.conferenceResource.getKeywords(conferenceID, findId(4), timeStamp), 
-                        conversation_4_cloud_stack.getPrefWidth(), 
-                        conversation_4_cloud_stack.getPrefHeight()));
+                conversation_4_cloud_stack.getChildren().add(getTagGroup(toadd,conversation_4_cloud_stack.getPrefWidth(),conversation_4_cloud_stack.getPrefHeight()));
             }
         });
     }
     
-    private void setTagCloudConv5(final long conferenceID, final long timeStamp)
+    private void setTagCloudConv5(final long timeStamp)
     {
+        final Map<String,Long> toadd;
+        synchronized (idtopane){   
+            toadd = mTC.getServerConnection().getTags(findId(5),timeStamp);
+        }
+        if (toadd==null){return;}
         Platform.runLater(new Runnable()
         {
             @Override
             public void run()
             {
-                conversation_5_cloud_stack.getChildren().add(getTagGroup(
-                        api.conferenceResource.getKeywords(conferenceID, findId(5), timeStamp), 
-                        conversation_5_cloud_stack.getPrefWidth(), 
-                        conversation_5_cloud_stack.getPrefHeight()));
+                conversation_5_cloud_stack.getChildren().add(getTagGroup(toadd,conversation_5_cloud_stack.getPrefWidth(),conversation_5_cloud_stack.getPrefHeight()));
             }
         });
     }
@@ -1438,12 +1447,12 @@ public class GUIController implements Initializable {
                 } catch (InterruptedException ex) {
                     Logger.getGlobal().log(Level.SEVERE, null, ex);
                 }
-                setTagCloudConv1(findId(1),0L);
+                setTagCloudConv1(0L);
                 System.out.println(conversation_1_cloud.visibleProperty().get());
-                setTagCloudConv2(findId(2),0L);
-                setTagCloudConv3(findId(3),0L);
-                setTagCloudConv4(findId(4),0L);
-                setTagCloudConv5(findId(5),0L);
+                setTagCloudConv2(0L);
+                setTagCloudConv3(0L);
+                setTagCloudConv4(0L);
+                setTagCloudConv5(0L);
             }
         }
     })).start();
@@ -1538,6 +1547,7 @@ public class GUIController implements Initializable {
     
     private Group getTagGroup(Map map, double height, double width)
     {
+        synchronized (map){
         System.out.println("TagCloud Method Called");
         System.out.println("Size of map: "+map.size());
         System.out.println("Stackpane dimensions: width = "+width+", height = "+height);
@@ -1665,5 +1675,6 @@ public class GUIController implements Initializable {
             }
            return g;
         }
+    }
     }
 }
