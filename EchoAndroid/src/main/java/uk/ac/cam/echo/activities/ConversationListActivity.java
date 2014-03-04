@@ -40,7 +40,7 @@ public class ConversationListActivity extends Activity
             echoService = ((EchoService.LocalBinder)service).getService();
             api = echoService.getApi();
             clf.setApi(api);
-            if(!isSearch) clf.getAllConversations();
+            clf.getAllConversations();
             openDialog();
         }
 
@@ -55,8 +55,6 @@ public class ConversationListActivity extends Activity
 	private boolean dualPane; //to manage orientations/different screensizes
 
     private ConversationListFragment clf;
-
-    private boolean isSearch;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,18 +69,17 @@ public class ConversationListActivity extends Activity
 
         clf.setCommunicator(this);
 
-        Log.d("SEARCH", "onCreate");
-        isSearch = false;
+
+
         handleIntent(getIntent());
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("SEARCH", "binding again");
         Intent service = new Intent(this, EchoService.class);
+        Log.d("ConversationListActivity", "onResume - binding EchoService");
         bindService(service, connection, Context.BIND_AUTO_CREATE);
-
     }
 
     private void openDialog() {
@@ -106,27 +103,35 @@ public class ConversationListActivity extends Activity
 	public void respond(long id) {
 		
 		if(dualPane) {
-			Log.d("RESPOND", "respond called " + id);
+			
 			ConversationDialog convFrag =
 					(ConversationDialog)manager.findFragmentById(R.id.convFrame);
 			if(convFrag == null || convFrag.getShownIndex() != id) {
 				convFrag = ConversationDialog.newInstance(id, getService());
                 convFrag.setApi(getService().getApi());
-                Log.d("RESPOND", "new instance created");
 				FragmentTransaction ft = manager.beginTransaction();
 				ft.replace(R.id.convFrame, convFrag);
 				ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 				ft.commit();
 			}
 		} else {
-            if(id != getService().getConversationId()) {
-                getService().listenToConversation(id);
-            }
-            Intent intent = new Intent(this, ConversationDetailActivity.class);
-            intent.putExtra("_id", id);
-            startActivity(intent);
-        }
+	        if(Build.VERSION.SDK_INT >= 17) {
+                ConversationDialog cd = ConversationDialog.newInstance(id, getService());
+                cd.setApi(getService().getApi());
+                cd.show(manager, "conversation_info");
+            } else {
+                    if(id != getService().getConversationId()) {
+                        getService().listenToConversation(id);
+                    }
 
+                    Intent intent = new Intent(this, ConversationDetailActivity.class);
+                    intent.putExtra("_id", id);
+                    startActivity(intent);
+
+
+            }
+			
+		}
 	}
 
     // Set up action-bar and Search functionality
@@ -176,7 +181,6 @@ public class ConversationListActivity extends Activity
     private void handleIntent(Intent intent) {
         if(Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            isSearch = true;
             clf.performSearch(query);
             Log.d("SEARCH", "handleIntent");
         }
@@ -227,6 +231,6 @@ public class ConversationListActivity extends Activity
     // Callback method when ListView has fully rendered
     @Override
     public void onRendered() {
-        if(dualPane) respond(clf.getAdapter().getItem(0).getId());
+
     }
 }

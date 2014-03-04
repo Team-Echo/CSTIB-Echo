@@ -63,7 +63,7 @@ public class ConversationFragment extends Fragment {
 		listView = (ListView)view.findViewById(R.id.messageListView);
         Log.d("LISTEN",(api==null) ? "api is null" : "Not null");
         if(api != null){
-           // getAndListen();
+            getAndListen();
 
         }
 
@@ -86,10 +86,6 @@ public class ConversationFragment extends Fragment {
         Log.d("LISTEN", "getAndListen");
         new GetMessage().execute(id);
         new Listen().execute(id);
-    }
-
-    public void onServiceReady() {
-        getAndListen();
     }
 	
 	// Factory method to create a fragment based on the conversationID
@@ -193,7 +189,7 @@ public class ConversationFragment extends Fragment {
             } else {
                 msgList = (List)conversation.getMessages();
             }
-            Log.d("MESSAGES", "loaded all the messages");
+
 
             return msgList;
         }

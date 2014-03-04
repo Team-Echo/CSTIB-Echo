@@ -120,18 +120,10 @@ public class UserSettingsActivity extends Activity implements View.OnClickListen
             @Override
             protected Bitmap doInBackground(Void... voids) {
                 displayText = user.getDisplayName();
-
                 emailText = user.getEmail();
-                emailText = emailText == null ? "" : emailText;
-
                 phoneText = user.getPhoneNumber();
-                phoneText = phoneText == null ? "" : phoneText;
-
                 jobText = user.getJobTitle();
-                jobText = jobText == null ? "" : jobText;
-
                 companyText = user.getCompany();
-                companyText = companyText==null ? "" : companyText;
 
                 StringBuilder interestBuilder = new StringBuilder();
                 List<Interest> interests = (List<Interest>) user.getInterests();

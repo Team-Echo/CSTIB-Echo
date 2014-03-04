@@ -121,7 +121,7 @@ public class EchoService extends Service {
                  @Override
                  protected void onPostExecute(Notification.Builder nb) {
                      super.onPostExecute(nb);
-                     notificationManager.notify(0, nb.getNotification());
+                     notificationManager.notify(0, nb.build());
                  }
              }.execute(message);
          }
@@ -164,7 +164,7 @@ public class EchoService extends Service {
             @Override
             protected void onPostExecute(Notification.Builder nb) {
                 super.onPostExecute(nb);
-                Notification n = nb.getNotification();
+                Notification n = nb.build();
                 notificationManager.notify(1, n);
             }
         }.execute(message);
