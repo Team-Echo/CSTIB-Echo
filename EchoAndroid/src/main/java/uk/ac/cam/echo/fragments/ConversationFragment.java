@@ -87,6 +87,10 @@ public class ConversationFragment extends Fragment {
         new GetMessage().execute(id);
         new Listen().execute(id);
     }
+
+    public void onServiceReady() {
+        getAndListen();
+    }
 	
 	// Factory method to create a fragment based on the conversationID
     public static ConversationFragment newInstance(long id, boolean preview, EchoService service) {
@@ -189,7 +193,7 @@ public class ConversationFragment extends Fragment {
             } else {
                 msgList = (List)conversation.getMessages();
             }
-
+            Log.d("MESSAGES", "loaded all the messages");
 
             return msgList;
         }

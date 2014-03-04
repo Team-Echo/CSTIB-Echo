@@ -11,6 +11,13 @@
         android:layout_height="match_parent"
         android:layout_weight="2" />
 
+    <View
+        android:layout_width="1dp"
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/lightBlue"/>
+
     <FrameLayout
         android:id="@+id/convFrame"
         android:layout_width="0px"
