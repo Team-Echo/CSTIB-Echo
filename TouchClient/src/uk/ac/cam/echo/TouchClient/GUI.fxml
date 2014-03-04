@@ -75,7 +75,7 @@
           <content>
             <AnchorPane id="Content" fx:id="conversation_1_cloud" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
-                <StackPane id="conversation_1_cloud_stack" fx:id="conversation_2_cloud_stack" prefHeight="364.0" prefWidth="350.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                <StackPane id="conversation_1_cloud_stack" fx:id="conversation_2_cloud_stack" prefHeight="364.0" prefWidth="350.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" styleClass="tagcloudclass" />
               </children>
             </AnchorPane>
           </content>
@@ -150,7 +150,7 @@
           <content>
             <AnchorPane id="Content" fx:id="conversation_2_cloud" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
-                <StackPane fx:id="conversation_1_cloud_stack" prefHeight="364.0" prefWidth="350.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                <StackPane styleClass="tagcloudclass" fx:id="conversation_1_cloud_stack" prefHeight="364.0" prefWidth="350.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
               </children>
             </AnchorPane>
           </content>
@@ -225,7 +225,7 @@
           <content>
             <AnchorPane id="Content" fx:id="conversation_3_cloud" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
-                <StackPane fx:id="conversation_3_cloud_stack" prefHeight="364.0" prefWidth="350.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                <StackPane styleClass="tagcloudclass" fx:id="conversation_3_cloud_stack" prefHeight="364.0" prefWidth="350.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
               </children>
             </AnchorPane>
           </content>
@@ -300,7 +300,7 @@
           <content>
             <AnchorPane id="Content" fx:id="conversation_4_cloud" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
-                <StackPane fx:id="conversation_4_cloud_stack" prefHeight="364.0" prefWidth="350.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                <StackPane styleClass="tagcloudclass" fx:id="conversation_4_cloud_stack" prefHeight="364.0" prefWidth="350.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
               </children>
             </AnchorPane>
           </content>
@@ -375,7 +375,7 @@
           <content>
             <AnchorPane id="Content" fx:id="conversation_5_cloud" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
-                <StackPane fx:id="conversation_5_cloud_stack" prefHeight="364.0" prefWidth="350.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                <StackPane styleClass="tagcloudclass" fx:id="conversation_5_cloud_stack" prefHeight="364.0" prefWidth="350.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
               </children>
             </AnchorPane>
           </content>
@@ -415,7 +415,7 @@
         </Text>
         <WebView fx:id="webviewtwo" layoutX="95.0" layoutY="107.0" prefHeight="410.0" prefWidth="410.0" styleClass="null" />
         <WebView fx:id="htmlviewer" layoutX="95.0" layoutY="107.0" prefHeight="410.0" prefWidth="410.0" styleClass="null" />
-        <Button fx:id="return_button" layoutX="260.0" layoutY="537.0" mnemonicParsing="false" styleClass="statbuttonClass" text="return" />
+        <Button fx:id="return_button" layoutX="241.0" layoutY="488.0" mnemonicParsing="false" styleClass="statbuttonClass" text="return" />
         <Button fx:id="Activity_button" layoutX="167.0" layoutY="386.0" mnemonicParsing="false" styleClass="statbuttonClass" text="Activity" />
         <Button fx:id="ConversationList_button" layoutX="303.0" layoutY="263.0" mnemonicParsing="false" styleClass="statbuttonClass" text="tag view" />
         <Button fx:id="messageBreakdown_button" layoutX="303.0" layoutY="386.0" mnemonicParsing="false" styleClass="statbuttonClass" text="Message Breakdown" />

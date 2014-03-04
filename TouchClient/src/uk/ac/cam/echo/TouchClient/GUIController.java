@@ -59,12 +59,11 @@ import uk.ac.cam.echo.TouchClient.ConfrenceStats.Tuple;
 import uk.ac.cam.echo.data.Conversation;
 import uk.ac.cam.echo.data.Message;
 import uk.ac.cam.echo.data.User;
-import uk.ac.cam.echo.client.ClientApi;
 
 /**
  * FXML Controller class
  *
- * @author Philip
+ * @author Philip & Mona
  */
 public class GUIController implements Initializable {
     
@@ -230,7 +229,7 @@ public class GUIController implements Initializable {
         
         try {
             ImageView rbi = (new ImageView());
-            rbi.setImage(new Image(new FileInputStream(new File("./res/drawable/menusmall.png"))));
+            rbi.setImage(new Image(new FileInputStream(new File("./res/drawable/EchoButton.png"))));
             return_button.setGraphic(rbi);
             return_button.setText("");
         } catch (FileNotFoundException ex) {
@@ -239,7 +238,7 @@ public class GUIController implements Initializable {
         
         try {
             ImageView abi = (new ImageView());
-            abi.setImage(new Image(new FileInputStream(new File("./res/drawable/linegraphsmall.png"))));
+            abi.setImage(new Image(new FileInputStream(new File("./res/drawable/activity_button.png"))));
             Activity_button.setGraphic(abi);
             Activity_button.setText("");
         } catch (FileNotFoundException ex) {
@@ -248,7 +247,7 @@ public class GUIController implements Initializable {
         
         try {
             ImageView mlbi = (new ImageView());
-            mlbi.setImage(new Image(new FileInputStream(new File("./res/drawable/edgebundlesmall.png"))));
+            mlbi.setImage(new Image(new FileInputStream(new File("./res/drawable/tag_relations_button.png"))));
             ConversationList_button.setGraphic(mlbi);
             ConversationList_button.setText("");
         } catch (FileNotFoundException ex) {
@@ -257,7 +256,7 @@ public class GUIController implements Initializable {
         
         try {
             ImageView mbbi = (new ImageView());
-            mbbi.setImage(new Image(new FileInputStream(new File("./res/drawable/piechartsmall.png"))));
+            mbbi.setImage(new Image(new FileInputStream(new File("./res/drawable/stats_button.png"))));
             messageBreakdown_button.setGraphic(mbbi);
             messageBreakdown_button.setText("");
         } catch (FileNotFoundException ex) {
@@ -266,7 +265,7 @@ public class GUIController implements Initializable {
         
         try {
             ImageView mbbi = (new ImageView());
-            mbbi.setImage(new Image(new FileInputStream(new File("./res/drawable/connectionssmall.png"))));
+            mbbi.setImage(new Image(new FileInputStream(new File("./res/drawable/overview_button.png"))));
             webview_button.setGraphic(mbbi);
             webview_button.setText("");
         } catch (FileNotFoundException ex) {
@@ -1547,7 +1546,6 @@ public class GUIController implements Initializable {
     
     private Group getTagGroup(Map map, double height, double width)
     {
-        synchronized (map){
         System.out.println("TagCloud Method Called");
         System.out.println("Size of map: "+map.size());
         System.out.println("Stackpane dimensions: width = "+width+", height = "+height);
@@ -1561,13 +1559,13 @@ public class GUIController implements Initializable {
         {
             double minweight = Double.POSITIVE_INFINITY;
             double maxweight = 0;
+            map.remove("TS");
             Iterator it1 = map.entrySet().iterator();
             while( it1.hasNext() )
             {
                 Map.Entry pair = (Map.Entry)it1.next();
                 long weight = (Long)pair.getValue();
                 String word = (String)pair.getKey();
-                if (word.equals("TS")) { map.remove("TS"); }
                 double w = (double)weight;
                 if ( w > maxweight)
                 {
@@ -1603,7 +1601,7 @@ public class GUIController implements Initializable {
                     double weight = (double)value;
                     word = (String)pair.getKey();
                     System.out.println("New word: "+word);
-                    text = new Text(x_coord,y_coord,word);
+                    text = new Text(y_coord,x_coord,word);
 
                     double min_size = 8;
                     double max_size = 48;
@@ -1675,6 +1673,5 @@ public class GUIController implements Initializable {
             }
            return g;
         }
-    }
     }
 }
