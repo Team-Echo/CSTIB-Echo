@@ -40,6 +40,7 @@ public class ConversationDetailActivity extends Activity implements View.OnClick
             cf.setApi(api);
             cf.setService(echoService);
             cf.setUser(echoService.getUser());
+            cf.onServiceReady();
             new UpdateActionBar().execute(id);
         }
         public void onServiceDisconnected(ComponentName className) {
