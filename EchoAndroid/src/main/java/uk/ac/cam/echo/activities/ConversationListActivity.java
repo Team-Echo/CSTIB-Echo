@@ -124,7 +124,6 @@ public class ConversationListActivity extends Activity
             }
             Intent intent = new Intent(this, ConversationDetailActivity.class);
             intent.putExtra("_id", id);
-            finish();
             startActivity(intent);
         }
 

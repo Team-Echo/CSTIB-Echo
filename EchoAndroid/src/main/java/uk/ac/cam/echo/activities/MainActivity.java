@@ -151,7 +151,8 @@ public class MainActivity extends Activity
                         editor.putBoolean(LOGGED_IN, true);
                         editor.commit();
                         Intent i = new Intent(MainActivity.this, ConversationListActivity.class);
-                        i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                        //i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                        finish();
                         startActivity(i);
                     }
                 }
