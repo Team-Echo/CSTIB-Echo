@@ -12,10 +12,11 @@ import java.io.IOException;
 import java.util.List;
 
 public class Main {
-    private static ClientApi api = new ClientApi("http://localhost:8080");
+    private static ClientApi api = new ClientApi("http://echoconf.herokuapp.com");
 
     public static void main(String[] args) {
         Conference conference = configureConference();
+        conference.save();
         User user = configureUser();
         Conversation conversation = configureConversation(conference);
 
@@ -157,8 +158,12 @@ public class Main {
             ret = api.newUser();
             ret.setUsername(username);
             ret.setPassword(pass);
-            ret.setFirstName("Petar");
-            ret.setLastName("Velickovic");
+            ret.setFirstName("Branka");
+            ret.setLastName("Dobrkovic");
+            ret.setJobTitle("Biologist");
+            ret.setCompany("Echo");
+            ret.setGender("F");
+            ret.setEmail("branka.dobrkovic@gmail.com");
             ret.save();
         }
 
