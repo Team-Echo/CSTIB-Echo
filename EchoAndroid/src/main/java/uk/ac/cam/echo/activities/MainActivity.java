@@ -1,5 +1,6 @@
 package uk.ac.cam.echo.activities;
 
+import uk.ac.cam.echo.ConnectionDetector;
 import uk.ac.cam.echo.R;
 import uk.ac.cam.echo.Toaster;
 import uk.ac.cam.echo.client.ClientApi;
@@ -7,8 +8,10 @@ import uk.ac.cam.echo.data.User;
 import uk.ac.cam.echo.services.EchoService;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
@@ -45,6 +48,8 @@ public class MainActivity extends Activity
     };
 
     public static final String LOGGED_IN = "uk.ac.cam.echo.loggedIn";
+    boolean isConnected;
+    ConnectionDetector detector;
 
     ClientApi api;
 
@@ -60,6 +65,10 @@ public class MainActivity extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        detector = new ConnectionDetector(getApplicationContext());
+        isConnected = detector.isConnectingToInternet();
+
         startService(new Intent(this, EchoService.class));
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -76,7 +85,10 @@ public class MainActivity extends Activity
         Typeface flex = Typeface.createFromAsset(getAssets(), "fonts/roboto_light_italic.ttf");
         title.setTypeface(flex);
 
-
+        if(!isConnected) {
+            showAlertDialog();
+            finish();
+        }
     }
 
     @Override
@@ -110,6 +122,7 @@ public class MainActivity extends Activity
     }
 
     public void loginUser(View v) {
+
     	String user = username.getText().toString();
     	String pass = password.getText().toString();
     	
@@ -173,5 +186,23 @@ public class MainActivity extends Activity
             registerScreen.setVisibility(View.GONE);
 		}
 	}
+
+    private void showAlertDialog() {
+        Context context = getApplicationContext();
+
+        AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+        alertDialog.setTitle("No Internet Connection");
+        alertDialog.setMessage("Please connect to the internet");
+        alertDialog.setIcon(android.R.drawable.stat_sys_warning);
+
+        // Setting OK Button
+        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
     
 }

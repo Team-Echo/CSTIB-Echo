@@ -1,7 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:background="@color/background">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Conversation Title"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:textColor="@color/buttonBackground"
+        android:typeface="sans"
+        android:textAllCaps="true"
+        android:id="@+id/textView0"
+        android:layout_alignParentLeft="true"/>
+    <View
+        android:id="@+id/line1"
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        android:background="@color/midBlue"
+        android:layout_below="@+id/textView0"/>
 
     <EditText
         android:id="@+id/convTitle"
@@ -10,8 +35,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
         android:ems="10"
+        android:layout_below="@id/line1"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginBottom="5dp"
@@ -22,13 +47,35 @@
         <requestFocus />
     </EditText>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Conversation Tags"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:textColor="@color/buttonBackground"
+        android:typeface="sans"
+        android:layout_below="@id/convTitle"
+        android:textAllCaps="true"
+        android:id="@+id/textView1"
+        android:layout_alignParentLeft="true"/>
+    <View
+        android:id="@+id/line2"
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        android:background="@color/midBlue"
+        android:layout_below="@+id/textView1"/>
+
 	<EditText
 	    android:id="@+id/convTags"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_alignParentLeft="true"
 	    android:layout_alignParentRight="true"
-	    android:layout_below="@+id/convTitle"
+	    android:layout_below="@+id/line2"
 	    android:ems="10"
 	    android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"

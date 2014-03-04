@@ -54,7 +54,6 @@ public class ConversationFragment extends Fragment {
 		context = getActivity();
 		View view = inflater.inflate(R.layout.message_listview_layout, container, false);
 		id = getArguments().getLong(ID);
-        timer = new Timer();
 		return view;
 	}
 	
@@ -65,10 +64,17 @@ public class ConversationFragment extends Fragment {
         Log.d("LISTEN",(api==null) ? "api is null" : "Not null");
         if(api != null){
             getAndListen();
-            callAsynchronousTask(timer);
+
         }
 
 	}
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        timer = new Timer();
+        if(api!=null) callAsynchronousTask(timer);
+    }
 
     @Override
     public void onPause() {
@@ -128,7 +134,7 @@ public class ConversationFragment extends Fragment {
                 echoService.notifyUpdate(update);
             }
         };
-        timer.schedule(doAsynchronousTask, 0, 30000); //execute in every 50000 ms
+        timer.schedule(doAsynchronousTask, 30000, 150000); //execute in every 50000 ms
     }
 
     // ASYNCHRONOUS TASKS

@@ -79,11 +79,7 @@ public class EchoService extends Service {
             getUser().setCurrentConversation(null);
             getUser().save();
         }
-
-
-
         super.onDestroy();
-
     }
 
     public ClientApi getApi() {return api; }
@@ -107,18 +103,13 @@ public class EchoService extends Service {
 
                      Bitmap avatar = BitmapUtil.getBitmapFromURL(msg.getSender().getAvatarLink()+"&s=200");
 
-
-                     Log.d("Notif", context == null ? "context is null" : "context not null");
-                     Log.d("Notif", conversation == null ? "conversation is null" : "conversation not null");
-                     Log.d("Notif", user == null ? "user is null" : "user not null");
-                     long[] vibratePattern = {500,500,500};
+                     long[] vibratePattern = {500,0,0,500};
 
                      Notification.Builder notifBuilder = new Notification.Builder(context)
                              .setContentTitle(conversation.getName())
                              .setContentIntent(pIntent)
                              .setSmallIcon(android.R.drawable.ic_dialog_email)
                              .setLargeIcon(avatar)
-                             //.addAction(R.drawable.admin, "See", pIntent)
                              .setAutoCancel(true)
                              .setContentText(user + ": " + msg.getContents())
                              .setVibrate(vibratePattern)
@@ -156,7 +147,7 @@ public class EchoService extends Service {
 
                 Bitmap avatar = BitmapUtil.getBitmapFromURL(msg.getSender().getAvatarLink()+"&s=200");
 
-                long[] vibratePattern = {250,500,250};
+                long[] vibratePattern = {250,0,250};
                 Notification.Builder notifBuilder = new Notification.Builder(context)
                         .setTicker("Overheard " + msg.getSender().getDisplayName() + " in " + msgConv.getName())
                         .setContentTitle("Overheard " + msgConv.getName())
@@ -173,7 +164,6 @@ public class EchoService extends Service {
             @Override
             protected void onPostExecute(Notification.Builder nb) {
                 super.onPostExecute(nb);
-                //v.vibrate(500);
                 Notification n = nb.build();
                 notificationManager.notify(1, n);
             }

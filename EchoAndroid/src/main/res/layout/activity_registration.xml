@@ -22,9 +22,11 @@
             android:typeface="sans"
             android:textAllCaps="true"
             android:id="@+id/textView0"
+            android:layout_marginLeft="5dp"
             android:layout_alignParentLeft="true"/>
         <View
             android:id="@+id/line1"
+            android:layout_marginLeft="5dp"
             android:layout_width="fill_parent"
             android:layout_height="1dip"
             android:background="@color/midBlue"
@@ -57,6 +59,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/buttonBackground"
             android:text="Username"
+            android:layout_marginLeft="5dp"
             android:textAllCaps="true"
             android:layout_marginTop="15dp"
             android:typeface="sans"
@@ -67,6 +70,7 @@
             android:id="@+id/line2"
             android:layout_width="fill_parent"
             android:layout_height="1dip"
+            android:layout_marginLeft="5dp"
             android:background="@color/midBlue"
             android:layout_below="@+id/textView"/>
 
@@ -88,6 +92,7 @@
             android:text="Password"
             android:textColor="@color/buttonBackground"
             android:textAllCaps="true"
+            android:layout_marginLeft="5dp"
             android:typeface="sans"
             android:id="@+id/textView1"
             android:layout_marginTop="15dp"
@@ -98,6 +103,7 @@
             android:layout_width="fill_parent"
             android:layout_height="1dip"
             android:background="@color/midBlue"
+            android:layout_marginLeft="5dp"
             android:layout_below="@+id/textView1"/>
 
         <EditText

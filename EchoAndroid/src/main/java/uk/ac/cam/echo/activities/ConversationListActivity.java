@@ -8,6 +8,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -84,10 +85,7 @@ public class ConversationListActivity extends Activity
     private void openDialog() {
         long id = getIntent().getLongExtra("_id", -1L);
         if(id != -1){
-            Log.d("RESPOND", "responding to " +id);
-            ConversationDialog cd = ConversationDialog.newInstance(id, getService());
-            cd.setApi(getService().getApi());
-            cd.show(manager, "conversation_info");
+            respond(id);
         }
     }
 
@@ -117,10 +115,21 @@ public class ConversationListActivity extends Activity
 				ft.commit();
 			}
 		} else {
-	
-			ConversationDialog cd = ConversationDialog.newInstance(id, getService());
-            cd.setApi(getService().getApi());
-			cd.show(manager, "conversation_info");
+	        if(Build.VERSION.SDK_INT >= 17) {
+                ConversationDialog cd = ConversationDialog.newInstance(id, getService());
+                cd.setApi(getService().getApi());
+                cd.show(manager, "conversation_info");
+            } else {
+                    if(id != getService().getConversationId()) {
+                        getService().listenToConversation(id);
+                    }
+
+                    Intent intent = new Intent(this, ConversationDetailActivity.class);
+                    intent.putExtra("_id", id);
+                    startActivity(intent);
+
+
+            }
 			
 		}
 	}

@@ -186,7 +186,7 @@ public class UserAdapter extends BaseExpandableListAdapter {
                     }
                     else {
                         colour = R.color.green;
-                        return calendar.get(Calendar.MINUTE)-1 + " mins";
+                        return calendar.get(Calendar.MINUTE) + " mins";
                     }
                 }
 
@@ -327,32 +327,24 @@ public class UserAdapter extends BaseExpandableListAdapter {
                 phoneButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String uri = "tel:" + phoneText.trim();
-                        Intent intent = new Intent(Intent.ACTION_DIAL);
-                        intent.setData(Uri.parse(uri));
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        activity.startActivity(intent);
-
+                        ((UserListActivity)activity).phoneUser(phoneText);
                     }
                 });
+            } else {
+                phoneButton.setVisibility(View.INVISIBLE);
             }
 
             if(emailText!=null && !emailText.equals("")){
+             emailButton.setVisibility(View.VISIBLE);
              emailButton.setOnClickListener(new View.OnClickListener() {
                  @Override
                  public void onClick(View view) {
-                     Intent emailIntent = new Intent(Intent.ACTION_SEND);
-                     emailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                     emailIntent.setType("message/rfc822");
-                     emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{emailText});
-
-                     emailIntent.putExtra(Intent.EXTRA_SUBJECT, conversationName + " - a personal message from " + loggedInUserName);
-                     emailIntent.putExtra(Intent.EXTRA_TEXT, "Dear " + userDisplay + ",\n\n\n" + loggedInUserName);
-                     activity.startActivity(Intent.createChooser(emailIntent, "Choose an email client: "));
+                     ((UserListActivity)activity).emailUser(emailText, conversationName, loggedInUserName, userDisplay);
                  }
              });
+            }else {
+                emailButton.setVisibility(View.INVISIBLE);
             }
-
             userMap.put(user.getId(), userMap.get(user.getId()).setAttributes(avatar, usernameText, jobAndCompanyText,
                     interestsText, phoneText, emailText));
 
