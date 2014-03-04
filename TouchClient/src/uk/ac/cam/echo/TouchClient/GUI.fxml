@@ -428,7 +428,7 @@
             <Font name="Roboto Thin Italic" size="13.0" />
           </font>
         </Text>
-        <Text fx:id="Confrence_Name" disable="false" fill="#2cb1e1" layoutX="230.0" layoutY="220.0" scaleX="1.5" scaleY="1.5" stroke="BLACK" strokeMiterLimit="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="confrencenameClass" text="Confrence name" textAlignment="CENTER" wrappingWidth="150.0">
+        <Text fx:id="Confrence_Name" disable="false" fill="#2cb1e1" layoutX="230.0" layoutY="220.0" scaleX="1.5" scaleY="1.5" stroke="BLACK" strokeMiterLimit="10.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="confrencenameClass" text="Conference name" textAlignment="CENTER" wrappingWidth="150.0">
           <font>
             <Font name="Roboto Light" size="13.0" />
           </font>
