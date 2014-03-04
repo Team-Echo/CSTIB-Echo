@@ -23,11 +23,6 @@
     -fx-border-width: 0.08; 
 }
 
-.messageListClass .list-cell:focused {
-    -fx-background-color: #ffffff;
-    -fx-text-fill: #000000;
-}
-
 .avitarListClass{
     -fx-color:#000000;
     -fx-background-color:#000000;
@@ -120,9 +115,13 @@
 }
 
 .statbuttonClass {
-    -fx-background-color: #2cb1e1;
+    -fx-background-color: transparent;
 }
 
 .webClass {
     -fx-background-color: #EAEAEA;
+}
+
+.tagcloudclass {
+    -fx-background-color: #696969;
 }

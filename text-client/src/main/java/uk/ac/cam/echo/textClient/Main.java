@@ -12,10 +12,11 @@ import java.io.IOException;
 import java.util.List;
 
 public class Main {
-    private static ClientApi api = new ClientApi("http://localhost:8080");
+    private static ClientApi api = new ClientApi("http://echoconf.herokuapp.com");
 
     public static void main(String[] args) {
         Conference conference = configureConference();
+        conference.save();
         User user = configureUser();
         Conversation conversation = configureConversation(conference);
 
@@ -111,13 +112,29 @@ public class Main {
             conversation.setName(input);
             conversation.save();
 
-            Tag t = api.newTag(conversation);
-            t.setName("Happy tag");
-            t.save();
+            String tagString = getData("Tags: ");
+            String tagsStr[] = tagString.split("\\s+");
+            for (String name: tagsStr) {
+                Tag tag = api.newTag(conversation);
+                tag.setName(name);
+                tag.save();
+            }
         }
 
         return conversation;
 
+    }
+    private static String getData(String msg, boolean notNull) {
+        System.out.print(msg);
+        String data = null;
+        do {
+            data = readline();
+        } while ((data == null || data.equals("")) && notNull);
+        return data;
+    }
+
+    private static String getData(String msg) {
+        return getData(msg, false);
     }
 
     private static User configureUser() {
@@ -157,11 +174,30 @@ public class Main {
             ret = api.newUser();
             ret.setUsername(username);
             ret.setPassword(pass);
-            ret.setFirstName("Petar");
-            ret.setLastName("Velickovic");
+            ret.setFirstName(getData("First Name: ", true));
+            ret.setLastName(getData("Last Name: ", true));
+            ret.setGender(getData("Gender (Please type M or F): ", true));
+            ret.setCompany(getData("Company: "));
+            ret.setJobTitle(getData("Job Title: "));
+            ret.setGender(getData("Email: "));
+            ret.setGender(getData("Phone Number: "));
+
             ret.save();
+
+            String intrString = getData("Interests: ");
+            String interestsStr[] = intrString.split("\\s+");
+            for (String name: interestsStr) {
+                Interest intr = api.newInterest(ret);
+                intr.setName(name);
+                intr.setUser(ret);
+                intr.save();
+            }
+            // fn, ln, gender, company, job title, phone number, email, interests
+            //ret.save();
         }
 
+        ret.setCurrentConversation(null);
+        ret.save();
         System.out.print("Your Interests: ");
         for (Interest i: ret.getInterests()) {
             System.out.print(i.getName() + " ");
