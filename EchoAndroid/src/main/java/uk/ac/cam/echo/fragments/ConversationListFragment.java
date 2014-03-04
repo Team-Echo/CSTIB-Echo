@@ -52,10 +52,12 @@ public class ConversationListFragment extends Fragment implements
 	}
 
     public void getAllConversations() {
+        Log.d("SEARCH", "gettingAllConversations()");
         new PerformSearch().execute();
     }
 
 	public void performSearch(String query) {
+        Log.d("SEARCH", "performingSearch()");
 		new PerformSearch().execute(query);
 	}
 
@@ -84,7 +86,7 @@ public class ConversationListFragment extends Fragment implements
 
     public ClientApi getApi() { return api; }
     public void setApi(ClientApi clientApi) { api = clientApi; }
-	
+
 	private class PerformSearch extends AsyncTask<String, Void, List<Conversation>> {
 		
 
@@ -95,9 +97,11 @@ public class ConversationListFragment extends Fragment implements
 		    List<Conversation> result;
 			
 			if(params.length == 0) {
+                Log.d("SEARCH","params = 0");
 				result = api.conferenceResource.getConversations(1);
 			} else {
-				String query = params[0];
+                String query = params[0];
+                Log.d("SEARCH","params > 0: searching :" + query);
                 result = api.conferenceResource.search(1, query, 10);
 			}
 
