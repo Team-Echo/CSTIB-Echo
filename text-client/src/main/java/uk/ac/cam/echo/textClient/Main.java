@@ -34,6 +34,12 @@ public class Main {
     private static void listenToInputs(Conversation conversation, User user) {
         while (true) {
             String input = readline();
+            if (input.equals("\\quit"))
+            {
+                user.setCurrentConversation(null);
+                user.save();
+                System.exit(0);
+            }
             Message msg = api.newMessage(conversation);
             msg.setSender(user);
             msg.setContents(input);
