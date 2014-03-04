@@ -179,8 +179,8 @@ public class Main {
             ret.setGender(getData("Gender (Please type M or F): ", true));
             ret.setCompany(getData("Company: "));
             ret.setJobTitle(getData("Job Title: "));
-            ret.setGender(getData("Email: "));
-            ret.setGender(getData("Phone Number: "));
+            ret.setEmail(getData("Email: "));
+            ret.setPhoneNumber(getData("Phone Number: "));
 
             ret.save();
 
