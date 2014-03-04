@@ -224,7 +224,8 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
             lastMessage.setText(lastMessageText);
 
             avatarMap.put(id, avatar);
-            imgView.setImageBitmap(avatar);
+            if(avatar != null)
+                imgView.setImageBitmap(avatar);
         }
     }
 }

@@ -63,7 +63,7 @@ public class ConversationFragment extends Fragment {
 		listView = (ListView)view.findViewById(R.id.messageListView);
         Log.d("LISTEN",(api==null) ? "api is null" : "Not null");
         if(api != null){
-            getAndListen();
+           // getAndListen();
 
         }
 
