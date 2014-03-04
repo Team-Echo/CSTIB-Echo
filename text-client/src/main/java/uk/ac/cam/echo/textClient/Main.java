@@ -16,6 +16,7 @@ public class Main {
 
     public static void main(String[] args) {
         Conference conference = configureConference();
+        conference.save();
         User user = configureUser();
         Conversation conversation = configureConversation(conference);
 
