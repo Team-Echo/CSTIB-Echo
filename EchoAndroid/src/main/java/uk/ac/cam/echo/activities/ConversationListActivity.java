@@ -124,6 +124,7 @@ public class ConversationListActivity extends Activity
             }
             Intent intent = new Intent(this, ConversationDetailActivity.class);
             intent.putExtra("_id", id);
+            finish();
             startActivity(intent);
         }
 
@@ -218,7 +219,7 @@ public class ConversationListActivity extends Activity
 				Log.e("CLF", e.getMessage());
 			}
 			if (position != -1) 
-				clf.openConversation(position);
+				respond(position);
 		}else {
 			Toaster.displayLong(this, "No scan data received!");
 		}
