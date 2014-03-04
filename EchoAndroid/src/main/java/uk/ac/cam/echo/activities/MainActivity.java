@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -86,8 +87,8 @@ public class MainActivity extends Activity
         title.setTypeface(flex);
 
         if(!isConnected) {
+            Log.d("CONNECTED", ""+isConnected);
             showAlertDialog();
-            finish();
         }
     }
 
@@ -188,16 +189,15 @@ public class MainActivity extends Activity
 	}
 
     private void showAlertDialog() {
-        Context context = getApplicationContext();
-
-        AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setTitle("No Internet Connection");
-        alertDialog.setMessage("Please connect to the internet");
+        alertDialog.setMessage("Please connect to the internet to use Echo");
         alertDialog.setIcon(android.R.drawable.stat_sys_warning);
 
         // Setting OK Button
-        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+        alertDialog.setButton("Connect", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK));
             }
         });
 

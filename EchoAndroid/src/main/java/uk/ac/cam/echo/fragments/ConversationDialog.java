@@ -81,6 +81,7 @@ public class ConversationDialog extends DialogFragment implements
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		new GetConversation().execute(id);
+        cf.getAndListen();
 	}
 
 	// Factory to create dialog based on id
