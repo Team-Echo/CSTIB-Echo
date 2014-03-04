@@ -106,12 +106,13 @@ public class ConversationListActivity extends Activity
 	public void respond(long id) {
 		
 		if(dualPane) {
-			
+			Log.d("RESPOND", "respond called " + id);
 			ConversationDialog convFrag =
 					(ConversationDialog)manager.findFragmentById(R.id.convFrame);
 			if(convFrag == null || convFrag.getShownIndex() != id) {
 				convFrag = ConversationDialog.newInstance(id, getService());
                 convFrag.setApi(getService().getApi());
+                Log.d("RESPOND", "new instance created");
 				FragmentTransaction ft = manager.beginTransaction();
 				ft.replace(R.id.convFrame, convFrag);
 				ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -226,6 +227,6 @@ public class ConversationListActivity extends Activity
     // Callback method when ListView has fully rendered
     @Override
     public void onRendered() {
-
+        if(dualPane) respond(clf.getAdapter().getItem(0).getId());
     }
 }

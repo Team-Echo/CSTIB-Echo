@@ -87,6 +87,8 @@ public class ConversationListFragment extends Fragment implements
     public ClientApi getApi() { return api; }
     public void setApi(ClientApi clientApi) { api = clientApi; }
 
+    public ConversationAdapter getAdapter() {return adapter; }
+
 	private class PerformSearch extends AsyncTask<String, Void, List<Conversation>> {
 		
 
