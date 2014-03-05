@@ -47,6 +47,8 @@ public class ConversationFragment extends Fragment {
 
     MessageAdapter adapter;
     private static Timer timer;
+
+    boolean getAndListenAlreadyCalled;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,9 +64,8 @@ public class ConversationFragment extends Fragment {
 		super.onViewCreated(view, savedInstanceState);
 		listView = (ListView)view.findViewById(R.id.messageListView);
         Log.d("LISTEN",(api==null) ? "api is null" : "Not null");
-        if(api != null){
-            getAndListen();
-
+        if(api != null && id > 0){
+           getAndListen();
         }
 
 	}
@@ -83,9 +84,17 @@ public class ConversationFragment extends Fragment {
     }
 
     public void getAndListen() {
-        Log.d("LISTEN", "getAndListen");
-        new GetMessage().execute(id);
-        new Listen().execute(id);
+        if(!getAndListenAlreadyCalled) {
+            Log.d("LISTEN", "getAndListen for " + id);
+            new GetMessage().execute(id);
+            new Listen().execute(id);
+        }
+    }
+
+    public void onServiceReady() {
+        Log.d("ConversationFragment", "onServiceReady()");
+        getAndListen();
+
     }
 	
 	// Factory method to create a fragment based on the conversationID
@@ -137,6 +146,7 @@ public class ConversationFragment extends Fragment {
         timer.schedule(doAsynchronousTask, 30000, 150000); //execute in every 50000 ms
     }
 
+
     // ASYNCHRONOUS TASKS
 
     //  Listening to new messages
@@ -180,8 +190,9 @@ public class ConversationFragment extends Fragment {
         @Override
         protected List<Message> doInBackground(Long... args) {
             id = args[0];
+            Log.d("ConversationFragment", "ID: " + id);
             conversation = api.conversationResource.get(id);
-
+            Log.d("ConversationFragment", conversation == null ? "conv is null " : "conv is not null");
             title = conversation.getName();
             users = ConversationStringUtil.getUserText(conversation.getUsers());
             if(preview) {
@@ -189,7 +200,7 @@ public class ConversationFragment extends Fragment {
             } else {
                 msgList = (List)conversation.getMessages();
             }
-
+            Log.d("MESSAGES", "loaded all the messages");
 
             return msgList;
         }
@@ -203,8 +214,8 @@ public class ConversationFragment extends Fragment {
             adapter.setNotifyOnChange(true);
             listView.setAdapter(adapter);
             listView.setSelection(adapter.getCount() - 1);
+            getAndListenAlreadyCalled = true;
         }
     }
 
-    //private class GetUpdates extends
 }

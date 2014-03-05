@@ -3,6 +3,7 @@ package uk.ac.cam.echo;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.Collection;
@@ -180,15 +182,26 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
             Collection<Tag> tags = conversation.getTags();
             String tagText = ConversationStringUtil.getTagText(tags);
 
-            Message last = api.conversationResource.getMessageResource(conversation.getId()).getRecent(1).get(0);
-            lastMessageText = last.getSender().getDisplayName() + ": " + last.getContents();
+            List<User> users = (List<User>)conversation.getUsers();
+            List<Message> recent = api.conversationResource.getMessageResource(conversation.getId()).getRecent(1);
+            if(recent.size() > 0) {
+                Message last = recent.get(0);
+                avatar = BitmapUtil.getBitmapFromURL(recent.get(0).getSender().getAvatarLink() + "&s=200");
+                lastMessageText = last.getSender().getDisplayName() + ": " + last.getContents();
+            } else {
+                lastMessageText = "No messages yet";
+                if(users.size() > 0) {
+                    avatar = BitmapUtil.getBitmapFromURL(users.get(0).getAvatarLink());
+                } else {
+                    avatar = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
+                }
+            }
 
-            Collection<User> users = conversation.getUsers();
             onlineText = ConversationStringUtil.getOnlineText(users);
             userText = ConversationStringUtil.getUserText(users);
 
-            avatar = BitmapUtil.getBitmapFromURL(api.conversationResource.getMessageResource(conversation.getId())
-                    .getRecent(1).get(0).getSender().getAvatarLink() + "&s=200");
+
+
 
             return tagText;
         }
@@ -211,7 +224,8 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
             lastMessage.setText(lastMessageText);
 
             avatarMap.put(id, avatar);
-            imgView.setImageBitmap(avatar);
+            if(avatar != null)
+                imgView.setImageBitmap(avatar);
         }
     }
 }

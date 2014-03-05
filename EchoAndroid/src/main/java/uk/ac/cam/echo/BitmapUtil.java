@@ -20,11 +20,8 @@ public class BitmapUtil {
             connection.connect();
             InputStream input = connection.getInputStream();
             Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            Log.e("Bitmap","returned");
             return myBitmap;
         } catch (IOException e) {
-            e.printStackTrace();
-            Log.e("Exception",e.getMessage());
             return null;
         }
     }

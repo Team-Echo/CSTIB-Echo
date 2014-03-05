@@ -50,7 +50,7 @@ public class ConversationDialog extends DialogFragment implements
 		
 		View view = inflater.inflate(R.layout.conv_dialog_two, container, false);
 		
-		id = getArguments().getLong("_id");
+		//id = getArguments().getLong("_id");
 		
 		title = (TextView)view.findViewById(R.id.convTitleDialog);
 		users = (TextView)view.findViewById(R.id.convUsersDialog);
@@ -81,12 +81,14 @@ public class ConversationDialog extends DialogFragment implements
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		new GetConversation().execute(id);
+        cf.getAndListen();
 	}
 
 	// Factory to create dialog based on id
 	public static ConversationDialog newInstance(long id, EchoService service) {
 		ConversationDialog cd = new ConversationDialog();
 		Bundle args = new Bundle();
+        cd.setId(id);
 		args.putLong("_id", id);
 		cd.setArguments(args);
         cd.setService(service);
@@ -114,6 +116,7 @@ public class ConversationDialog extends DialogFragment implements
 	}
 
     public void setApi(ClientApi clientApi) { api = clientApi; }
+    public void setId(long id) { this.id = id;}
     public void setService(EchoService service) { echoService = service; }
 
     private class GetConversation extends AsyncTask<Long, Void, Conversation> {

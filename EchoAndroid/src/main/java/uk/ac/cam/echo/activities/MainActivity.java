@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -30,6 +31,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+
+import java.lang.reflect.UndeclaredThrowableException;
 
 public class MainActivity extends Activity
 				implements OnEditorActionListener {
@@ -86,8 +89,8 @@ public class MainActivity extends Activity
         title.setTypeface(flex);
 
         if(!isConnected) {
+            Log.d("CONNECTED", ""+isConnected);
             showAlertDialog();
-            finish();
         }
     }
 
@@ -125,6 +128,8 @@ public class MainActivity extends Activity
 
     	String user = username.getText().toString();
     	String pass = password.getText().toString();
+
+        final boolean[] success = {true};
     	
     	/* basic validation, display loading bar
     	 * perform API call for login authentication */
@@ -135,23 +140,43 @@ public class MainActivity extends Activity
                 @Override
                 protected User doInBackground(String... args) {
                     Log.d("Login", args[0] + " - " + args[1]);
-                    User ret = api.userResource.authenticate(args[0], args[1]);
+                    User ret = null;
+                    try {
+                        ret = api.userResource.authenticate(args[0], args[1]);
+                    }catch(UndeclaredThrowableException e) {
+                        success[0] = false;
+                    }
                     return ret;
                 }
                 @Override
                 protected void onPostExecute(User user) {
                     super.onPostExecute(user);
-                    if(user == null) {
-                        Toaster.displayLong(MainActivity.this, "Username or Password incorrect");
-                        toggleButton();
+                    if(!success[0]) {
+                        AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                        alertDialog.setTitle("Could not connect to Server");
+                        alertDialog.setMessage("Please try again later. The server is experiencing heavy load.");
+                        alertDialog.setIcon(android.R.drawable.stat_sys_warning);
+                        alertDialog.setButton("Close", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        });
+                        alertDialog.show();
                     } else {
-                        echoService.setUser(user);
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.putBoolean(LOGGED_IN, true);
-                        editor.commit();
-                        Intent i = new Intent(MainActivity.this, ConversationListActivity.class);
-                        i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                        startActivity(i);
+
+                        if(user == null) {
+                            Toaster.displayLong(MainActivity.this, "Username or Password incorrect");
+                            toggleButton();
+                        } else {
+                            echoService.setUser(user);
+                            SharedPreferences.Editor editor = prefs.edit();
+                            editor.putBoolean(LOGGED_IN, true);
+                            editor.commit();
+                            Intent i = new Intent(MainActivity.this, ConversationListActivity.class);
+                            //i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                            finish();
+                            startActivity(i);
+                        }
                     }
                 }
             }.execute(user, pass);
@@ -188,16 +213,15 @@ public class MainActivity extends Activity
 	}
 
     private void showAlertDialog() {
-        Context context = getApplicationContext();
-
-        AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setTitle("No Internet Connection");
-        alertDialog.setMessage("Please connect to the internet");
+        alertDialog.setMessage("Please connect to the internet to use Echo");
         alertDialog.setIcon(android.R.drawable.stat_sys_warning);
 
         // Setting OK Button
-        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+        alertDialog.setButton("Connect", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK));
             }
         });
 

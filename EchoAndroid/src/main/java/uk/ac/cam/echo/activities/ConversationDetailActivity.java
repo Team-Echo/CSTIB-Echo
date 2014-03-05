@@ -40,6 +40,7 @@ public class ConversationDetailActivity extends Activity implements View.OnClick
             cf.setApi(api);
             cf.setService(echoService);
             cf.setUser(echoService.getUser());
+            cf.onServiceReady();
             new UpdateActionBar().execute(id);
         }
         public void onServiceDisconnected(ComponentName className) {
@@ -68,7 +69,7 @@ public class ConversationDetailActivity extends Activity implements View.OnClick
         send.setOnClickListener(this);
 
         // new ConversationFragment that is not a preview, with the current user
-        cf = ConversationFragment.newInstance(id, false, null);
+        cf = ConversationFragment.newInstance(id, false, echoService);
 
 		FragmentManager manager = getFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
@@ -88,8 +89,10 @@ public class ConversationDetailActivity extends Activity implements View.OnClick
     @Override
     protected void onPause() {
         super.onPause();
-        echoService.setNotifEnabled(true);
-        unbindService(connection);
+        if(echoService != null) {
+            echoService.setNotifEnabled(true);
+            unbindService(connection);
+        }
     }
 
     @Override
