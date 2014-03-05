@@ -137,6 +137,45 @@ public class DataAnalyst implements ServerDataAnalyst
     }
 
     @Override
+    public void updateGraph(int lim)
+    {
+        Conference parentConference = (Conference) HibernateUtil.getTransaction().get(ConferenceModel.class, parentID);
+        Collection<Conversation> conversations = parentConference.getConversationSet();
+
+        long nextLastTS = GraphUtil.lastTS;
+
+        for (Conversation C : conversations)
+        {
+            if (lim <= 0) break;
+            List<Message> msgs = (List<Message>)C.getSortedMessages();
+            Collections.reverse(msgs); // because the query returns them in the opposite order
+            for (Message M : msgs)
+            {
+                if (M.getTimeStamp() > nextLastTS) nextLastTS = M.getTimeStamp();
+                if (M.getTimeStamp() <= GraphUtil.lastTS) break;
+                List<String> keywords = MessageLexer.lexAnalyse(M.getContents(), dictionary, affix, stopWords);
+                ListIterator<String> it1 = keywords.listIterator();
+                while (it1.hasNext())
+                {
+                    String u = it1.next();
+                    String U = u.substring(0, 1).concat(".").concat(u);
+                    ListIterator<String> it2 = keywords.listIterator(it1.nextIndex());
+                    while (it2.hasNext())
+                    {
+                        String v = it2.next();
+                        String V = v.substring(0, 1).concat(".").concat(v);
+                        GraphUtil.addEdge(U, V);
+                    }
+                }
+                lim--;
+                if (lim <= 0) break;
+            }
+        }
+
+        GraphUtil.lastTS = nextLastTS;
+    }
+
+    @Override
     public void updateFGraph()
     {
         /*

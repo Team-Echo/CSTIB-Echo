@@ -132,6 +132,9 @@ public interface ConferenceResource extends RestResource<Conference> {
     @Path("/{conferenceId}/conversations")
     public List<Conversation> getConversations(@PathParam("conferenceId") long id);
 
+    @GET
+    @Path("/{conferenceId}/kwd-graph-lim/")
+    public String getKeywordGraph(@PathParam("conferenceId") long id, @QueryParam("lim") int lim);
 
     @PUT
     @Consumes("application/json")

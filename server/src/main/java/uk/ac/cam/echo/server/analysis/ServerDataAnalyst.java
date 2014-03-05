@@ -46,6 +46,8 @@ public interface ServerDataAnalyst
     */
     public void updateFGraph();
 
+    public void updateGraph(int lim);
+
     /**
      Searches the conversations within the conference, with respect to the given keyword string.
      It searches by names, tags and by extracted keywords, giving priority to names, then tags.
