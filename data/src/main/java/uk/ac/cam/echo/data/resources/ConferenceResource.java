@@ -133,7 +133,7 @@ public interface ConferenceResource extends RestResource<Conference> {
     public List<Conversation> getConversations(@PathParam("conferenceId") long id);
 
     @GET
-    @Path("/{conferenceId}/kwd-graph-lim/")
+    @Path("/{conferenceId}/kwd-graph-lim")
     public String getKeywordGraph(@PathParam("conferenceId") long id, @QueryParam("lim") int lim);
 
     @PUT
