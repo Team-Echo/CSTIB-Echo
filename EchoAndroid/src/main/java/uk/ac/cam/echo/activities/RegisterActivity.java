@@ -7,8 +7,10 @@ import uk.ac.cam.echo.data.User;
 import uk.ac.cam.echo.services.EchoService;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Typeface;
@@ -24,6 +26,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+
+import java.lang.reflect.UndeclaredThrowableException;
 
 public class RegisterActivity extends Activity
         implements OnEditorActionListener {
@@ -154,26 +158,50 @@ public class RegisterActivity extends Activity
 
     private class RegisterUser extends AsyncTask<String, Void, User> {
 
+        boolean success = true;
+
         @Override
         protected User doInBackground(String... args) {
             String usernameText = args[0];
             String passwordText = args[1];
             String firstText = args[2];
             String lastText = args[3];
+            User user = null;
+            try {
+                user = api.newUser();
+                user.setUsername(usernameText);
+                user.setPassword(passwordText);
+                user.setFirstName(firstText);
+                user.setLastName(lastText);
 
-            User user = api.newUser();
-            user.setUsername(usernameText);
-            user.setPassword(passwordText);
-            user.setFirstName(firstText);
-            user.setLastName(lastText);
-
-            echoService.setUser(user);
-            user.save();
+                echoService.setUser(user);
+                user.save();
+            }catch(UndeclaredThrowableException e) {
+                success = false;
+                return user;
+            }
 
             Intent i = new Intent(getApplicationContext(), ConversationListActivity.class);
             startActivity(i);
 
             return user;
+        }
+
+        @Override
+        protected void onPostExecute(User user) {
+            super.onPostExecute(user);
+            if(!success) {
+                AlertDialog alertDialog = new AlertDialog.Builder(RegisterActivity.this).create();
+                alertDialog.setTitle("Could not connect to Server");
+                alertDialog.setMessage("Please try again later. The server is experiencing heavy load.");
+                alertDialog.setIcon(android.R.drawable.stat_sys_warning);
+                alertDialog.setButton("Close", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
+                alertDialog.show();
+            }
         }
     }
 

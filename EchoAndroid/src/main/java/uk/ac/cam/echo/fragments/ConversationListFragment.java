@@ -64,6 +64,7 @@ public class ConversationListFragment extends Fragment implements
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+        Log.d("ConversationListFragment", "clicked on "+ id);
 		comm.respond(id);
 	}
 
@@ -101,11 +102,13 @@ public class ConversationListFragment extends Fragment implements
 			if(params.length == 0) {
                 Log.d("SEARCH","params = 0");
 				result = api.conferenceResource.getConversations(1);
+                Log.d("SEARCH", "all conversations downloaded");
 			} else {
                 String query = params[0];
                 Log.d("SEARCH","params > 0: searching :" + query);
                 result = api.conferenceResource.search(1, query, 10);
-			}
+                Log.d("SEARCH", "all search results downloaded");
+            }
 
 			for(uk.ac.cam.echo.data.Conversation c : result)
                 some.add(c.getName());

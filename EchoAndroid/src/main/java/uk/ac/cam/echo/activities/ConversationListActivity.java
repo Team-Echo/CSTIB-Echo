@@ -40,7 +40,7 @@ public class ConversationListActivity extends Activity
             echoService = ((EchoService.LocalBinder)service).getService();
             api = echoService.getApi();
             clf.setApi(api);
-            if(!isSearch) clf.getAllConversations();
+            clf.getAllConversations();
             openDialog();
         }
 
@@ -111,6 +111,7 @@ public class ConversationListActivity extends Activity
 					(ConversationDialog)manager.findFragmentById(R.id.convFrame);
 			if(convFrag == null || convFrag.getShownIndex() != id) {
 				convFrag = ConversationDialog.newInstance(id, getService());
+                convFrag.setId(id);
                 convFrag.setApi(getService().getApi());
                 Log.d("RESPOND", "new instance created");
 				FragmentTransaction ft = manager.beginTransaction();
@@ -123,6 +124,7 @@ public class ConversationListActivity extends Activity
                 getService().listenToConversation(id);
             }
             Intent intent = new Intent(this, ConversationDetailActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             intent.putExtra("_id", id);
             startActivity(intent);
         }

@@ -88,7 +88,6 @@ public class EchoService extends Service {
     public User getUser() { return user; }
 
      public void notify(Message message) {
-         Log.d("NOTIF", "notify called " + notifEnabled);
          if(notifEnabled) {
              new AsyncTask<Message, Void, Notification.Builder>(){
                  @Override
@@ -140,21 +139,17 @@ public class EchoService extends Service {
 
                 Intent intent = new Intent(context, ConversationListActivity.class);
                 intent.putExtra("_id", msgConv.getId());
-                Log.d("LISTEN",""+msgConv.getId());
                 PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, 0);
-                Log.d("NOTIFY", msg == null ? "null" : "not null");
                 String user = msg.getSender().getFirstName();
 
                 Bitmap avatar = BitmapUtil.getBitmapFromURL(msg.getSender().getAvatarLink()+"&s=200");
 
-                long[] vibratePattern = {250,0,250};
                 Notification.Builder notifBuilder = new Notification.Builder(context)
                         .setTicker("Overheard " + msg.getSender().getDisplayName() + " in " + msgConv.getName())
                         .setContentTitle("Overheard " + msgConv.getName())
                         .setContentIntent(pIntent)
                         .setSmallIcon(android.R.drawable.ic_dialog_info)
                         .setLargeIcon(avatar)
-                        .setVibrate(vibratePattern)
                         .setAutoCancel(true)
                         .setContentText(user + ": " + msg.getContents());
 
@@ -205,7 +200,6 @@ public class EchoService extends Service {
                    EchoService.this.notify(message);
                }
            };
-           Log.d("NOTIF", "listening for notifs to " + id);
            api.conversationResource.listenToMessages(id).subscribe(handler);
        }
    }

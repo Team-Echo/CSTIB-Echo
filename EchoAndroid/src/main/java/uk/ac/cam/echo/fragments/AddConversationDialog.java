@@ -90,8 +90,8 @@ public class AddConversationDialog extends DialogFragment implements
                 Toaster.displayShort(getActivity(), "Please enter atleast one tag");
                 return;
             }
-
-            new AddConversation().execute(titleInput, tagsInput);
+            Toaster.displayLong(getActivity(), "Restricted functionality on demonstration application!");
+            //new AddConversation().execute(titleInput, tagsInput);
         }
     }
 
